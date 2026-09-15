@@ -109,35 +109,38 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [ref2Role, setRef2Role] = useState('');
   const [merchantTermsAccepted, setMerchantTermsAccepted] = useState(true);
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     if (!loginEmail.trim()) {
-      setErrorMessage('Por favor, informe seu e-mail de acesso cadastrado.');
+      setErrorMessage(
+        'Por favor, informe seu e-mail de acesso cadastrado.'
+      );
       return;
     }
+
     if (!loginPassword) {
-      setErrorMessage('Por favor, digite sua senha de acesso.');
+      setErrorMessage(
+        'Por favor, digite sua senha de acesso.'
+      );
       return;
     }
 
-    const result = login(loginEmail, loginPassword, rememberMe);
-
-    if (result.requires2FA) {
-      setIs2FAStep(true);
-      setPending2FAEmail(loginEmail.trim().toLowerCase());
-      setSimulated2FACode(result.simulated2FACode || '749210');
-      setTwoFactorCodeInput('');
-      setSuccessMessage(result.message || 'Código de confirmação em 2 etapas enviado com sucesso.');
-      return;
-    }
+    const result = await login(
+      loginEmail,
+      loginPassword,
+      rememberMe
+    );
 
     if (result.success) {
       if (onSuccess) onSuccess();
     } else {
-      setErrorMessage(result.message || 'Credenciais inválidas. Verifique seu e-mail e senha.');
+      setErrorMessage(
+        result.message ||
+        'Credenciais inválidas. Verifique seu e-mail e senha.'
+      );
     }
   };
 

@@ -60,7 +60,7 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
       ? 'COMMERCIAL_PORTAL'
       : 'SELLER_PORTAL';
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -70,28 +70,36 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
       return;
     }
 
-    const res = login(email.trim(), password, true);
+    const res = await login(
+      email.trim(),
+      password,
+      true
+    );
 
-    if (res.requires2FA) {
-      if (res.user?.role !== requiredRole && requiredRole === 'MASTER') {
-        setErrorMessage('Esta conta não possui privilégios de Administrador Master.');
-        return;
-      }
-      setIs2FAStep(true);
-      setSimulatedCode(res.simulated2FACode || '749210');
-      setSuccessMessage(res.message || 'Código de 2ª etapa enviado com sucesso.');
+    if (!res.success) {
+      setErrorMessage(
+        res.message ||
+        'Credenciais inválidas. Verifique seu e-mail e senha.'
+      );
       return;
     }
 
-    if (res.success) {
-      if (res.user?.role !== requiredRole && requiredRole === 'MASTER') {
-        setErrorMessage('Acesso restrito a Administradores Master.');
-        return;
-      }
-      setCurrentEnvironment(targetEnv);
-    } else {
-      setErrorMessage(res.message || 'Falha na autenticação. Verifique suas credenciais.');
+    if (
+      requiredRole === 'MASTER' &&
+      res.user?.role !== 'MASTER'
+    ) {
+      setErrorMessage(
+        'Acesso restrito a Administradores Master.'
+      );
+
+      await logout();
+      return;
     }
+
+    setCurrentEnvironment(targetEnv);
+    setSuccessMessage(
+      `Acesso autorizado para ${res.user?.name || 'usuário'}.`
+    );
   };
 
   const handleVerify2FA = (e: React.FormEvent) => {

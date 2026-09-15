@@ -6,6 +6,7 @@
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
+  updatePassword,
   updateProfile,
   type User as FirebaseUser
 } from 'firebase/auth';
@@ -47,6 +48,12 @@ export function getFirebaseAuthErrorMessage(errorCode: string): string {
 
     case 'auth/operation-not-allowed':
       return 'Este método de autenticação ainda não está habilitado no Firebase.';
+
+    case 'auth/requires-recent-login':
+      return 'Por segurança, faça login novamente antes de alterar sua senha.';
+
+    case 'auth/user-disabled':
+      return 'Esta conta foi desativada.';
 
     default:
       return 'Não foi possível concluir a autenticação.';
@@ -174,6 +181,59 @@ export async function firebaseSendPasswordReset(
   }
 }
 
+/**
+ * Altera exclusivamente a senha do usuário atualmente
+ * autenticado no Firebase.
+ *
+ * Esta função NÃO recebe userId, e-mail de terceiros ou
+ * qualquer credencial administrativa.
+ *
+ * Portanto, o Master não consegue utilizar esta função
+ * para alterar a senha de outro usuário.
+ */
+export async function firebaseUpdateOwnPassword(
+  newPassword: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  try {
+    const user = firebaseAuth.currentUser;
+
+    if (!user) {
+      return {
+        success: false,
+        message: 'Nenhum usuário autenticado no Firebase.'
+      };
+    }
+
+    if (
+      typeof newPassword !== 'string' ||
+      newPassword.length < 6
+    ) {
+      return {
+        success: false,
+        message: 'A nova senha deve possuir pelo menos 6 caracteres.'
+      };
+    }
+
+    await updatePassword(
+      user,
+      newPassword
+    );
+
+    return {
+      success: true,
+      message: 'Senha atualizada com sucesso!'
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error?.code)
+    };
+  }
+}
+
 export async function firebaseLogout(): Promise<void> {
   await signOut(firebaseAuth);
 }
@@ -181,5 +241,8 @@ export async function firebaseLogout(): Promise<void> {
 export function subscribeToFirebaseAuthState(
   callback: (user: FirebaseUser | null) => void
 ): () => void {
-  return onAuthStateChanged(firebaseAuth, callback);
+  return onAuthStateChanged(
+    firebaseAuth,
+    callback
+  );
 }

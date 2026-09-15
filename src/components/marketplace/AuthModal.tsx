@@ -143,33 +143,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     if (!loginEmail.trim()) {
-      setErrorMessage('Por favor, informe seu e-mail de acesso cadastrado.');
+      setErrorMessage(
+        'Por favor, informe seu e-mail de acesso cadastrado.'
+      );
       return;
     }
 
-    const result = login(loginEmail, loginPassword, rememberMe);
-
-    if (result.requires2FA) {
-      setIs2FAStep(true);
-      setPending2FAEmail(loginEmail.trim().toLowerCase());
-      setPending2FARole(result.user?.role || 'VENDEDOR');
-      setPending2FAName(result.user?.name || 'Usuário');
-      setSimulated2FACode(result.simulated2FACode || '749210');
-      setTwoFactorCodeInput('');
-      setSuccessMessage(result.message || 'Código de confirmação de 2 etapas gerado com sucesso.');
+    if (!loginPassword) {
+      setErrorMessage(
+        'Por favor, digite sua senha de acesso.'
+      );
       return;
     }
+
+    const result = await login(
+      loginEmail,
+      loginPassword,
+      rememberMe
+    );
 
     if (result.success) {
       onClose();
     } else {
-      setErrorMessage(result.message || 'Credenciais inválidas. Verifique seu e-mail e senha.');
+      setErrorMessage(
+        result.message ||
+        'Credenciais inválidas. Verifique seu e-mail e senha.'
+      );
     }
   };
 
