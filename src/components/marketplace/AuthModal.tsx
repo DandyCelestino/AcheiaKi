@@ -639,60 +639,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <span className="font-bold text-slate-800">Segurança de Acesso Exclusivo:</span> Contas de Vendedores e Administradores possuem confirmação em 2 etapas (2FA) e isolamento rigoroso de permissões.
                 </div>
               </div>
-
-              {/* Atalhos Rápidos de Acesso */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
-                  Preencher dados de teste rápido:
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginEmail('telecom.david@gmail.com');
-                      setLoginPassword('telecom2026!');
-                    }}
-                    className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-left transition-colors"
-                  >
-                    <div className="flex items-center space-x-1.5 text-blue-900 font-bold text-xs">
-                      <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      <span>Admin Master</span>
-                    </div>
-                    <div className="text-[10px] text-blue-700 truncate">David Telecom</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginEmail('carlos.comercial@acheiaqui.com.br');
-                      setLoginPassword('123456');
-                    }}
-                    className="p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-left transition-colors"
-                  >
-                    <div className="flex items-center space-x-1.5 text-indigo-900 font-bold text-xs">
-                      <Briefcase className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                      <span>Vendedor</span>
-                    </div>
-                    <div className="text-[10px] text-indigo-700 truncate">Carlos Eduardo</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginEmail('carlos@boutiquedasflores.com.br');
-                      setLoginPassword('123456');
-                    }}
-                    className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-left transition-colors"
-                  >
-                    <div className="flex items-center space-x-1.5 text-emerald-900 font-bold text-xs">
-                      <Store className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Lojista</span>
-                    </div>
-                    <div className="text-[10px] text-emerald-700 truncate">Boutique das Flores</div>
-                  </button>
-                </div>
-              </div>
-
               {/* Formulário de Login */}
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
