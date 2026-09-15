@@ -1,13 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
-  firebaseLoginWithEmail,
-  firebaseRegisterCustomer,
-  firebaseLoginWithGoogle,
-  firebaseSendPasswordReset,
-  firebaseLogout,
-  subscribeToFirebaseAuthState
-} from '../services/firebaseAuth';
-import {
   User,
   UserRole,
   StoreMerchant,
