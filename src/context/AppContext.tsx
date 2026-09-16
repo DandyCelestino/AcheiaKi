@@ -2212,7 +2212,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const firebaseResult = await firebaseRegisterUser(
       userData.name.trim(),
       userData.email.trim(),
-      "123456"
+      "Mudar@123456"
     );
 
     if (!firebaseResult.success || !firebaseResult.firebaseUser) {
