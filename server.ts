@@ -467,6 +467,8 @@ app.get('/api/admin/system-status', (req: Request, res: Response) => {
 // ========================================================================
 // INICIALIZAÇÃO DO SERVIDOR COM VITE MIDDLEWARE
 // ========================================================================
+export { app };
+
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
@@ -487,4 +489,6 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.NETLIFY) {
+  startServer();
+}
