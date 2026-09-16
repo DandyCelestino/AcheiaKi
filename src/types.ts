@@ -1,4 +1,4 @@
-export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'REPRESENTANTE_COMERCIAL';
+export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'LOJISTA' | 'PRESTADOR_SERVICO' | 'MASTER' | 'REPRESENTANTE_COMERCIAL';
 
 export type MembershipTier = 'GRATIS' | 'BRONZE' | 'PRATA' | 'OURO' | 'PREMIUM' | 'MASTER';
 
@@ -152,6 +152,7 @@ export interface User {
   phone: string;
   secondaryPhone?: string;
   role: UserRole;
+  firebaseUid?: string;
   password?: string;
   city: string;
   address?: string;

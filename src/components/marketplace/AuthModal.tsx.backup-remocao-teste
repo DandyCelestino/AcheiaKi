@@ -35,7 +35,7 @@ import { MembershipTier } from '../../types';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab?: 'login' | 'register-customer' | 'register-merchant' | 'register-seller' | 'register-representative' | 'forgot-password' | 'resend-confirmation';
+  initialTab?: 'login' | 'register-customer' | 'register-merchant' | 'forgot-password' | 'resend-confirmation';
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -50,7 +50,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     loginAsUser,
     registerCustomer,
     registerMerchant,
-    registerCommercialUser,
     requestPasswordReset,
     completePasswordReset,
     resendEmailConfirmation,
@@ -58,7 +57,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     triggerToast
   } = useApp();
 
-  const [tab, setTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-seller' | 'register-representative' | 'forgot-password' | 'resend-confirmation'>(initialTab);
+  const [tab, setTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'forgot-password' | 'resend-confirmation'>(initialTab);
 
   // Common UI State
   const [showPassword, setShowPassword] = useState(false);
@@ -100,15 +99,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   // Merchant / Provider registration state
   const [merchantType, setMerchantType] = useState<'STORE' | 'SERVICE_PROVIDER'>('SERVICE_PROVIDER');
   const [merchantTier, setMerchantTier] = useState<MembershipTier>('GRATIS');
-  const [commercialName, setCommercialName] = useState('');
-  const [commercialEmail, setCommercialEmail] = useState('');
-  const [commercialPassword, setCommercialPassword] = useState('');
-  const [commercialConfirmPassword, setCommercialConfirmPassword] = useState('');
-  const [commercialPhone, setCommercialPhone] = useState('');
-  const [commercialCpf, setCommercialCpf] = useState('');
-  const [commercialIdDocument, setCommercialIdDocument] = useState('');
-  const [commercialTermsAccepted, setCommercialTermsAccepted] = useState(false);
-
   const [merchantOwnerName, setMerchantOwnerName] = useState('');
   const [merchantStoreName, setMerchantStoreName] = useState('');
   const [merchantEmail, setMerchantEmail] = useState('');
@@ -153,38 +143,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     if (!loginEmail.trim()) {
-      setErrorMessage(
-        'Por favor, informe seu e-mail de acesso cadastrado.'
-      );
+      setErrorMessage('Por favor, informe seu e-mail de acesso cadastrado.');
       return;
     }
 
-    if (!loginPassword) {
-      setErrorMessage(
-        'Por favor, digite sua senha de acesso.'
-      );
+    const result = login(loginEmail, loginPassword, rememberMe);
+
+    if (result.requires2FA) {
+      setIs2FAStep(true);
+      setPending2FAEmail(loginEmail.trim().toLowerCase());
+      setPending2FARole(result.user?.role || 'VENDEDOR');
+      setPending2FAName(result.user?.name || 'Usuário');
+      setSimulated2FACode(result.simulated2FACode || '749210');
+      setTwoFactorCodeInput('');
+      setSuccessMessage(result.message || 'Código de confirmação de 2 etapas gerado com sucesso.');
       return;
     }
-
-    const result = await login(
-      loginEmail,
-      loginPassword,
-      rememberMe
-    );
 
     if (result.success) {
       onClose();
     } else {
-      setErrorMessage(
-        result.message ||
-        'Credenciais inválidas. Verifique seu e-mail e senha.'
-      );
+      setErrorMessage(result.message || 'Credenciais inválidas. Verifique seu e-mail e senha.');
     }
   };
 
@@ -286,72 +271,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       customerTier
     );
     onClose();
-  };
-
-  const handleRegisterCommercial = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
-
-    if (
-      !commercialName.trim() ||
-      !commercialEmail.trim() ||
-      !commercialPassword.trim()
-    ) {
-      setErrorMessage('Preencha nome, e-mail e senha.');
-      return;
-    }
-
-    if (!commercialCpf.trim()) {
-      setErrorMessage('O CPF ? obrigat?rio.');
-      return;
-    }
-
-    if (!commercialIdDocument.trim()) {
-      setErrorMessage('O Documento de Identidade (RG / CNH) ? obrigat?rio.');
-      return;
-    }
-
-    if (commercialPassword.length < 6) {
-      setErrorMessage('A senha deve ter pelo menos 6 caracteres.');
-      return;
-    }
-
-    if (commercialPassword !== commercialConfirmPassword) {
-      setErrorMessage('A confirma??o de senha n?o confere.');
-      return;
-    }
-
-    if (!commercialTermsAccepted) {
-      setErrorMessage('Voc? deve aceitar os Termos de Uso e Pol?tica de Privacidade.');
-      return;
-    }
-
-    const role =
-      tab === 'register-representative'
-        ? 'REPRESENTANTE_COMERCIAL'
-        : 'VENDEDOR';
-
-    try {
-      await registerCommercialUser(
-        {
-          name: commercialName.trim(),
-          email: commercialEmail.trim(),
-          phone: commercialPhone.trim(),
-          cpf: commercialCpf.trim(),
-          idDocument: commercialIdDocument.trim(),
-          city: currentCity
-        },
-        commercialPassword,
-        role
-      );
-
-      onClose();
-    } catch (error: any) {
-      setErrorMessage(
-        error?.message || 'N?o foi poss?vel concluir o cadastro.'
-      );
-    }
   };
 
   const handleRegisterMerchant = (e: React.FormEvent) => {
@@ -589,38 +508,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <Store className="w-3.5 h-3.5 text-emerald-600" />
             <span>Quero Vender</span>
           </button>
-
-          <button
-            onClick={() => {
-              setTab('register-seller');
-              setErrorMessage(null);
-              setSuccessMessage(null);
-            }}
-            className={`flex-1 py-3 px-3 text-center border-b-2 whitespace-nowrap transition-all flex items-center justify-center space-x-1.5 ${
-              tab === 'register-seller'
-                ? 'border-violet-600 text-violet-700 bg-white font-bold'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <Briefcase className="w-3.5 h-3.5 text-violet-600" />
-            <span>Vendedor</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setTab('register-representative');
-              setErrorMessage(null);
-              setSuccessMessage(null);
-            }}
-            className={`flex-1 py-3 px-3 text-center border-b-2 whitespace-nowrap transition-all flex items-center justify-center space-x-1.5 ${
-              tab === 'register-representative'
-                ? 'border-amber-600 text-amber-700 bg-white font-bold'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <Briefcase className="w-3.5 h-3.5 text-amber-600" />
-            <span>Representante</span>
-          </button>
         </div>
 
         {/* Body Content com Rolagem Suave */}
@@ -752,6 +639,60 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <span className="font-bold text-slate-800">Segurança de Acesso Exclusivo:</span> Contas de Vendedores e Administradores possuem confirmação em 2 etapas (2FA) e isolamento rigoroso de permissões.
                 </div>
               </div>
+
+              {/* Atalhos Rápidos de Acesso */}
+              <div className="space-y-1.5">
+                <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
+                  Preencher dados de teste rápido:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginEmail('telecom.david@gmail.com');
+                      setLoginPassword('telecom2026!');
+                    }}
+                    className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-left transition-colors"
+                  >
+                    <div className="flex items-center space-x-1.5 text-blue-900 font-bold text-xs">
+                      <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <span>Admin Master</span>
+                    </div>
+                    <div className="text-[10px] text-blue-700 truncate">David Telecom</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginEmail('carlos.comercial@acheiaqui.com.br');
+                      setLoginPassword('123456');
+                    }}
+                    className="p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-left transition-colors"
+                  >
+                    <div className="flex items-center space-x-1.5 text-indigo-900 font-bold text-xs">
+                      <Briefcase className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                      <span>Vendedor</span>
+                    </div>
+                    <div className="text-[10px] text-indigo-700 truncate">Carlos Eduardo</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginEmail('carlos@boutiquedasflores.com.br');
+                      setLoginPassword('123456');
+                    }}
+                    className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-left transition-colors"
+                  >
+                    <div className="flex items-center space-x-1.5 text-emerald-900 font-bold text-xs">
+                      <Store className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Lojista</span>
+                    </div>
+                    <div className="text-[10px] text-emerald-700 truncate">Boutique das Flores</div>
+                  </button>
+                </div>
+              </div>
+
               {/* Formulário de Login */}
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
@@ -1138,143 +1079,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
 
           {/* TAB 3: CADASTRO DE LOJISTA / PRESTADOR DE SERVIÇOS */}
-          {(tab === 'register-seller' || tab === 'register-representative') && (
-            <form onSubmit={handleRegisterCommercial} className="space-y-4">
-              <div>
-                <h4 className="text-lg font-bold text-slate-900 tracking-tight">
-                  {tab === 'register-representative'
-                    ? 'Cadastro de Representante Comercial'
-                    : 'Cadastro de Vendedor'}
-                </h4>
-
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Crie sua conta profissional para atuar no Achei Aqui.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Nome Completo *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={commercialName}
-                    onChange={(e) => setCommercialName(e.target.value)}
-                    placeholder="Nome completo"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    E-mail *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={commercialEmail}
-                    onChange={(e) => setCommercialEmail(e.target.value)}
-                    placeholder="seu@email.com"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Telefone
-                  </label>
-                  <input
-                    type="tel"
-                    value={commercialPhone}
-                    onChange={(e) => setCommercialPhone(e.target.value)}
-                    placeholder="(21) 99999-9999"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    CPF *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={commercialCpf}
-                    onChange={(e) => setCommercialCpf(e.target.value)}
-                    placeholder="CPF"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    RG / CNH *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={commercialIdDocument}
-                    onChange={(e) => setCommercialIdDocument(e.target.value)}
-                    placeholder="Documento de identidade"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha *
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    value={commercialPassword}
-                    onChange={(e) => setCommercialPassword(e.target.value)}
-                    placeholder="M?nimo 6 caracteres"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Confirmar Senha *
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    value={commercialConfirmPassword}
-                    onChange={(e) => setCommercialConfirmPassword(e.target.value)}
-                    placeholder="Repita a senha"
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
-                  />
-                </div>
-              </div>
-
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={commercialTermsAccepted}
-                  onChange={(e) => setCommercialTermsAccepted(e.target.checked)}
-                  className="mt-0.5"
-                />
-                <span className="text-xs text-slate-600">
-                  Concordo com os Termos de Uso e Pol?tica de Privacidade do Achei Aqui.
-                </span>
-              </label>
-
-              <button
-                type="submit"
-                className="w-full py-3 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors"
-              >
-                {tab === 'register-representative'
-                  ? 'Criar Conta de Representante'
-                  : 'Criar Conta de Vendedor'}
-              </button>
-            </form>
-          )}
-
           {tab === 'register-merchant' && (
             <form onSubmit={handleRegisterMerchant} className="space-y-4">
               <div>

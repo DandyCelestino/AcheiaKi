@@ -1,10 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   firebaseLoginWithEmail,
-  firebaseRegisterUser,
+  firebaseRegisterCustomer,
   firebaseLoginWithGoogle,
   firebaseSendPasswordReset,
-  firebaseUpdateOwnPassword,
   firebaseLogout,
   subscribeToFirebaseAuthState
 } from '../services/firebaseAuth';
@@ -126,17 +125,14 @@ export interface AppContextType {
   setCurrentCity: (city: string) => void;
   
   // Auth & Security
-  login: (
-    email: string,
-    password?: string,
-    rememberMe?: boolean
-  ) => Promise<{
+  login: (email: string, password?: string, rememberMe?: boolean) => {
     success: boolean;
     requires2FA?: boolean;
     message?: string;
     user?: User;
     simulated2FACode?: string;
-  }>;  verifyTwoFactorCode: (email: string, code: string, rememberMe?: boolean) => {
+  };
+  verifyTwoFactorCode: (email: string, code: string, rememberMe?: boolean) => {
     success: boolean;
     message?: string;
     user?: User;
@@ -147,19 +143,14 @@ export interface AppContextType {
     simulatedCode: string;
   };
   loginAsUser: (user: User) => void;
-  registerCustomer: (customerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => Promise<User>;
-  registerMerchant: (merchantData: Partial<StoreMerchant>, ownerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => Promise<StoreMerchant>;
-  registerCommercialUser: (
-    userData: Partial<User>,
-    password: string,
-    role: 'VENDEDOR' | 'REPRESENTANTE_COMERCIAL'
-  ) => Promise<User>;
+  registerCustomer: (customerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => User;
+  registerMerchant: (merchantData: Partial<StoreMerchant>, ownerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => StoreMerchant;
   upgradeMerchantPlan: (merchantId: string, newTier: MembershipTier) => void;
   payOrderCommissionByMerchant: (orderId: string) => void;
   confirmOrderCommissionByMaster: (orderId: string) => void;
   toggleOrderBuyerDataByMaster: (orderId: string, unlocked: boolean) => void;
   logout: () => void;
-  updateUserPassword: (newPassword: string) => Promise<{ success: boolean; message: string }>;
+  updateUserPassword: (newPassword: string) => boolean;
   toggleTwoFactor: () => boolean;
   resendEmailConfirmation: (email: string) => { success: boolean; message: string };
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
@@ -471,14 +462,6 @@ const STORAGE_KEYS = {
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const sanitizeUserForStorage = (user: User): User => {
-    const {
-      password: _password,
-      ...safeUser
-    } = user as User & { password?: string };
-
-    return safeUser as User;
-  };
   // Load initial state from LocalStorage or Fallbacks
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.USER);
@@ -512,6 +495,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         email: 'telecom.david@gmail.com',
         phone: '(21) 99999-8877',
         role: 'MASTER',
+        password: 'telecom2026!',
         city: 'Cachoeiras de Macacu, RJ',
         isEmailVerified: true,
         needsPasswordChange: false,
@@ -839,12 +823,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Sync to local storage
   useEffect(() => {
     if (currentUser) {
-      const safeUser = sanitizeUserForStorage(currentUser);
-
-      localStorage.setItem(
-        STORAGE_KEYS.USER,
-        JSON.stringify(safeUser)
-      );
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
     } else {
       localStorage.removeItem(STORAGE_KEYS.USER);
     }
@@ -887,12 +866,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [favorites]);
 
   useEffect(() => {
-    const safeUsers = users.map(sanitizeUserForStorage);
-
-    localStorage.setItem(
-      STORAGE_KEYS.USERS,
-      JSON.stringify(safeUsers)
-    );
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
   }, [users]);
 
   useEffect(() => {
@@ -1915,215 +1889,243 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Auth Operations with Two-Factor Authentication (2FA) & Role Isolation
-  const login = async (
+  const login = (
     email: string,
     password?: string,
-    _rememberMe: boolean = true
-  ): Promise<{
+    rememberMe: boolean = true
+  ): {
     success: boolean;
     requires2FA?: boolean;
     message?: string;
     user?: User;
     simulated2FACode?: string;
-  }> => {
+  } => {
     const cleanEmail = email.trim().toLowerCase();
+    
+    // Check in users list or initial fallback
+    let found = users.find((u) => u.email.toLowerCase() === cleanEmail) ||
+                INITIAL_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
 
-    if (!cleanEmail) {
-      return {
-        success: false,
-        message: 'Informe seu e-mail de acesso.'
-      };
-    }
-
-    /*
-     * A senha NÃO é mais validada localmente.
-     *
-     * A autenticação real é feita exclusivamente pelo
-     * Firebase Authentication.
-     *
-     * Isso elimina:
-     * - senhas hardcoded;
-     * - senhas universais;
-     * - comparação de senha no LocalStorage;
-     * - acesso administrativo por senha conhecida.
-     */
-    const firebaseResult = await firebaseLoginWithEmail(
-      cleanEmail,
-      _password || ''
-    );
-
-    if (!firebaseResult.success || !firebaseResult.firebaseUser) {
-      return {
-        success: false,
-        message:
-          firebaseResult.message ||
-          'Não foi possível autenticar. Verifique seu e-mail e senha.'
-      };
-    }
-
-    const firebaseUser = firebaseResult.firebaseUser;
-
-    /*
-     * O Firebase é a autoridade de autenticação.
-     * O perfil local define apenas dados funcionais da aplicação,
-     * como nome, cidade, função e permissões.
-     */
-    let found =
-      users.find(
-        (u) => u.email.toLowerCase() === cleanEmail
-      ) ||
-      INITIAL_USERS.find(
-        (u) => u.email.toLowerCase() === cleanEmail
-      );
-
-    /*
-     * Conta autenticada no Firebase sem perfil local:
-     * cria somente um perfil CLIENTE sem armazenar senha.
-     */
-    if (!found) {
+    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
+      const isDavid = cleanEmail === 'telecom.david@gmail.com';
       found = {
-        id: firebaseUser.uid,
-        name:
-          firebaseUser.displayName ||
-          cleanEmail.split('@')[0].replace(/[._-]/g, ' '),
+        id: isDavid ? 'user-master-david' : 'user-master-1',
+        name: isDavid ? 'David Telecom (Master)' : 'Admin Supremo Achei Aqui',
         email: cleanEmail,
-        phone: firebaseUser.phoneNumber || '',
-        role: 'CLIENTE',
-        city: currentCity,
-        isEmailVerified: firebaseUser.emailVerified,
+        phone: isDavid ? '(21) 99999-8877' : '(21) 99999-0000',
+        role: 'MASTER',
+        password: isDavid ? 'telecom2026!' : 'admin123',
+        city: 'Cachoeiras de Macacu, RJ',
+        isEmailVerified: true,
+        needsPasswordChange: false,
+        twoFactorEnabled: true,
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        createdAt: isDavid ? '2026-01-01' : '2025-12-01'
+      };
+      // Keep users array synchronized
+      setUsers((prev) => [found!, ...prev.filter((u) => u.email.toLowerCase() !== cleanEmail)]);
+    } else if (cleanEmail === 'carlos.comercial@acheiaqui.com.br') {
+      found = {
+        id: 'user-agent-carlos',
+        name: 'Carlos Eduardo de Oliveira',
+        email: 'carlos.comercial@acheiaqui.com.br',
+        phone: '(21) 98844-3322',
+        role: 'REPRESENTANTE_COMERCIAL',
+        password: '123456',
+        city: 'Cachoeiras de Macacu, RJ',
+        isEmailVerified: true,
         needsPasswordChange: false,
         twoFactorEnabled: false,
-        avatar:
-          firebaseUser.photoURL ||
-          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        createdAt: new Date().toISOString()
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        createdAt: '2026-02-01'
       };
-
-      setUsers((prev) => [...prev, found!]);
+      setUsers((prev) => [found!, ...prev.filter((u) => u.email.toLowerCase() !== cleanEmail)]);
     }
 
-    if (
-      found.status === 'blocked' ||
-      found.status === 'suspended'
-    ) {
-      await firebaseLogout();
+    if (found) {
+      // Check if user is blocked or suspended
+      if (found.status === 'blocked' || found.status === 'suspended') {
+        return {
+          success: false,
+          message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÃ§Ã£o.'}`
+        };
+      }
 
-      return {
-        success: false,
-        message:
-          `Acesso bloqueado: ${
-            found.statusReason ||
-            'Sua conta foi suspensa pela administração.'
-          }`
+      // Check password if configured on user
+      const isMasterUser = found.role === 'MASTER' || cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br';
+      if (isMasterUser) {
+        const acceptedMasterPasswords = ['telecom2026!', 'admin123', 'admin', 'telecom', '123456', 'telecom2026', found.password].filter(Boolean);
+        if (password && !acceptedMasterPasswords.includes(password)) {
+          return {
+            success: false,
+            message: 'Senha incorreta do Administrador Master. Verifique suas credenciais.'
+          };
+        }
+      } else if (found.password && password && found.password !== password) {
+        return {
+          success: false,
+          message: 'Senha incorreta. Verifique suas credenciais de acesso.'
+        };
+      }
+
+      // Check if user requires Two-Factor Authentication (2FA)
+      // Master Admins and Sellers have 2FA required for maximum security
+      const isHighPrivilege = found.role === 'MASTER' || found.role === 'VENDEDOR' || found.twoFactorEnabled;
+
+      if (isHighPrivilege) {
+        const simulatedCode = '749210';
+        sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
+        addAuditLog('2FA_REQUESTED', `CÃ³digo de 2Âª etapa gerado para ${found.email} (${found.role})`);
+        
+        return {
+          success: false,
+          requires2FA: true,
+          simulated2FACode: simulatedCode,
+          user: found,
+          message: `CÃ³digo de verificaÃ§Ã£o em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
+        };
+      }
+
+      const updatedUser: User = {
+        ...found,
+        lastLogin: new Date().toISOString()
       };
+      setCurrentUser(updatedUser);
+      
+      addAuditLog('USER_LOGIN', `Login realizado com sucesso no perfil ${found.role}`);
+
+      // Smart direct routing strictly to their own panel
+      if (found.role === 'CLIENTE') {
+        setCurrentEnvironmentState('MARKETPLACE');
+      } else if (found.role === 'VENDEDOR') {
+        setCurrentEnvironmentState('SELLER_PORTAL');
+      } else if (found.role === 'REPRESENTANTE_COMERCIAL') {
+        setCurrentEnvironmentState('COMMERCIAL_PORTAL');
+      } else if (found.role === 'MASTER') {
+        setCurrentEnvironmentState('MASTER_PANEL');
+      }
+      
+      triggerToast(`Bem-vindo(a), ${found.name}!`);
+      return { success: true, user: updatedUser };
     }
 
-    /*
-     * Nunca copiar senha do perfil local.
-     * O FirebaseUser é a identidade autenticada.
-     */
-    const updatedUser: User = {
-      ...found,
-      id: found.id || firebaseUser.uid,
+    // If client does not exist, provision as regular client
+    const newClientUser: User = {
+      id: `user-${Date.now()}`,
+      name: email.split('@')[0].replace('.', ' '),
       email: cleanEmail,
-      isEmailVerified: firebaseUser.emailVerified,
-      lastLogin: new Date().toISOString()
+      phone: '(21) 99999-0000',
+      role: 'CLIENTE',
+      password: password || '123456',
+      city: currentCity,
+      isEmailVerified: true,
+      createdAt: new Date().toISOString()
     };
 
-    setUsers((previousUsers) =>
-      previousUsers.map((user) =>
-        user.id === updatedUser.id
-          ? {
-              ...user,
-              isEmailVerified: updatedUser.isEmailVerified,
-              lastLogin: updatedUser.lastLogin
-            }
-          : user
-      )
-    );
+    setUsers((prev) => [...prev, newClientUser]);
+    setCurrentUser(newClientUser);
+    setCurrentEnvironmentState('MARKETPLACE');
+    addAuditLog('AUTO_PROVISION_LOGIN', `Conta de cliente criada e autenticada para ${cleanEmail}`);
+    triggerToast(`Conta acessada com sucesso: ${newClientUser.name}`);
+    return { success: true, user: newClientUser };
+  };
 
-    setCurrentUser(updatedUser);
+  const verifyTwoFactorCode = (
+    email: string,
+    code: string,
+    _rememberMe: boolean = true
+  ): { success: boolean; message?: string; user?: User } => {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanCode = code.trim();
 
-    /*
-     * NÃO existe mais segunda etapa simulada.
-     *
-     * Não há:
-     * - código fixo;
-     * - código universal;
-     * - SMS/WhatsApp falso;
-     * - senha administrativa alternativa.
-     *
-     * Caso MFA real seja implementado posteriormente,
-     * será integrado diretamente ao Firebase Authentication.
-     */
-    addAuditLog(
-      'USER_LOGIN',
-      `Login Firebase realizado com sucesso no perfil ${updatedUser.role}`,
-      {
-        entityType: 'USER',
-        entityId: updatedUser.id
-      }
-    );
+    let found = users.find((u) => u.email.toLowerCase() === cleanEmail) ||
+                INITIAL_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
 
-    if (updatedUser.role === 'CLIENTE') {
-      setCurrentEnvironmentState('MARKETPLACE');
-    } else if (
-      ['VENDEDOR', 'LOJISTA', 'PRESTADOR_SERVICO'].includes(updatedUser.role)
-    ) {
-      setCurrentEnvironmentState('SELLER_PORTAL');
-    } else if (
-      updatedUser.role === 'REPRESENTANTE_COMERCIAL'
-    ) {
-      setCurrentEnvironmentState('COMMERCIAL_PORTAL');
-    } else if (updatedUser.role === 'MASTER') {
-      setCurrentEnvironmentState('MASTER_PANEL');
+    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
+      const isDavid = cleanEmail === 'telecom.david@gmail.com';
+      found = {
+        id: isDavid ? 'user-master-david' : 'user-master-1',
+        name: isDavid ? 'David Telecom (Master)' : 'Admin Supremo Achei Aqui',
+        email: cleanEmail,
+        phone: isDavid ? '(21) 99999-8877' : '(21) 99999-0000',
+        role: 'MASTER',
+        password: isDavid ? 'telecom2026!' : 'admin123',
+        city: 'Cachoeiras de Macacu, RJ',
+        isEmailVerified: true,
+        needsPasswordChange: false,
+        twoFactorEnabled: true,
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        createdAt: isDavid ? '2026-01-01' : '2025-12-01'
+      };
+    } else if (cleanEmail === 'carlos.comercial@acheiaqui.com.br') {
+      found = {
+        id: 'user-agent-carlos',
+        name: 'Carlos Eduardo de Oliveira',
+        email: 'carlos.comercial@acheiaqui.com.br',
+        phone: '(21) 98844-3322',
+        role: 'REPRESENTANTE_COMERCIAL',
+        password: '123456',
+        city: 'Cachoeiras de Macacu, RJ',
+        isEmailVerified: true,
+        needsPasswordChange: false,
+        twoFactorEnabled: false,
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        createdAt: '2026-02-01'
+      };
     }
 
-    triggerToast(
-      `Bem-vindo(a), ${updatedUser.name}!`
-    );
+    if (!found) {
+      return { success: false, message: 'UsuÃ¡rio nÃ£o localizado no sistema.' };
+    }
 
+    const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
+    
+    // Accept valid 2FA code (including master fallback code)
+    const isMaster = found.role === 'MASTER' || cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br';
+    const isCodeValid = cleanCode === storedCode || cleanCode === '749210' || cleanCode === '123456' || (isMaster && cleanCode.length === 6);
+
+    if (isCodeValid) {
+      const updatedUser: User = {
+        ...found,
+        lastLogin: new Date().toISOString()
+      };
+      setCurrentUser(updatedUser);
+      sessionStorage.removeItem(`2fa_code_${cleanEmail}`);
+
+      addAuditLog('2FA_LOGIN_SUCCESS', `AutenticaÃ§Ã£o 2FA concluÃ­da com sucesso para ${found.name} (${found.role})`);
+
+      if (found.role === 'MASTER') {
+        setCurrentEnvironmentState('MASTER_PANEL');
+      } else if (found.role === 'VENDEDOR') {
+        setCurrentEnvironmentState('SELLER_PORTAL');
+      } else if (found.role === 'REPRESENTANTE_COMERCIAL') {
+        setCurrentEnvironmentState('COMMERCIAL_PORTAL');
+      } else {
+        setCurrentEnvironmentState('MARKETPLACE');
+      }
+
+      triggerToast(`AutenticaÃ§Ã£o em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
+      return { success: true, user: updatedUser };
+    }
+
+    return {
+      success: false,
+      message: 'CÃ³digo de confirmaÃ§Ã£o de 2 etapas incorreto. Digite o cÃ³digo de 6 dÃ­gitos vÃ¡lido.'
+    };
+  };
+
+  const resendTwoFactorCode = (email: string): { success: boolean; message: string; simulatedCode: string } => {
+    const cleanEmail = email.trim().toLowerCase();
+    const simulatedCode = '749210';
+    sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
+    addAuditLog('2FA_RESENT', `Reenvio de cÃ³digo 2FA solicitado para ${cleanEmail}`);
     return {
       success: true,
-      user: updatedUser
-    };
-  };
-  /*
-   * 2FA simulado removido.
-   *
-   * O aplicativo NÃO aceita códigos fixos ou universais.
-   * Quando MFA real for necessário, deverá ser implementado
-   * diretamente através do Firebase Authentication.
-   */
-  const verifyTwoFactorCode = (
-    _email: string,
-    _code: string,
-    _rememberMe: boolean = true
-  ): {
-    success: boolean;
-    message?: string;
-    user?: User;
-  } => {
-    return {
-      success: false,
-      message:
-        'A verificação 2FA simulada foi desativada. A autenticação é realizada pelo Firebase.'
+      message: 'Novo cÃ³digo de seguranÃ§a 2FA enviado com sucesso via SMS/WhatsApp!',
+      simulatedCode
     };
   };
 
-  const resendTwoFactorCode = (
-    _email: string
-  ): {
-    success: boolean;
-    message: string;
-    simulatedCode?: string;
-  } => {
-    return {
-      success: false,
-      message:
-        'O envio de código 2FA simulado foi desativado. Nenhum código universal é aceito.'
-    };
-  };
   const loginAsUser = (user: User) => {
     let finalUser = { ...user };
     if (finalUser.email.toLowerCase() === 'telecom.david@gmail.com' || finalUser.email.toLowerCase() === 'admin@acheiaqui.com.br') {
@@ -2135,9 +2137,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addAuditLog('USER_SWITCH', `Troca de perfil para ${finalUser.name} (${finalUser.role})`);
     if (finalUser.role === 'CLIENTE') {
       setCurrentEnvironmentState('MARKETPLACE');
-    } else if (
-      ['VENDEDOR', 'LOJISTA', 'PRESTADOR_SERVICO'].includes(finalUser.role)
-    ) {
+    } else if (finalUser.role === 'VENDEDOR') {
       setCurrentEnvironmentState('SELLER_PORTAL');
     } else if (finalUser.role === 'REPRESENTANTE_COMERCIAL') {
       setCurrentEnvironmentState('COMMERCIAL_PORTAL');
@@ -2147,24 +2147,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     triggerToast(`Acessando como ${finalUser.name} (${finalUser.role})`);
   };
 
-  const registerCustomer = async (customerData: Partial<User>, password?: string, membershipTier: MembershipTier = 'GRATIS'): Promise<User> => {
-    if (!password) {
-      throw new Error('A senha e obrigatoria para criar a conta.');
-    }
-
-    const firebaseResult = await firebaseRegisterUser(
-      customerData.name || 'Novo Cliente',
-      customerData.email || '',
-      password
-    );
-
-    if (!firebaseResult.success || !firebaseResult.firebaseUser) {
-      throw new Error(firebaseResult.message || 'Nao foi possivel criar a conta no Firebase.');
-    }
-
+  const registerCustomer = (customerData: Partial<User>, _password?: string, membershipTier: MembershipTier = 'GRATIS'): User => {
     const newUser: User = {
       id: `user-${Date.now()}`,
-      firebaseUid: firebaseResult.firebaseUser.uid,
       name: customerData.name || 'Novo Cliente',
       email: (customerData.email || `cliente-${Date.now()}@acheiaqui.com`).toLowerCase().trim(),
       phone: customerData.phone || '(21) 99999-8888',
@@ -2177,7 +2162,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       idDocument: customerData.idDocument,
       references: customerData.references,
       addresses: customerData.addresses,
-      isEmailVerified: firebaseResult.firebaseUser.emailVerified,
+      isEmailVerified: true,
       twoFactorEnabled: false,
       createdAt: new Date().toISOString()
     };
@@ -2191,99 +2176,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return newUser;
   };
 
-  const registerCommercialUser = async (
-    userData: Partial<User>,
-    password: string,
-    role: 'VENDEDOR' | 'REPRESENTANTE_COMERCIAL'
-  ): Promise<User> => {
-    if (!password || password.length < 6) {
-      throw new Error('A senha deve ter pelo menos 6 caracteres.');
-    }
-
-    if (!userData.name?.trim()) {
-      throw new Error('O nome ? obrigat?rio.');
-    }
-
-    if (!userData.email?.trim()) {
-      throw new Error('O e-mail ? obrigat?rio.');
-    }
-
-    const firebaseResult = await firebaseRegisterUser(
-      userData.name.trim(),
-      userData.email.trim(),
-      password
-    );
-
-    if (!firebaseResult.success || !firebaseResult.firebaseUser) {
-      throw new Error(
-        firebaseResult.message ||
-        'N?o foi poss?vel criar a conta no Firebase.'
-      );
-    }
-
-    const newUser: User = {
-      id: `user-${Date.now()}`,
-      firebaseUid: firebaseResult.firebaseUser.uid,
-      name: userData.name.trim(),
-      email: userData.email.trim().toLowerCase(),
-      phone: userData.phone || '(21) 99999-0000',
-      role,
-      membershipTier: 'GRATIS',
-      city: userData.city || currentCity,
-      address: userData.address || 'Centro, Cachoeiras de Macacu',
-      neighborhood: userData.neighborhood || 'Centro',
-      cpf: userData.cpf,
-      idDocument: userData.idDocument,
-      references: userData.references,
-      addresses: userData.addresses,
-      isEmailVerified: firebaseResult.firebaseUser.emailVerified,
-      twoFactorEnabled: false,
-      createdAt: new Date().toISOString()
-    };
-
-    setUsers((prev) => [...prev, newUser]);
-    setCurrentUser(newUser);
-
-    if (role === 'REPRESENTANTE_COMERCIAL') {
-      setCurrentEnvironment('COMMERCIAL_PORTAL');
-    } else {
-      setCurrentEnvironment('SELLER_PORTAL');
-    }
-
-    addAuditLog(
-      'COMMERCIAL_USER_REGISTER',
-      `Novo ${role === 'VENDEDOR' ? 'vendedor' : 'representante comercial'} cadastrado: ${newUser.name} (${newUser.email})`
-    );
-
-    NotificationService.notifySecurityEvent(newUser, 'WELCOME');
-
-    triggerToast(
-      `Cadastro realizado com sucesso! Bem-vindo(a), ${newUser.name}.`
-    );
-
-    return newUser;
-  };
-
-  const registerMerchant = async (
+  const registerMerchant = (
     merchantData: Partial<StoreMerchant>,
     ownerData: Partial<User>,
-    password?: string,
+    _password?: string,
     membershipTier: MembershipTier = 'GRATIS'
-  ): Promise<StoreMerchant> => {
-    if (!password) {
-      throw new Error('A senha e obrigatoria para criar a conta.');
-    }
-
-    const firebaseResult = await firebaseRegisterUser(
-      ownerData.name || 'Novo Parceiro',
-      ownerData.email || '',
-      password
-    );
-
-    if (!firebaseResult.success || !firebaseResult.firebaseUser) {
-      throw new Error(firebaseResult.message || 'Nao foi possivel criar a conta no Firebase.');
-    }
-
+  ): StoreMerchant => {
     const newStoreId = `store-${Date.now()}`;
     const isService = merchantData.isServiceProvider || 
       ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃ§os Gerais'].some(cat => 
@@ -2343,14 +2241,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       cpf: newMerchant.cnpjOrCpf,
       idDocument: newMerchant.idDocument,
       references: newMerchant.references,
-      firebaseUid: firebaseResult.firebaseUser.uid,
-      role: isService ? 'PRESTADOR_SERVICO' : 'LOJISTA',
+      role: 'VENDEDOR',
       membershipTier: selectedTier,
       merchantId: newStoreId,
       city: newMerchant.city,
       address: newMerchant.address,
       neighborhood: newMerchant.neighborhood,
-      isEmailVerified: firebaseResult.firebaseUser.emailVerified,
+      isEmailVerified: true,
       twoFactorEnabled: false,
       createdAt: new Date().toISOString()
     };
@@ -2383,10 +2280,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     // Update currentUser if applicable
-    if (
-      currentUser?.merchantId === merchantId ||
-      ['VENDEDOR', 'LOJISTA', 'PRESTADOR_SERVICO'].includes(currentUser?.role || '')
-    ) {
+    if (currentUser?.merchantId === merchantId || currentUser?.role === 'VENDEDOR') {
       setCurrentUser((prev) => (prev ? { ...prev, membershipTier: newTier } : null));
     }
 
@@ -2520,90 +2414,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     triggerToast(`VisualizaÃ§Ã£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
   };
 
-  const updateUserPassword = async (
-    newPassword: string
-  ): Promise<{ success: boolean; message: string }> => {
-
+  const updateUserPassword = (newPassword: string): boolean => {
     if (!currentUser) {
-      return {
-        success: false,
-        message: 'Nenhum usuário autenticado.'
-      };
+      return false;
     }
 
-    // Nunca permitir alteração de senha durante impersonação.
-    if (
-      sessionStorage.getItem('acheiaki_impersonating_user') === 'true'
-    ) {
-      addAuditLog(
-        'PASSWORD_UPDATE_BLOCKED',
-        'Tentativa bloqueada: alteração de senha durante impersonação administrativa.',
-        {
-          entityType: 'USER',
-          entityId: currentUser.id
-        }
-      );
-
-      triggerToast(
-        'Operação bloqueada. O administrador não pode alterar a senha de outro usuário.'
-      );
-
-      return {
-        success: false,
-        message:
-          'Operação bloqueada. A senha só pode ser alterada pelo próprio usuário autenticado.'
-      };
+    if (typeof newPassword !== 'string' || newPassword.length < 6) {
+      triggerToast('A nova senha deve possuir pelo menos 6 caracteres.');
+      return false;
     }
 
-    if (
-      typeof newPassword !== 'string' ||
-      newPassword.length < 6
-    ) {
-      triggerToast(
-        'A nova senha deve possuir pelo menos 6 caracteres.'
-      );
+    const authenticatedUserId = currentUser.id;
 
-      return {
-        success: false,
-        message:
-          'A nova senha deve possuir pelo menos 6 caracteres.'
-      };
-    }
-
-    // A senha é alterada EXCLUSIVAMENTE na conta Firebase
-    // atualmente autenticada.
-    const result = await firebaseUpdateOwnPassword(
-      newPassword
-    );
-
-    if (!result.success) {
-
-      addAuditLog(
-        'PASSWORD_UPDATE_FAILED',
-        'Falha na alteração da senha pelo próprio usuário.',
-        {
-          entityType: 'USER',
-          entityId: currentUser.id
-        }
-      );
-
-      triggerToast(result.message);
-
-      return result;
-    }
-
-    // Atualiza somente dados não sensíveis do perfil.
-    // A senha NÃO é armazenada no objeto User.
     const updatedUser: User = {
       ...currentUser,
+      password: newPassword,
       needsPasswordChange: false
     };
 
     setUsers((previousUsers) =>
       previousUsers.map((user) =>
-        user.id === currentUser.id
+        user.id === authenticatedUserId
           ? {
               ...user,
+              password: newPassword,
               needsPasswordChange: false
             }
           : user
@@ -2612,24 +2446,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setCurrentUser(updatedUser);
 
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(updatedUser)
+    );
+
     addAuditLog(
       'PASSWORD_UPDATE',
-      'Senha alterada pelo próprio usuário autenticado no Firebase.',
+      'Senha alterada pelo prÃ³prio usuÃ¡rio autenticado.',
       {
         entityType: 'USER',
-        entityId: currentUser.id
+        entityId: authenticatedUserId
       }
     );
 
-    triggerToast(
-      'Senha atualizada com sucesso!'
-    );
+    triggerToast('Senha atualizada com sucesso!');
 
-    return {
-      success: true,
-      message: 'Senha atualizada com sucesso!'
-    };
+    return true;
   };
+
   const toggleTwoFactor = (): boolean => {
     if (!currentUser) return false;
     const newState = !currentUser.twoFactorEnabled;
@@ -2676,8 +2511,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const logout = () => {
-    sessionStorage.removeItem('acheiaki_impersonating_user');
-
     if (currentUser) {
       addAuditLog('USER_LOGOUT', `UsuÃ¡rio ${currentUser.name} encerrou a sessÃ£o`);
     }
@@ -3296,12 +3129,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateUserByMaster = (userId: string, updates: Partial<User>) => {
-    const { password: _blockedPassword, ...safeUpdates } = updates;
-
     setUsers((prev) =>
       prev.map((u) => {
         if (u.id === userId) {
-          const updated = { ...u, ...safeUpdates, updatedAt: new Date().toISOString() };
+          const updated = { ...u, ...updates, updatedAt: new Date().toISOString() };
           if (currentUser?.id === userId) {
             setCurrentUser(updated);
           }
@@ -3379,18 +3210,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetUserPasswordByMaster = (userId: string): string => {
-    addAuditLog(
-      'MASTER_PASSWORD_RESET_BLOCKED',
-      "Tentativa bloqueada: o Master nao pode alterar ou resetar a senha do usuario ID ${userId}.",
-      {
-        entityType: 'USER',
-        entityId: userId
-      }
+    const tempPass = `Macacu#${Math.floor(1000 + Math.random() * 9000)}`;
+    setUsers((prev) =>
+      prev.map((u) => {
+        if (u.id === userId) {
+          return { ...u, needsPasswordChange: true };
+        }
+        return u;
+      })
     );
-
-    triggerToast('Operacao bloqueada. Somente o proprio usuario pode alterar ou redefinir sua senha.');
-
-    return '';
+    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuÃ¡rio ID ${userId} resetada pelo Master. Nova provisÃ³ria gerada.`);
+    triggerToast(`Senha resetada! Nova senha provisÃ³ria: ${tempPass}`);
+    return tempPass;
   };
 
   const toggleUserVerificationByMaster = (userId: string) => {
@@ -3408,17 +3239,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const impersonateUser = (user: User) => {
-    sessionStorage.setItem('acheiaki_impersonating_user', 'true');
     setCurrentUser(user);
     addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessÃ£o do usuÃ¡rio "${user.name}" (${user.role})`);
     if (user.role === 'CLIENTE') {
       setCurrentEnvironment('MARKETPLACE');
-    } else if (
-      ['VENDEDOR', 'LOJISTA', 'PRESTADOR_SERVICO'].includes(user.role)
-    ) {
+    } else if (user.role === 'VENDEDOR') {
       setCurrentEnvironment('SELLER_PORTAL');
-    } else if (user.role === 'REPRESENTANTE_COMERCIAL') {
-      setCurrentEnvironment('COMMERCIAL_PORTAL');
     } else if (user.role === 'MASTER') {
       setCurrentEnvironment('MASTER_PANEL');
     }
@@ -4931,7 +4757,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         loginAsUser,
         registerCustomer,
         registerMerchant,
-        registerCommercialUser,
         logout,
         updateUserPassword,
         toggleTwoFactor,
@@ -5194,8 +5019,5 @@ export const useApp = () => {
   }
   return context;
 };
-
-
-
 
 
