@@ -1949,7 +1949,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
      */
     const firebaseResult = await firebaseLoginWithEmail(
       cleanEmail,
-      _password || ''
+      password || ''
     );
 
     if (!firebaseResult.success || !firebaseResult.firebaseUser) {
@@ -5194,8 +5194,3 @@ export const useApp = () => {
   }
   return context;
 };
-
-
-
-
-
