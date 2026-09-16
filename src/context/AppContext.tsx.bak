@@ -149,11 +149,6 @@ export interface AppContextType {
   loginAsUser: (user: User) => void;
   registerCustomer: (customerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => Promise<User>;
   registerMerchant: (merchantData: Partial<StoreMerchant>, ownerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => Promise<StoreMerchant>;
-  registerCommercialUser: (
-    userData: Partial<User>,
-    password: string,
-    role: 'VENDEDOR' | 'REPRESENTANTE_COMERCIAL'
-  ) => Promise<User>;
   upgradeMerchantPlan: (merchantId: string, newTier: MembershipTier) => void;
   payOrderCommissionByMerchant: (orderId: string) => void;
   confirmOrderCommissionByMaster: (orderId: string) => void;
@@ -2188,79 +2183,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addAuditLog('CUSTOMER_REGISTER', `Novo cliente cadastrado: ${newUser.name} (${newUser.email}) - Modalidade: ${newUser.membershipTier}`);
     NotificationService.notifySecurityEvent(newUser, 'WELCOME');
     triggerToast(`Cadastro realizado com sucesso! Bem-vindo(a) ao Achei Aqui no plano ${newUser.membershipTier}.`);
-    return newUser;
-  };
-
-  const registerCommercialUser = async (
-    userData: Partial<User>,
-    password: string,
-    role: 'VENDEDOR' | 'REPRESENTANTE_COMERCIAL'
-  ): Promise<User> => {
-    if (!password || password.length < 6) {
-      throw new Error('A senha deve ter pelo menos 6 caracteres.');
-    }
-
-    if (!userData.name?.trim()) {
-      throw new Error('O nome ? obrigat?rio.');
-    }
-
-    if (!userData.email?.trim()) {
-      throw new Error('O e-mail ? obrigat?rio.');
-    }
-
-    const firebaseResult = await firebaseRegisterUser(
-      userData.name.trim(),
-      userData.email.trim(),
-      password
-    );
-
-    if (!firebaseResult.success || !firebaseResult.firebaseUser) {
-      throw new Error(
-        firebaseResult.message ||
-        'N?o foi poss?vel criar a conta no Firebase.'
-      );
-    }
-
-    const newUser: User = {
-      id: `user-${Date.now()}`,
-      firebaseUid: firebaseResult.firebaseUser.uid,
-      name: userData.name.trim(),
-      email: userData.email.trim().toLowerCase(),
-      phone: userData.phone || '(21) 99999-0000',
-      role,
-      membershipTier: 'GRATIS',
-      city: userData.city || currentCity,
-      address: userData.address || 'Centro, Cachoeiras de Macacu',
-      neighborhood: userData.neighborhood || 'Centro',
-      cpf: userData.cpf,
-      idDocument: userData.idDocument,
-      references: userData.references,
-      addresses: userData.addresses,
-      isEmailVerified: firebaseResult.firebaseUser.emailVerified,
-      twoFactorEnabled: false,
-      createdAt: new Date().toISOString()
-    };
-
-    setUsers((prev) => [...prev, newUser]);
-    setCurrentUser(newUser);
-
-    if (role === 'REPRESENTANTE_COMERCIAL') {
-      setCurrentEnvironment('COMMERCIAL_PORTAL');
-    } else {
-      setCurrentEnvironment('SELLER_PORTAL');
-    }
-
-    addAuditLog(
-      'COMMERCIAL_USER_REGISTER',
-      `Novo ${role === 'VENDEDOR' ? 'vendedor' : 'representante comercial'} cadastrado: ${newUser.name} (${newUser.email})`
-    );
-
-    NotificationService.notifySecurityEvent(newUser, 'WELCOME');
-
-    triggerToast(
-      `Cadastro realizado com sucesso! Bem-vindo(a), ${newUser.name}.`
-    );
-
     return newUser;
   };
 
@@ -4931,7 +4853,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         loginAsUser,
         registerCustomer,
         registerMerchant,
-        registerCommercialUser,
         logout,
         updateUserPassword,
         toggleTwoFactor,

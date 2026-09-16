@@ -1,21 +1,20 @@
 ﻿import { createClient } from '@supabase/supabase-js';
 
-const defaultSupabaseUrl = 'https://xootmi7yjqr7.supabase.co';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-const supabaseUrl =
-  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_URL) ||
-  defaultSupabaseUrl;
+if (!supabaseUrl) {
+  throw new Error(
+    '[Supabase] VITE_SUPABASE_URL não está definida no arquivo .env'
+  );
+}
 
-const supabaseAnonKey =
-  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_PUBLISHABLE_KEY) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_ANON_KEY) ||
-  '';
+if (!supabaseKey) {
+  throw new Error(
+    '[Supabase] VITE_SUPABASE_PUBLISHABLE_KEY ou VITE_SUPABASE_ANON_KEY não está definida no arquivo .env'
+  );
+}
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true
-  }
-});
+export const supabase = createClient(supabaseUrl, supabaseKey);
