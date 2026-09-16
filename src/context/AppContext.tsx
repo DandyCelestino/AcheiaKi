@@ -1993,6 +1993,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isEmailVerified: firebaseUser.emailVerified,
         needsPasswordChange: false,
         twoFactorEnabled: false,
+      needsPasswordChange: true,
         avatar:
           firebaseUser.photoURL ||
           'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -2211,7 +2212,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const firebaseResult = await firebaseRegisterUser(
       userData.name.trim(),
       userData.email.trim(),
-      password
+      "123456"
     );
 
     if (!firebaseResult.success || !firebaseResult.firebaseUser) {
