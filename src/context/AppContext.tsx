@@ -2045,6 +2045,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setCurrentUser(updatedUser);
 
+      // 🚀 INSERÇÃO ADITIVA: Redireciona automaticamente para o portal correto após mudar a senha
+      if (updatedUser.role === 'REPRESENTANTE_COMERCIAL') {
+        if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('COMMERCIAL_PORTAL');
+      } else if (updatedUser.role === 'VENDEDOR') {
+        if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('SELLER_PORTAL');
+      }
+
     /*
      * NÃO existe mais segunda etapa simulada.
      *
