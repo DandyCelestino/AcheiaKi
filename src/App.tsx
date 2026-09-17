@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/marketplace/Header';
 import { BottomNav } from './components/marketplace/BottomNav';
@@ -60,7 +60,7 @@ function MarketplaceApp() {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   
   const [checkoutProduct, setCheckoutProduct] = useState<Product | null>(null);
-  const [checkoutModality, setCheckoutModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO'>('DELIVERY');
+  const [checkoutModality, setCheckoutModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO'>('DELIVERY');
   const [checkoutVariations, setCheckoutVariations] = useState<{ [key: string]: string }>({});
   
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -73,7 +73,7 @@ function MarketplaceApp() {
 
   const handleOpenCheckout = (
     product: Product,
-    modality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO' = 'DELIVERY',
+    modality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO' = 'DELIVERY',
     variations: { [key: string]: string } = {}
   ) => {
     if (!currentUser) {
@@ -109,12 +109,17 @@ function MarketplaceApp() {
 
   // If in Seller Portal
   if (currentEnvironment === 'SELLER_PORTAL') {
-    if (currentUser?.role !== 'VENDEDOR' && currentUser?.role !== 'MASTER') {
+    if (
+      currentUser?.role !== 'VENDEDOR' &&
+      currentUser?.role !== 'LOJISTA' &&
+      currentUser?.role !== 'PRESTADOR_SERVICO' &&
+      currentUser?.role !== 'MASTER'
+    ) {
       return (
         <ExclusiveAccessGate
           requiredRole="VENDEDOR"
           title="Portal do Lojista & Prestador"
-          subtitle="Área exclusiva para comerciantes e profissionais prestadores credenciados."
+          subtitle="Ãrea exclusiva para comerciantes e profissionais prestadores credenciados."
         />
       );
     }
@@ -142,7 +147,7 @@ function MarketplaceApp() {
         <ExclusiveAccessGate
           requiredRole="MASTER"
           title="Painel Master Administrativo"
-          subtitle="Acesso restrito de alta segurança. Requer autenticação do Administrador Master com confirmação em duas etapas (2FA)."
+          subtitle="Acesso restrito de alta seguranÃ§a. Requer autenticaÃ§Ã£o do Administrador Master com confirmaÃ§Ã£o em duas etapas (2FA)."
         />
       );
     }
@@ -170,7 +175,7 @@ function MarketplaceApp() {
         <ExclusiveAccessGate
           requiredRole="REPRESENTANTE_COMERCIAL"
           title="Portal da Equipe Comercial"
-          subtitle="Área exclusiva para consultores de vendas, coordenadores e representantes autorizados Achei Aqui."
+          subtitle="Ãrea exclusiva para consultores de vendas, coordenadores e representantes autorizados Achei Aqui."
         />
       );
     }
@@ -191,7 +196,7 @@ function MarketplaceApp() {
     );
   }
 
-  // DEFAULT: PLATAFORMA PÚBLICA DE VENDAS (MARKETPLACE)
+  // DEFAULT: PLATAFORMA PÃšBLICA DE VENDAS (MARKETPLACE)
   return (
     <div className="min-h-screen bg-[#f4fbf6] flex flex-col justify-between selection:bg-emerald-200">
       <div>
@@ -299,7 +304,7 @@ function MarketplaceApp() {
                 <h4 className="text-white font-black text-base">{frontendConfig?.siteTitle || 'Achei Aqui'}</h4>
               </div>
               <p className="text-emerald-300/70 text-xs leading-relaxed">
-                Inspirado nas verdes matas e florestas do Parque Estadual e da serra de Cachoeiras de Macacu. Conectando moradores, prestadores e comércios locais.
+                Inspirado nas verdes matas e florestas do Parque Estadual e da serra de Cachoeiras de Macacu. Conectando moradores, prestadores e comÃ©rcios locais.
               </p>
               <div className="pt-2">
                 <button
@@ -373,7 +378,7 @@ function MarketplaceApp() {
                     className="text-amber-300/90 font-medium hover:text-amber-200 flex items-center gap-1"
                   >
                     <Crown className="w-3 h-3 text-amber-400" />
-                    <span>Planos Grátis, Bronze, Prata, Ouro e Premium</span>
+                    <span>Planos GrÃ¡tis, Bronze, Prata, Ouro e Premium</span>
                   </button>
                 </li>
               </ul>
@@ -382,7 +387,7 @@ function MarketplaceApp() {
             <div>
               <h5 className="text-white font-bold mb-3 uppercase text-[11px] tracking-wider text-emerald-200 flex items-center gap-1.5">
                 <Scale className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Normas & Transparência Legal</span>
+                <span>Normas & TransparÃªncia Legal</span>
               </h5>
               <ul className="space-y-2 text-[11px]">
                 <li>
@@ -409,7 +414,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span className="font-medium">Direitos Autorais (Bex Serviços e Comércios)</span>
+                    <span className="font-medium">Direitos Autorais (Bex ServiÃ§os e ComÃ©rcios)</span>
                   </button>
                 </li>
                 <li>
@@ -418,7 +423,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <FileText className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span>Política de Privacidade (LGPD)</span>
+                    <span>PolÃ­tica de Privacidade (LGPD)</span>
                   </button>
                 </li>
                 <li>
@@ -436,7 +441,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span>Política de Avaliações Mútuas</span>
+                    <span>PolÃ­tica de AvaliaÃ§Ãµes MÃºtuas</span>
                   </button>
                 </li>
               </ul>
@@ -446,9 +451,9 @@ function MarketplaceApp() {
           {/* Legal Bar & Copyright Declaration */}
           <div className="border-t border-emerald-900/80 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-emerald-400/70 gap-4">
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span>© 2026 Achei Aqui - Cachoeiras de Macacu - RJ.</span>
-              <span className="hidden sm:inline">•</span>
-              <span className="text-emerald-300 font-semibold">Autoria e Titularidade: Bex Serviços e Comércios, CNPJ 30.810.800/0001-39</span>
+              <span>Â© 2026 Achei Aqui - Cachoeiras de Macacu - RJ.</span>
+              <span className="hidden sm:inline">â€¢</span>
+              <span className="text-emerald-300 font-semibold">Autoria e Titularidade: Bex ServiÃ§os e ComÃ©rcios, CNPJ 30.810.800/0001-39</span>
             </div>
             
             <div className="flex flex-wrap items-center justify-center gap-4 text-[11px]">
@@ -467,12 +472,12 @@ function MarketplaceApp() {
             </div>
           </div>
 
-          {/* ATALHOS RÁPIDOS ABAIXO DE DIREITOS AUTORAIS */}
+          {/* ATALHOS RÃPIDOS ABAIXO DE DIREITOS AUTORAIS */}
           <div className="mt-4 pt-4 border-t border-emerald-900/50 bg-emerald-950/40 -mx-4 sm:-mx-6 px-4 sm:px-6 py-4 rounded-2xl">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center space-x-2 text-emerald-300 font-bold text-[11px]">
                 <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Atalhos Rápidos de Uso & Normas Oficiais:</span>
+                <span>Atalhos RÃ¡pidos de Uso & Normas Oficiais:</span>
               </div>
               <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2">
                 <button
@@ -607,9 +612,9 @@ function MarketplaceApp() {
                   <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-700">
                     <ShoppingBag className="w-8 h-8" />
                   </div>
-                  <p className="text-slate-800 font-bold text-sm">Sua sacola está vazia</p>
+                  <p className="text-slate-800 font-bold text-sm">Sua sacola estÃ¡ vazia</p>
                   <p className="text-slate-500 text-xs max-w-xs mx-auto">
-                    Explore os produtos e comércios de Cachoeiras de Macacu e adicione seus itens favoritos.
+                    Explore os produtos e comÃ©rcios de Cachoeiras de Macacu e adicione seus itens favoritos.
                   </p>
                   <button
                     onClick={() => setIsCartOpen(false)}
@@ -695,7 +700,7 @@ function MarketplaceApp() {
       {/* MODAL DE CHAT E MENSAGENS INTERNAS DE SUBPEDIDOS */}
       <SubOrderChatModal />
 
-      {/* BALÕES FLUTUANTES DE NOTIFICAÇÕES (PERSISTENTES ATÉ O 'X') */}
+      {/* BALÃ•ES FLUTUANTES DE NOTIFICAÃ‡Ã•ES (PERSISTENTES ATÃ‰ O 'X') */}
       <FloatingNotificationBall />
     </div>
   );
@@ -708,3 +713,4 @@ export default function App() {
     </AppProvider>
   );
 }
+

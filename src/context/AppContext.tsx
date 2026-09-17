@@ -1993,7 +1993,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isEmailVerified: firebaseUser.emailVerified,
         needsPasswordChange: false,
         twoFactorEnabled: false,
-      needsPasswordChange: true,
         avatar:
           firebaseUser.photoURL ||
           'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -2023,10 +2022,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
      * Nunca copiar senha do perfil local.
      * O FirebaseUser é a identidade autenticada.
      */
+    const resolvedMerchant =
+      (found?.merchantId
+        ? merchants.find((m) => m.id === found.merchantId)
+        : undefined) ||
+      merchants.find(
+        (m) => m.email?.toLowerCase().trim() === cleanEmail
+      ) ||
+      merchants.find(
+        (m) => m.ownerEmail?.toLowerCase().trim() === cleanEmail
+      ) ||
+      merchants.find(
+        (m) => found?.phone && m.phone === found.phone
+      ) ||
+      merchants.find(
+        (m) =>
+          found?.name &&
+          m.ownerName?.toLowerCase().trim() ===
+            found.name.toLowerCase().trim()
+      );
+
+    const resolvedMerchantId =
+      found?.merchantId || resolvedMerchant?.id;
+
     const updatedUser: User = {
       ...found,
       id: found.id || firebaseUser.uid,
       email: cleanEmail,
+      merchantId: resolvedMerchantId,
       isEmailVerified: firebaseUser.emailVerified,
       lastLogin: new Date().toISOString()
     };
@@ -2044,15 +2067,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     setCurrentUser(updatedUser);
-
-      // 🚀 INSERÇÃO ADITIVA: Redireciona automaticamente para o portal correto após mudar a senha
-      setTimeout(() => {
-        if (updatedUser.role === 'REPRESENTANTE_COMERCIAL') {
-          if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('COMMERCIAL_PORTAL');
-        } else if (updatedUser.role === 'VENDEDOR') {
-          if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('SELLER_PORTAL');
-        }
-      }, 100);
 
     /*
      * NÃO existe mais segunda etapa simulada.
@@ -2221,7 +2235,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const firebaseResult = await firebaseRegisterUser(
       userData.name.trim(),
       userData.email.trim(),
-      "Mudar@123456"
+      password
     );
 
     if (!firebaseResult.success || !firebaseResult.firebaseUser) {
