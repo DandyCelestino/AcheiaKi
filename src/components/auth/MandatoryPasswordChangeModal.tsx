@@ -24,6 +24,22 @@ export const MandatoryPasswordChangeModal: React.FC = () => {
 
   const isFormValid = hasMinLength && hasUppercase && hasNumber && hasSpecial && isMatch;
 
+  // =========================================================================
+  // 🚀 INSERÇÃO ADITIVA: Monitora e força o redirecionamento automático pós-troca
+  // =========================================================================
+  const { setCurrentEnvironment } = useApp();
+
+  require('react').useEffect(() => {
+    if (currentUser && currentUser.needsPasswordChange === false) {
+      if (currentUser.role === 'REPRESENTANTE_COMERCIAL') {
+        if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('COMMERCIAL_PORTAL');
+      } else if (currentUser.role === 'VENDEDOR') {
+        if (typeof setCurrentEnvironment === 'function') setCurrentEnvironment('SELLER_PORTAL');
+      }
+    }
+  }, [currentUser, setCurrentEnvironment]);
+  // =========================================================================
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
