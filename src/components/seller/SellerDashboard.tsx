@@ -10,6 +10,8 @@ import {
   Clock,
   Shirt,
   Truck,
+  Bike,
+  Navigation,
   TrendingUp,
   Users,
   Search,
@@ -59,6 +61,7 @@ import { MEMBERSHIP_PLANS } from '../../data/membershipPlansData';
 import { PixPaymentModal } from '../common/PixPaymentModal';
 import { cadastrarLojistaAsaas } from '../../services/asaasService';
 import { SellerFinancialBarChart } from './SellerFinancialBarChart';
+import { RequestDeliveryModal } from './RequestDeliveryModal';
 
 export const SellerDashboard: React.FC = () => {
   const {
@@ -66,6 +69,8 @@ export const SellerDashboard: React.FC = () => {
     merchants,
     products,
     orders,
+    deliveryRides,
+    cancelDeliveryRide,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -86,6 +91,8 @@ export const SellerDashboard: React.FC = () => {
     openSubOrderChat,
     getUnreadSubOrderMessagesCount
   } = useApp();
+
+  const [requestDeliveryOrder, setRequestDeliveryOrder] = useState<Order | null>(null);
 
   // Find seller's active merchant store strictly matching the logged in user
   const currentStore =
@@ -1524,6 +1531,85 @@ export const SellerDashboard: React.FC = () => {
                     <p className="text-xs text-slate-500">
                       <strong>Endereço / Destino:</strong> {ord.buyerDataUnlocked ? (ord.customerAddress || 'Retirada no Balcão') : 'Endereço protegido pela plataforma'}
                     </p>
+
+                    {/* Delivery Achei Aqui V1 Integration */}
+                    {(() => {
+                      const linkedRide = deliveryRides.find(
+                        (r) => r.orderId === ord.id || (ord.deliveryRideId && r.id === ord.deliveryRideId)
+                      );
+
+                      if (linkedRide) {
+                        return (
+                          <div className="mt-2 p-3 bg-gradient-to-r from-emerald-950/10 via-teal-950/5 to-slate-50 border border-emerald-300 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div className="flex items-center space-x-2.5">
+                              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <Bike className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <div className="flex items-center space-x-2">
+                                  <span className="font-mono font-black text-slate-900">{linkedRide.rideCode}</span>
+                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                    linkedRide.status === 'FINALIZADA'
+                                      ? 'bg-emerald-100 text-emerald-800'
+                                      : linkedRide.status === 'AGUARDANDO_ENTREGADOR'
+                                      ? 'bg-amber-100 text-amber-900 animate-pulse'
+                                      : 'bg-blue-100 text-blue-900'
+                                  }`}>
+                                    ● {linkedRide.status}
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-slate-600 mt-0.5">
+                                  {linkedRide.status === 'AGUARDANDO_ENTREGADOR' && 'Procurando entregadores credenciados online no radar de Cachoeiras de Macacu...'}
+                                  {linkedRide.status === 'ACEITA' && `Entregador a caminho da loja: ${linkedRide.driverName} (${linkedRide.driverVehiclePlate})`}
+                                  {linkedRide.status === 'EM_COLETA' && `Entregador conferindo pacote na loja: ${linkedRide.driverName}`}
+                                  {linkedRide.status === 'EM_TRANSITO' && `Entregador em trânsito para a entrega: ${linkedRide.driverName}`}
+                                  {linkedRide.status === 'FINALIZADA' && 'Corrida finalizada com confirmação de código ✓'}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center space-x-3 text-right">
+                              <div>
+                                <span className="text-[10px] text-slate-400 uppercase font-bold block">Distância / Frete</span>
+                                <span className="font-black text-slate-900 text-xs">
+                                  {linkedRide.distanceKm.toFixed(1)} km • R$ {linkedRide.totalFare.toFixed(2).replace('.', ',')}
+                                </span>
+                              </div>
+
+                              {['AGUARDANDO_ENTREGADOR', 'ACEITA'].includes(linkedRide.status) && (
+                                <button
+                                  type="button"
+                                  onClick={() => cancelDeliveryRide(linkedRide.id, 'Cancelado pelo lojista antes do despacho')}
+                                  className="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-[11px] font-bold transition-colors border border-red-200 cursor-pointer"
+                                >
+                                  Cancelar Delivery
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      if (ord.status !== 'Cancelado' && ord.status !== 'Sem Estoque') {
+                        return (
+                          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+                            <span className="text-[11px] text-slate-500">
+                              Precisa de entregador para despachar este pedido em Cachoeiras de Macacu?
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setRequestDeliveryOrder(ord)}
+                              className="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-black shadow-xs flex items-center space-x-1.5 transition-all cursor-pointer"
+                            >
+                              <Bike className="w-3.5 h-3.5" />
+                              <span>Solicitar Delivery Achei Aqui</span>
+                            </button>
+                          </div>
+                        );
+                      }
+
+                      return null;
+                    })()}
                   </div>
                 ))
               )}
@@ -3141,6 +3227,16 @@ export const SellerDashboard: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* MODAL DE SOLICITAÇÃO DE DELIVERY V1 */}
+      {requestDeliveryOrder && currentStore && (
+        <RequestDeliveryModal
+          isOpen={!!requestDeliveryOrder}
+          onClose={() => setRequestDeliveryOrder(null)}
+          order={requestDeliveryOrder}
+          merchant={currentStore}
+        />
       )}
     </div>
   );

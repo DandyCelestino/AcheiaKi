@@ -288,8 +288,8 @@ export const MasterAuditView: React.FC = () => {
                   </td>
                 </tr>
               ) : (
-                filteredLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-50/60 transition-colors">
+                filteredLogs.map((log, idx) => (
+                  <tr key={`${log.id}-${idx}`} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3.5 whitespace-nowrap text-slate-500 font-mono text-[11px]">
                       <div className="flex items-center space-x-1.5">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />

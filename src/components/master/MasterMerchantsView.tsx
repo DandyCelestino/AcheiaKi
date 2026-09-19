@@ -175,26 +175,6 @@ export const MasterMerchantsView: React.FC<MasterMerchantsViewProps> = ({ onOpen
     setCommissionModal(null);
   };
 
-  const handleLoginAsMerchant = (merchant: StoreMerchant) => {
-    const owner = users.find((u) => u.merchantId === merchant.id || u.email === merchant.email);
-    if (owner) {
-      impersonateUser(owner);
-    } else {
-      // Create temporary owner session
-      const tempUser: User = {
-        id: `temp-seller-${merchant.id}`,
-        name: merchant.ownerName,
-        email: merchant.email,
-        phone: merchant.phone,
-        role: 'VENDEDOR',
-        merchantId: merchant.id,
-        city: merchant.city,
-        createdAt: new Date().toISOString()
-      };
-      impersonateUser(tempUser);
-    }
-  };
-
   const getMerchantProductsCount = (merchantId: string) => {
     return products.filter((p) => p.merchantId === merchantId).length;
   };
@@ -492,15 +472,6 @@ export const MasterMerchantsView: React.FC<MasterMerchantsViewProps> = ({ onOpen
                             <CheckCircle className="w-3.5 h-3.5" />
                           </button>
                         )}
-
-                        {/* Entrar como Lojista (Painel Vendedor) */}
-                        <button
-                          onClick={() => handleLoginAsMerchant(m)}
-                          title={`Acessar Painel Vendedor de ${m.name}`}
-                          className="p-1.5 text-blue-600 hover:bg-blue-100/70 rounded-lg transition-colors"
-                        >
-                          <LogIn className="w-3.5 h-3.5" />
-                        </button>
 
                         {/* Excluir Loja */}
                         <button

@@ -32,7 +32,19 @@ export const MasterSettingsView: React.FC = () => {
     triggerToast
   } = useApp();
 
-  const [formData, setFormData] = useState<SystemSettings>({ ...systemSettings });
+  const [formData, setFormData] = useState<SystemSettings>(() => ({
+    ...systemSettings,
+    defaultCommissionRate: systemSettings.globalCommissionRate ?? 5,
+    standardDeliveryFee: systemSettings.defaultDeliveryFeeMacacu ?? 8,
+    maxTrialDays: systemSettings.vipTrialMaxDays ?? 2,
+    supportPhone: systemSettings.supportPhone || '(21) 99999-8877',
+    autoApproveMerchants: Boolean(systemSettings.autoApproveMerchants),
+    allowCustomerRegistration: systemSettings.allowNewRegistrations ?? true,
+    enableFloatingNotificationBall: systemSettings.enableFloatingNotificationBall !== false,
+    maintenanceMode: Boolean(systemSettings.maintenanceMode),
+    broadcastAlertEnabled: Boolean(systemSettings.broadcastAlertActive),
+    broadcastMessage: systemSettings.systemBroadcastAlert || ''
+  }));
   const [importJsonText, setImportJsonText] = useState('');
   const [showImportModal, setShowImportModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
@@ -40,7 +52,15 @@ export const MasterSettingsView: React.FC = () => {
 
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
-    updateSystemSettings(formData);
+    updateSystemSettings({
+      ...formData,
+      globalCommissionRate: formData.defaultCommissionRate ?? formData.globalCommissionRate ?? 5,
+      defaultDeliveryFeeMacacu: formData.standardDeliveryFee ?? formData.defaultDeliveryFeeMacacu ?? 8,
+      vipTrialMaxDays: formData.maxTrialDays ?? formData.vipTrialMaxDays ?? 2,
+      allowNewRegistrations: formData.allowCustomerRegistration ?? formData.allowNewRegistrations ?? true,
+      broadcastAlertActive: formData.broadcastAlertEnabled ?? formData.broadcastAlertActive ?? false,
+      systemBroadcastAlert: formData.broadcastMessage ?? formData.systemBroadcastAlert ?? ''
+    });
   };
 
   const handleExportSnapshot = () => {
@@ -134,7 +154,7 @@ export const MasterSettingsView: React.FC = () => {
                     type="number"
                     min="0"
                     max="50"
-                    value={formData.defaultCommissionRate}
+                    value={formData.defaultCommissionRate ?? 5}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -158,7 +178,7 @@ export const MasterSettingsView: React.FC = () => {
                   <input
                     type="number"
                     step="0.5"
-                    value={formData.standardDeliveryFee}
+                    value={formData.standardDeliveryFee ?? 8}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -184,7 +204,7 @@ export const MasterSettingsView: React.FC = () => {
                   type="number"
                   min="1"
                   max="10"
-                  value={formData.maxTrialDays}
+                  value={formData.maxTrialDays ?? 2}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -204,7 +224,7 @@ export const MasterSettingsView: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={formData.supportPhone}
+                  value={formData.supportPhone ?? ''}
                   onChange={(e) =>
                     setFormData({ ...formData, supportPhone: e.target.value })
                   }

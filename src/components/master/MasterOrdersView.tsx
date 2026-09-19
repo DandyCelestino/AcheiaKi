@@ -800,11 +800,15 @@ export const MasterOrdersView: React.FC<MasterOrdersViewProps> = ({ onOpenDossie
                     }
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
                   >
-                    {merchants.map((m) => (
-                      <option key={m.id} value={m.id}>
-                        {m.name}
-                      </option>
-                    ))}
+                    {merchants.length === 0 ? (
+                      <option value="">Nenhuma loja cadastrada</option>
+                    ) : (
+                      merchants.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.name}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
                 <div>

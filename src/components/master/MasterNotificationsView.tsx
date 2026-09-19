@@ -488,10 +488,10 @@ export const MasterNotificationsView: React.FC = () => {
                 </p>
               </div>
             ) : (
-              filteredLogs.map((log) => {
+              filteredLogs.map((log, idx) => {
                 const readCount = log.readBy.length;
                 return (
-                  <div key={log.id} className="p-4 hover:bg-slate-50/80 transition-colors space-y-2">
+                  <div key={`${log.id}-${idx}`} className="p-4 hover:bg-slate-50/80 transition-colors space-y-2">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase">

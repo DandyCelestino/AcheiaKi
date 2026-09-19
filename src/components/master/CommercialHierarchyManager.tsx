@@ -48,8 +48,8 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
     registeredClientsByAgents
   } = useApp();
 
-  // Active view inside the hierarchy manager: 'squads' | 'areas' | 'matrix'
-  const [viewMode, setViewMode] = useState<'squads' | 'areas' | 'matrix'>('squads');
+  // Active view inside the hierarchy manager: 'squads' | 'areas' | 'matrix' | 'graphic'
+  const [viewMode, setViewMode] = useState<'squads' | 'areas' | 'matrix' | 'graphic'>('squads');
 
   // Search and filters
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,6 +84,20 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
   const leaders = useMemo(() => {
     return salesAgents.filter(
       (a) => a.roleLevel === 'COORDENADOR_REGIONAL' || a.roleLevel === 'SUPERVISOR_VENDAS'
+    );
+  }, [salesAgents]);
+
+  const coordinators = useMemo(() => {
+    return salesAgents.filter((a) => a.roleLevel === 'COORDENADOR_REGIONAL');
+  }, [salesAgents]);
+
+  const supervisors = useMemo(() => {
+    return salesAgents.filter((a) => a.roleLevel === 'SUPERVISOR_VENDAS');
+  }, [salesAgents]);
+
+  const consultants = useMemo(() => {
+    return salesAgents.filter(
+      (a) => a.roleLevel === 'CONSULTOR_SENIOR' || a.roleLevel === 'CONSULTOR_JUNIOR'
     );
   }, [salesAgents]);
 
@@ -365,6 +379,19 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
           >
             <Users className="w-3.5 h-3.5" />
             <span>Matriz de Atribuição ({salesAgents.length})</span>
+          </button>
+
+          <button
+            id="tab-view-graphic"
+            onClick={() => setViewMode('graphic')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              viewMode === 'graphic'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            <span>Modo Gráfico (Organograma)</span>
           </button>
         </div>
 
@@ -984,6 +1011,254 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VISTA 4: MODO GRÁFICO - ORGANOGRAMA HIERÁRQUICO VISUAL */}
+      {/* ========================================================================= */}
+      {viewMode === 'graphic' && (
+        <div id="commercial-hierarchy-modo-grafico" className="space-y-6">
+          {/* Header do Organograma */}
+          <div className="bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                <BarChart3 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  Modo Gráfico: Organograma Hierárquico Interativo
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Visualização da cadeia de comando comercial: Coordenadores &rarr; Supervisores &rarr; Consultores de Campo.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 font-bold">
+                {salesAgents.length} Profissionais Mapeados
+              </span>
+            </div>
+          </div>
+
+          {/* ÁRVORE HIERÁRQUICA VISUAL */}
+          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 overflow-x-auto">
+            {/* NÍVEL 1: MASTER SUPREMO (APEX) */}
+            <div className="flex flex-col items-center">
+              <div className="bg-slate-950 text-white px-6 py-4 rounded-2xl border-2 border-amber-400/60 shadow-lg text-center max-w-sm w-full relative">
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 block mb-1">
+                  Vértice de Comando
+                </span>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Shield className="w-5 h-5 text-amber-400" />
+                  <h4 className="text-sm font-black text-white">Master Supremo / Admin Central</h4>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Gestão Central de Cachoeiras de Macacu
+                </p>
+                <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-around text-[10px] text-slate-300">
+                  <span>{commercialAreas.length} Regiões</span>
+                  <span>&bull;</span>
+                  <span>{salesAgents.length} Vendedores</span>
+                  <span>&bull;</span>
+                  <span>100% Autonomia</span>
+                </div>
+              </div>
+
+              {/* Conector Vertical */}
+              <div className="w-0.5 h-8 bg-slate-300"></div>
+            </div>
+
+            {/* NÍVEL 2: COORDENADORES REGIONAIS */}
+            <div className="relative">
+              <div className="flex items-center justify-center gap-6 flex-wrap">
+                {coordinators.map((coord) => {
+                  const supervisedByThisCoord = supervisors.filter((s) => s.supervisorId === coord.id);
+                  const directConsultants = salesAgents.filter(
+                    (a) => a.supervisorId === coord.id && a.roleLevel.startsWith('CONSULTOR')
+                  );
+                  const coordClients = clientCountsByAgent[coord.id] || 0;
+
+                  return (
+                    <div
+                      key={coord.id}
+                      className="bg-white rounded-2xl border-2 border-purple-300 shadow-md p-4 min-w-[280px] max-w-xs flex-1 flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">
+                            Coordenador Regional
+                          </span>
+                          <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
+                            {coord.commissionRatePercent}% Comiss.
+                          </span>
+                        </div>
+
+                        <div className="flex items-center space-x-3 mb-3">
+                          <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-black flex items-center justify-center text-sm shrink-0">
+                            {coord.name.substring(0, 2).toUpperCase()}
+                          </div>
+                          <div>
+                            <h5 className="text-xs font-black text-slate-900 leading-tight">
+                              {coord.name}
+                            </h5>
+                            <span className="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
+                              <MapPin className="w-3 h-3 text-slate-400" />
+                              {coord.assignedRegion}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-50 p-2 rounded-xl text-[11px] space-y-1 mb-3">
+                          <div className="flex justify-between text-slate-600">
+                            <span>Lojas Credenciadas:</span>
+                            <strong className="text-slate-900">{coordClients}</strong>
+                          </div>
+                          <div className="flex justify-between text-slate-600">
+                            <span>Meta Mensal:</span>
+                            <strong className="text-slate-900">{coord.monthlyTargetCount} credenc.</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* SUB-ÁRVORE: SUPERVISORES DESTE COORDENADOR */}
+                      <div className="pt-3 border-t border-slate-100 space-y-2">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          Equipe Subordinada ({supervisedByThisCoord.length + directConsultants.length})
+                        </span>
+
+                        {supervisedByThisCoord.length === 0 && directConsultants.length === 0 ? (
+                          <span className="text-[10px] text-slate-400 italic block">
+                            Nenhum supervisor vinculado.
+                          </span>
+                        ) : (
+                          <div className="space-y-1.5">
+                            {supervisedByThisCoord.map((sup) => {
+                              const supConsultants = salesAgents.filter((a) => a.supervisorId === sup.id);
+                              return (
+                                <div
+                                  key={sup.id}
+                                  className="bg-blue-50/70 p-2 rounded-lg border border-blue-100 flex items-center justify-between text-[11px]"
+                                >
+                                  <div>
+                                    <span className="font-bold text-slate-800 block leading-tight">
+                                      {sup.name}
+                                    </span>
+                                    <span className="text-[9px] text-blue-600 font-semibold">
+                                      Supervisor &bull; {supConsultants.length} consultores
+                                    </span>
+                                  </div>
+                                  <button
+                                    onClick={() => openAssignModal(sup)}
+                                    className="p-1 text-blue-600 hover:text-blue-900 cursor-pointer"
+                                    title="Ajustar atribuição"
+                                  >
+                                    <Edit2 className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              );
+                            })}
+
+                            {directConsultants.map((cons) => (
+                              <div
+                                key={cons.id}
+                                className="bg-slate-100/70 p-1.5 rounded-lg flex items-center justify-between text-[10px]"
+                              >
+                                <span className="font-medium text-slate-700">
+                                  {cons.name} ({cons.roleLevel === 'CONSULTOR_SENIOR' ? 'Sênior' : 'Júnior'})
+                                </span>
+                                <span className="font-bold text-blue-600">{cons.commissionRatePercent}%</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => openAssignModal(coord)}
+                          className="w-full mt-2 py-1.5 bg-slate-100 hover:bg-purple-50 hover:text-purple-700 text-slate-700 rounded-lg text-[10px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                          <span>Editar Atribuição do Coordenador</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* SEÇÃO EXTRA: SUPERVISORES INDEPENDENTES OU CONSULTOR DIRETO */}
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <h5 className="text-xs font-black text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <Users className="w-4 h-4 text-blue-600" />
+                Matriz Visual de Consultores & Vendedores em Campo
+              </h5>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {consultants.map((cons) => {
+                  const supervisor = leaders.find((l) => l.id === cons.supervisorId);
+                  const clientCount = clientCountsByAgent[cons.id] || 0;
+                  const targetPercent = Math.min(100, Math.round((clientCount / (cons.monthlyTargetCount || 1)) * 100));
+
+                  return (
+                    <div
+                      key={cons.id}
+                      className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-2.5"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${
+                          cons.roleLevel === 'CONSULTOR_SENIOR'
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-slate-100 text-slate-700'
+                        }`}>
+                          {cons.roleLevel === 'CONSULTOR_SENIOR' ? 'Consultor Sênior' : 'Consultor Júnior'}
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-700">
+                          {cons.commissionRatePercent}%
+                        </span>
+                      </div>
+
+                      <div>
+                        <h6 className="text-xs font-black text-slate-900 leading-tight">
+                          {cons.name}
+                        </h6>
+                        <span className="text-[10px] text-slate-500 block">
+                          Sup: {supervisor ? supervisor.name : 'Master Direto'}
+                        </span>
+                      </div>
+
+                      {/* Progresso de Metas */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium">
+                          <span>Meta ({clientCount}/{cons.monthlyTargetCount})</span>
+                          <span>{targetPercent}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${
+                              targetPercent >= 100 ? 'bg-emerald-500' : 'bg-blue-600'
+                            }`}
+                            style={{ width: `${targetPercent}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => openAssignModal(cons)}
+                        className="w-full py-1 text-[10px] font-bold bg-slate-50 hover:bg-blue-50 hover:text-blue-700 rounded-lg text-slate-600 transition-colors cursor-pointer flex items-center justify-center gap-1"
+                      >
+                        <Edit2 className="w-2.5 h-2.5" />
+                        <span>Reatribuir</span>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}

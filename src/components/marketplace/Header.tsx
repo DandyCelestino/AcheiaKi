@@ -530,12 +530,29 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="hidden sm:block w-px h-6 bg-slate-200"></div>
 
+            {/* Quick Access to Seller Portal when logged in as seller */}
+            {(currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') && (
+              <button
+                id="header-btn-quick-seller-portal"
+                onClick={() => setCurrentEnvironment('COMMERCIAL_PORTAL')}
+                className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-full text-xs font-bold shadow-xs transition-all cursor-pointer shrink-0"
+                title="Retornar ao Meu Painel do Vendedor"
+              >
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>Painel do Vendedor</span>
+              </button>
+            )}
+
             {/* User Account / Login Button */}
             {currentUser ? (
               <div className="relative">
                 <button
                   onClick={() => setShowProfileMenu(!showProfileMenu)}
-                  className="flex items-center space-x-1.5 p-1 rounded-full hover:bg-emerald-50 transition-colors"
+                  className={`flex items-center space-x-1.5 p-1 rounded-full hover:bg-emerald-50 transition-colors ${
+                    currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL'
+                      ? 'ring-2 ring-indigo-500/50'
+                      : ''
+                  }`}
                   title="Minha Conta"
                 >
                   {currentUser.avatar ? (
@@ -546,7 +563,11 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-emerald-300"
                     />
                   ) : (
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
+                    <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full ${
+                      currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL'
+                        ? 'bg-indigo-600'
+                        : 'bg-emerald-700'
+                    } text-white flex items-center justify-center font-bold text-xs`}>
                       {currentUser.name.charAt(0)}
                     </div>
                   )}
@@ -559,12 +580,36 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className="p-3 border-b border-slate-100">
                       <p className="text-xs font-bold text-slate-900">{currentUser.name}</p>
                       <p className="text-[10px] text-slate-500 truncate">{currentUser.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 bg-emerald-50 text-emerald-800 text-[10px] font-bold rounded-full border border-emerald-200">
+                      <span className={`inline-block mt-1 px-2 py-0.5 ${
+                        currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL'
+                          ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
+                          : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                      } text-[10px] font-bold rounded-full border`}>
                         Perfil: {currentUser.role}
                       </span>
                     </div>
 
                     <div className="py-1 text-xs">
+                      {/* Atalho exclusivo do Vendedor Comercial: Retornar ao Portal do Vendedor Pessoal Imediatamente */}
+                      {(currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL') && (
+                        <button
+                          id="avatar-btn-seller-portal"
+                          onClick={() => {
+                            setCurrentEnvironment('COMMERCIAL_PORTAL');
+                            setShowProfileMenu(false);
+                          }}
+                          className="w-full text-left px-3 py-2.5 rounded-xl text-indigo-950 bg-gradient-to-r from-indigo-50 to-blue-50 hover:from-indigo-100 hover:to-blue-100 font-bold flex items-center justify-between border border-indigo-200 shadow-xs cursor-pointer transition-all mb-1.5"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Briefcase className="w-4 h-4 text-indigo-700 shrink-0" />
+                            <span>Meu Painel do Vendedor</span>
+                          </div>
+                          <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold">
+                            Liberado
+                          </span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => {
                           setCurrentTab('account');
@@ -598,8 +643,10 @@ export const Header: React.FC<HeaderProps> = ({
                         <span>Políticas de Avaliação</span>
                       </button>
 
-                      {currentUser.role === 'VENDEDOR' && (
+                      {/* Atalho exclusivo do Lojista / Prestador de Serviço */}
+                      {(currentUser.role === 'LOJISTA' || currentUser.role === 'PRESTADOR_SERVICO') && (
                         <button
+                          id="avatar-btn-merchant-portal"
                           onClick={() => {
                             setCurrentEnvironment('SELLER_PORTAL');
                             setShowProfileMenu(false);
@@ -607,34 +654,33 @@ export const Header: React.FC<HeaderProps> = ({
                           className="w-full text-left px-3 py-2 rounded-xl text-emerald-800 hover:bg-emerald-100 font-bold flex items-center space-x-2"
                         >
                           <Store className="w-4 h-4 text-emerald-700" />
-                          <span>Meu Painel do Vendedor</span>
-                        </button>
-                      )}
-
-                      {(currentUser.role === 'REPRESENTANTE_COMERCIAL' || currentUser.role === 'MASTER') && (
-                        <button
-                          onClick={() => {
-                            setCurrentEnvironment('COMMERCIAL_PORTAL');
-                            setShowProfileMenu(false);
-                          }}
-                          className="w-full text-left px-3 py-2 rounded-xl text-indigo-900 bg-indigo-50/70 hover:bg-indigo-100 font-bold flex items-center space-x-2"
-                        >
-                          <Briefcase className="w-4 h-4 text-indigo-700" />
-                          <span>Portal da Equipe Comercial</span>
+                          <span>Meu Painel do Lojista</span>
                         </button>
                       )}
 
                       {currentUser.role === 'MASTER' && (
-                        <button
-                          onClick={() => {
-                            setCurrentEnvironment('MASTER_PANEL');
-                            setShowProfileMenu(false);
-                          }}
-                          className="w-full text-left px-3 py-2 rounded-xl text-emerald-900 hover:bg-emerald-100 font-bold flex items-center space-x-2"
-                        >
-                          <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                          <span>Painel Administrativo Master</span>
-                        </button>
+                        <>
+                          <button
+                            onClick={() => {
+                              setCurrentEnvironment('COMMERCIAL_PORTAL');
+                              setShowProfileMenu(false);
+                            }}
+                            className="w-full text-left px-3 py-2 rounded-xl text-indigo-900 bg-indigo-50/70 hover:bg-indigo-100 font-bold flex items-center space-x-2"
+                          >
+                            <Briefcase className="w-4 h-4 text-indigo-700" />
+                            <span>Portal da Equipe Comercial</span>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setCurrentEnvironment('MASTER_PANEL');
+                              setShowProfileMenu(false);
+                            }}
+                            className="w-full text-left px-3 py-2 rounded-xl text-emerald-900 hover:bg-emerald-100 font-bold flex items-center space-x-2"
+                          >
+                            <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                            <span>Painel Administrativo Master</span>
+                          </button>
+                        </>
                       )}
                     </div>
 
@@ -700,23 +746,35 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* 3. Atalho Perfil / Minha Conta */}
-            <button
-              id="mobile-action-profile"
-              onClick={() => {
-                if (currentUser) {
-                  setCurrentTab('account');
-                } else {
-                  onOpenAuth('login');
-                }
-              }}
-              className="flex items-center justify-center space-x-1 py-2 px-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 rounded-xl border border-emerald-200 text-xs font-bold transition-all active:scale-95 shadow-xs truncate min-h-[44px]"
-            >
-              <UserIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-              <span className="text-[11px] truncate">
-                {currentUser ? (currentUser.name.split(' ')[0] || 'Conta') : 'Perfil'}
-              </span>
-            </button>
+            {/* 3. Atalho Perfil / Minha Conta ou Meu Painel do Vendedor */}
+            {(currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') ? (
+              <button
+                id="mobile-action-seller-portal"
+                onClick={() => setCurrentEnvironment('COMMERCIAL_PORTAL')}
+                className="flex items-center justify-center space-x-1 py-2 px-1 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-xl text-xs font-bold transition-all active:scale-95 shadow-xs truncate min-h-[44px]"
+                title="Retornar ao Meu Painel do Vendedor"
+              >
+                <Briefcase className="w-4 h-4 text-white shrink-0" />
+                <span className="text-[11px] truncate">Meu Painel</span>
+              </button>
+            ) : (
+              <button
+                id="mobile-action-profile"
+                onClick={() => {
+                  if (currentUser) {
+                    setCurrentTab('account');
+                  } else {
+                    onOpenAuth('login');
+                  }
+                }}
+                className="flex items-center justify-center space-x-1 py-2 px-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 rounded-xl border border-emerald-200 text-xs font-bold transition-all active:scale-95 shadow-xs truncate min-h-[44px]"
+              >
+                <UserIcon className="w-4 h-4 text-emerald-700 shrink-0" />
+                <span className="text-[11px] truncate">
+                  {currentUser ? (currentUser.name.split(' ')[0] || 'Conta') : 'Perfil'}
+                </span>
+              </button>
+            )}
 
             {/* 4. Atalho Cidade / Região */}
             <button

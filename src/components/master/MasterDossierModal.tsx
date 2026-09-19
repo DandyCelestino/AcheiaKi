@@ -223,17 +223,6 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-2 self-end sm:self-center">
-            {targetUser && (
-              <button
-                type="button"
-                onClick={() => impersonateUser(targetUser.id)}
-                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center space-x-1.5 cursor-pointer"
-                title="Acessar painel como este usuário"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Acessar Painel</span>
-              </button>
-            )}
             <button
               type="button"
               onClick={onClose}
@@ -792,8 +781,8 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {targetAuditLogs.map((log) => (
-                    <div key={log.id} className="p-3 bg-white border border-slate-200 rounded-xl text-xs space-y-1">
+                  {targetAuditLogs.map((log, idx) => (
+                    <div key={`${log.id}-${idx}`} className="p-3 bg-white border border-slate-200 rounded-xl text-xs space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-slate-900">{log.action}</span>
                         <span className="font-mono text-[10px] text-slate-400">{log.timestamp}</span>

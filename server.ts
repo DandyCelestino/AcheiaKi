@@ -39,6 +39,35 @@ function isLiveKey(key: string): boolean {
   return Boolean(key && key.trim() !== '' && !key.includes('seu_token_aqui') && key.startsWith('$aapi'));
 }
 
+
+const handleConsultarCnpj = async (req: Request, res: Response) => {
+  try {
+    const cnpj = String(req.params.cnpj || '').replace(/\D/g, '');
+
+    if (cnpj.length !== 14) {
+      return res.status(400).json({
+        erro: 'CNPJ inv�lido',
+        detalhes: 'Informe um CNPJ com 14 d�gitos.'
+      });
+    }
+
+    const response = await axios.get(
+      `https://brasilapi.com.br/api/cnpj/v1/${cnpj}`,
+      { timeout: 10000 }
+    );
+
+    return res.status(200).json(response.data);
+  } catch (error: any) {
+    const status = error?.response?.status === 404 ? 404 : 502;
+
+    return res.status(status).json({
+      erro: status === 404 ? 'CNPJ n�o encontrado' : 'Erro na consulta do CNPJ',
+      detalhes: error?.response?.data?.message || 'N�o foi poss�vel consultar a fonte externa.'
+    });
+  }
+};
+
+app.get('/api/cnpj/:cnpj', handleConsultarCnpj);
 // ========================================================================
 // ENDPOINT 1: CADASTRAR LOJISTA (Criar Subconta no Asaas)
 // Suporta /cadastrar-lojista e /api/cadastrar-lojista

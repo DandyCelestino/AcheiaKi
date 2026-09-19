@@ -1,4 +1,4 @@
-export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'LOJISTA' | 'PRESTADOR_SERVICO' | 'MASTER' | 'REPRESENTANTE_COMERCIAL';
+export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'REPRESENTANTE_COMERCIAL' | 'LOJISTA' | 'PRESTADOR_SERVICO' | 'ENTREGADOR';
 
 export type MembershipTier = 'GRATIS' | 'BRONZE' | 'PRATA' | 'OURO' | 'PREMIUM' | 'MASTER';
 
@@ -152,7 +152,6 @@ export interface User {
   phone: string;
   secondaryPhone?: string;
   role: UserRole;
-  firebaseUid?: string;
   password?: string;
   city: string;
   address?: string;
@@ -382,6 +381,8 @@ export interface StoreMerchant {
   updatedAt?: string;
 }
 
+export type Merchant = StoreMerchant;
+
 export interface Order {
   id: string;
   code: string; // e.g. "RET-8X42K9" or "DEL-9912A"
@@ -454,6 +455,8 @@ export interface Order {
     amount?: number;
     percentage?: number;
   }[];
+  deliveryRideId?: string;
+  deliveryRideStatus?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -501,7 +504,17 @@ export interface SystemSettings {
   defaultDeliveryFeeMacacu: number;
   vipTrialMaxDays: number;
   vipTrialSecurityDepositRequired: boolean;
+  deliveryRatePerKm?: number; // VALOR_POR_KM (padrão R$ 1,00/km)
+  deliveryPlatformFee?: number; // TAXA_PLATAFORMA (padrão R$ 2,00/solicitação)
+  deliveryMaxActiveRidesPerDriver?: number;
   enableFloatingNotificationBall?: boolean;
+  defaultCommissionRate?: number;
+  standardDeliveryFee?: number;
+  maxTrialDays?: number;
+  supportPhone?: string;
+  allowCustomerRegistration?: boolean;
+  broadcastAlertEnabled?: boolean;
+  broadcastMessage?: string;
 }
 
 export interface Banner {
@@ -1322,4 +1335,131 @@ export interface CommercialGoal {
   createdByMasterAt: string;
 }
 
+// ==========================================
+// MÓDULO DE DELIVERY (V1 - CICLO OPERACIONAL)
+// ==========================================
 
+export type DeliveryDriverStatus =
+  | 'PENDENTE'
+  | 'EM_ANALISE'
+  | 'APROVADO'
+  | 'REPROVADO'
+  | 'BLOQUEADO'
+  | 'SUSPENSO'
+  | 'DESATIVADO';
+
+export type DeliveryOperationalStatus = 'ONLINE' | 'OFFLINE';
+
+export type VehicleType = 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
+export type DeliveryVehicleType = VehicleType;
+
+export interface DeliveryDriver {
+  id: string;
+  userId: string;
+  name: string;
+  cpf: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  neighborhood?: string;
+  photo: string;
+  idDocument: string; // RG / Identidade Oficial
+  cnhNumber: string;
+  cnhCategory: string; // 'A' | 'B' | 'AB' | 'C' | 'D'
+  cnhValidity: string;
+  vehicleType: VehicleType;
+  vehiclePlate: string;
+  vehicleModel: string;
+  vehicleColor?: string;
+  vehicleDocument: string; // CRLV
+  pixKey: string;
+  pixKeyType: 'CPF' | 'CNPJ' | 'CELULAR' | 'EMAIL' | 'ALEATORIA';
+  pixBank?: string;
+  termsAccepted: boolean;
+  platformRulesAccepted: boolean;
+  status: DeliveryDriverStatus;
+  operationalStatus: DeliveryOperationalStatus;
+  statusReason?: string;
+  rating?: number;
+  totalDeliveries?: number;
+  totalEarnings?: number;
+  activeRideId?: string;
+  registeredAt: string;
+  approvedAt?: string;
+  lastActiveAt?: string;
+  notes?: string;
+}
+
+export type DeliveryRideStatus =
+  | 'CRIADA'
+  | 'AGUARDANDO_ENTREGADOR'
+  | 'ACEITA'
+  | 'EM_COLETA'
+  | 'COLETADA'
+  | 'EM_TRANSITO'
+  | 'ENTREGUE'
+  | 'FINALIZADA'
+  | 'CANCELADA'
+  | 'OCORRENCIA';
+
+export interface DeliveryRideHistoryItem {
+  timestamp: string;
+  status: DeliveryRideStatus;
+  description: string;
+  actorId?: string;
+  actorName?: string;
+  actorRole?: string;
+}
+
+export interface DeliveryRide {
+  id: string;
+  rideCode: string; // ex: "DEL-84920"
+  orderId: string;
+  orderCode: string;
+  merchantId: string;
+  merchantName: string;
+  merchantPhone: string;
+  originAddress: string;
+  originNeighborhood: string;
+  customerId: string;
+  customerName: string;
+  customerPhone: string;
+  destinationAddress: string;
+  destinationNeighborhood: string;
+  distanceKm: number;
+  ratePerKmApplied: number; // VALOR_POR_KM na época da criação
+  platformFeeApplied: number; // TAXA_PLATAFORMA na época da criação
+  driverEarnings: number; // distanceKm * ratePerKmApplied
+  totalDeliveryFee: number; // driverEarnings + platformFeeApplied
+  customerPaid: boolean;
+  driverId?: string;
+  driverName?: string;
+  driverPhone?: string;
+  driverVehicle?: string;
+  driverPlate?: string;
+  driverPhoto?: string;
+  status: DeliveryRideStatus;
+  confirmationCode: string; // Código de 4 dígitos para confirmação na entrega
+  calculationTimestamp: string;
+  cancellationReason?: string;
+  incidentNotes?: string;
+  deliveryProofUrl?: string;
+  createdAt: string;
+  acceptedAt?: string;
+  collectedAt?: string;
+  deliveredAt?: string;
+  finalizedAt?: string;
+  history: DeliveryRideHistoryItem[];
+}
+
+export interface DeliveryPricingCalculation {
+  distanceKm: number;
+  ratePerKm: number;
+  platformFee: number;
+  driverEarnings: number;
+  totalDeliveryFee: number;
+  calculationTimestamp: string;
+  origin: string;
+  destination: string;
+}

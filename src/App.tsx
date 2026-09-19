@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/marketplace/Header';
 import { BottomNav } from './components/marketplace/BottomNav';
@@ -11,16 +11,19 @@ import { CheckoutModal } from './components/marketplace/CheckoutModal';
 import { ServiceBookingModal } from './components/marketplace/ServiceBookingModal';
 import { AuthModal } from './components/marketplace/AuthModal';
 import { MandatoryPasswordChangeModal } from './components/auth/MandatoryPasswordChangeModal';
+import { SellerFirstAccessView } from './components/auth/SellerFirstAccessView';
 import { ExclusiveAccessGate } from './components/auth/ExclusiveAccessGate';
 import { PlatformAccessGate } from './components/auth/PlatformAccessGate';
 import { SellerDashboard } from './components/seller/SellerDashboard';
 import { MasterAdminPanel } from './components/master/MasterAdminPanel';
 import { SalesDashboard } from './components/sales/SalesDashboard';
+import { DeliveryDriverDashboard } from './components/delivery/DeliveryDriverDashboard';
+import { DeliveryRegisterModal } from './components/delivery/DeliveryRegisterModal';
 import { FloatingNotificationBall } from './components/notifications/FloatingNotificationBall';
 import { SubOrderChatModal } from './components/chat/SubOrderChatModal';
 import { CATEGORIES_TAXONOMY } from './data/categoryTaxonomy';
 import { Product, ServiceItem, Order } from './types';
-import { ShoppingBag, X, Trash2, ArrowRight, CheckCircle2, UserPlus, Compass, ShieldCheck, ShieldAlert, FileText, Scale, Crown, Sparkles, BookOpen, Store, Briefcase } from 'lucide-react';
+import { ShoppingBag, X, Trash2, ArrowRight, CheckCircle2, UserPlus, Compass, ShieldCheck, ShieldAlert, FileText, Scale, Crown, Sparkles, BookOpen, Store, Briefcase, Bike } from 'lucide-react';
 
 function MarketplaceApp() {
   const {
@@ -60,10 +63,11 @@ function MarketplaceApp() {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   
   const [checkoutProduct, setCheckoutProduct] = useState<Product | null>(null);
-  const [checkoutModality, setCheckoutModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO'>('DELIVERY');
+  const [checkoutModality, setCheckoutModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO'>('DELIVERY');
   const [checkoutVariations, setCheckoutVariations] = useState<{ [key: string]: string }>({});
   
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [deliveryRegisterModalOpen, setDeliveryRegisterModalOpen] = useState(false);
 
   const handleOpenAuth = (initialTab: 'login' | 'register-customer' | 'register-merchant' = 'login') => {
     openAuthModal(initialTab);
@@ -73,7 +77,7 @@ function MarketplaceApp() {
 
   const handleOpenCheckout = (
     product: Product,
-    modality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO' = 'DELIVERY',
+    modality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO' = 'DELIVERY',
     variations: { [key: string]: string } = {}
   ) => {
     if (!currentUser) {
@@ -107,19 +111,35 @@ function MarketplaceApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // FLUXO DE PRIMEIRO ACESSO OBRIGATÓRIO DO VENDEDOR:
+  // Se o usuário autenticado for Vendedor e ainda estiver com primeiro acesso pendente
+  // (needsPasswordChange === true ou password === '12345678'):
+  // NÃO liberar o Portal do Vendedor nem qualquer rota da plataforma.
+  // Exibir SOMENTE a tela de alteração de senha ('Primeiro acesso').
+  // Não permitir contornar essa etapa através de: URL, refresh, botão voltar ou manipulação de estado.
+  const isSellerUser =
+    currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL';
+  const isSellerFirstAccessPending =
+    isSellerUser && (currentUser?.needsPasswordChange === true || currentUser?.password === '12345678');
+
+  if (isSellerFirstAccessPending) {
+    return <SellerFirstAccessView />;
+  }
+
   // If in Seller Portal
   if (currentEnvironment === 'SELLER_PORTAL') {
-    if (
-      currentUser?.role !== 'VENDEDOR' &&
-      currentUser?.role !== 'LOJISTA' &&
-      currentUser?.role !== 'PRESTADOR_SERVICO' &&
-      currentUser?.role !== 'MASTER'
-    ) {
+    const isAllowedSeller =
+      currentUser?.role === 'LOJISTA' ||
+      currentUser?.role === 'PRESTADOR_SERVICO' ||
+      (currentUser?.role === 'VENDEDOR' && !!currentUser.merchantId) ||
+      currentUser?.role === 'MASTER';
+
+    if (!isAllowedSeller) {
       return (
         <ExclusiveAccessGate
-          requiredRole="VENDEDOR"
+          requiredRole="LOJISTA"
           title="Portal do Lojista & Prestador"
-          subtitle="Ãrea exclusiva para comerciantes e profissionais prestadores credenciados."
+          subtitle="Área exclusiva para comerciantes e profissionais prestadores credenciados."
         />
       );
     }
@@ -147,7 +167,7 @@ function MarketplaceApp() {
         <ExclusiveAccessGate
           requiredRole="MASTER"
           title="Painel Master Administrativo"
-          subtitle="Acesso restrito de alta seguranÃ§a. Requer autenticaÃ§Ã£o do Administrador Master com confirmaÃ§Ã£o em duas etapas (2FA)."
+          subtitle="Acesso restrito de alta segurança. Requer autenticação do Administrador Master com confirmação em duas etapas (2FA)."
         />
       );
     }
@@ -170,12 +190,17 @@ function MarketplaceApp() {
 
   // If in Commercial Team / Sales Agent Portal
   if (currentEnvironment === 'COMMERCIAL_PORTAL') {
-    if (currentUser?.role !== 'REPRESENTANTE_COMERCIAL' && currentUser?.role !== 'MASTER') {
+    const isAllowedCommercial =
+      currentUser?.role === 'VENDEDOR' ||
+      currentUser?.role === 'REPRESENTANTE_COMERCIAL' ||
+      currentUser?.role === 'MASTER';
+
+    if (!isAllowedCommercial) {
       return (
         <ExclusiveAccessGate
-          requiredRole="REPRESENTANTE_COMERCIAL"
+          requiredRole="VENDEDOR"
           title="Portal da Equipe Comercial"
-          subtitle="Ãrea exclusiva para consultores de vendas, coordenadores e representantes autorizados Achei Aqui."
+          subtitle="Área exclusiva para consultores de vendas, coordenadores e representantes autorizados Achei Aqui."
         />
       );
     }
@@ -196,7 +221,39 @@ function MarketplaceApp() {
     );
   }
 
-  // DEFAULT: PLATAFORMA PÃšBLICA DE VENDAS (MARKETPLACE)
+  // If in Delivery Driver Portal (V1)
+  if (currentEnvironment === 'DELIVERY_PORTAL') {
+    const isAllowedDelivery =
+      currentUser?.role === 'ENTREGADOR' ||
+      currentUser?.role === 'MASTER';
+
+    if (!isAllowedDelivery) {
+      return (
+        <ExclusiveAccessGate
+          requiredRole="ENTREGADOR"
+          title="Portal do Entregador Parceiro"
+          subtitle="Área restrita para entregadores e motoboys credenciados Achei Aqui Delivery."
+        />
+      );
+    }
+
+    return (
+      <div className="relative min-h-screen">
+        <DeliveryDriverDashboard />
+        <MandatoryPasswordChangeModal />
+        <FloatingNotificationBall />
+        {/* Toast */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center space-x-2 border border-slate-700 animate-in fade-in slide-in-from-bottom-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // DEFAULT: PLATAFORMA PÚBLICA DE VENDAS (MARKETPLACE)
   return (
     <div className="min-h-screen bg-[#f4fbf6] flex flex-col justify-between selection:bg-emerald-200">
       <div>
@@ -223,6 +280,27 @@ function MarketplaceApp() {
           onSelectProduct={(p) => setSelectedProduct(p)}
           onSelectStore={(storeId) => handleSelectStore(storeId)}
         />
+
+        {/* Barra de Notificação e Atalho Direto do Vendedor Comercial no Marketplace */}
+        {(currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') && (
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white px-4 py-2 text-xs border-b border-indigo-700/50 shadow-xs flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center space-x-2 truncate">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <Briefcase className="w-4 h-4 text-indigo-300 shrink-0" />
+              <span className="truncate">
+                Sessão de Consultor Ativa: <strong>{currentUser.name}</strong> • Você está visualizando o marketplace como vendedor.
+              </span>
+            </div>
+            <button
+              onClick={() => setCurrentEnvironment('COMMERCIAL_PORTAL')}
+              className="px-3 py-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-lg text-xs transition-all shrink-0 flex items-center space-x-1.5 shadow-xs cursor-pointer active:scale-95"
+              title="Retornar ao Meu Painel do Vendedor"
+            >
+              <span>Retornar ao Meu Painel</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
 
         {/* Dynamic Main View */}
         <main className="min-h-[70vh]">
@@ -304,7 +382,7 @@ function MarketplaceApp() {
                 <h4 className="text-white font-black text-base">{frontendConfig?.siteTitle || 'Achei Aqui'}</h4>
               </div>
               <p className="text-emerald-300/70 text-xs leading-relaxed">
-                Inspirado nas verdes matas e florestas do Parque Estadual e da serra de Cachoeiras de Macacu. Conectando moradores, prestadores e comÃ©rcios locais.
+                Inspirado nas verdes matas e florestas do Parque Estadual e da serra de Cachoeiras de Macacu. Conectando moradores, prestadores e comércios locais.
               </p>
               <div className="pt-2">
                 <button
@@ -366,6 +444,15 @@ function MarketplaceApp() {
                 </li>
                 <li>
                   <button
+                    onClick={() => setDeliveryRegisterModalOpen(true)}
+                    className="text-amber-400 font-semibold hover:text-white flex items-center gap-1.5"
+                  >
+                    <Bike className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Quero ser Entregador Parceiro</span>
+                  </button>
+                </li>
+                <li>
+                  <button
                     onClick={() => handleOpenAuth('login')}
                     className="hover:text-white"
                   >
@@ -378,7 +465,7 @@ function MarketplaceApp() {
                     className="text-amber-300/90 font-medium hover:text-amber-200 flex items-center gap-1"
                   >
                     <Crown className="w-3 h-3 text-amber-400" />
-                    <span>Planos GrÃ¡tis, Bronze, Prata, Ouro e Premium</span>
+                    <span>Planos Grátis, Bronze, Prata, Ouro e Premium</span>
                   </button>
                 </li>
               </ul>
@@ -387,7 +474,7 @@ function MarketplaceApp() {
             <div>
               <h5 className="text-white font-bold mb-3 uppercase text-[11px] tracking-wider text-emerald-200 flex items-center gap-1.5">
                 <Scale className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Normas & TransparÃªncia Legal</span>
+                <span>Normas & Transparência Legal</span>
               </h5>
               <ul className="space-y-2 text-[11px]">
                 <li>
@@ -414,7 +501,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span className="font-medium">Direitos Autorais (Bex ServiÃ§os e ComÃ©rcios)</span>
+                    <span className="font-medium">Direitos Autorais (Bex Serviços e Comércios)</span>
                   </button>
                 </li>
                 <li>
@@ -423,7 +510,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <FileText className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span>PolÃ­tica de Privacidade (LGPD)</span>
+                    <span>Política de Privacidade (LGPD)</span>
                   </button>
                 </li>
                 <li>
@@ -441,7 +528,7 @@ function MarketplaceApp() {
                     className="text-emerald-300 hover:text-white flex items-center gap-1.5 text-left group"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-200 shrink-0" />
-                    <span>PolÃ­tica de AvaliaÃ§Ãµes MÃºtuas</span>
+                    <span>Política de Avaliações Mútuas</span>
                   </button>
                 </li>
               </ul>
@@ -451,9 +538,9 @@ function MarketplaceApp() {
           {/* Legal Bar & Copyright Declaration */}
           <div className="border-t border-emerald-900/80 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-emerald-400/70 gap-4">
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span>Â© 2026 Achei Aqui - Cachoeiras de Macacu - RJ.</span>
-              <span className="hidden sm:inline">â€¢</span>
-              <span className="text-emerald-300 font-semibold">Autoria e Titularidade: Bex ServiÃ§os e ComÃ©rcios, CNPJ 30.810.800/0001-39</span>
+              <span>© 2026 Achei Aqui - Cachoeiras de Macacu - RJ.</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="text-emerald-300 font-semibold">Autoria e Titularidade: Bex Serviços e Comércios, CNPJ 30.810.800/0001-39</span>
             </div>
             
             <div className="flex flex-wrap items-center justify-center gap-4 text-[11px]">
@@ -472,12 +559,12 @@ function MarketplaceApp() {
             </div>
           </div>
 
-          {/* ATALHOS RÃPIDOS ABAIXO DE DIREITOS AUTORAIS */}
+          {/* ATALHOS RÁPIDOS ABAIXO DE DIREITOS AUTORAIS */}
           <div className="mt-4 pt-4 border-t border-emerald-900/50 bg-emerald-950/40 -mx-4 sm:-mx-6 px-4 sm:px-6 py-4 rounded-2xl">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center space-x-2 text-emerald-300 font-bold text-[11px]">
                 <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Atalhos RÃ¡pidos de Uso & Normas Oficiais:</span>
+                <span>Atalhos Rápidos de Uso & Normas Oficiais:</span>
               </div>
               <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2">
                 <button
@@ -515,6 +602,14 @@ function MarketplaceApp() {
                 >
                   <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
                   <span>Portal Vendedor</span>
+                </button>
+                <button
+                  onClick={() => setCurrentEnvironment('DELIVERY_PORTAL')}
+                  className="px-3 py-1.5 bg-emerald-900/70 hover:bg-emerald-800 text-emerald-200 hover:text-white rounded-xl text-[11px] font-bold transition-all border border-emerald-700/60 flex items-center space-x-1.5 cursor-pointer shadow-2xs"
+                  title="Acesso exclusivo para Entregadores e Motoboys"
+                >
+                  <Bike className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Portal Entregador</span>
                 </button>
                 {currentUser?.role === 'MASTER' && (
                   <button
@@ -582,6 +677,12 @@ function MarketplaceApp() {
         initialTab={isAuthModalOpen ? authModalTab : authInitialTab}
       />
 
+      {/* MODAL: CADASTRO DE ENTREGADOR PARCEIRO */}
+      <DeliveryRegisterModal
+        isOpen={deliveryRegisterModalOpen}
+        onClose={() => setDeliveryRegisterModalOpen(false)}
+      />
+
       {/* MODAL: SLIDE-OVER SHOPPING CART */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 flex justify-end">
@@ -612,9 +713,9 @@ function MarketplaceApp() {
                   <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-700">
                     <ShoppingBag className="w-8 h-8" />
                   </div>
-                  <p className="text-slate-800 font-bold text-sm">Sua sacola estÃ¡ vazia</p>
+                  <p className="text-slate-800 font-bold text-sm">Sua sacola está vazia</p>
                   <p className="text-slate-500 text-xs max-w-xs mx-auto">
-                    Explore os produtos e comÃ©rcios de Cachoeiras de Macacu e adicione seus itens favoritos.
+                    Explore os produtos e comércios de Cachoeiras de Macacu e adicione seus itens favoritos.
                   </p>
                   <button
                     onClick={() => setIsCartOpen(false)}
@@ -700,7 +801,7 @@ function MarketplaceApp() {
       {/* MODAL DE CHAT E MENSAGENS INTERNAS DE SUBPEDIDOS */}
       <SubOrderChatModal />
 
-      {/* BALÃ•ES FLUTUANTES DE NOTIFICAÃ‡Ã•ES (PERSISTENTES ATÃ‰ O 'X') */}
+      {/* BALÕES FLUTUANTES DE NOTIFICAÇÕES (PERSISTENTES ATÉ O 'X') */}
       <FloatingNotificationBall />
     </div>
   );
@@ -713,4 +814,3 @@ export default function App() {
     </AppProvider>
   );
 }
-

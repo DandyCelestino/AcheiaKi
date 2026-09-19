@@ -495,15 +495,6 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                           </button>
                         )}
 
-                        {/* Impersonate / Assumir Sessão */}
-                        <button
-                          onClick={() => impersonateUser(u)}
-                          title={`Assumir sessão de ${u.name}`}
-                          className="p-1.5 text-blue-600 hover:bg-blue-100/70 rounded-lg transition-colors"
-                        >
-                          <LogIn className="w-3.5 h-3.5" />
-                        </button>
-
                         {/* Excluir (Se não for o próprio Master) */}
                         {u.id !== currentUser?.id && (
                           <button
@@ -905,7 +896,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                   <input
                     type="text"
                     required
-                    value={newUserData.name}
+                    value={newUserData.name || ''}
                     onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
                     placeholder="Ex: João da Silva"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -915,7 +906,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                   <label className="block font-bold text-slate-700 mb-1">Apelido / Social</label>
                   <input
                     type="text"
-                    value={newUserData.nickname}
+                    value={newUserData.nickname || ''}
                     onChange={(e) => setNewUserData({ ...newUserData, nickname: e.target.value })}
                     placeholder="Ex: Joãozinho"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -929,7 +920,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                   <input
                     type="email"
                     required
-                    value={newUserData.email}
+                    value={newUserData.email || ''}
                     onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
                     placeholder="cliente@email.com"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -940,7 +931,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                   <input
                     type="text"
                     required
-                    value={newUserData.phone}
+                    value={newUserData.phone || ''}
                     onChange={(e) => setNewUserData({ ...newUserData, phone: e.target.value })}
                     placeholder="(21) 99999-8888"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -952,7 +943,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">Perfil</label>
                   <select
-                    value={newUserData.role}
+                    value={newUserData.role || 'CLIENTE'}
                     onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value as any })}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
                   >
@@ -964,7 +955,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">Bairro em Macacu</label>
                   <select
-                    value={newUserData.neighborhood}
+                    value={newUserData.neighborhood || 'Centro'}
                     onChange={(e) => setNewUserData({ ...newUserData, neighborhood: e.target.value })}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
                   >
@@ -979,7 +970,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                   <label className="block font-bold text-slate-700 mb-1">CPF</label>
                   <input
                     type="text"
-                    value={newUserData.cpf}
+                    value={newUserData.cpf || ''}
                     onChange={(e) => setNewUserData({ ...newUserData, cpf: e.target.value })}
                     placeholder="000.000.000-00"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -991,7 +982,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
                 <label className="block font-bold text-slate-700 mb-1">Endereço Completo</label>
                 <input
                   type="text"
-                  value={newUserData.address}
+                  value={newUserData.address || ''}
                   onChange={(e) => setNewUserData({ ...newUserData, address: e.target.value })}
                   placeholder="Rua, Número, Referência"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"
@@ -1044,7 +1035,7 @@ export const MasterUsersView: React.FC<MasterUsersViewProps> = ({ onOpenDossier 
               <textarea
                 rows={3}
                 required
-                value={actionReason}
+                value={actionReason || ''}
                 onChange={(e) => setActionReason(e.target.value)}
                 placeholder="Informe o motivo formal (ex: contestações indevidas, verificação cadastral)..."
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500"

@@ -43,7 +43,8 @@ import {
   BarChart3,
   Briefcase,
   Percent,
-  Webhook
+  Webhook,
+  Bike
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { StoreMerchant, Order, OrderStatus } from '../../types';
@@ -61,6 +62,7 @@ import { MasterDossierModal } from './MasterDossierModal';
 import { MasterSalesTeamView } from './MasterSalesTeamView';
 import { MasterBoletoWebhookView } from './MasterBoletoWebhookView';
 import { MasterSellerCommissionsView } from './MasterSellerCommissionsView';
+import { MasterDeliveryView } from './MasterDeliveryView';
 
 export const MasterAdminPanel: React.FC = () => {
   const {
@@ -73,6 +75,8 @@ export const MasterAdminPanel: React.FC = () => {
     systemSettings,
     salesAgents,
     boletoRequests,
+    deliveryRides,
+    deliveryDrivers,
     approveMerchant,
     rejectMerchant,
     updateOrderStatus,
@@ -81,7 +85,7 @@ export const MasterAdminPanel: React.FC = () => {
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<
-    'dashboard' | 'reports' | 'seller-commissions' | 'sales-team' | 'sales-analytics' | 'boleto-webhooks' | 'users' | 'merchants' | 'catalog' | 'orders' | 'ad-spaces' | 'frontend' | 'audit' | 'notifications' | 'settings'
+    'dashboard' | 'reports' | 'seller-commissions' | 'sales-team' | 'sales-analytics' | 'boleto-webhooks' | 'users' | 'merchants' | 'catalog' | 'orders' | 'delivery' | 'ad-spaces' | 'frontend' | 'audit' | 'notifications' | 'settings'
   >('dashboard');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -195,7 +199,7 @@ export const MasterAdminPanel: React.FC = () => {
             >
               <div className="flex items-center space-x-3">
                 <BarChart3 className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>Relatórios Diários & Vendas</span>
+                <span>Relatórios & Modo Gráfico</span>
               </div>
               <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full font-bold">
                 AO VIVO
@@ -392,6 +396,34 @@ export const MasterAdminPanel: React.FC = () => {
               )}
             </button>
 
+            {/* Supervisão de Delivery & Entregadores V1 */}
+            <button
+              id="tab-delivery"
+              onClick={() => {
+                setActiveTab('delivery');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                activeTab === 'delivery'
+                  ? 'bg-emerald-600 text-white font-semibold shadow-xs'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <Bike className="w-4 h-4 shrink-0 text-emerald-400" />
+                <span>Entregas & Delivery V1</span>
+              </div>
+              {deliveryRides.filter((r) => ['AGUARDANDO_ENTREGADOR', 'ACEITA', 'EM_COLETA', 'EM_TRANSITO'].includes(r.status)).length > 0 ? (
+                <span className="text-[10px] bg-emerald-500/20 border border-emerald-500/40 px-1.5 py-0.5 rounded-full text-emerald-300 font-bold">
+                  {deliveryRides.filter((r) => ['AGUARDANDO_ENTREGADOR', 'ACEITA', 'EM_COLETA', 'EM_TRANSITO'].includes(r.status)).length}
+                </span>
+              ) : (
+                <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full text-slate-300">
+                  {deliveryRides.length}
+                </span>
+              )}
+            </button>
+
             <div className="pt-4 px-3 pb-2 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
               Monetização & Frontend
             </div>
@@ -533,6 +565,7 @@ export const MasterAdminPanel: React.FC = () => {
                 {activeTab === 'merchants' && 'Lojas & Prestadores de Serviços'}
                 {activeTab === 'catalog' && 'Catálogo Global de Produtos & Serviços'}
                 {activeTab === 'orders' && 'Central de Pedidos, Entregas & Provador VIP'}
+                {activeTab === 'delivery' && 'Supervisão de Delivery & Entregadores V1'}
                 {activeTab === 'audit' && 'Logs de Auditoria & Segurança'}
                 {activeTab === 'notifications' && 'Monitor de Disparos WhatsApp & Supabase'}
                 {activeTab === 'settings' && 'Parâmetros da Plataforma & Backup'}
@@ -813,6 +846,9 @@ export const MasterAdminPanel: React.FC = () => {
 
             {/* TAB: PEDIDOS */}
             {activeTab === 'orders' && <MasterOrdersView onOpenDossier={handleOpenDossier} />}
+
+            {/* TAB: DELIVERY & ENTREGADORES V1 */}
+            {activeTab === 'delivery' && <MasterDeliveryView />}
 
             {/* TAB: MÍDIA, BANNERS & LEILÕES */}
             {activeTab === 'ad-spaces' && <MasterAdSpacesView />}

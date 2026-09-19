@@ -24,10 +24,15 @@ import {
   Truck,
   Eye,
   Radio,
-  FileSpreadsheet
+  FileSpreadsheet,
+  BarChart3,
+  PieChart as PieChartIcon,
+  LineChart as LineChartIcon,
+  Table as TableIcon
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Order, StoreMerchant, User } from '../../types';
+import { SvgBarChart, SvgPieChart, SvgAreaChart } from '../common/SvgCharts';
 
 interface MasterReportsViewProps {
   onOpenDossier: (target: { userId?: string; merchantId?: string }) => void;
@@ -47,6 +52,7 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
   const [datePeriod, setDatePeriod] = useState<'today' | 'yesterday' | '7days' | 'month' | 'all'>('today');
   const [selectedMerchantFilter, setSelectedMerchantFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<'grafico' | 'tabela' | 'ambos'>('grafico');
 
   // Count distinct categories of registrations
   const customersCount = useMemo(() => {
@@ -158,6 +164,223 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
     return auditLogs.slice(0, 15);
   }, [auditLogs]);
 
+  // ============================================================================
+  // MODO GRÁFICO - AGREGADORES E SÉRIES DE DADOS VISUAIS
+  // ============================================================================
+
+  // 1. Cronologia de Vendas e Comissões (Área / Barras Temporais)
+  const salesTimelineData = useMemo(() => {
+    if (datePeriod === 'today' || datePeriod === 'yesterday') {
+      const slots = [
+        { label: '08h-10h', start: 8, end: 10 },
+        { label: '10h-12h', start: 10, end: 12 },
+        { label: '12h-14h', start: 12, end: 14 },
+        { label: '14h-16h', start: 14, end: 16 },
+        { label: '16h-18h', start: 16, end: 18 },
+        { label: '18h-20h', start: 18, end: 20 },
+        { label: '20h-22h', start: 20, end: 22 }
+      ];
+
+      return slots.map((s) => {
+        let gmv = 0;
+        let comissao = 0;
+        let liquido = 0;
+        let pedidos = 0;
+
+        filteredOrders.forEach((o) => {
+          if (o.status !== 'Cancelado' && o.status !== 'Sem Estoque') {
+            const d = o.createdAt ? new Date(o.createdAt) : null;
+            const hour = d && !isNaN(d.getTime()) ? d.getHours() : 12;
+            if (hour >= s.start && hour < s.end) {
+              const val = o.totalAmount ?? (o as any).total ?? 0;
+              const m = merchants.find((m) => m.id === o.merchantId);
+              const rate = m?.commissionRate ?? 10;
+              const comm = val * (rate / 100);
+              gmv += val;
+              comissao += comm;
+              liquido += (val - comm);
+              pedidos += 1;
+            }
+          }
+        });
+
+        return {
+          slot: s.label,
+          gmv: Math.round(gmv),
+          comissao: Math.round(comissao),
+          liquido: Math.round(liquido),
+          pedidos
+        };
+      });
+    }
+
+    if (datePeriod === '7days') {
+      const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const now = new Date();
+      const result = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+        const dayStr = days[d.getDay()];
+        const dateKey = d.toISOString().split('T')[0];
+
+        let gmv = 0;
+        let comissao = 0;
+        let liquido = 0;
+        let pedidos = 0;
+
+        filteredOrders.forEach((o) => {
+          if (o.status !== 'Cancelado' && o.status !== 'Sem Estoque') {
+            const oDate = o.createdAt ? o.createdAt.split('T')[0] : '';
+            if (oDate === dateKey) {
+              const val = o.totalAmount ?? (o as any).total ?? 0;
+              const m = merchants.find((m) => m.id === o.merchantId);
+              const rate = m?.commissionRate ?? 10;
+              const comm = val * (rate / 100);
+              gmv += val;
+              comissao += comm;
+              liquido += (val - comm);
+              pedidos += 1;
+            }
+          }
+        });
+
+        result.push({
+          slot: `${dayStr} ${d.getDate()}/${d.getMonth() + 1}`,
+          gmv: Math.round(gmv),
+          comissao: Math.round(comissao),
+          liquido: Math.round(liquido),
+          pedidos
+        });
+      }
+
+      return result;
+    }
+
+    // Month or All: Group by weekly intervals
+    const weeks = [
+      { label: 'Semana 1 (1-7)', start: 1, end: 7 },
+      { label: 'Semana 2 (8-14)', start: 8, end: 14 },
+      { label: 'Semana 3 (15-21)', start: 15, end: 21 },
+      { label: 'Semana 4 (22+)', start: 22, end: 31 }
+    ];
+
+    return weeks.map((w) => {
+      let gmv = 0;
+      let comissao = 0;
+      let liquido = 0;
+      let pedidos = 0;
+
+      filteredOrders.forEach((o) => {
+        if (o.status !== 'Cancelado' && o.status !== 'Sem Estoque') {
+          const d = o.createdAt ? new Date(o.createdAt) : null;
+          const day = d && !isNaN(d.getTime()) ? d.getDate() : 15;
+          if (day >= w.start && day <= w.end) {
+            const val = o.totalAmount ?? (o as any).total ?? 0;
+            const m = merchants.find((m) => m.id === o.merchantId);
+            const rate = m?.commissionRate ?? 10;
+            const comm = val * (rate / 100);
+            gmv += val;
+            comissao += comm;
+            liquido += (val - comm);
+            pedidos += 1;
+          }
+        }
+      });
+
+      return {
+        slot: w.label,
+        gmv: Math.round(gmv),
+        comissao: Math.round(comissao),
+        liquido: Math.round(liquido),
+        pedidos
+      };
+    });
+  }, [filteredOrders, datePeriod, merchants]);
+
+  // 2. Ranking Gráfico dos Top Lojistas por Faturamento e Comissão
+  const topMerchantsChartData = useMemo(() => {
+    return merchantPerformance.slice(0, 6).map((item) => ({
+      name: item.merchant.name.length > 12 ? item.merchant.name.substring(0, 12) + '...' : item.merchant.name,
+      fullName: item.merchant.name,
+      gmv: Math.round(item.gmv),
+      commission: Math.round(item.commission),
+      pedidos: item.orderCount
+    }));
+  }, [merchantPerformance]);
+
+  // 3. Distribuição de Pedidos por Modalidade (Delivery vs Retirada vs Provador)
+  const modalityDistribution = useMemo(() => {
+    let delivery = 0;
+    let retirada = 0;
+    let provador = 0;
+
+    filteredOrders.forEach((o) => {
+      if (o.modality === 'DELIVERY') delivery++;
+      else if (o.modality === 'RETIRADA') retirada++;
+      else if (o.modality === 'EXPERIMENTAÇÃO' || o.modality === 'PROVADOR') provador++;
+      else delivery++;
+    });
+
+    return [
+      { name: 'Delivery / Entrega', value: delivery, color: '#3B82F6' },
+      { name: 'Retirada no Balcão', value: retirada, color: '#10B981' },
+      { name: 'Provador / Exp.', value: provador, color: '#F59E0B' }
+    ].filter((item) => item.value > 0);
+  }, [filteredOrders]);
+
+  // 4. Distribuição de Pedidos por Status Operacional
+  const orderStatusDistribution = useMemo(() => {
+    let concluidos = 0;
+    let emRota = 0;
+    let preparo = 0;
+    let cancelados = 0;
+
+    filteredOrders.forEach((o) => {
+      if (o.status === 'Concluído') concluidos++;
+      else if (o.status === 'Em Entrega' || o.status === 'A Caminho' || o.status === 'Saiu para Entrega') emRota++;
+      else if (o.status === 'Cancelado' || o.status === 'Sem Estoque') cancelados++;
+      else preparo++;
+    });
+
+    return [
+      { name: 'Concluídos', value: concluidos, color: '#10B981' },
+      { name: 'Em Entrega / Rota', value: emRota, color: '#3B82F6' },
+      { name: 'Em Preparo / Pendente', value: preparo, color: '#F59E0B' },
+      { name: 'Cancelados', value: cancelados, color: '#EF4444' }
+    ].filter((item) => item.value > 0);
+  }, [filteredOrders]);
+
+  // 5. Distribuição de Faturamento por Categoria Comercial
+  const categoryDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    const categoryColors: Record<string, string> = {
+      'Gastronomia & Restaurantes': '#EF4444',
+      'Moda & Vestuário': '#EC4899',
+      'Supermercados & Mercearias': '#10B981',
+      'Farmácias & Saúde': '#06B6D4',
+      'Serviços & Profissionais': '#8B5CF6',
+      'Pet Shop & Agro': '#F59E0B',
+      'Outros Comércios': '#64748B'
+    };
+
+    filteredOrders.forEach((o) => {
+      const m = merchants.find((m) => m.id === o.merchantId);
+      const cat = m?.category || 'Outros Comércios';
+      counts[cat] = (counts[cat] || 0) + (o.totalAmount ?? (o as any).total ?? 0);
+    });
+
+    return Object.entries(counts)
+      .map(([name, value]) => ({
+        name: name.replace(' & ', ' e ').substring(0, 16),
+        fullName: name,
+        value: Math.round(value),
+        color: categoryColors[name] || '#3B82F6'
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+  }, [filteredOrders, merchants]);
+
   // Export CSV
   const handleExportCSV = () => {
     const headers = 'Codigo,Data,Cliente,Telefone,Estabelecimento,ValorBruto,ComissaoMaster,LiquidoLoja,Modalidade,Status\n';
@@ -199,6 +422,49 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
         </div>
 
         <div className="flex items-center space-x-2 flex-wrap gap-y-2">
+          {/* MODO GRÁFICO vs MODO TABELA TOGGLE */}
+          <div className="bg-slate-900 p-1 rounded-xl flex items-center space-x-1 text-xs font-bold text-slate-300 shadow-xs">
+            <button
+              type="button"
+              id="btn-modo-grafico-toggle"
+              onClick={() => setViewMode('grafico')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'grafico'
+                  ? 'bg-blue-600 text-white shadow-xs font-black'
+                  : 'hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <BarChart3 className="w-3.5 h-3.5" />
+              <span>Modo Gráfico</span>
+            </button>
+            <button
+              type="button"
+              id="btn-modo-tabela-toggle"
+              onClick={() => setViewMode('tabela')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'tabela'
+                  ? 'bg-blue-600 text-white shadow-xs font-black'
+                  : 'hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <TableIcon className="w-3.5 h-3.5" />
+              <span>Modo Tabela</span>
+            </button>
+            <button
+              type="button"
+              id="btn-modo-ambos-toggle"
+              onClick={() => setViewMode('ambos')}
+              className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                viewMode === 'ambos'
+                  ? 'bg-blue-600 text-white shadow-xs font-black'
+                  : 'hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Ambos</span>
+            </button>
+          </div>
+
           {/* Period Selector Pills */}
           <div className="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 text-xs font-bold text-slate-600">
             <button
@@ -374,12 +640,224 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
         </div>
       </div>
 
-      {/* DETAILED ORDERS & SALES TABLE */}
+      {/* ========================================================================= */}
+      {/* SEÇÃO 1: MODO GRÁFICO (PAINEL ANALÍTICO VISUAL EM TEMPO REAL) */}
+      {/* ========================================================================= */}
+      {(viewMode === 'grafico' || viewMode === 'ambos') && (
+        <div id="master-reports-modo-grafico" className="space-y-6">
+          {/* HEADER DO MODO GRÁFICO */}
+          <div className="bg-linear-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-5 rounded-2xl shadow-sm border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                <BarChart3 className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-black text-white">
+                    Modo Gráfico Ativo: Métricas Visuais & Desempenho
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                    Ao Vivo
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Análise gráfica do faturamento bruto (GMV), comissões Master, modalidades de entrega e ranking de estabelecimentos parceiros.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs">
+              <span className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 font-medium">
+                {filteredOrders.length} transações analisadas
+              </span>
+            </div>
+          </div>
+
+          {/* GRID DE GRÁFICOS PRIMÁRIOS */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* GRÁFICO 1: EVOLUÇÃO TEMPORAL DE VENDAS & COMISSÕES */}
+            <div className="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                    Cronologia de Faturamento: GMV vs. Comissões
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Comparativo entre volume transacionado bruto, repasse aos lojistas e receita da plataforma no período selecionado.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+                  {datePeriod.toUpperCase()}
+                </span>
+              </div>
+
+              {salesTimelineData.length === 0 || totalGMV === 0 ? (
+                <div className="h-64 flex flex-col items-center justify-center text-xs text-slate-400">
+                  <Activity className="w-8 h-8 text-slate-300 mb-2 animate-pulse" />
+                  <span>Sem dados suficientes no intervalo selecionado para gerar a curva temporal.</span>
+                </div>
+              ) : (
+                <div className="w-full">
+                  <SvgBarChart
+                    data={salesTimelineData}
+                    xKey="slot"
+                    series={[
+                      { key: 'gmv', name: 'Volume Bruto (GMV)', color: '#2563EB' },
+                      { key: 'liquido', name: 'Repasse Lojista (Líquido)', color: '#059669' },
+                      { key: 'comissao', name: 'Comissão Master', color: '#7C3AED' }
+                    ]}
+                    height={240}
+                    yFormatter={(val) => `R$ ${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
+                    tooltipFormatter={(val, key) =>
+                      val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                    }
+                  />
+                </div>
+              )}
+
+              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
+                <span className="flex items-center gap-1.5 font-medium">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+                  Volume Bruto: <strong>{totalGMV.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                </span>
+                <span className="flex items-center gap-1.5 font-medium">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+                  Repasse Lojistas: <strong>{netMerchantsPayout.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                </span>
+                <span className="flex items-center gap-1.5 font-medium">
+                  <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
+                  Comissão Master: <strong>{totalCommissions.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+                </span>
+              </div>
+            </div>
+
+            {/* GRÁFICO 2: DISTRIBUIÇÃO POR MODALIDADE (DELIVERY vs RETIRADA) */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+              <div>
+                <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-emerald-600" />
+                  Modalidade dos Pedidos
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Proporção de pedidos por entrega em domicílio vs retirada balcão.
+                </p>
+              </div>
+
+              <div className="py-4">
+                <SvgPieChart
+                  data={modalityDistribution}
+                  size={190}
+                  innerRadius={45}
+                  outerRadius={75}
+                  showLegend={true}
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center font-medium">
+                Total de {filteredOrders.length} pedidos registrados
+              </div>
+            </div>
+          </div>
+
+          {/* GRID DE GRÁFICOS SECUNDÁRIOS */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* GRÁFICO 3: RANKING VISUAL DOS TOP LOJISTAS */}
+            <div className="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                    <Store className="w-4 h-4 text-purple-600" />
+                    Top Estabelecimentos: Faturamento & Comissão Master
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Lojas e prestadores com maior volume transacionado em Cachoeiras de Macacu.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-slate-500">
+                  {topMerchantsChartData.length} em destaque
+                </span>
+              </div>
+
+              {topMerchantsChartData.length === 0 ? (
+                <div className="h-56 flex items-center justify-center text-xs text-slate-400">
+                  Nenhum faturamento registrado para o ranking no período.
+                </div>
+              ) : (
+                <div className="w-full">
+                  <SvgBarChart
+                    data={topMerchantsChartData}
+                    xKey="name"
+                    series={[
+                      { key: 'gmv', name: 'Volume Total (R$)', color: '#3B82F6' },
+                      { key: 'commission', name: 'Comissão Master (R$)', color: '#8B5CF6' }
+                    ]}
+                    height={220}
+                    yFormatter={(val) => `R$ ${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
+                    tooltipFormatter={(val) =>
+                      val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+                    }
+                  />
+                </div>
+              )}
+
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <span>Taxa média praticada: <strong>10%</strong></span>
+                <button
+                  onClick={() => setViewMode('tabela')}
+                  className="text-blue-600 font-bold hover:underline cursor-pointer flex items-center gap-1"
+                >
+                  <span>Ver tabela de todos os lojistas</span>
+                  <ChevronRight className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+
+            {/* GRÁFICO 4: DISTRIBUIÇÃO POR CATEGORIA COMERCIAL */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+              <div>
+                <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <PieChartIcon className="w-4 h-4 text-amber-600" />
+                  Segmentos do Comércio Local
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Volume de compras distribuído por setor de atividade.
+                </p>
+              </div>
+
+              <div className="py-4">
+                {categoryDistribution.length === 0 ? (
+                  <div className="h-44 flex items-center justify-center text-xs text-slate-400">
+                    Sem transações por categoria registradas.
+                  </div>
+                ) : (
+                  <SvgPieChart
+                    data={categoryDistribution}
+                    size={190}
+                    innerRadius={45}
+                    outerRadius={75}
+                    showLegend={true}
+                  />
+                )}
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center font-medium">
+                Gastronomia, Moda e Farmácia lideram o fluxo comercial
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* SEÇÃO 2: MODO TABELA (EXTRATO COMPLETO DE VENDAS & AUDITORIA) */}
+      {/* ========================================================================= */}
+      {(viewMode === 'tabela' || viewMode === 'ambos') && (
       <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-black text-slate-900">
-              Extrato Completo de Vendas & Comissões
+              Extrato Completo de Vendas & Comissões (Modo Tabela)
             </h3>
             <p className="text-xs text-slate-500">
               Clique na foto ou nome do cliente/lojista para inspecionar o Dossiê 360°.
@@ -544,6 +1022,7 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
           </div>
         )}
       </div>
+      )}
 
       {/* RANKING DOS ESTABELECIMENTOS & FEED DE EVENTOS EM TEMPO REAL */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -613,9 +1092,9 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
           </div>
 
           <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
-            {recentEvents.map((log) => (
+            {recentEvents.map((log, idx) => (
               <div
-                key={log.id}
+                key={`${log.id}-${idx}`}
                 className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 text-xs space-y-1 hover:border-slate-300 transition-all"
               >
                 <div className="flex items-center justify-between">

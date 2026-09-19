@@ -62,8 +62,47 @@ export const SalesDashboard: React.FC = () => {
     triggerToast
   } = useApp();
 
-  // Active agent (fallback to first agent if not set)
-  const agent = currentSalesAgent || salesAgents[0];
+  // Active agent: strictly bound to logged-in user if VENDEDOR/REPRESENTANTE_COMERCIAL
+  const userAgent = useMemo(() => {
+    if (!currentUser) return null;
+    if (currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL') {
+      const cleanEmail = currentUser.email.toLowerCase().trim();
+      const found = salesAgents.find(
+        (a) =>
+          a.email.toLowerCase().trim() === cleanEmail ||
+          a.id === currentUser.id ||
+          `user-${a.id}` === currentUser.id ||
+          a.id === currentUser.id.replace('user-', '')
+      );
+      if (found) return found;
+
+      // Fallback seguro caso o vendedor tenha sido registrado e ainda não sincronizado no array salesAgents
+      return {
+        id: currentUser.id,
+        name: currentUser.name || 'Vendedor Comercial',
+        email: currentUser.email,
+        phone: currentUser.phone || '(21) 98844-3322',
+        role: (currentUser.role === 'REPRESENTANTE_COMERCIAL' ? 'REPRESENTANTE_COMERCIAL' : 'VENDEDOR') as any,
+        status: 'ATIVO' as const,
+        pixKey: (currentUser as any).pixKey || currentUser.phone || currentUser.email,
+        pixKeyType: 'ALEATORIA' as const,
+        assignedRegion: 'Cachoeiras de Macacu',
+        commissionRate: 10,
+        createdAt: currentUser.createdAt || new Date().toISOString()
+      };
+    }
+    return currentSalesAgent || salesAgents[0];
+  }, [currentUser, salesAgents, currentSalesAgent]);
+
+  // Isolamento estrito de vendedor:
+  // Vendedor A -> Portal do Vendedor A. Vendedor B -> Portal do Vendedor B.
+  // Um vendedor jamais pode herdar perfil de outro vendedor.
+  const agent = useMemo(() => {
+    if (currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') {
+      return userAgent;
+    }
+    return userAgent || currentSalesAgent || salesAgents[0];
+  }, [currentUser, userAgent, currentSalesAgent, salesAgents]);
 
   // Active sub-tab
   const [activeTab, setActiveTab] = useState<'overview' | 'organogram' | 'new-client' | 'my-boletos' | 'my-goals' | 'team'>('overview');
@@ -269,31 +308,39 @@ export const SalesDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* AGENT SELECTOR SIMULATOR (Facilita testar diferentes perfis de vendedores) */}
-            <div className="hidden sm:flex items-center space-x-2 bg-slate-800/80 px-2.5 py-1 rounded-xl border border-slate-700 text-xs">
-              <span className="text-slate-400 text-[11px]">Vendedor logado:</span>
-              <select
-                value={agent.id}
-                onChange={(e) => {
-                  const found = salesAgents.find((a) => a.id === e.target.value);
-                  if (found) setCurrentSalesAgent(found);
-                }}
-                className="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer"
-              >
-                {salesAgents.map((a) => (
-                  <option key={a.id} value={a.id} className="bg-slate-900 text-white">
-                    {a.name} ({a.roleTitle})
-                  </option>
-                ))}
-              </select>
-            </div>
+            {currentUser?.role === 'MASTER' ? (
+              <div className="hidden sm:flex items-center space-x-2 bg-slate-800/80 px-2.5 py-1 rounded-xl border border-slate-700 text-xs">
+                <span className="text-slate-400 text-[11px]">Visualizando como:</span>
+                <select
+                  value={agent.id}
+                  onChange={(e) => {
+                    const found = salesAgents.find((a) => a.id === e.target.value);
+                    if (found) setCurrentSalesAgent(found);
+                  }}
+                  className="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer"
+                >
+                  {salesAgents.map((a) => (
+                    <option key={a.id} value={a.id} className="bg-slate-900 text-white">
+                      {a.name} ({a.roleTitle})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="hidden sm:flex items-center space-x-2 bg-slate-800/80 px-2.5 py-1 rounded-xl border border-slate-700 text-xs">
+                <span className="text-slate-400 text-[11px]">Consultor:</span>
+                <span className="text-white font-bold text-xs">{agent.name}</span>
+              </div>
+            )}
 
             <button
+              id="sales-btn-view-marketplace"
               onClick={() => setCurrentEnvironment('MARKETPLACE')}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 border border-slate-700 cursor-pointer"
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 border border-slate-700 cursor-pointer shadow-xs active:scale-95"
+              title="Navegar no Marketplace conectado como vendedor"
             >
-              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
-              <span className="hidden md:inline">Ver Marketplace</span>
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <span>Ver Marketplace</span>
             </button>
 
             {currentUser?.role === 'MASTER' && (

@@ -4,12 +4,3 @@ dist-ssr/
 *.local
 .env
 .DS_Store
-
-.env
-.env.*
-!.env.example
-
-# Backups locais de seguranca
-*.backup
-
-*.before-fix

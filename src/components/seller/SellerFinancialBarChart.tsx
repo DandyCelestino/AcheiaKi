@@ -1,15 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
-import {
   DollarSign,
   TrendingUp,
   Percent,
@@ -22,6 +12,7 @@ import {
   ShoppingBag,
   Filter
 } from 'lucide-react';
+import { SvgBarChart } from '../common/SvgCharts';
 import { Order, StoreMerchant } from '../../types';
 
 interface SellerFinancialBarChartProps {
@@ -390,50 +381,27 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
             </p>
           </div>
         ) : (
-          <div className="w-full h-[320px] pt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={chartData}
-                margin={{ top: 15, right: 15, left: 0, bottom: 10 }}
-                barGap={6}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" opacity={0.7} />
-                <XAxis
-                  dataKey="name"
-                  tick={{ fontSize: 11, fill: '#64748B' }}
-                  axisLine={{ stroke: '#CBD5E1' }}
-                  tickLine={false}
-                />
-                <YAxis
-                  tickFormatter={(value) => `R$ ${value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}`}
-                  tick={{ fontSize: 11, fill: '#64748B' }}
-                  axisLine={{ stroke: '#CBD5E1' }}
-                  tickLine={false}
-                />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(226, 232, 240, 0.4)' }} />
-                <Bar
-                  dataKey="gross"
-                  name="Valor Bruto (100%)"
-                  fill="#3b82f6"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={40}
-                />
-                <Bar
-                  dataKey="commission"
-                  name="Comissão Plataforma (10%)"
-                  fill="#f59e0b"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={40}
-                />
-                <Bar
-                  dataKey="net"
-                  name="Valor Líquido (90%)"
-                  fill="#10b981"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={40}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="w-full pt-2">
+            <SvgBarChart
+              data={chartData}
+              xKey="name"
+              height={300}
+              showLegend={false}
+              series={[
+                { key: 'gross', name: 'Valor Bruto (100%)', color: '#3b82f6' },
+                { key: 'commission', name: 'Comissão Plataforma (10%)', color: '#f59e0b' },
+                { key: 'net', name: 'Valor Líquido (90%)', color: '#10b981' }
+              ]}
+              yFormatter={(value) => `R$ ${value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}`}
+              tooltipFormatter={(val, key) =>
+                `R$ ${Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              }
+              labelFormatter={(item) =>
+                viewMode === 'monthly'
+                  ? `${item.name} (${item.ordersCount || 0} pedidos)`
+                  : `Pedido: ${item.name}`
+              }
+            />
           </div>
         )}
       </div>

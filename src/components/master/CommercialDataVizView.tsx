@@ -1,21 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
+import { SvgBarChart, SvgPieChart, SvgAreaChart } from '../common/SvgCharts';
 import {
   TrendingUp,
   BarChart3,
@@ -561,83 +545,34 @@ export const CommercialDataVizView: React.FC<CommercialDataVizViewProps> = ({
             )}
           </div>
 
-          <div className="h-72 w-full pt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              {metricViewMode === 'REVENUE' ? (
-                <BarChart data={salesPerformanceData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fontSize: 11, fill: '#475569', fontWeight: 600 }}
-                    angle={-15}
-                    textAnchor="end"
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10, fill: '#64748B' }}
-                    tickFormatter={(val) => `R$${val}`}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#0F172A',
-                      borderColor: '#334155',
-                      borderRadius: '12px',
-                      color: '#F8FAFC',
-                      fontSize: '11px'
-                    }}
-                    formatter={(val: any, name: string) => [
-                      `R$ ${Number(val).toFixed(2)}`,
-                      name === 'revenue' ? 'Receita Confirmada' : 'Potencial Pendente'
-                    ]}
-                    labelFormatter={(label, payload) => {
-                      const item = payload?.[0]?.payload;
-                      return item ? `${item.fullName} (${item.region})` : label;
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="top"
-                    height={36}
-                    formatter={(val) => (val === 'revenue' ? 'Receita Paga (R$)' : 'Receita Pendente (R$)')}
-                  />
-                  <Bar dataKey="revenue" fill="#3B82F6" radius={[6, 6, 0, 0]} name="revenue" />
-                  <Bar dataKey="pendingRevenue" fill="#93C5FD" radius={[6, 6, 0, 0]} name="pendingRevenue" />
-                </BarChart>
-              ) : (
-                <BarChart data={salesPerformanceData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fontSize: 11, fill: '#475569', fontWeight: 600 }}
-                    angle={-15}
-                    textAnchor="end"
-                  />
-                  <YAxis tick={{ fontSize: 10, fill: '#64748B' }} allowDecimals={false} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#0F172A',
-                      borderColor: '#334155',
-                      borderRadius: '12px',
-                      color: '#F8FAFC',
-                      fontSize: '11px'
-                    }}
-                    formatter={(val: any, name: string) => [
-                      `${val} lojas`,
-                      name === 'clientsCount' ? 'Realizado' : 'Meta Mês'
-                    ]}
-                    labelFormatter={(label, payload) => {
-                      const item = payload?.[0]?.payload;
-                      return item ? `${item.fullName} (${item.region})` : label;
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="top"
-                    height={36}
-                    formatter={(val) => (val === 'clientsCount' ? 'Lojas Ativadas' : 'Meta Estabelecida')}
-                  />
-                  <Bar dataKey="clientsCount" fill="#10B981" radius={[6, 6, 0, 0]} name="clientsCount" />
-                  <Bar dataKey="targetCount" fill="#CBD5E1" radius={[6, 6, 0, 0]} name="targetCount" />
-                </BarChart>
-              )}
-            </ResponsiveContainer>
+          <div className="w-full pt-2">
+            {metricViewMode === 'REVENUE' ? (
+              <SvgBarChart
+                data={salesPerformanceData}
+                xKey="name"
+                height={280}
+                series={[
+                  { key: 'revenue', name: 'Receita Paga (R$)', color: '#3B82F6' },
+                  { key: 'pendingRevenue', name: 'Receita Pendente (R$)', color: '#93C5FD' }
+                ]}
+                yFormatter={(val) => `R$${val}`}
+                tooltipFormatter={(val, key) => `R$ ${Number(val).toFixed(2)}`}
+                labelFormatter={(item) => (item ? `${item.fullName} (${item.region})` : '')}
+              />
+            ) : (
+              <SvgBarChart
+                data={salesPerformanceData}
+                xKey="name"
+                height={280}
+                series={[
+                  { key: 'clientsCount', name: 'Lojas Ativadas', color: '#10B981' },
+                  { key: 'targetCount', name: 'Meta Estabelecida', color: '#CBD5E1' }
+                ]}
+                yFormatter={(val) => `${val} lojas`}
+                tooltipFormatter={(val, key) => `${val} lojas (${key === 'clientsCount' ? 'Realizado' : 'Meta'})`}
+                labelFormatter={(item) => (item ? `${item.fullName} (${item.region})` : '')}
+              />
+            )}
           </div>
         </div>
 
@@ -666,55 +601,24 @@ export const CommercialDataVizView: React.FC<CommercialDataVizViewProps> = ({
             )}
           </div>
 
-          <div className="h-72 w-full pt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={commissionsByAgentData} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                <XAxis
-                  dataKey="name"
-                  tick={{ fontSize: 11, fill: '#475569', fontWeight: 600 }}
-                  angle={-15}
-                  textAnchor="end"
-                />
-                <YAxis
-                  tick={{ fontSize: 10, fill: '#64748B' }}
-                  tickFormatter={(val) => `R$${val}`}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0F172A',
-                    borderColor: '#334155',
-                    borderRadius: '12px',
-                    color: '#F8FAFC',
-                    fontSize: '11px'
-                  }}
-                  formatter={(val: any, name: string) => [
-                    `R$ ${Number(val).toFixed(2)}`,
-                    name === 'comissaoPaga'
-                      ? 'Paga via Pix'
-                      : name === 'comissaoLiberada'
-                      ? 'Liberada (A Pagar)'
-                      : 'Pendente (Aguardando Boleto)'
-                  ]}
-                  labelFormatter={(label, payload) => {
-                    const item = payload?.[0]?.payload;
-                    return item ? `${item.fullName} (Taxa: ${item.taxaPercent}%)` : label;
-                  }}
-                />
-                <Legend
-                  verticalAlign="top"
-                  height={36}
-                  formatter={(val) => {
-                    if (val === 'comissaoPaga') return 'Paga (Pix)';
-                    if (val === 'comissaoLiberada') return 'Liberada';
-                    return 'Pendente';
-                  }}
-                />
-                <Bar dataKey="comissaoPaga" stackId="a" fill="#10B981" radius={[0, 0, 0, 0]} name="comissaoPaga" />
-                <Bar dataKey="comissaoLiberada" stackId="a" fill="#3B82F6" radius={[0, 0, 0, 0]} name="comissaoLiberada" />
-                <Bar dataKey="comissaoPendente" stackId="a" fill="#F59E0B" radius={[6, 6, 0, 0]} name="comissaoPendente" />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="w-full pt-2">
+            <SvgBarChart
+              data={commissionsByAgentData}
+              xKey="name"
+              height={280}
+              series={[
+                { key: 'comissaoPaga', name: 'Paga (Pix)', color: '#10B981' },
+                { key: 'comissaoLiberada', name: 'Liberada', color: '#3B82F6' },
+                { key: 'comissaoPendente', name: 'Pendente', color: '#F59E0B' }
+              ]}
+              yFormatter={(val) => `R$${val}`}
+              tooltipFormatter={(val, key) =>
+                `R$ ${Number(val).toFixed(2)} (${
+                  key === 'comissaoPaga' ? 'Paga via Pix' : key === 'comissaoLiberada' ? 'Liberada (A Pagar)' : 'Pendente'
+                })`
+              }
+              labelFormatter={(item) => (item ? `${item.fullName} (Taxa: ${item.taxaPercent}%)` : '')}
+            />
           </div>
         </div>
       </div>
@@ -799,26 +703,18 @@ export const CommercialDataVizView: React.FC<CommercialDataVizViewProps> = ({
             ))}
           </div>
 
-          {/* GRÁFICO RECHARTS DE SUPORTE */}
-          <div className="h-52 w-full pt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={goalsAchievementData} margin={{ top: 5, right: 10, left: -20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#475569' }} />
-                <YAxis tick={{ fontSize: 10, fill: '#64748B' }} unit="%" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0F172A',
-                    borderColor: '#334155',
-                    borderRadius: '12px',
-                    color: '#F8FAFC',
-                    fontSize: '11px'
-                  }}
-                  formatter={(val: any) => [`${val}%`, 'Atingimento da Meta']}
-                />
-                <Bar dataKey="percentualLojas" fill="#6366F1" radius={[6, 6, 0, 0]} name="Atingimento (%)" />
-              </BarChart>
-            </ResponsiveContainer>
+          {/* GRÁFICO DE SUPORTE - METAS */}
+          <div className="w-full pt-2">
+            <SvgBarChart
+              data={goalsAchievementData}
+              xKey="name"
+              height={220}
+              series={[
+                { key: 'percentualLojas', name: 'Atingimento (%)', color: '#6366F1' }
+              ]}
+              yFormatter={(val) => `${val}%`}
+              tooltipFormatter={(val) => `${val}% de Atingimento da Meta`}
+            />
           </div>
         </div>
 
@@ -836,39 +732,14 @@ export const CommercialDataVizView: React.FC<CommercialDataVizViewProps> = ({
             </p>
           </div>
 
-          <div className="h-56 w-full flex items-center justify-center">
+          <div className="w-full flex items-center justify-center py-2">
             {clientTypeDistribution.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={clientTypeDistribution}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {clientTypeDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#0F172A',
-                      borderColor: '#334155',
-                      borderRadius: '12px',
-                      color: '#F8FAFC',
-                      fontSize: '11px'
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="bottom"
-                    height={36}
-                    formatter={(val) => <span className="text-xs font-semibold text-slate-700">{val}</span>}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              <SvgPieChart
+                data={clientTypeDistribution}
+                size={190}
+                innerRadius={45}
+                outerRadius={75}
+              />
             ) : (
               <div className="text-center p-6 text-slate-400 text-xs font-medium">
                 Nenhum cliente cadastrado neste escopo.
@@ -913,60 +784,20 @@ export const CommercialDataVizView: React.FC<CommercialDataVizViewProps> = ({
           </div>
         </div>
 
-        <div className="h-64 w-full pt-2">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={temporalTrendData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
-              <defs>
-                <linearGradient id="colorReceita" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
-                </linearGradient>
-                <linearGradient id="colorComissoes" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-              <XAxis dataKey="mes" tick={{ fontSize: 11, fill: '#475569', fontWeight: 600 }} />
-              <YAxis tick={{ fontSize: 10, fill: '#64748B' }} tickFormatter={(val) => `R$${val}`} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#0F172A',
-                  borderColor: '#334155',
-                  borderRadius: '12px',
-                  color: '#F8FAFC',
-                  fontSize: '11px'
-                }}
-                formatter={(val: any, name: string) => [
-                  `R$ ${Number(val).toFixed(2)}`,
-                  name === 'receita' ? 'Faturamento Total' : 'Comissões Repassadas'
-                ]}
-              />
-              <Legend
-                verticalAlign="top"
-                height={36}
-                formatter={(val) => (val === 'receita' ? 'Faturamento Bruto (R$)' : 'Comissões Equipe (R$)')}
-              />
-              <Area
-                type="monotone"
-                dataKey="receita"
-                stroke="#3B82F6"
-                strokeWidth={2.5}
-                fillOpacity={1}
-                fill="url(#colorReceita)"
-                name="receita"
-              />
-              <Area
-                type="monotone"
-                dataKey="comissoes"
-                stroke="#10B981"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorComissoes)"
-                name="comissoes"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="w-full pt-2">
+          <SvgAreaChart
+            data={temporalTrendData}
+            xKey="mes"
+            height={260}
+            series={[
+              { key: 'receita', name: 'Faturamento Bruto (R$)', color: '#3B82F6' },
+              { key: 'comissoes', name: 'Comissões Equipe (R$)', color: '#10B981' }
+            ]}
+            yFormatter={(val) => `R$${val}`}
+            tooltipFormatter={(val, key) =>
+              `R$ ${Number(val).toFixed(2)} (${key === 'receita' ? 'Faturamento Total' : 'Comissões Repassadas'})`
+            }
+          />
         </div>
       </div>
 

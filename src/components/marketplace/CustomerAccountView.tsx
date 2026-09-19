@@ -22,7 +22,9 @@ import {
   ShieldCheck,
   ThumbsUp,
   MessageSquare,
-  Bell
+  Bell,
+  Bike,
+  Briefcase
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Product, Order } from '../../types';
@@ -46,9 +48,11 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
 }) => {
   const {
     currentUser,
+    setCurrentEnvironment,
     orders,
     favorites,
     products,
+    deliveryRides,
     logout,
     currentCity,
     triggerToast,
@@ -119,6 +123,32 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      {/* Atalho de Acesso Rápido ao Painel Pessoal do Vendedor */}
+      {(currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL') && (
+        <div className="p-4 bg-gradient-to-r from-indigo-950 via-blue-900 to-slate-900 text-white rounded-2xl border border-indigo-700/60 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 shrink-0">
+              <Briefcase className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-[11px] text-indigo-300 font-bold uppercase tracking-wider">Conta de Consultor(a) Comercial Ativa</p>
+              <h4 className="text-sm font-black text-white">Você está conectado como Vendedor Comercial</h4>
+              <p className="text-xs text-indigo-200/90 mt-0.5">
+                Seu acesso ao Portal do Vendedor está liberado com suas comissões, boletos e metas.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setCurrentEnvironment('COMMERCIAL_PORTAL')}
+            className="w-full sm:w-auto px-4 py-2.5 bg-white hover:bg-indigo-50 text-indigo-950 font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2 shrink-0 cursor-pointer active:scale-95"
+          >
+            <Briefcase className="w-4 h-4 text-indigo-600" />
+            <span>Acessar Meu Painel do Vendedor</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Top Profile Card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
@@ -507,6 +537,81 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                     </button>
                   </div>
                 )}
+
+                {/* Delivery Achei Aqui Tracking & 4-digit Confirmation Code */}
+                {(() => {
+                  const linkedRide = deliveryRides?.find(
+                    (r) => r.orderId === order.id || (order.deliveryRideId && r.id === order.deliveryRideId)
+                  );
+
+                  if (!linkedRide) return null;
+
+                  return (
+                    <div className="p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 text-white rounded-2xl shadow-md space-y-3">
+                      <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                            <Bike className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">
+                              Achei Aqui Delivery • Rastreamento
+                            </span>
+                            <span className="font-mono text-xs font-bold text-white">
+                              {linkedRide.rideCode}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                          linkedRide.status === 'FINALIZADA'
+                            ? 'bg-emerald-500 text-white'
+                            : linkedRide.status === 'AGUARDANDO_ENTREGADOR'
+                            ? 'bg-amber-400 text-slate-950 animate-pulse'
+                            : 'bg-teal-400 text-slate-950'
+                        }`}>
+                          ● {linkedRide.status}
+                        </span>
+                      </div>
+
+                      <div className="text-xs space-y-1">
+                        <p className="text-slate-300">
+                          {linkedRide.status === 'AGUARDANDO_ENTREGADOR' && 'Localizando entregador credenciado em Cachoeiras de Macacu...'}
+                          {linkedRide.status === 'ACEITA' && `Entregador ${linkedRide.driverName} aceitou a corrida e está a caminho da loja.`}
+                          {linkedRide.status === 'EM_COLETA' && `Entregador ${linkedRide.driverName} está na loja conferindo os produtos do seu pedido.`}
+                          {linkedRide.status === 'EM_TRANSITO' && `Entregador a caminho da sua entrega! Previsão rápida em Cachoeiras de Macacu.`}
+                          {linkedRide.status === 'FINALIZADA' && 'Entrega concluída e finalizada com sucesso!'}
+                        </p>
+
+                        {linkedRide.driverName && (
+                          <div className="pt-1.5 flex flex-wrap gap-2 text-[11px] text-emerald-300">
+                            <span>👤 <strong>Entregador:</strong> {linkedRide.driverName}</span>
+                            {linkedRide.driverVehicleModel && (
+                              <span>🛵 <strong>Veículo:</strong> {linkedRide.driverVehicleModel} ({linkedRide.driverVehiclePlate})</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 4-digit Confirmation Code Banner */}
+                      {linkedRide.status !== 'FINALIZADA' && linkedRide.status !== 'CANCELADA' && (
+                        <div className="p-3 bg-white/10 rounded-xl border border-white/15 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] text-amber-300 font-bold uppercase block">
+                              Código de Confirmação (Informe ao Entregador):
+                            </span>
+                            <span className="font-mono text-xl font-black text-white tracking-widest">
+                              {linkedRide.confirmationCode}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-slate-300 max-w-[180px] text-right">
+                            Informe este código de 4 dígitos somente quando receber o pacote.
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
                   <div>

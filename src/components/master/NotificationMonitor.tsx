@@ -265,8 +265,8 @@ export const NotificationMonitor: React.FC = () => {
                 </p>
               </div>
             ) : (
-              filteredLogs.map((log) => (
-                <div key={log.id} className="p-4 hover:bg-slate-50/80 transition-colors space-y-2">
+              filteredLogs.map((log, idx) => (
+                <div key={`${log.id}-${idx}`} className="p-4 hover:bg-slate-50/80 transition-colors space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center space-x-2">
                       <span
