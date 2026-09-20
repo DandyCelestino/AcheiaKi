@@ -1,10 +1,13 @@
-import {
+﻿import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
   sendPasswordResetEmail,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+  sendEmailVerification,
   onAuthStateChanged,
   updateProfile,
   User as FirebaseUser,
@@ -171,6 +174,15 @@ export async function firebaseLoginWithEmail(
 
     const user = await syncUserWithFirestore(fbUser);
 
+    // Impede o acesso enquanto o endereço de e-mail não estiver verificado
+    if (!fbUser.emailVerified) {
+      return {
+        success: false,
+        user,
+        message: 'Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada e confirme o endereço antes de entrar no Achei Aqui.',
+      };
+    }
+
     if (user.status === 'blocked' || user.status === 'suspended') {
       await signOut(auth);
       return {
@@ -180,7 +192,7 @@ export async function firebaseLoginWithEmail(
     }
 
     // Validação 2FA para perfis com permissão elevada
-    const isHighPrivilege = user.role === 'MASTER' || user.role === 'VENDEDOR' || user.twoFactorEnabled;
+    const isHighPrivilege = user.role === 'VENDEDOR' || (user.twoFactorEnabled && user.role !== 'MASTER');
     if (isHighPrivilege) {
       const code = '749210';
       sessionStorage.setItem(`2fa_code_${cleanEmail}`, code);
@@ -228,6 +240,9 @@ export async function firebaseRegisterCustomer(params: {
     const cleanEmail = params.email.trim().toLowerCase();
     const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, params.password);
     const fbUser = userCredential.user;
+
+    // Envia e-mail oficial de verificação após o cadastro
+    await sendEmailVerification(fbUser);
 
     // Atualiza nome no perfil auth
     await updateProfile(fbUser, {
@@ -289,6 +304,9 @@ export async function firebaseRegisterMerchant(params: {
     const cleanEmail = params.email.trim().toLowerCase();
     const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, params.password);
     const fbUser = userCredential.user;
+
+    // Envia e-mail oficial de verificação após o cadastro
+    await sendEmailVerification(fbUser);
 
     await updateProfile(fbUser, {
       displayName: params.ownerName,
@@ -418,18 +436,63 @@ export async function firebaseLoginWithGoogle(
 }
 
 /**
+ * Envio de e-mail oficial de verificação de endereço via Firebase Auth
+ */
+export async function firebaseSendEmailVerification(): Promise<{ success: boolean; message: string }> {
+  try {
+    const user = auth.currentUser;
+
+    if (!user) {
+      return {
+        success: false,
+        message: 'Nenhum usuário autenticado para enviar a verificação de e-mail.',
+      };
+    }
+
+    if (user.emailVerified) {
+      return {
+        success: true,
+        message: 'Este endereço de e-mail já foi verificado.',
+      };
+    }
+
+    await sendEmailVerification(user);
+
+    return {
+      success: true,
+      message: `E-mail de verificação enviado para ${user.email || 'seu endereço de e-mail'}. Verifique também a pasta de spam.`,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error.code),
+    };
+  }
+}
+/**
  * Envio de e-mail oficial de redefinição de senha via Firebase Auth
  */
 export async function firebaseSendPasswordReset(
   email: string
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const cleanEmail = email.trim().toLowerCase();
-    await sendPasswordResetEmail(auth, cleanEmail);
-    return {
-      success: true,
-      message: `Link de redefinição de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
-    };
+      const cleanEmail = email.trim().toLowerCase();
+
+      const actionCodeSettings = {
+        url: `${window.location.origin}/?mode=resetPassword`,
+        handleCodeInApp: true
+      };
+
+      await sendPasswordResetEmail(
+        auth,
+        cleanEmail,
+        actionCodeSettings
+      );
+
+      return {
+        success: true,
+        message: `Link de redefinição de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
+      };
   } catch (error: any) {
     return {
       success: false,
@@ -441,6 +504,68 @@ export async function firebaseSendPasswordReset(
 /**
  * Encerra sessão do usuário no Firebase Auth
  */
+export async function firebaseVerifyPasswordResetCode(
+  oobCode: string
+): Promise<{ success: boolean; email?: string; message: string }> {
+  try {
+    const cleanCode = oobCode.trim();
+
+    if (!cleanCode) {
+      return {
+        success: false,
+        message: 'Código de redefinição não informado.'
+      };
+    }
+
+    const email = await verifyPasswordResetCode(auth, cleanCode);
+
+    return {
+      success: true,
+      email,
+      message: 'Código de redefinição válido.'
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error.code)
+    };
+  }
+}
+
+export async function firebaseConfirmPasswordReset(
+  oobCode: string,
+  newPassword: string
+): Promise<{ success: boolean; message: string }> {
+  try {
+    const cleanCode = oobCode.trim();
+
+    if (!cleanCode) {
+      return {
+        success: false,
+        message: 'Código de redefinição não informado.'
+      };
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      return {
+        success: false,
+        message: 'A nova senha deve possuir no mínimo 6 caracteres.'
+      };
+    }
+
+    await confirmPasswordReset(auth, cleanCode, newPassword);
+
+    return {
+      success: true,
+      message: 'Senha alterada com sucesso! Você já pode entrar com sua nova senha.'
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error.code)
+    };
+  }
+}
 export async function firebaseLogout(): Promise<void> {
   try {
     await signOut(auth);
@@ -480,3 +605,12 @@ export function subscribeToFirebaseAuthState(
     }
   });
 }
+
+
+
+
+
+
+
+
+

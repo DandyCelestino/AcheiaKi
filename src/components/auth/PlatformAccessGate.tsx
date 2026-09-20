@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import {
   Lock,
   Mail,
@@ -41,11 +41,11 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
     registerMerchantWithFirebase,
     sendFirebasePasswordReset,
     verifyTwoFactorCode,
+    resendEmailConfirmation,
     resendTwoFactorCode,
     loginAsUser,
     registerCustomer,
     registerMerchant,
-    requestPasswordReset,
     completePasswordReset,
     currentCity,
     frontendConfig,
@@ -54,6 +54,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
 
   const [activeTab, setActiveTab] = useState<'login' | 'forgot-password' | 'register-customer' | 'register-merchant'>('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
 
   // Common UI State
   const [showPassword, setShowPassword] = useState(false);
@@ -76,10 +77,70 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [forgotEmail, setForgotEmail] = useState('');
   const [resetStep, setResetStep] = useState<1 | 2>(1);
   const [resetCode, setResetCode] = useState('');
-  const [simulatedReceivedCode, setSimulatedReceivedCode] = useState<string | null>(null);
   const [newResetPassword, setNewResetPassword] = useState('');
   const [confirmResetPassword, setConfirmResetPassword] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
+    // Processa automaticamente o link de redefinição enviado pelo Firebase.
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const oobCode = params.get('oobCode');
+      const mode = params.get('mode');
+
+      if (!oobCode) return;
+      if (mode && mode !== 'resetPassword' && mode !== 'action') return;
+
+      let cancelled = false;
+
+      const processResetLink = async () => {
+        setErrorMessage(null);
+        setSuccessMessage(null);
+        setIsSubmitting(true);
+
+        try {
+          const verification = await firebaseVerifyPasswordResetCode(oobCode);
+
+          if (cancelled) return;
+
+          if (verification.success) {
+            setResetCode(oobCode);
+
+            if (verification.email) {
+              setForgotEmail(verification.email);
+            }
+
+            setResetStep(2);
+            setActiveTab('forgot-password');
+            setSuccessMessage(
+              'Link de redefinição válido. Informe sua nova senha abaixo.'
+            );
+          } else {
+            setResetCode('');
+            setResetStep(1);
+            setActiveTab('forgot-password');
+            setErrorMessage(verification.message);
+          }
+        } catch (error: any) {
+          if (!cancelled) {
+            setResetCode('');
+            setResetStep(1);
+            setActiveTab('forgot-password');
+            setErrorMessage(
+              error?.message || 'Não foi possível validar o link de redefinição.'
+            );
+          }
+        } finally {
+          if (!cancelled) {
+            setIsSubmitting(false);
+          }
+        }
+      };
+
+      processResetLink();
+
+      return () => {
+        cancelled = true;
+      };
+    }, []);
 
   // Customer Register Form
   const [customerName, setCustomerName] = useState('');
@@ -114,6 +175,31 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [ref2Phone, setRef2Phone] = useState('');
   const [ref2Role, setRef2Role] = useState('');
   const [merchantTermsAccepted, setMerchantTermsAccepted] = useState(true);
+
+  const handleResendVerification = async () => {
+    if (!loginEmail.trim()) {
+      setErrorMessage('Informe seu e-mail para reenviar a verificação.');
+      return;
+    }
+
+    setIsResendingVerification(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      const result = await resendEmailConfirmation(loginEmail.trim().toLowerCase());
+
+      if (result.success) {
+        setSuccessMessage(result.message);
+      } else {
+        setErrorMessage(result.message);
+      }
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Não foi possível reenviar o e-mail de verificação.');
+    } finally {
+      setIsResendingVerification(false);
+    }
+  };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,81 +286,91 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
 
   // Password Recovery Steps
   const handleSendResetCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+      e.preventDefault();
+      setErrorMessage(null);
+      setSuccessMessage(null);
 
-    if (!forgotEmail.trim()) {
-      setErrorMessage('Informe o e-mail cadastrado na sua conta.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const fbReset = await sendFirebasePasswordReset(forgotEmail.trim());
-      if (fbReset.success) {
-        setSuccessMessage(fbReset.message);
-      } else {
-        const res = requestPasswordReset(forgotEmail.trim());
-        if (res.success) {
-          setSimulatedReceivedCode(res.simulatedCode || '849201');
-          setResetCode(res.simulatedCode || '849201');
-          setSuccessMessage(res.message);
-          setResetStep(2);
-        } else {
-          setErrorMessage(fbReset.message || res.message);
-        }
+      if (!forgotEmail.trim()) {
+        setErrorMessage('Informe o e-mail cadastrado na sua conta.');
+        return;
       }
-    } catch (err: any) {
-      setErrorMessage(err?.message || 'Falha ao solicitar recuperação.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
-  const handleFinishPasswordReset = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+      setIsSubmitting(true);
 
-    if (!resetCode || resetCode.length < 6) {
-      setErrorMessage('Digite o código de verificação de 6 dígitos.');
-      return;
-    }
+      try {
+        const fbReset = await sendFirebasePasswordReset(forgotEmail.trim());
 
-    if (!newResetPassword || newResetPassword.length < 6) {
-      setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
-      return;
-    }
-
-    if (newResetPassword !== confirmResetPassword) {
-      setErrorMessage('A confirmação de senha não confere com a nova senha.');
-      return;
-    }
-
-    const res = completePasswordReset(forgotEmail.trim(), resetCode.trim(), newResetPassword);
-    if (res.success) {
-      setSuccessMessage('Senha atualizada com sucesso! Realizando login automático...');
-      
-      // Auto-login or redirect to login tab
-      setTimeout(() => {
-        const loginRes = login(forgotEmail.trim(), newResetPassword, true);
-        if (loginRes.success && !loginRes.requires2FA) {
-          if (onSuccess) onSuccess();
+        if (fbReset.success) {
+          setSuccessMessage(
+            'Link de redefinição enviado para seu e-mail. Abra o link recebido para continuar.'
+          );
+          setResetStep(1);
         } else {
+          setErrorMessage(fbReset.message);
+        }
+      } catch (err: any) {
+        setErrorMessage(
+          err?.message || 'Falha ao solicitar recuperação de senha.'
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    const handleFinishPasswordReset = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setErrorMessage(null);
+      setSuccessMessage(null);
+
+      if (!resetCode || !resetCode.trim()) {
+        setErrorMessage('Link de redefinição inválido ou ausente.');
+        return;
+      }
+
+      if (!newResetPassword || newResetPassword.length < 6) {
+        setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
+
+      if (newResetPassword !== confirmResetPassword) {
+        setErrorMessage('A confirmação de senha não confere com a nova senha.');
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      try {
+        const res = await completePasswordReset(
+          forgotEmail.trim(),
+          resetCode.trim(),
+          newResetPassword
+        );
+
+        if (res.success) {
+          setSuccessMessage(
+            'Senha alterada com sucesso! Você já pode entrar com sua nova senha.'
+          );
+
+          setNewResetPassword('');
+          setConfirmResetPassword('');
+          setResetCode('');
+          setResetStep(1);
           setActiveTab('login');
           setLoginEmail(forgotEmail.trim());
-          setLoginPassword(newResetPassword);
-          setResetStep(1);
-          setSuccessMessage('Senha alterada! Entre com sua nova senha.');
+          setLoginPassword('');
+        } else {
+          setErrorMessage(res.message);
         }
-      }, 1200);
-    } else {
-      setErrorMessage(res.message);
-    }
-  };
+      } catch (err: any) {
+        setErrorMessage(
+          err?.message || 'Não foi possível redefinir a senha.'
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
-  const handleCustomerRegisterSubmit = async (e: React.FormEvent) => {
+    const handleCustomerRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -474,7 +570,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
               {activeTab === 'login' && 'O acesso ao shopping e serviços de Cachoeiras de Macacu é exclusivo para usuários autenticados com login e senha.'}
-              {activeTab === 'forgot-password' && 'Redefina sua senha com segurança através do código de verificação enviado ao seu e-mail.'}
+              {activeTab === 'forgot-password' && 'Redefina sua senha com segurança através do link enviado ao seu e-mail.'}
               {activeTab === 'register-customer' && 'Crie sua conta gratuita em menos de 1 minuto para comprar, agendar serviços e acompanhar pedidos.'}
               {activeTab === 'register-merchant' && 'Cadastre seu estabelecimento ou serviços para vender e agendar clientes em toda a região.'}
             </p>
@@ -546,7 +642,21 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
           {errorMessage && (
             <div className="mb-5 p-3.5 bg-red-950/80 border border-red-800/80 rounded-2xl flex items-start space-x-2 text-xs text-red-200 animate-in fade-in">
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <span className="leading-relaxed">{errorMessage}</span>
+              <div className="flex-1">
+                <div className="leading-relaxed">{errorMessage}</div>
+
+                {activeTab === 'login' && errorMessage.toLowerCase().includes('e-mail ainda não foi verificado') && (
+                  <button
+                    type="button"
+                    onClick={handleResendVerification}
+                    disabled={isResendingVerification || !loginEmail.trim()}
+                    className="mt-3 w-full py-2.5 px-3 rounded-xl border border-amber-700/70 bg-amber-950/50 text-amber-200 text-xs font-bold hover:bg-amber-900/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${isResendingVerification ? 'animate-spin' : ''}`} />
+                    {isResendingVerification ? 'Reenviando verificação...' : 'Reenviar e-mail de verificação'}
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
@@ -705,7 +815,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 {simulated2FACode && (
                   <div className="p-2.5 bg-slate-950 rounded-xl border border-emerald-700/50 flex items-center justify-between mt-2">
                     <span className="text-xs font-bold text-emerald-400">Código 2FA:</span>
-                    <span className="font-mono text-base font-black text-white tracking-widest">{simulated2FACode}</span>
+                    <span className="font-sans text-base font-black text-white tracking-widest">{simulated2FACode}</span>
                     <span className="text-[10px] text-slate-400 font-medium">(Digite abaixo)</span>
                   </div>
                 )}
@@ -722,7 +832,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                   value={twoFactorCodeInput}
                   onChange={(e) => setTwoFactorCodeInput(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
-                  className="w-full py-3 bg-slate-950 border border-slate-700 rounded-xl text-xl font-mono font-bold text-white text-center tracking-widest focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  className="w-full py-3 bg-slate-950 border border-slate-700 rounded-xl text-xl font-sans font-bold text-white text-center tracking-widest focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
                 />
               </div>
 
@@ -764,7 +874,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 <form onSubmit={handleSendResetCode} className="space-y-4">
                   <div className="p-3.5 bg-emerald-950/40 border border-emerald-800/40 rounded-2xl text-xs text-slate-300 leading-relaxed">
                     <p>
-                      Informe o e-mail da sua conta. Enviaremos um <strong>código de recuperação de 6 dígitos</strong> para autorizar a criação de uma nova senha.
+                      Informe o e-mail da sua conta. Enviaremos um <strong>link seguro de redefinição</strong> para criar uma nova senha.
                     </p>
                   </div>
 
@@ -789,7 +899,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                     type="submit"
                     className="w-full py-3.5 px-6 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>ENVIAR CÓDIGO DE RECUPERAÇÃO</span>
+                    <span>ENVIAR LINK DE RECUPERAÇÃO</span>
                     <Send className="w-4 h-4" />
                   </button>
 
@@ -805,31 +915,8 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 </form>
               ) : (
                 <form onSubmit={handleFinishPasswordReset} className="space-y-4">
-                  {simulatedReceivedCode && (
-                    <div className="p-3.5 bg-emerald-950/60 border border-emerald-700/60 rounded-2xl space-y-1.5">
-                      <div className="flex items-center justify-between text-xs font-bold text-emerald-300">
-                        <span>🔑 Código de Recuperação Gerado:</span>
-                        <span className="font-mono text-base text-white tracking-widest">{simulatedReceivedCode}</span>
-                      </div>
-                      <p className="text-[11px] text-emerald-400/80">
-                        Código pronto para redefinição imediata de senha no ambiente de testes.
-                      </p>
-                    </div>
-                  )}
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Código de 6 dígitos *
-                    </label>
-                    <input
-                      type="text"
-                      maxLength={6}
-                      required
-                      value={resetCode}
-                      onChange={(e) => setResetCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder="000000"
-                      className="w-full py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-lg font-mono font-bold text-white text-center tracking-widest focus:border-emerald-500 outline-none"
-                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1208,3 +1295,11 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
     </div>
   );
 };
+
+
+
+
+
+
+
+
