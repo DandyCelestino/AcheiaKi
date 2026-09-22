@@ -1,8 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+﻿import { createClient } from '@supabase/supabase-js';
 
-const defaultSupabaseUrl = 'https://xootmi7yjqr7.supabase.co';
-const defaultPublishableKey = 'sb_publishable_xootmi7YjqR7__ZCTWx9Sg_ilycXtrU';
-const defaultSecretKey = '';
+const defaultSupabaseUrl = '';
+const defaultPublishableKey = '';
 
 const supabaseUrl =
   (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) ||
@@ -17,7 +16,7 @@ const supabaseAnonKey =
 
 export const SUPABASE_SECRET_KEY =
   (typeof process !== 'undefined' && process.env?.SUPABASE_SECRET_KEY) ||
-  defaultSecretKey;
+  '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

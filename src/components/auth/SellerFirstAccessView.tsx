@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ShieldAlert, Lock, CheckCircle2, AlertCircle, Eye, EyeOff, KeyRound, LogOut, ArrowRight } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -123,7 +123,7 @@ export const SellerFirstAccessView: React.FC = () => {
               <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
                 <strong className="block font-bold text-amber-950 mb-0.5">Credencial Inicial Provisória Detectada</strong>
-                Sua conta foi inicializada com a senha padrão da plataforma (<span className="font-sans font-bold">12345678</span>). Por segurança, ela deve ser substituída agora por uma nova senha pessoal de no mínimo 8 caracteres.
+                Sua conta foi inicializada com a senha padrão da plataforma (<span className="font-mono font-bold">12345678</span>). Por segurança, ela deve ser substituída agora por uma nova senha pessoal de no mínimo 8 caracteres.
               </div>
             </div>
 
@@ -264,4 +264,3 @@ export const SellerFirstAccessView: React.FC = () => {
     </div>
   );
 };
-

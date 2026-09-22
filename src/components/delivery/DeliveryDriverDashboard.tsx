@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DeliveryRide, DeliveryOperationalStatus } from '../../types';
 import {
@@ -69,19 +69,53 @@ export const DeliveryDriverDashboard: React.FC = () => {
     return deliveryRides.find(
       (r) =>
         r.driverId === activeDriver.id &&
-        ['ACEITA', 'EM_COLETA', 'COLETADA', 'EM_TRANSITO'].includes(r.status)
+        [
+          'ENTREGADOR_SELECIONADO',
+          'ACEITA',
+          'EM_DESLOCAMENTO_COLETA',
+          'CHEGOU_COLETA',
+          'EM_COLETA',
+          'COLETADA',
+          'EM_DESLOCAMENTO_ENTREGA',
+          'CHEGOU_DESTINO',
+          'EM_TRANSITO',
+          'AGUARDANDO_CODIGO'
+        ].includes(r.status)
     );
   }, [activeDriver, deliveryRides]);
 
-  // Corridas disponíveis no radar (abertas e aguardando entregador)
+  // Corridas disponíveis no radar (abertas e liberadas pelo Master para entregadores elegíveis)
   const availableRides = useMemo(() => {
-    return deliveryRides.filter((r) => r.status === 'AGUARDANDO_ENTREGADOR' && !r.driverId);
-  }, [deliveryRides]);
+    return deliveryRides.filter((r) => {
+      const isAvailableStatus =
+        (r.status === 'DISPONIVEL_ENTREGADORES' || r.status === 'AGUARDANDO_ENTREGADOR') && !r.driverId;
+      const isDirectedToMe =
+        r.status === 'ENTREGADOR_SELECIONADO' && r.driverId === activeDriver?.id;
+
+      if (!isAvailableStatus && !isDirectedToMe) return false;
+
+      // Filtro de elegibilidade por veículo se aplicável
+      if (activeDriver?.vehicleType && r.vehicleType) {
+        const driverVeh = activeDriver.vehicleType.toUpperCase();
+        const rideVeh = r.vehicleType.toUpperCase();
+        // Cargas pesadas de VAN ou CARRO não podem ser atendidas por BICICLETA
+        if ((rideVeh === 'VAN' || rideVeh === 'CARRO') && driverVeh === 'BICICLETA') {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [deliveryRides, activeDriver]);
 
   // Histórico de corridas finalizadas ou atendidas pelo motorista
   const myCompletedRides = useMemo(() => {
     if (!activeDriver) return [];
-    return deliveryRides.filter((r) => r.driverId === activeDriver.id && r.status === 'FINALIZADA');
+    return deliveryRides.filter(
+      (r) =>
+        r.driverId === activeDriver.id &&
+        ['FINALIZADA', 'ENTREGUE', 'AGUARDANDO_LIBERACAO_PAGAMENTO', 'PAGAMENTO_AUTORIZADO', 'PAGAMENTO_PROCESSANDO', 'PAGA'].includes(r.status)
+    );
   }, [activeDriver, deliveryRides]);
 
   // Toggle de status operacional (Online / Offline)
@@ -309,7 +343,7 @@ export const DeliveryDriverDashboard: React.FC = () => {
                       <span className="text-[10px] text-emerald-400 font-black uppercase tracking-wider block">
                         Corrida em Andamento
                       </span>
-                      <h3 className="font-sans text-xl font-black text-white">
+                      <h3 className="font-mono text-xl font-black text-white">
                         {activeRide.rideCode}
                       </h3>
                     </div>
@@ -462,7 +496,7 @@ export const DeliveryDriverDashboard: React.FC = () => {
                               placeholder="0000"
                               value={confirmationCodeInput}
                               onChange={(e) => setConfirmationCodeInput(e.target.value.replace(/\D/g, ''))}
-                              className="w-full py-3 text-center font-sans text-3xl font-black text-white tracking-widest bg-slate-900 border-2 border-emerald-500 rounded-xl outline-none focus:ring-4 focus:ring-emerald-500/30"
+                              className="w-full py-3 text-center font-mono text-3xl font-black text-white tracking-widest bg-slate-900 border-2 border-emerald-500 rounded-xl outline-none focus:ring-4 focus:ring-emerald-500/30"
                               autoFocus
                             />
                           </div>
@@ -549,7 +583,7 @@ export const DeliveryDriverDashboard: React.FC = () => {
                     >
                       <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
                         <div className="flex items-center space-x-2">
-                          <span className="font-sans font-black text-sm text-emerald-400">
+                          <span className="font-mono font-black text-sm text-emerald-400">
                             {ride.rideCode}
                           </span>
                           <span className="text-[10px] text-slate-400">• Pedido: {ride.orderCode}</span>
@@ -627,14 +661,14 @@ export const DeliveryDriverDashboard: React.FC = () => {
                   <div key={ride.id} className="py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
                     <div className="space-y-0.5">
                       <div className="flex items-center space-x-2">
-                        <span className="font-sans font-bold text-white">{ride.rideCode}</span>
+                        <span className="font-mono font-bold text-white">{ride.rideCode}</span>
                         <span className="text-[10px] text-slate-500">• {new Date(ride.finalizedAt || ride.createdAt).toLocaleDateString('pt-BR')}</span>
                         <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
                           Finalizada ✓
                         </span>
                       </div>
                       <p className="text-slate-300">
-                        {ride.merchantName} ({ride.originNeighborhood}) âž" {ride.customerName} ({ride.destinationNeighborhood})
+                        {ride.merchantName} ({ride.originNeighborhood}) ➔ {ride.customerName} ({ride.destinationNeighborhood})
                       </p>
                       <p className="text-[10px] text-slate-500">
                         Distância: {ride.distanceKm.toFixed(1)} km • Código validado: {ride.confirmationCode}
@@ -682,12 +716,12 @@ export const DeliveryDriverDashboard: React.FC = () => {
                 <p className="font-bold text-white text-sm">
                   {activeDriver.vehicleModel} ({activeDriver.vehicleColor || activeDriver.vehicleType})
                 </p>
-                <p className="text-emerald-400 font-sans font-bold">Placa: {activeDriver.vehiclePlate}</p>
+                <p className="text-emerald-400 font-mono font-bold">Placa: {activeDriver.vehiclePlate}</p>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1">
                 <span className="text-slate-500 text-[10px] uppercase font-bold block">Chave PIX para Repasses:</span>
-                <p className="font-bold text-white font-sans text-sm">{activeDriver.pixKey || 'Não informada'}</p>
+                <p className="font-bold text-white font-mono text-sm">{activeDriver.pixKey || 'Não informada'}</p>
                 <p className="text-slate-400">Repasses gerenciados pela plataforma</p>
               </div>
             </div>
@@ -738,4 +772,3 @@ export const DeliveryDriverDashboard: React.FC = () => {
     </div>
   );
 };
-

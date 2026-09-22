@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 // ============================================================================
 // SVG BAR CHART (Multi-bar support, responsive, interactive tooltip)
@@ -108,7 +108,7 @@ export const SvgBarChart: React.FC<SvgBarChartProps> = ({
                   x={paddingLeft - 8}
                   y={y + 4}
                   textAnchor="end"
-                  className="fill-slate-400 dark:fill-slate-500 text-[10px] font-sans"
+                  className="fill-slate-400 dark:fill-slate-500 text-[10px] font-mono"
                 >
                   {yFormatter(tickVal)}
                 </text>
@@ -205,7 +205,7 @@ export const SvgBarChart: React.FC<SvgBarChartProps> = ({
                       <span className="w-2 h-2 rounded-xs" style={{ backgroundColor: s.color }} />
                       {s.name}:
                     </span>
-                    <span className="font-sans font-bold text-white">{formatted}</span>
+                    <span className="font-mono font-bold text-white">{formatted}</span>
                   </div>
                 );
               })}
@@ -328,7 +328,7 @@ export const SvgPieChart: React.FC<SvgPieChartProps> = ({
               <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">
                 {data[hoveredIdx].name}
               </span>
-              <span className="text-sm font-extrabold text-slate-900 dark:text-white font-sans">
+              <span className="text-sm font-extrabold text-slate-900 dark:text-white font-mono">
                 {data[hoveredIdx].value}
               </span>
               <span className="text-[9px] font-bold text-blue-600 dark:text-blue-400">
@@ -340,7 +340,7 @@ export const SvgPieChart: React.FC<SvgPieChartProps> = ({
               <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                 Total
               </span>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white font-sans">
+              <span className="text-base font-extrabold text-slate-900 dark:text-white font-mono">
                 {total}
               </span>
             </>
@@ -479,7 +479,7 @@ export const SvgAreaChart: React.FC<SvgAreaChartProps> = ({
                   x={paddingLeft - 8}
                   y={y + 4}
                   textAnchor="end"
-                  className="fill-slate-400 dark:fill-slate-500 text-[10px] font-sans"
+                  className="fill-slate-400 dark:fill-slate-500 text-[10px] font-mono"
                 >
                   {yFormatter(tickVal)}
                 </text>
@@ -590,7 +590,7 @@ export const SvgAreaChart: React.FC<SvgAreaChartProps> = ({
                       <span className="w-2 h-2 rounded-xs" style={{ backgroundColor: s.color }} />
                       {s.name}:
                     </span>
-                    <span className="font-sans font-bold text-white">{formatted}</span>
+                    <span className="font-mono font-bold text-white">{formatted}</span>
                   </div>
                 );
               })}
@@ -601,4 +601,3 @@ export const SvgAreaChart: React.FC<SvgAreaChartProps> = ({
     </div>
   );
 };
-

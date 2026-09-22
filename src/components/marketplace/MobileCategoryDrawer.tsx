@@ -175,7 +175,7 @@ export const MobileCategoryDrawer: React.FC<MobileCategoryDrawerProps> = ({
                     <button
                       onClick={() => setExpandedCategory(isExpanded ? null : cat.id)}
                       className="p-1 rounded-md text-emerald-700 hover:bg-emerald-100"
-                      title="Ver atalhos"
+                      title="Ver subcategorias"
                     >
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-200 ${
@@ -185,7 +185,7 @@ export const MobileCategoryDrawer: React.FC<MobileCategoryDrawerProps> = ({
                     </button>
                   </div>
 
-                  {/* Shortcuts List (caixa baixa) */}
+                  {/* Subcategorias Oficiais (caixa baixa) */}
                   {isExpanded && (
                     <div className="bg-emerald-50/40 p-2 border-t border-emerald-100 space-y-1">
                       <p className="text-[10px] text-slate-500 px-2 py-0.5 leading-tight">
@@ -214,16 +214,18 @@ export const MobileCategoryDrawer: React.FC<MobileCategoryDrawerProps> = ({
 
         {/* Drawer Footer */}
         <div className="p-3 bg-emerald-900 text-emerald-100 text-xs border-t border-emerald-800 space-y-2">
-          <button
-            onClick={() => {
-              onClose();
-              onOpenAuth('register-merchant');
-            }}
-            className="w-full py-2 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <Store className="w-3.5 h-3.5 text-emerald-300" />
-            <span>Quero Vender no Achei Aqui</span>
-          </button>
+          {!currentUser && (
+            <button
+              onClick={() => {
+                onClose();
+                onOpenAuth('register-customer');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+            >
+              <UserPlus className="w-3.5 h-3.5 text-white" />
+              <span>CADASTRE-SE NA PLATAFORMA</span>
+            </button>
+          )}
 
           <p className="text-[10px] text-emerald-300/80 text-center">
             Plataforma 100% Cachoeirense 🌿

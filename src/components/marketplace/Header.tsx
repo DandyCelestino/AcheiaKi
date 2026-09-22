@@ -37,7 +37,7 @@ import { Product, StoreMerchant, ServiceItem } from '../../types';
 import { NotificationBellDropdown } from '../notifications/NotificationBellDropdown';
 
 interface HeaderProps {
-  onOpenAuth: (initialTab?: 'login' | 'register-customer' | 'register-merchant') => void;
+  onOpenAuth: (initialTab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
   onOpenCart: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -203,37 +203,8 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="truncate">O shopping online das matas de Cachoeiras de Macacu - RJ</span>
           </div>
 
-          <div className="flex items-center space-x-3 shrink-0">
-            {/* Botão de Manual e Normas */}
-            <button
-              onClick={() => openUserManualModal('CLIENTES')}
-              className="text-amber-300 hover:text-white font-bold flex items-center gap-1 transition-colors"
-              title="Manual Passo a Passo para Clientes e Lojistas"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Manual de Uso & Normas</span>
-              <span className="sm:hidden">Manual</span>
-            </button>
-            <span className="text-emerald-500">|</span>
-            {/* Botão de Cadastro Acessível no Top Bar (Apenas para usuários NÃO cadastrados/logados) */}
-            {!currentUser && (
-              <>
-                <button
-                  onClick={() => onOpenAuth('register-customer')}
-                  className="text-white hover:text-emerald-200 font-bold flex items-center gap-1 transition-colors"
-                >
-                  <UserPlus className="w-3.5 h-3.5" />
-                  <span>Criar Conta</span>
-                </button>
-                <span className="text-emerald-500">|</span>
-              </>
-            )}
-            <button
-              onClick={() => onOpenAuth('register-merchant')}
-              className="text-emerald-300 hover:text-white font-bold transition-colors"
-            >
-              Lojista? Venda Aqui
-            </button>
+          <div className="flex items-center space-x-3 shrink-0 text-emerald-200 text-xs">
+            <span className="hidden md:inline font-medium">Acesso seguro SSL • Cachoeiras de Macacu</span>
           </div>
         </div>
       </div>
@@ -482,20 +453,12 @@ export const Header: React.FC<HeaderProps> = ({
                 id="header-register-btn"
                 onClick={() => onOpenAuth('register-customer')}
                 className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-[11px] sm:text-xs font-black shadow-sm shadow-emerald-700/30 hover:shadow-md transition-all shrink-0 cursor-pointer"
+                title="Cadastre-se na plataforma"
               >
                 <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>CADASTRE-SE</span>
               </button>
             )}
-
-            {/* Quero Vender CTA (Desktop) */}
-            <button
-              onClick={() => onOpenAuth('register-merchant')}
-              className="hidden xl:flex items-center space-x-1.5 px-3.5 py-2 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 text-xs font-bold transition-all"
-            >
-              <Store className="w-3.5 h-3.5 text-emerald-700" />
-              <span>{frontendConfig?.headerCtaText || 'Quero Vender'}</span>
-            </button>
 
             {/* Favorites Icon (Desktop) */}
             <button
@@ -590,7 +553,7 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
 
                     <div className="py-1 text-xs">
-                      {/* Atalho exclusivo do Vendedor Comercial: Retornar ao Portal do Vendedor Pessoal Imediatamente */}
+                      {/* Acesso exclusivo do Vendedor Comercial: Retornar ao Portal do Vendedor Pessoal Imediatamente */}
                       {(currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL') && (
                         <button
                           id="avatar-btn-seller-portal"
@@ -643,7 +606,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <span>Políticas de Avaliação</span>
                       </button>
 
-                      {/* Atalho exclusivo do Lojista / Prestador de Serviço */}
+                      {/* Acesso exclusivo do Lojista / Prestador de Serviço */}
                       {(currentUser.role === 'LOJISTA' || currentUser.role === 'PRESTADOR_SERVICO') && (
                         <button
                           id="avatar-btn-merchant-portal"
@@ -746,7 +709,7 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* 3. Atalho Perfil / Minha Conta ou Meu Painel do Vendedor */}
+            {/* 3. Acesso Perfil / Minha Conta ou Meu Painel do Vendedor */}
             {(currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') ? (
               <button
                 id="mobile-action-seller-portal"
@@ -776,7 +739,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* 4. Atalho Cidade / Região */}
+            {/* 4. Seleção Cidade / Região */}
             <button
               id="mobile-action-location"
               onClick={() => setShowCityDropdown(!showCityDropdown)}

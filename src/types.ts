@@ -375,7 +375,7 @@ export interface StoreMerchant {
   commissionRate?: number; // In percent (e.g. 12, 8, 5, 3, 1)
   asaasAccountId?: string; // ID da subconta Asaas (ex: "cus_000005829102")
   asaasWalletId?: string; // Wallet ID do lojista no Asaas para Split de pagamentos
-  status: 'approved' | 'pending' | 'rejected' | 'suspended' | 'blocked';
+  status: 'approved' | 'pending' | 'rejected' | 'suspended' | 'blocked' | 'pending_payment';
   statusReason?: string;
   submittedAt: string;
   updatedAt?: string;
@@ -394,7 +394,7 @@ export interface Order {
   customerEmail?: string;
   customerCpf?: string;
   termsAccepted?: boolean;
-  stockConfirmationStatus?: 'PENDING_STORE_CONFIRMATION' | 'STOCK_CONFIRMED' | 'OUT_OF_STOCK' | 'EXPIRED';
+  stockConfirmationStatus?: 'PENDING_STORE_CONFIRMATION' | 'STOCK_CONFIRMED' | 'OUT_OF_STOCK' | 'EXPIRED' | 'STAND_BY';
   stockConfirmationExpiresAt?: string; // 15 minutos para a loja confirmar
   reservationExpiresAt?: string; // 30 minutos de reserva garantida
   paymentNegotiationNote?: string; // Negociação direta cliente + loja
@@ -454,6 +454,21 @@ export interface Order {
     description?: string;
     amount?: number;
     percentage?: number;
+  }[];
+  subpedidos?: any[];
+  itensPorLojista?: {
+    lojistaId: string;
+    nomeLojista: string;
+    subtotal: number;
+    walletId?: string;
+    itens: {
+      productId: string;
+      productName: string;
+      productImage: string;
+      quantity: number;
+      price: number;
+      selectedVariation?: { [key: string]: string };
+    }[];
   }[];
   deliveryRideId?: string;
   deliveryRideStatus?: string;
@@ -1392,15 +1407,34 @@ export interface DeliveryDriver {
 }
 
 export type DeliveryRideStatus =
+  // Nova Máquina de Estados da Entrega (AcheiAqui Delivery Core V2)
+  | 'AGUARDANDO_ANALISE'
+  | 'CORRECAO_SOLICITADA'
+  | 'APROVADA'
+  | 'REJEITADA'
+  | 'DISPONIVEL_ENTREGADORES'
+  | 'ENTREGADOR_SELECIONADO'
+  | 'ACEITA'
+  | 'EM_DESLOCAMENTO_COLETA'
+  | 'CHEGOU_COLETA'
+  | 'COLETADA'
+  | 'EM_DESLOCAMENTO_ENTREGA'
+  | 'CHEGOU_DESTINO'
+  | 'AGUARDANDO_CODIGO'
+  | 'ENTREGUE'
+  | 'AGUARDANDO_LIBERACAO_PAGAMENTO'
+  | 'PAGAMENTO_AUTORIZADO'
+  | 'PAGAMENTO_PROCESSANDO'
+  | 'PAGA'
+  | 'PAGAMENTO_FALHOU'
+  | 'CANCELADA'
+  | 'DEVOLVIDA'
+  // Legados para retrocompatibilidade
   | 'CRIADA'
   | 'AGUARDANDO_ENTREGADOR'
-  | 'ACEITA'
   | 'EM_COLETA'
-  | 'COLETADA'
   | 'EM_TRANSITO'
-  | 'ENTREGUE'
   | 'FINALIZADA'
-  | 'CANCELADA'
   | 'OCORRENCIA';
 
 export interface DeliveryRideHistoryItem {
@@ -1410,28 +1444,41 @@ export interface DeliveryRideHistoryItem {
   actorId?: string;
   actorName?: string;
   actorRole?: string;
+  notes?: string;
 }
 
 export interface DeliveryRide {
   id: string;
+  delivery_id?: string;
   rideCode: string; // ex: "DEL-84920"
   orderId: string;
+  order_id?: string;
   orderCode: string;
   merchantId: string;
+  merchant_id?: string;
   merchantName: string;
   merchantPhone: string;
   originAddress: string;
+  origem?: string;
   originNeighborhood: string;
   customerId: string;
+  customer_id?: string;
   customerName: string;
   customerPhone: string;
   destinationAddress: string;
+  destino?: string;
   destinationNeighborhood: string;
   distanceKm: number;
+  distancia?: number;
+  tipo_veiculo?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
+  vehicleType?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
+  observacoes?: string;
   ratePerKmApplied: number; // VALOR_POR_KM na época da criação
   platformFeeApplied: number; // TAXA_PLATAFORMA na época da criação
   driverEarnings: number; // distanceKm * ratePerKmApplied
+  valor_entregador?: number;
   totalDeliveryFee: number; // driverEarnings + platformFeeApplied
+  valor_calculado?: number;
   customerPaid: boolean;
   driverId?: string;
   driverName?: string;
@@ -1442,9 +1489,30 @@ export interface DeliveryRide {
   status: DeliveryRideStatus;
   confirmationCode: string; // Código de 4 dígitos para confirmação na entrega
   calculationTimestamp: string;
+  data_solicitacao?: string;
+  hora_solicitacao?: string;
+  created_at?: string;
+  created_by?: string;
+  deviceInfo?: string;
   cancellationReason?: string;
+  rejectionReason?: string;
+  correctionRequestedReason?: string;
+  correctionRequestedAt?: string;
+  recalculatedAt?: string;
+  recalculatedRatePerKm?: number;
+  recalculatedPlatformFee?: number;
+  approvedBy?: string;
+  approvedAt?: string;
   incidentNotes?: string;
   deliveryProofUrl?: string;
+  paymentStatus?: 'PENDENTE' | 'LIBERADO' | 'PROCESSANDO' | 'PAGO' | 'FALHA';
+  paymentAuthorizedAt?: string;
+  paymentAuthorizedBy?: string;
+  paymentPaidAt?: string;
+  paymentMethod?: string;
+  paymentFailureReason?: string;
+  returnReason?: string;
+  returnedAt?: string;
   createdAt: string;
   acceptedAt?: string;
   collectedAt?: string;
@@ -1463,3 +1531,6 @@ export interface DeliveryPricingCalculation {
   origin: string;
   destination: string;
 }
+
+
+

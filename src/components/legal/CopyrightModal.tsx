@@ -154,14 +154,14 @@ export const CopyrightModal: React.FC<CopyrightModalProps> = ({
             </div>
           </div>
 
-          {/* Atalhos Rápidos Abaixo dos Direitos Autorais */}
+          {/* Normas Oficiais e Manuais Abaixo dos Direitos Autorais */}
           <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">
-                Atalhos Rápidos • Normas, Manuais & Transparência
+                Normas Oficiais, Manuais & Transparência Legal
               </span>
               <span className="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300">
-                Acesso Imediato
+                Documentação Oficial
               </span>
             </div>
             

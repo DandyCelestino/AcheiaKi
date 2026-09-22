@@ -727,7 +727,7 @@ export const CachoeirasInteractiveMap: React.FC<CachoeirasInteractiveMapProps> =
         )}
       </div>
 
-      {/* RODAPÉ DO MAPA - ATALHOS PARA BAIRROS E DISTRITOS */}
+      {/* RODAPÉ DO MAPA - POLOS E BAIRROS OFICIAIS */}
       <div className="p-3 bg-slate-50 border-t border-emerald-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
         <div className="flex items-center gap-1.5 font-bold text-emerald-950">
           <MapPin className="w-3.5 h-3.5 text-emerald-600" />

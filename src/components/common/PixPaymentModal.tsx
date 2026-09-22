@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   QrCode,
@@ -170,7 +170,7 @@ export const PixPaymentModal: React.FC<PixPaymentModalProps> = ({
               </div>
               <div className="flex items-center justify-between text-slate-300">
                 <span>Chave PIX (CNPJ):</span>
-                <strong className="text-amber-300 font-sans font-bold">{OFFICIAL_PIX_INFO.cnpj}</strong>
+                <strong className="text-amber-300 font-mono font-bold">{OFFICIAL_PIX_INFO.cnpj}</strong>
               </div>
               <div className="flex items-center justify-between text-slate-400 text-[11px]">
                 <span>Cidade:</span>
@@ -246,7 +246,7 @@ export const PixPaymentModal: React.FC<PixPaymentModalProps> = ({
                     type="text"
                     readOnly
                     value={OFFICIAL_PIX_INFO.cnpj}
-                    className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-sans font-bold text-slate-800"
+                    className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-800"
                   />
                   <button
                     onClick={handleCopyKey}
@@ -267,7 +267,7 @@ export const PixPaymentModal: React.FC<PixPaymentModalProps> = ({
                     type="text"
                     readOnly
                     value={pixCopyPasteCode}
-                    className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-[11px] font-sans text-slate-500 truncate"
+                    className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-[11px] font-mono text-slate-500 truncate"
                   />
                   <button
                     onClick={handleCopyPayload}
@@ -334,4 +334,3 @@ export const PixPaymentModal: React.FC<PixPaymentModalProps> = ({
     </div>
   );
 };
-

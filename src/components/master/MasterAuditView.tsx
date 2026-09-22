@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ShieldCheck,
   Search,
@@ -290,7 +290,7 @@ export const MasterAuditView: React.FC = () => {
               ) : (
                 filteredLogs.map((log, idx) => (
                   <tr key={`${log.id}-${idx}`} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="px-4 py-3.5 whitespace-nowrap text-slate-500 font-sans text-[11px]">
+                    <td className="px-4 py-3.5 whitespace-nowrap text-slate-500 font-mono text-[11px]">
                       <div className="flex items-center space-x-1.5">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                         <span>{log.timestamp}</span>
@@ -303,7 +303,7 @@ export const MasterAuditView: React.FC = () => {
 
                     <td className="px-4 py-3.5">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-sans font-bold border ${getActionColor(
+                        className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border ${getActionColor(
                           log.action,
                           log.category,
                           log.severity
@@ -333,7 +333,7 @@ export const MasterAuditView: React.FC = () => {
                           {Object.entries(log.metadata).map(([key, value]) => {
                             if (typeof value === 'object') return null;
                             return (
-                              <span key={key} className="text-[9px] font-sans bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
+                              <span key={key} className="text-[9px] font-mono bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
                                 {key}: {String(value)}
                               </span>
                             );
@@ -343,7 +343,7 @@ export const MasterAuditView: React.FC = () => {
                     </td>
 
                     <td className="px-4 py-3.5 text-right whitespace-nowrap">
-                      <div className="text-[11px] text-slate-600 font-sans">
+                      <div className="text-[11px] text-slate-600 font-mono">
                         {log.ipAddress || '127.0.0.1'}
                       </div>
                       <div className="text-[10px] text-slate-400 truncate max-w-[150px] inline-block">
@@ -360,4 +360,3 @@ export const MasterAuditView: React.FC = () => {
     </div>
   );
 };
-

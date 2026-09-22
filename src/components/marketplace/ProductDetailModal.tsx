@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   X,
   Heart,
@@ -255,7 +255,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
                 </div>
 
-                {/* ⏰ Atalho Agendar Hora para Prestadores de Serviços, Consultórios, Beleza e Estética, Gastronomia */}
+                {/* ⏰ Agendamento Direto para Prestadores de Serviços, Consultórios, Beleza e Estética, Gastronomia */}
                 {(() => {
                   const catUpper = (product.category || '').toUpperCase();
                   const isScheduleServiceCategory =
@@ -272,7 +272,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                   return (
                     <button
-                      id="btn-schedule-shortcut"
+                      id="btn-schedule-service"
                       onClick={() => {
                         onOpenCheckout(product, 'DELIVERY', currentVariations);
                       }}
@@ -353,7 +353,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {(product.vehicleYear || product.vehicleKm) && (
                     <div className="text-xs text-slate-600 pt-1 flex items-center gap-3">
                       {product.vehicleYear && <span>🚗 Ano: <strong>{product.vehicleYear}</strong></span>}
-                      {product.vehicleKm && <span>âš¡ Quilometragem: <strong>{product.vehicleKm}</strong></span>}
+                      {product.vehicleKm && <span>⚡ Quilometragem: <strong>{product.vehicleKm}</strong></span>}
                     </div>
                   )}
                 </div>
@@ -380,7 +380,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <p className="text-[10px] text-slate-500 font-bold uppercase">
                             Chave PIX ({product.pixKeyType || 'PIX'}):
                           </p>
-                          <p className="text-xs font-sans font-black text-slate-900 truncate">
+                          <p className="text-xs font-mono font-black text-slate-900 truncate">
                             {product.pixKey}
                           </p>
                           {product.pixBeneficiaryName && (
@@ -889,4 +889,3 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     </div>
   );
 };
-

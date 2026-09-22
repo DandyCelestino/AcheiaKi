@@ -44,7 +44,8 @@ import {
   Briefcase,
   Percent,
   Webhook,
-  Bike
+  Bike,
+  Receipt
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { StoreMerchant, Order, OrderStatus } from '../../types';
@@ -63,6 +64,8 @@ import { MasterSalesTeamView } from './MasterSalesTeamView';
 import { MasterBoletoWebhookView } from './MasterBoletoWebhookView';
 import { MasterSellerCommissionsView } from './MasterSellerCommissionsView';
 import { MasterDeliveryView } from './MasterDeliveryView';
+import { MasterFinanceLedgerView } from './MasterFinanceLedgerView';
+import { DeliveryApprovalQueueView } from './DeliveryApprovalQueueView';
 
 export const MasterAdminPanel: React.FC = () => {
   const {
@@ -85,7 +88,7 @@ export const MasterAdminPanel: React.FC = () => {
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<
-    'dashboard' | 'reports' | 'seller-commissions' | 'sales-team' | 'sales-analytics' | 'boleto-webhooks' | 'users' | 'merchants' | 'catalog' | 'orders' | 'delivery' | 'ad-spaces' | 'frontend' | 'audit' | 'notifications' | 'settings'
+    'dashboard' | 'finance-ledger' | 'reports' | 'seller-commissions' | 'sales-team' | 'sales-analytics' | 'boleto-webhooks' | 'users' | 'merchants' | 'catalog' | 'orders' | 'delivery' | 'delivery-queue' | 'ad-spaces' | 'frontend' | 'audit' | 'notifications' | 'settings'
   >('dashboard');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -182,6 +185,28 @@ export const MasterAdminPanel: React.FC = () => {
             >
               <LayoutDashboard className="w-4 h-4 shrink-0" />
               <span>Radar Geral & Live Ops</span>
+            </button>
+
+            {/* Painel Financeiro & Registros Contábeis de Planos */}
+            <button
+              id="tab-finance-ledger"
+              onClick={() => {
+                setActiveTab('finance-ledger');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                activeTab === 'finance-ledger'
+                  ? 'bg-emerald-600 text-white font-semibold shadow-xs'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <Receipt className="w-4 h-4 shrink-0 text-emerald-400" />
+                <span>Painel Financeiro (Planos)</span>
+              </div>
+              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full font-bold">
+                {boletoRequests.length}
+              </span>
             </button>
 
             {/* Relatórios Diários & Movimentações */}
@@ -424,6 +449,34 @@ export const MasterAdminPanel: React.FC = () => {
               )}
             </button>
 
+            {/* Fila de Aprovação de Entregas (Item 5 e 6) */}
+            <button
+              id="tab-delivery-queue"
+              onClick={() => {
+                setActiveTab('delivery-queue');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                activeTab === 'delivery-queue'
+                  ? 'bg-amber-600 text-white font-semibold shadow-xs'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <ShieldCheck className="w-4 h-4 shrink-0 text-amber-400" />
+                <span>Solicitações em Análise</span>
+              </div>
+              {deliveryRides.filter((r) => r.status === 'AGUARDANDO_ANALISE' || r.status === 'CORRECAO_SOLICITADA').length > 0 ? (
+                <span className="text-[10px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black animate-pulse">
+                  {deliveryRides.filter((r) => r.status === 'AGUARDANDO_ANALISE' || r.status === 'CORRECAO_SOLICITADA').length}
+                </span>
+              ) : (
+                <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full text-slate-400">
+                  0
+                </span>
+              )}
+            </button>
+
             <div className="pt-4 px-3 pb-2 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
               Monetização & Frontend
             </div>
@@ -566,6 +619,7 @@ export const MasterAdminPanel: React.FC = () => {
                 {activeTab === 'catalog' && 'Catálogo Global de Produtos & Serviços'}
                 {activeTab === 'orders' && 'Central de Pedidos, Entregas & Provador VIP'}
                 {activeTab === 'delivery' && 'Supervisão de Delivery & Entregadores V1'}
+                {activeTab === 'delivery-queue' && 'Solicitações aguardando análise (Aprovação Master)'}
                 {activeTab === 'audit' && 'Logs de Auditoria & Segurança'}
                 {activeTab === 'notifications' && 'Monitor de Disparos WhatsApp & Supabase'}
                 {activeTab === 'settings' && 'Parâmetros da Plataforma & Backup'}
@@ -710,6 +764,37 @@ export const MasterAdminPanel: React.FC = () => {
                   </div>
                 )}
 
+                {/* Alerta de Solicitações de Entrega Aguardando Análise (Seções 5 e 6) */}
+                {deliveryRides.filter((r) => r.status === 'AGUARDANDO_ANALISE' || r.status === 'CORRECAO_SOLICITADA').length > 0 && (
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-700 shrink-0">
+                        <Bike className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-amber-950 text-xs flex items-center gap-2">
+                          <span>
+                            {deliveryRides.filter((r) => r.status === 'AGUARDANDO_ANALISE' || r.status === 'CORRECAO_SOLICITADA').length} solicitação(ões) de entrega aguardando análise
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 text-[10px] font-black uppercase">
+                            Ação do Master Necessária
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-amber-800 mt-0.5">
+                          Valide os dados, recalcule as tarifas e libere as corridas no radar de entregadores elegíveis.
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      id="btn-goto-delivery-analysis-queue"
+                      onClick={() => setActiveTab('delivery-queue')}
+                      className="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shrink-0 transition-colors shadow-sm cursor-pointer"
+                    >
+                      Acessar Fila de Análise
+                    </button>
+                  </div>
+                )}
+
                 {/* Live Operations & Quick Table Overview */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Últimos Pedidos em Andamento */}
@@ -820,6 +905,9 @@ export const MasterAdminPanel: React.FC = () => {
               </div>
             )}
 
+            {/* TAB: PAINEL FINANCEIRO — REGISTROS & ENTRADAS DE PLANOS */}
+            {activeTab === 'finance-ledger' && <MasterFinanceLedgerView />}
+
             {/* TAB: RELATÓRIOS & TEMPO REAL */}
             {activeTab === 'reports' && <MasterReportsView onOpenDossier={handleOpenDossier} />}
 
@@ -849,6 +937,11 @@ export const MasterAdminPanel: React.FC = () => {
 
             {/* TAB: DELIVERY & ENTREGADORES V1 */}
             {activeTab === 'delivery' && <MasterDeliveryView />}
+
+            {/* TAB: FILA DE APROVAÇÃO DE ENTREGAS (ITENS 5 E 6) */}
+            {activeTab === 'delivery-queue' && (
+              <DeliveryApprovalQueueView onNavigateToRide={() => setActiveTab('delivery')} />
+            )}
 
             {/* TAB: MÍDIA, BANNERS & LEILÕES */}
             {activeTab === 'ad-spaces' && <MasterAdSpacesView />}

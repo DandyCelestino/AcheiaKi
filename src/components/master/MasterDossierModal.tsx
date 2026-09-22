@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   X,
   User as UserIcon,
@@ -168,7 +168,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                 alt={displayName}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-blue-500 shadow-md bg-slate-800"
               />
-              <div className="absolute -bottom-1.5 -right-1.5 px-1.5 py-0.5 bg-blue-600 text-white font-sans font-bold text-[9px] rounded-md shadow-xs">
+              <div className="absolute -bottom-1.5 -right-1.5 px-1.5 py-0.5 bg-blue-600 text-white font-mono font-bold text-[9px] rounded-md shadow-xs">
                 MASTER
               </div>
             </div>
@@ -200,7 +200,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
               </div>
 
               <p className="text-xs text-slate-400 mt-1 flex items-center space-x-2">
-                <span>ID: <strong className="font-sans text-slate-300">{targetUser?.id || targetMerchant?.id}</strong></span>
+                <span>ID: <strong className="font-mono text-slate-300">{targetUser?.id || targetMerchant?.id}</strong></span>
                 <span>•</span>
                 <span>Cadastrado em: {targetUser?.createdAt || targetMerchant?.submittedAt || 'Recente'}</span>
               </p>
@@ -381,16 +381,16 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                     </div>
                     <div className="flex justify-between pt-1.5">
                       <span className="text-slate-500">CPF / CNPJ:</span>
-                      <span className="font-sans font-bold text-slate-900">{targetUser?.cpf || targetMerchant?.cnpjOrCpf || 'Não cadastrado'}</span>
+                      <span className="font-mono font-bold text-slate-900">{targetUser?.cpf || targetMerchant?.cnpjOrCpf || 'Não cadastrado'}</span>
                     </div>
                     <div className="flex justify-between pt-1.5">
                       <span className="text-slate-500">Telefone Principal:</span>
-                      <span className="font-sans font-bold text-slate-900">{targetUser?.phone || targetMerchant?.phone}</span>
+                      <span className="font-mono font-bold text-slate-900">{targetUser?.phone || targetMerchant?.phone}</span>
                     </div>
                     {targetUser?.secondaryPhone && (
                       <div className="flex justify-between pt-1.5">
                         <span className="text-slate-500">Telefone Secundário:</span>
-                        <span className="font-sans text-slate-700">{targetUser.secondaryPhone}</span>
+                        <span className="font-mono text-slate-700">{targetUser.secondaryPhone}</span>
                       </div>
                     )}
                     <div className="flex justify-between pt-1.5">
@@ -458,7 +458,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                       </div>
                       <div className="flex justify-between pt-1.5">
                         <span className="text-slate-500">Comissão da Plataforma:</span>
-                        <span className="font-sans font-black text-purple-700">{commissionRate}%</span>
+                        <span className="font-mono font-black text-purple-700">{commissionRate}%</span>
                       </div>
                     </div>
                   </div>
@@ -525,7 +525,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                         type="text"
                         readOnly
                         value={targetUser?.email || targetMerchant?.email || ''}
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-sans font-bold text-slate-900"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono font-bold text-slate-900"
                       />
                       <button
                         type="button"
@@ -545,7 +545,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                         type={showPassword ? 'text' : 'password'}
                         readOnly
                         value={targetUser?.password || '••••••••'}
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-sans font-bold text-slate-900"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono font-bold text-slate-900"
                       />
                       <button
                         type="button"
@@ -579,7 +579,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                           step="0.5"
                           value={newCommissionInput !== null ? newCommissionInput : commissionRate}
                           onChange={(e) => setNewCommissionInput(parseFloat(e.target.value) || 0)}
-                          className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-bold font-sans outline-none focus:border-blue-600"
+                          className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-bold font-mono outline-none focus:border-blue-600"
                         />
                         <span className="absolute right-3 top-2 text-xs font-bold text-slate-400">%</span>
                       </div>
@@ -616,7 +616,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                     >
                       <div className="space-y-1">
                         <div className="flex items-center space-x-2">
-                          <span className="font-sans font-black text-slate-900">{order.code}</span>
+                          <span className="font-mono font-black text-slate-900">{order.code}</span>
                           <span className="px-2 py-0.5 bg-blue-50 text-blue-700 font-bold rounded text-[10px]">
                             {order.modality}
                           </span>
@@ -643,7 +643,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                           {(order.totalAmount ?? (order as any).total ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </span>
                         {order.securityCode && (
-                          <span className="font-sans text-[10px] text-purple-700 font-bold">
+                          <span className="font-mono text-[10px] text-purple-700 font-bold">
                             Cód: {order.securityCode}
                           </span>
                         )}
@@ -685,7 +685,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                       >
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
-                            <span className="font-sans font-black text-slate-900">{order.code}</span>
+                            <span className="font-mono font-black text-slate-900">{order.code}</span>
                             <span className="font-bold text-slate-800">Cliente: {order.customerName}</span>
                             <span className="text-slate-400">({order.customerPhone})</span>
                           </div>
@@ -785,7 +785,7 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
                     <div key={`${log.id}-${idx}`} className="p-3 bg-white border border-slate-200 rounded-xl text-xs space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-slate-900">{log.action}</span>
-                        <span className="font-sans text-[10px] text-slate-400">{log.timestamp}</span>
+                        <span className="font-mono text-[10px] text-slate-400">{log.timestamp}</span>
                       </div>
                       <p className="text-slate-600">{log.details}</p>
                       <div className="flex items-center space-x-2 text-[10px] text-slate-400">
@@ -820,4 +820,3 @@ export const MasterDossierModal: React.FC<MasterDossierModalProps> = ({
     </div>
   );
 };
-

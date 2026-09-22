@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import {
   SalesAgent,
@@ -146,6 +146,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
     commissionRatePercent: 15,
     commissionBonusPerActivation: 20,
     monthlyTargetCount: 15,
+    temporaryPassword: '12345678',
     parentId: salesAgents[0]?.id
   });
 
@@ -862,7 +863,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                         <span className="text-slate-400 flex items-center gap-1">
                           <CreditCard className="w-3.5 h-3.5" /> Chave Pix:
                         </span>
-                        <span className="font-sans text-[11px] font-bold text-slate-800 truncate max-w-[140px]">
+                        <span className="font-mono text-[11px] font-bold text-slate-800 truncate max-w-[140px]">
                           {agent.pixKey}
                         </span>
                       </div>
@@ -963,7 +964,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-sans text-xs font-black bg-blue-100 text-blue-800 px-2.5 py-1 rounded-lg">
+                      <span className="font-mono text-xs font-black bg-blue-100 text-blue-800 px-2.5 py-1 rounded-lg">
                         {req.code}
                       </span>
                       <span
@@ -1012,7 +1013,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                       <span className="font-extrabold text-slate-900 block text-sm">
                         {req.clientName}
                       </span>
-                      <span className="text-[11px] text-slate-500 font-sans">
+                      <span className="text-[11px] text-slate-500 font-mono">
                         CPF/CNPJ: {req.documentNumber}
                       </span>
                       <span className="text-[11px] text-slate-500 block">
@@ -1086,7 +1087,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                         <span className="text-emerald-900 font-medium">
                           Compensação bancária capturada via Webhook. Comissão liberada automaticamente.
                           {req.externalTransactionId && (
-                            <span className="font-sans text-slate-500 ml-1">
+                            <span className="font-mono text-slate-500 ml-1">
                               (TxID: {req.externalTransactionId})
                             </span>
                           )}
@@ -1109,7 +1110,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                         <span className="text-[10px] text-blue-900 font-bold block">
                           Linha Digitável do Boleto:
                         </span>
-                        <code className="text-[11px] font-sans font-bold text-slate-700 select-all truncate block">
+                        <code className="text-[11px] font-mono font-bold text-slate-700 select-all truncate block">
                           {req.barcodeDigits}
                         </code>
                       </div>
@@ -1315,7 +1316,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Documento:</span>
-                      <span className="font-sans">{client.documentNumber}</span>
+                      <span className="font-mono">{client.documentNumber}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Localização:</span>
@@ -1552,6 +1553,24 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
+              </div>
+
+              {/* SENHA TEMPORÁRIA CRIADA PELO MASTER */}
+              <div className="bg-amber-50/80 p-3 rounded-xl border border-amber-200 space-y-1.5">
+                <label className="font-bold text-amber-950 block text-xs">
+                  Senha Temporária Provisória (Criada Exclusivamente pelo Master):
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={agentForm.temporaryPassword}
+                  onChange={(e) => setAgentForm({ ...agentForm, temporaryPassword: e.target.value })}
+                  placeholder="Padrão: 12345678"
+                  className="w-full px-3 py-1.5 bg-white border border-amber-300 rounded-lg font-mono font-bold text-slate-900 focus:ring-2 focus:ring-amber-500"
+                />
+                <p className="text-[10px] text-amber-800 leading-snug">
+                  🛡️ <strong>Regra de Segurança:</strong> Vendedores não podem se cadastrar pelo site. No primeiro login com esta senha, o sistema exigirá obrigatoriamente a troca de senha. Sem essa alteração, o acesso ao painel continuará bloqueado.
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -1796,7 +1815,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                   type="text"
                   value={boletoBarcodeDigits}
                   onChange={(e) => setBoletoBarcodeDigits(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-sans text-xs font-bold text-slate-800"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-xs font-bold text-slate-800"
                 />
               </div>
 
@@ -1808,7 +1827,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                   rows={2}
                   value={boletoPixCode}
                   onChange={(e) => setBoletoPixCode(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg font-sans text-[11px] text-slate-700"
+                  className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg font-mono text-[11px] text-slate-700"
                 />
               </div>
 
@@ -1990,7 +2009,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                 </div>
                 <div className="flex justify-between text-xs">
                   <span>Chave Pix Cadastrada:</span>
-                  <code className="font-sans font-bold text-purple-900">
+                  <code className="font-mono font-bold text-purple-900">
                     {selectedBoletoToPayCommission.agentPixKey}
                   </code>
                 </div>
@@ -2008,7 +2027,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
                   type="text"
                   value={pixReceiptCode}
                   onChange={(e) => setPixReceiptCode(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-sans text-xs font-bold text-slate-800"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-xs font-bold text-slate-800"
                 />
               </div>
 
@@ -2175,4 +2194,3 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
     </div>
   );
 };
-

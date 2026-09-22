@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Lock,
   Mail,
@@ -41,11 +41,11 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
     registerMerchantWithFirebase,
     sendFirebasePasswordReset,
     verifyTwoFactorCode,
-    resendEmailConfirmation,
     resendTwoFactorCode,
     loginAsUser,
     registerCustomer,
     registerMerchant,
+    requestPasswordReset,
     completePasswordReset,
     currentCity,
     frontendConfig,
@@ -54,7 +54,6 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
 
   const [activeTab, setActiveTab] = useState<'login' | 'forgot-password' | 'register-customer' | 'register-merchant'>('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isResendingVerification, setIsResendingVerification] = useState(false);
 
   // Common UI State
   const [showPassword, setShowPassword] = useState(false);
@@ -77,70 +76,10 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [forgotEmail, setForgotEmail] = useState('');
   const [resetStep, setResetStep] = useState<1 | 2>(1);
   const [resetCode, setResetCode] = useState('');
+  const [simulatedReceivedCode, setSimulatedReceivedCode] = useState<string | null>(null);
   const [newResetPassword, setNewResetPassword] = useState('');
   const [confirmResetPassword, setConfirmResetPassword] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
-    // Processa automaticamente o link de redefinição enviado pelo Firebase.
-    useEffect(() => {
-      const params = new URLSearchParams(window.location.search);
-      const oobCode = params.get('oobCode');
-      const mode = params.get('mode');
-
-      if (!oobCode) return;
-      if (mode && mode !== 'resetPassword' && mode !== 'action') return;
-
-      let cancelled = false;
-
-      const processResetLink = async () => {
-        setErrorMessage(null);
-        setSuccessMessage(null);
-        setIsSubmitting(true);
-
-        try {
-          const verification = await firebaseVerifyPasswordResetCode(oobCode);
-
-          if (cancelled) return;
-
-          if (verification.success) {
-            setResetCode(oobCode);
-
-            if (verification.email) {
-              setForgotEmail(verification.email);
-            }
-
-            setResetStep(2);
-            setActiveTab('forgot-password');
-            setSuccessMessage(
-              'Link de redefinição válido. Informe sua nova senha abaixo.'
-            );
-          } else {
-            setResetCode('');
-            setResetStep(1);
-            setActiveTab('forgot-password');
-            setErrorMessage(verification.message);
-          }
-        } catch (error: any) {
-          if (!cancelled) {
-            setResetCode('');
-            setResetStep(1);
-            setActiveTab('forgot-password');
-            setErrorMessage(
-              error?.message || 'Não foi possível validar o link de redefinição.'
-            );
-          }
-        } finally {
-          if (!cancelled) {
-            setIsSubmitting(false);
-          }
-        }
-      };
-
-      processResetLink();
-
-      return () => {
-        cancelled = true;
-      };
-    }, []);
 
   // Customer Register Form
   const [customerName, setCustomerName] = useState('');
@@ -152,6 +91,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [customerNeighborhood, setCustomerNeighborhood] = useState('Centro');
   const [customerStreet, setCustomerStreet] = useState('');
   const [customerTermsAccepted, setCustomerTermsAccepted] = useState(true);
+  const [customerDisclaimerAccepted, setCustomerDisclaimerAccepted] = useState(false);
 
   // Merchant Register Form
   const [merchantType, setMerchantType] = useState<'STORE' | 'SERVICE_PROVIDER'>('SERVICE_PROVIDER');
@@ -175,31 +115,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
   const [ref2Phone, setRef2Phone] = useState('');
   const [ref2Role, setRef2Role] = useState('');
   const [merchantTermsAccepted, setMerchantTermsAccepted] = useState(true);
-
-  const handleResendVerification = async () => {
-    if (!loginEmail.trim()) {
-      setErrorMessage('Informe seu e-mail para reenviar a verificação.');
-      return;
-    }
-
-    setIsResendingVerification(true);
-    setErrorMessage(null);
-    setSuccessMessage(null);
-
-    try {
-      const result = await resendEmailConfirmation(loginEmail.trim().toLowerCase());
-
-      if (result.success) {
-        setSuccessMessage(result.message);
-      } else {
-        setErrorMessage(result.message);
-      }
-    } catch (err: any) {
-      setErrorMessage(err?.message || 'Não foi possível reenviar o e-mail de verificação.');
-    } finally {
-      setIsResendingVerification(false);
-    }
-  };
+  const [merchantDisclaimerAccepted, setMerchantDisclaimerAccepted] = useState(false);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,91 +202,81 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
 
   // Password Recovery Steps
   const handleSendResetCode = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setErrorMessage(null);
-      setSuccessMessage(null);
+    e.preventDefault();
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
-      if (!forgotEmail.trim()) {
-        setErrorMessage('Informe o e-mail cadastrado na sua conta.');
-        return;
-      }
+    if (!forgotEmail.trim()) {
+      setErrorMessage('Informe o e-mail cadastrado na sua conta.');
+      return;
+    }
 
-      setIsSubmitting(true);
-
-      try {
-        const fbReset = await sendFirebasePasswordReset(forgotEmail.trim());
-
-        if (fbReset.success) {
-          setSuccessMessage(
-            'Link de redefinição enviado para seu e-mail. Abra o link recebido para continuar.'
-          );
-          setResetStep(1);
-        } else {
-          setErrorMessage(fbReset.message);
-        }
-      } catch (err: any) {
-        setErrorMessage(
-          err?.message || 'Falha ao solicitar recuperação de senha.'
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
-
-    const handleFinishPasswordReset = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setErrorMessage(null);
-      setSuccessMessage(null);
-
-      if (!resetCode || !resetCode.trim()) {
-        setErrorMessage('Link de redefinição inválido ou ausente.');
-        return;
-      }
-
-      if (!newResetPassword || newResetPassword.length < 6) {
-        setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
-        return;
-      }
-
-      if (newResetPassword !== confirmResetPassword) {
-        setErrorMessage('A confirmação de senha não confere com a nova senha.');
-        return;
-      }
-
-      setIsSubmitting(true);
-
-      try {
-        const res = await completePasswordReset(
-          forgotEmail.trim(),
-          resetCode.trim(),
-          newResetPassword
-        );
-
+    setIsSubmitting(true);
+    try {
+      const fbReset = await sendFirebasePasswordReset(forgotEmail.trim());
+      if (fbReset.success) {
+        setSuccessMessage(fbReset.message);
+      } else {
+        const res = requestPasswordReset(forgotEmail.trim());
         if (res.success) {
-          setSuccessMessage(
-            'Senha alterada com sucesso! Você já pode entrar com sua nova senha.'
-          );
+          setSimulatedReceivedCode(res.simulatedCode || '849201');
+          setResetCode(res.simulatedCode || '849201');
+          setSuccessMessage(res.message);
+          setResetStep(2);
+        } else {
+          setErrorMessage(fbReset.message || res.message);
+        }
+      }
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Falha ao solicitar recuperação.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-          setNewResetPassword('');
-          setConfirmResetPassword('');
-          setResetCode('');
-          setResetStep(1);
+  const handleFinishPasswordReset = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    if (!resetCode || resetCode.length < 6) {
+      setErrorMessage('Digite o código de verificação de 6 dígitos.');
+      return;
+    }
+
+    if (!newResetPassword || newResetPassword.length < 6) {
+      setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
+      return;
+    }
+
+    if (newResetPassword !== confirmResetPassword) {
+      setErrorMessage('A confirmação de senha não confere com a nova senha.');
+      return;
+    }
+
+    const res = completePasswordReset(forgotEmail.trim(), resetCode.trim(), newResetPassword);
+    if (res.success) {
+      setSuccessMessage('Senha atualizada com sucesso! Realizando login automático...');
+      
+      // Auto-login or redirect to login tab
+      setTimeout(() => {
+        const loginRes = login(forgotEmail.trim(), newResetPassword, true);
+        if (loginRes.success && !loginRes.requires2FA) {
+          if (onSuccess) onSuccess();
+        } else {
           setActiveTab('login');
           setLoginEmail(forgotEmail.trim());
-          setLoginPassword('');
-        } else {
-          setErrorMessage(res.message);
+          setLoginPassword(newResetPassword);
+          setResetStep(1);
+          setSuccessMessage('Senha alterada! Entre com sua nova senha.');
         }
-      } catch (err: any) {
-        setErrorMessage(
-          err?.message || 'Não foi possível redefinir a senha.'
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
+      }, 1200);
+    } else {
+      setErrorMessage(res.message);
+    }
+  };
 
-    const handleCustomerRegisterSubmit = async (e: React.FormEvent) => {
+  const handleCustomerRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -389,6 +295,10 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
     }
     if (!customerTermsAccepted) {
       setErrorMessage('Você deve aceitar os Termos de Uso e Privacidade.');
+      return;
+    }
+    if (!customerDisclaimerAccepted) {
+      setErrorMessage('Você deve declarar ciência de que a plataforma Achei Aqui é um canal de intermediação e que a responsabilidade por negociações é exclusivamente das partes.');
       return;
     }
 
@@ -449,17 +359,21 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
       setErrorMessage('Você deve concordar com os Termos de Credenciamento Achei Aqui.');
       return;
     }
+    if (!merchantDisclaimerAccepted) {
+      setErrorMessage('Você deve declarar ciência de que a plataforma Achei Aqui é um canal de intermediação e que a responsabilidade por negociações é exclusivamente das partes.');
+      return;
+    }
 
     const fullAddress = `${merchantStreet || 'Rua Principal'}, ${merchantNumber || 'S/N'} - ${merchantNeighborhood}, Cachoeiras de Macacu - RJ`;
-    const references = [
-      { name: ref1Name.trim() || 'Cliente Cachoeiras 1', phone: ref1Phone.trim() || '(21) 99999-1111', relationshipOrRole: ref1Role.trim() || 'Cliente' },
-      { name: ref2Name.trim() || 'Cliente Cachoeiras 2', phone: ref2Phone.trim() || '(21) 99999-2222', relationshipOrRole: ref2Role.trim() || 'Cliente' }
-    ];
-
     const isService = merchantType === 'SERVICE_PROVIDER' || 
       ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais', 'Prestadores de Serviços'].some(cat =>
         merchantCategory.toLowerCase().includes(cat.toLowerCase())
       );
+
+    const references = isService && ref1Name.trim() ? [
+      { name: ref1Name.trim(), phone: ref1Phone.trim() || '(21) 99999-1111', relationshipOrRole: ref1Role.trim() || 'Cliente de Referência' },
+      ...(ref2Name.trim() ? [{ name: ref2Name.trim(), phone: ref2Phone.trim() || '(21) 99999-2222', relationshipOrRole: ref2Role.trim() || 'Cliente de Referência' }] : [])
+    ] : [];
 
     setIsSubmitting(true);
     try {
@@ -570,7 +484,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
               {activeTab === 'login' && 'O acesso ao shopping e serviços de Cachoeiras de Macacu é exclusivo para usuários autenticados com login e senha.'}
-              {activeTab === 'forgot-password' && 'Redefina sua senha com segurança através do link enviado ao seu e-mail.'}
+              {activeTab === 'forgot-password' && 'Redefina sua senha com segurança através do código de verificação enviado ao seu e-mail.'}
               {activeTab === 'register-customer' && 'Crie sua conta gratuita em menos de 1 minuto para comprar, agendar serviços e acompanhar pedidos.'}
               {activeTab === 'register-merchant' && 'Cadastre seu estabelecimento ou serviços para vender e agendar clientes em toda a região.'}
             </p>
@@ -642,21 +556,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
           {errorMessage && (
             <div className="mb-5 p-3.5 bg-red-950/80 border border-red-800/80 rounded-2xl flex items-start space-x-2 text-xs text-red-200 animate-in fade-in">
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <div className="leading-relaxed">{errorMessage}</div>
-
-                {activeTab === 'login' && errorMessage.toLowerCase().includes('e-mail ainda não foi verificado') && (
-                  <button
-                    type="button"
-                    onClick={handleResendVerification}
-                    disabled={isResendingVerification || !loginEmail.trim()}
-                    className="mt-3 w-full py-2.5 px-3 rounded-xl border border-amber-700/70 bg-amber-950/50 text-amber-200 text-xs font-bold hover:bg-amber-900/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    <RefreshCw className={`w-4 h-4 ${isResendingVerification ? 'animate-spin' : ''}`} />
-                    {isResendingVerification ? 'Reenviando verificação...' : 'Reenviar e-mail de verificação'}
-                  </button>
-                )}
-              </div>
+              <span className="leading-relaxed">{errorMessage}</span>
             </div>
           )}
 
@@ -815,7 +715,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 {simulated2FACode && (
                   <div className="p-2.5 bg-slate-950 rounded-xl border border-emerald-700/50 flex items-center justify-between mt-2">
                     <span className="text-xs font-bold text-emerald-400">Código 2FA:</span>
-                    <span className="font-sans text-base font-black text-white tracking-widest">{simulated2FACode}</span>
+                    <span className="font-mono text-base font-black text-white tracking-widest">{simulated2FACode}</span>
                     <span className="text-[10px] text-slate-400 font-medium">(Digite abaixo)</span>
                   </div>
                 )}
@@ -832,7 +732,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                   value={twoFactorCodeInput}
                   onChange={(e) => setTwoFactorCodeInput(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
-                  className="w-full py-3 bg-slate-950 border border-slate-700 rounded-xl text-xl font-sans font-bold text-white text-center tracking-widest focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  className="w-full py-3 bg-slate-950 border border-slate-700 rounded-xl text-xl font-mono font-bold text-white text-center tracking-widest focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
                 />
               </div>
 
@@ -874,7 +774,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 <form onSubmit={handleSendResetCode} className="space-y-4">
                   <div className="p-3.5 bg-emerald-950/40 border border-emerald-800/40 rounded-2xl text-xs text-slate-300 leading-relaxed">
                     <p>
-                      Informe o e-mail da sua conta. Enviaremos um <strong>link seguro de redefinição</strong> para criar uma nova senha.
+                      Informe o e-mail da sua conta. Enviaremos um <strong>código de recuperação de 6 dígitos</strong> para autorizar a criação de uma nova senha.
                     </p>
                   </div>
 
@@ -899,7 +799,7 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                     type="submit"
                     className="w-full py-3.5 px-6 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>ENVIAR LINK DE RECUPERAÇÃO</span>
+                    <span>ENVIAR CÓDIGO DE RECUPERAÇÃO</span>
                     <Send className="w-4 h-4" />
                   </button>
 
@@ -915,8 +815,31 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 </form>
               ) : (
                 <form onSubmit={handleFinishPasswordReset} className="space-y-4">
+                  {simulatedReceivedCode && (
+                    <div className="p-3.5 bg-emerald-950/60 border border-emerald-700/60 rounded-2xl space-y-1.5">
+                      <div className="flex items-center justify-between text-xs font-bold text-emerald-300">
+                        <span>🔑 Código de Recuperação Gerado:</span>
+                        <span className="font-mono text-base text-white tracking-widest">{simulatedReceivedCode}</span>
+                      </div>
+                      <p className="text-[11px] text-emerald-400/80">
+                        Código pronto para redefinição imediata de senha no ambiente de testes.
+                      </p>
+                    </div>
+                  )}
 
                   <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                      Código de 6 dígitos *
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={6}
+                      required
+                      value={resetCode}
+                      onChange={(e) => setResetCode(e.target.value.replace(/\D/g, ''))}
+                      placeholder="000000"
+                      className="w-full py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-lg font-mono font-bold text-white text-center tracking-widest focus:border-emerald-500 outline-none"
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1080,16 +1003,33 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 </div>
               </div>
 
-              <div className="pt-1">
+              <div className="pt-1 space-y-2">
                 <label className="flex items-center space-x-2 text-xs text-slate-400 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={customerTermsAccepted}
                     onChange={(e) => setCustomerTermsAccepted(e.target.checked)}
-                    className="rounded border-slate-700 bg-slate-950 text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                    className="rounded border-slate-700 bg-slate-950 text-emerald-600 focus:ring-emerald-500 w-4 h-4 shrink-0"
                   />
                   <span>Concordo com os Termos de Uso e Política de Privacidade do Achei Aqui</span>
                 </label>
+
+                {/* Termo Obrigatório de Intermediação e Responsabilidade */}
+                <div className="p-3 bg-amber-950/40 border border-amber-500/40 rounded-xl">
+                  <label className="flex items-start space-x-2.5 cursor-pointer text-xs">
+                    <input
+                      type="checkbox"
+                      id="checkbox-customer-disclaimer-gate"
+                      required
+                      checked={customerDisclaimerAccepted}
+                      onChange={(e) => setCustomerDisclaimerAccepted(e.target.checked)}
+                      className="mt-0.5 rounded border-amber-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500 w-4 h-4 shrink-0"
+                    />
+                    <span className="text-amber-200/90 text-[11px] leading-relaxed">
+                      <strong className="text-amber-100 font-bold">Condição de Cadastramento Obrigatória:</strong> Declaro ciência de que a plataforma Achei Aqui é um canal de intermediação tecnológica e que não se responsabiliza por compras e negócios realizados por clientes e prestadores/lojistas, sendo a responsabilidade exclusiva do cliente e do prestador/lojista. As informações são checadas periodicamente por nós, porém o cliente deve constatar a existência da loja e do prestador antes de fechar o negócio.
+                    </span>
+                  </label>
+                </div>
               </div>
 
               <button
@@ -1264,16 +1204,59 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
                 </div>
               </div>
 
-              <div className="pt-1">
+              {/* REFERÊNCIAS PROFISSIONAIS (EXCLUSIVO PARA PRESTADORES DE SERVIÇOS) */}
+              {merchantType === 'SERVICE_PROVIDER' && (
+                <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-2.5">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-emerald-400">
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Referências Profissionais (Somente para Prestadores de Serviços):</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      value={ref1Name}
+                      onChange={(e) => setRef1Name(e.target.value)}
+                      placeholder="Ref 1: Nome do cliente/empresa"
+                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white outline-none"
+                    />
+                    <input
+                      type="tel"
+                      value={ref1Phone}
+                      onChange={(e) => setRef1Phone(e.target.value)}
+                      placeholder="Ref 1: Telefone / WhatsApp"
+                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-1 space-y-2">
                 <label className="flex items-center space-x-2 text-xs text-slate-400 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={merchantTermsAccepted}
                     onChange={(e) => setMerchantTermsAccepted(e.target.checked)}
-                    className="rounded border-slate-700 bg-slate-950 text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                    className="rounded border-slate-700 bg-slate-950 text-emerald-600 focus:ring-emerald-500 w-4 h-4 shrink-0"
                   />
                   <span>Concordo com os Termos de Credenciamento Comercial Achei Aqui</span>
                 </label>
+
+                {/* Termo Obrigatório de Intermediação e Responsabilidade */}
+                <div className="p-3 bg-amber-950/40 border border-amber-500/40 rounded-xl">
+                  <label className="flex items-start space-x-2.5 cursor-pointer text-xs">
+                    <input
+                      type="checkbox"
+                      id="checkbox-merchant-disclaimer-gate"
+                      required
+                      checked={merchantDisclaimerAccepted}
+                      onChange={(e) => setMerchantDisclaimerAccepted(e.target.checked)}
+                      className="mt-0.5 rounded border-amber-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500 w-4 h-4 shrink-0"
+                    />
+                    <span className="text-amber-200/90 text-[11px] leading-relaxed">
+                      <strong className="text-amber-100 font-bold">Condição de Cadastramento Obrigatória:</strong> Declaro ciência de que a plataforma Achei Aqui atua exclusivamente na intermediação e divulgação local. As informações são checadas periodicamente por nós, porém o cliente deve constatar a existência da loja e do prestador antes de fechar o negócio. Não nos responsabilizamos por compras e negócios realizados por eles, sendo a responsabilidade restrita às partes negociantes.
+                    </span>
+                  </label>
+                </div>
               </div>
 
               <button
@@ -1295,11 +1278,3 @@ export const PlatformAccessGate: React.FC<PlatformAccessGateProps> = ({ onSucces
     </div>
   );
 };
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Users,
   MapPin,
@@ -740,7 +740,7 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
                           ></span>
                           <h4 className="font-extrabold text-sm text-slate-900">{area.name}</h4>
                         </div>
-                        <span className="text-[10px] font-sans font-bold text-slate-400 ml-5 block mt-0.5">
+                        <span className="text-[10px] font-mono font-bold text-slate-400 ml-5 block mt-0.5">
                           {area.code}
                         </span>
                       </div>
@@ -1493,7 +1493,7 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
                     value={areaCode}
                     onChange={(e) => setAreaCode(e.target.value)}
                     placeholder="AREA-01"
-                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-hidden focus:border-emerald-600 font-sans text-slate-600"
+                    className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-hidden focus:border-emerald-600 font-mono text-slate-600"
                   />
                 </div>
               </div>
@@ -1585,7 +1585,7 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
                       onChange={(e) => setAreaColor(e.target.value)}
                       className="w-10 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5"
                     />
-                    <span className="text-xs font-sans text-slate-600">{areaColor}</span>
+                    <span className="text-xs font-mono text-slate-600">{areaColor}</span>
                   </div>
                 </div>
               </div>
@@ -1626,4 +1626,3 @@ export const CommercialHierarchyManager: React.FC<CommercialHierarchyManagerProp
     </div>
   );
 };
-

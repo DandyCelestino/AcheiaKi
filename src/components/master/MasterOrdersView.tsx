@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ShoppingBag,
   Search,
@@ -309,7 +309,7 @@ export const MasterOrdersView: React.FC<MasterOrdersViewProps> = ({ onOpenDossie
                 <tr key={ord.id} className="hover:bg-slate-50/60 transition-colors">
                   <td className="px-4 py-3.5">
                     <div className="space-y-1">
-                      <div className="font-sans font-bold text-slate-900 text-xs flex items-center space-x-1.5">
+                      <div className="font-mono font-bold text-slate-900 text-xs flex items-center space-x-1.5">
                         <span>{ord.code}</span>
                       </div>
                       <div>
@@ -322,7 +322,7 @@ export const MasterOrdersView: React.FC<MasterOrdersViewProps> = ({ onOpenDossie
                         </span>
                       </div>
                       {ord.pickupCode && (
-                        <div className="text-[10px] text-blue-600 font-sans">
+                        <div className="text-[10px] text-blue-600 font-mono">
                           PIN: {ord.pickupCode}
                         </div>
                       )}
@@ -916,4 +916,3 @@ export const MasterOrdersView: React.FC<MasterOrdersViewProps> = ({ onOpenDossie
     </div>
   );
 };
-

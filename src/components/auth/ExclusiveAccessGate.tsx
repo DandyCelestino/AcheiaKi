@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   ShieldAlert,
   ShieldCheck,
@@ -37,7 +37,6 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
     loginWithFirebaseGoogle,
     verifyTwoFactorCode,
     resendTwoFactorCode,
-    resendEmailConfirmation,
     setCurrentEnvironment,
     loginAsUser,
     logout,
@@ -55,7 +54,6 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isResending, setIsResending] = useState(false);
-  const [isResendingVerification, setIsResendingVerification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const targetEnv =
@@ -179,37 +177,6 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
     }
   };
 
-  const handleResendVerification = async () => {
-    if (isSellerPortal) {
-      return;
-    }
-
-    if (!email.trim()) {
-      setErrorMessage('Informe seu e-mail para reenviar a verificação.');
-      return;
-    }
-
-    setIsResendingVerification(true);
-    setErrorMessage(null);
-    setSuccessMessage(null);
-
-    try {
-      const result = await resendEmailConfirmation(email.trim().toLowerCase());
-
-      if (result.success) {
-        setSuccessMessage(result.message);
-      } else {
-        setErrorMessage(result.message);
-      }
-    } catch (err: any) {
-      setErrorMessage(
-        err?.message || 'Não foi possível reenviar o e-mail de verificação.'
-      );
-    } finally {
-      setIsResendingVerification(false);
-    }
-  };
-
   const handleResend = () => {
     setIsResending(true);
     const res = resendTwoFactorCode(email.trim());
@@ -273,22 +240,6 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
             </div>
           )}
 
-          {errorMessage.toLowerCase().includes('e-mail ainda não foi verificado') && !isSellerPortal && (
-            <button
-              type="button"
-              onClick={handleResendVerification}
-              disabled={isResendingVerification || !email.trim()}
-              className="mb-4 w-full py-2.5 px-3 rounded-xl border border-amber-700/70 bg-amber-950/50 text-amber-200 text-xs font-bold hover:bg-amber-900/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              <RefreshCw
-                className={`w-4 h-4 ${isResendingVerification ? 'animate-spin' : ''}`}
-              />
-              {isResendingVerification
-                ? 'Reenviando verificação...'
-                : 'Reenviar e-mail de verificação'}
-            </button>
-          )}
-
           {successMessage && (
             <div className="mb-4 p-3 bg-emerald-950/60 border border-emerald-800 rounded-xl text-xs text-emerald-300 flex items-start space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -345,7 +296,7 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
                 </div>
                 {simulatedCode && (
                   <div className="flex items-center justify-between pt-1">
-                    <span className="font-sans text-base font-black tracking-widest bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-blue-400">
+                    <span className="font-mono text-base font-black tracking-widest bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-blue-400">
                       {simulatedCode}
                     </span>
                     <span className="text-[10px] text-slate-400 font-medium">
@@ -367,7 +318,7 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
                   value={twoFactorCode}
                   onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
-                  className="w-full text-center tracking-[0.4em] font-sans text-2xl py-3 bg-slate-950 border border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl outline-none font-bold text-white transition-all"
+                  className="w-full text-center tracking-[0.4em] font-mono text-2xl py-3 bg-slate-950 border border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl outline-none font-bold text-white transition-all"
                 />
               </div>
 
@@ -589,7 +540,3 @@ export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
     </div>
   );
 };
-
-
-
-

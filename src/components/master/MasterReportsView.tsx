@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   TrendingUp,
   DollarSign,
@@ -921,9 +921,9 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
                   return (
                     <tr key={order.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-4 py-3">
-                        <span className="font-sans font-black text-slate-900 block">{order.code}</span>
+                        <span className="font-mono font-black text-slate-900 block">{order.code}</span>
                         {order.securityCode && (
-                          <span className="font-sans text-[10px] text-purple-700 font-bold">
+                          <span className="font-mono text-[10px] text-purple-700 font-bold">
                             Cód: {order.securityCode}
                           </span>
                         )}
@@ -945,7 +945,7 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
                             <span className="font-bold text-slate-900 group-hover:text-blue-600 block transition-colors">
                               {order.customerName}
                             </span>
-                            <span className="text-[10px] text-slate-400 font-sans">{order.customerPhone}</span>
+                            <span className="text-[10px] text-slate-400 font-mono">{order.customerPhone}</span>
                           </div>
                         </button>
                       </td>
@@ -979,7 +979,7 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
                         <span className="font-bold text-purple-700 block">
                           {comm.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </span>
-                        <span className="text-[9px] text-slate-400 font-sans">({rate}%)</span>
+                        <span className="text-[9px] text-slate-400 font-mono">({rate}%)</span>
                       </td>
 
                       <td className="px-4 py-3 font-bold text-emerald-800">
@@ -1099,10 +1099,10 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-900">{log.action}</span>
-                  <span className="text-[10px] text-slate-400 font-sans">{log.timestamp}</span>
+                  <span className="text-[10px] text-slate-400 font-mono">{log.timestamp}</span>
                 </div>
                 <p className="text-slate-600 text-[11px]">{log.details}</p>
-                <div className="flex items-center space-x-2 text-[9px] text-slate-400 font-sans">
+                <div className="flex items-center space-x-2 text-[9px] text-slate-400 font-mono">
                   <span>Usuário: {log.userEmail}</span>
                   <span>•</span>
                   <span>IP: {log.ipAddress}</span>
@@ -1117,4 +1117,3 @@ export const MasterReportsView: React.FC<MasterReportsViewProps> = ({ onOpenDoss
     </div>
   );
 };
-

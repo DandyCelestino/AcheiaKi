@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Settings,
   Shield,
@@ -447,7 +447,7 @@ export const MasterSettingsView: React.FC = () => {
                   value={importJsonText}
                   onChange={(e) => setImportJsonText(e.target.value)}
                   placeholder='{"version": "2.0-SUPREMO", "users": [...], ...}'
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-sans text-[11px] outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-[11px] outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -490,14 +490,14 @@ export const MasterSettingsView: React.FC = () => {
 
             <div>
               <label className="block font-bold text-slate-700 mb-1">
-                Digite <span className="text-rose-600 font-sans">RESTAURAR</span> para confirmar:
+                Digite <span className="text-rose-600 font-mono">RESTAURAR</span> para confirmar:
               </label>
               <input
                 type="text"
                 value={resetConfirmWord}
                 onChange={(e) => setResetConfirmWord(e.target.value)}
                 placeholder="RESTAURAR"
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-sans text-center font-bold text-slate-900 outline-none focus:border-rose-500"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-center font-bold text-slate-900 outline-none focus:border-rose-500"
               />
             </div>
 
@@ -531,4 +531,3 @@ export const MasterSettingsView: React.FC = () => {
     </div>
   );
 };
-

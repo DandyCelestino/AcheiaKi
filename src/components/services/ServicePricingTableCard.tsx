@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   Clock,
   Calendar,
@@ -181,7 +181,7 @@ export const ServicePricingTableCard: React.FC<ServicePricingTableCardProps> = (
               </h5>
             </div>
             {credentials.registrationNumber && (
-              <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 font-sans font-bold text-[11px] rounded-lg border border-blue-200">
+              <span className="px-2.5 py-0.5 bg-blue-50 text-blue-700 font-mono font-bold text-[11px] rounded-lg border border-blue-200">
                 {credentials.registrationNumber}
               </span>
             )}
@@ -266,7 +266,7 @@ export const ServicePricingTableCard: React.FC<ServicePricingTableCardProps> = (
                 </div>
 
                 {ref.phone && (
-                  <span className="text-slate-600 font-sans text-[11px] flex items-center space-x-1 self-start sm:self-auto bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+                  <span className="text-slate-600 font-mono text-[11px] flex items-center space-x-1 self-start sm:self-auto bg-white px-2.5 py-1 rounded-lg border border-slate-200">
                     <Phone className="w-3 h-3 text-emerald-600" />
                     <span>{ref.phone}</span>
                   </span>
@@ -279,4 +279,3 @@ export const ServicePricingTableCard: React.FC<ServicePricingTableCardProps> = (
     </div>
   );
 };
-

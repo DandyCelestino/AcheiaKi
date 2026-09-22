@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/marketplace/Header';
 import { BottomNav } from './components/marketplace/BottomNav';
@@ -23,7 +23,8 @@ import { FloatingNotificationBall } from './components/notifications/FloatingNot
 import { SubOrderChatModal } from './components/chat/SubOrderChatModal';
 import { CATEGORIES_TAXONOMY } from './data/categoryTaxonomy';
 import { Product, ServiceItem, Order } from './types';
-import { ShoppingBag, X, Trash2, ArrowRight, CheckCircle2, UserPlus, Compass, ShieldCheck, ShieldAlert, FileText, Scale, Crown, Sparkles, BookOpen, Store, Briefcase, Bike } from 'lucide-react';
+import { ShoppingBag, X, Trash2, ArrowRight, CheckCircle2, UserPlus, Compass, ShieldCheck, ShieldAlert, FileText, Scale, Crown, Sparkles, BookOpen, Store, Briefcase, Bike, MapPin, Truck } from 'lucide-react';
+import { calculateDeliveryDistance, estimateDeliveryFare, getAllCachoeirasNeighborhoods } from './services/distanceService';
 
 function MarketplaceApp() {
   const {
@@ -45,7 +46,9 @@ function MarketplaceApp() {
     isAuthModalOpen,
     authModalTab,
     openAuthModal,
-    closeAuthModal
+    closeAuthModal,
+    merchants,
+    systemSettings
   } = useApp();
 
   // Navigation tabs in marketplace
@@ -57,40 +60,111 @@ function MarketplaceApp() {
 
   // Modals state
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [authInitialTab, setAuthInitialTab] = useState<'login' | 'register-customer' | 'register-merchant'>('login');
+  const [authInitialTab, setAuthInitialTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver'>('login');
   
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   
   const [checkoutProduct, setCheckoutProduct] = useState<Product | null>(null);
+  const [checkoutCartItems, setCheckoutCartItems] = useState<any[]>([]);
   const [checkoutModality, setCheckoutModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO'>('DELIVERY');
   const [checkoutVariations, setCheckoutVariations] = useState<{ [key: string]: string }>({});
+  const [checkoutDeliveryAddress, setCheckoutDeliveryAddress] = useState<string>('');
+  const [checkoutDeliveryNeighborhood, setCheckoutDeliveryNeighborhood] = useState<string>('Centro');
+  const [checkoutDeliveryFee, setCheckoutDeliveryFee] = useState<number>(0);
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [deliveryRegisterModalOpen, setDeliveryRegisterModalOpen] = useState(false);
 
-  const handleOpenAuth = (initialTab: 'login' | 'register-customer' | 'register-merchant' = 'login') => {
+  // Estado de Entrega Definido Ainda no Carrinho
+  const [cartWantDelivery, setCartWantDelivery] = useState<boolean>(false);
+  const [cartDeliveryNeighborhood, setCartDeliveryNeighborhood] = useState<string>(currentUser?.neighborhood || 'Centro');
+  const [cartDeliveryAddress, setCartDeliveryAddress] = useState<string>(currentUser?.address || '');
+
+  // Cálculo da Entrega no Carrinho usando o Portal de Entrega Existente
+  const cartStoreDeliveries = useMemo(() => {
+    if (!cart || cart.length === 0) return [];
+    const uniqueMerchants: { [id: string]: { id: string; name: string; neighborhood: string; address: string } } = {};
+    cart.forEach((item) => {
+      const mId = item.product.merchantId || 'loja_default';
+      const mName = item.product.merchantName || 'Loja Parceira';
+      if (!uniqueMerchants[mId]) {
+        const mObj = merchants.find((m) => m.id === mId || m.name?.toLowerCase() === mName.toLowerCase());
+        uniqueMerchants[mId] = {
+          id: mId,
+          name: mName,
+          neighborhood: mObj?.neighborhood || 'Centro',
+          address: mObj?.address || 'Centro, Cachoeiras de Macacu - RJ'
+        };
+      }
+    });
+
+    const ratePerKm = systemSettings?.deliveryRatePerKm ?? 1.0;
+    const platformFee = systemSettings?.deliveryPlatformFee ?? 2.0;
+
+    return Object.values(uniqueMerchants).map((m) => {
+      const dist = calculateDeliveryDistance(m.neighborhood || m.address, cartDeliveryNeighborhood || 'Centro');
+      const fare = estimateDeliveryFare(dist.distanceKm, ratePerKm, platformFee);
+      return {
+        merchantId: m.id,
+        merchantName: m.name,
+        originNeighborhood: m.neighborhood,
+        destNeighborhood: cartDeliveryNeighborhood || 'Centro',
+        distanceKm: dist.distanceKm,
+        fee: fare.totalFare
+      };
+    });
+  }, [cart, merchants, cartDeliveryNeighborhood, systemSettings]);
+
+  const cartTotalDeliveryFee = useMemo(() => {
+    return Number(cartStoreDeliveries.reduce((sum, d) => sum + d.fee, 0).toFixed(2));
+  }, [cartStoreDeliveries]);
+
+  const cartProductsSubtotal = useMemo(() => {
+    return Number(cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toFixed(2));
+  }, [cart]);
+
+  const handleOpenAuth = (initialTab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver' = 'login') => {
     openAuthModal(initialTab);
     setAuthInitialTab(initialTab);
     setAuthModalOpen(true);
   };
 
   const handleOpenCheckout = (
-    product: Product,
+    product?: Product | null,
     modality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO' = 'DELIVERY',
-    variations: { [key: string]: string } = {}
+    variations: { [key: string]: string } = {},
+    cartItemsToCheckout: any[] = [],
+    deliveryInfo?: { address?: string; neighborhood?: string; fee?: number }
   ) => {
+    const effectiveItems = cartItemsToCheckout.length > 0 ? cartItemsToCheckout : (product ? [{ product, quantity: 1, selectedVariations: variations }] : []);
+    const itemsTotal = effectiveItems.reduce((s, it) => s + it.product.price * it.quantity, 0);
+    const delivFee = modality === 'DELIVERY' ? (deliveryInfo?.fee ?? (cartWantDelivery ? cartTotalDeliveryFee : 0)) : 0;
+    const finalTotal = itemsTotal + delivFee;
+
     if (!currentUser) {
       promptAuthRequirement('COMPRA', {
-        title: product.name,
-        price: product.price,
-        merchantName: product.merchantName
+        title: product?.name || (effectiveItems.length > 0 ? `${effectiveItems.length} itens na sacola` : 'Finalizar Pedido'),
+        price: finalTotal,
+        merchantName: product?.merchantName
       });
       return;
     }
-    setCheckoutProduct(product);
+    setCheckoutProduct(product || null);
+    setCheckoutCartItems(cartItemsToCheckout);
     setCheckoutModality(modality);
     setCheckoutVariations(variations);
+    if (deliveryInfo?.address !== undefined) {
+      setCheckoutDeliveryAddress(deliveryInfo.address);
+    } else {
+      setCheckoutDeliveryAddress(cartDeliveryAddress);
+    }
+    if (deliveryInfo?.neighborhood !== undefined) {
+      setCheckoutDeliveryNeighborhood(deliveryInfo.neighborhood);
+    } else {
+      setCheckoutDeliveryNeighborhood(cartDeliveryNeighborhood);
+    }
+    setCheckoutDeliveryFee(delivFee);
     setSelectedProduct(null); // Close detail modal if open
   };
 
@@ -281,7 +355,7 @@ function MarketplaceApp() {
           onSelectStore={(storeId) => handleSelectStore(storeId)}
         />
 
-        {/* Barra de Notificação e Atalho Direto do Vendedor Comercial no Marketplace */}
+        {/* Barra de Notificação e Acesso Direto do Vendedor Comercial no Marketplace */}
         {(currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') && (
           <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white px-4 py-2 text-xs border-b border-indigo-700/50 shadow-xs flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center space-x-2 truncate">
@@ -348,7 +422,7 @@ function MarketplaceApp() {
         </main>
       </div>
 
-      {/* Drawer Lateral para Mobile com Categorias em CAIXA ALTA e Atalhos em caixa baixa */}
+      {/* Drawer Lateral para Mobile com Categorias em CAIXA ALTA e Subcategorias em caixa baixa */}
       <MobileCategoryDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -444,8 +518,8 @@ function MarketplaceApp() {
                 </li>
                 <li>
                   <button
-                    onClick={() => setDeliveryRegisterModalOpen(true)}
-                    className="text-amber-400 font-semibold hover:text-white flex items-center gap-1.5"
+                    onClick={() => handleOpenAuth('register-driver')}
+                    className="text-amber-400 font-semibold hover:text-white flex items-center gap-1.5 cursor-pointer"
                   >
                     <Bike className="w-3.5 h-3.5 text-amber-400" />
                     <span>Quero ser Entregador Parceiro</span>
@@ -559,12 +633,12 @@ function MarketplaceApp() {
             </div>
           </div>
 
-          {/* ATALHOS RÁPIDOS ABAIXO DE DIREITOS AUTORAIS */}
+          {/* DOCUMENTAÇÃO E PORTAIS OFICIAIS */}
           <div className="mt-4 pt-4 border-t border-emerald-900/50 bg-emerald-950/40 -mx-4 sm:-mx-6 px-4 sm:px-6 py-4 rounded-2xl">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center space-x-2 text-emerald-300 font-bold text-[11px]">
                 <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Atalhos Rápidos de Uso & Normas Oficiais:</span>
+                <span>Documentação da Plataforma & Manuais Oficiais:</span>
               </div>
               <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2">
                 <button
@@ -648,10 +722,17 @@ function MarketplaceApp() {
 
       {/* MODAL: CHECKOUT & REQUEST */}
       <CheckoutModal
-        isOpen={!!checkoutProduct}
-        onClose={() => setCheckoutProduct(null)}
+        isOpen={!!checkoutProduct || checkoutCartItems.length > 0}
+        onClose={() => {
+          setCheckoutProduct(null);
+          setCheckoutCartItems([]);
+        }}
         product={checkoutProduct}
+        cartItems={checkoutCartItems}
         initialModality={checkoutModality}
+        initialDeliveryAddress={checkoutDeliveryAddress}
+        initialDeliveryNeighborhood={checkoutDeliveryNeighborhood}
+        initialDeliveryFee={checkoutDeliveryFee}
         selectedVariations={checkoutVariations}
         onOrderSuccess={(order) => {
           // Keep modal open on confirmation screen
@@ -761,35 +842,153 @@ function MarketplaceApp() {
               )}
             </div>
 
-            {/* Cart Footer */}
+            {/* Cart Footer: Novo Fluxo de Entrega Definida no Carrinho */}
             {cart.length > 0 && (
               <div className="p-4 border-t border-emerald-100 bg-emerald-50/50 space-y-3">
-                <div className="flex items-center justify-between text-sm font-bold text-slate-900">
-                  <span>Subtotal Estimado:</span>
-                  <span className="text-base text-emerald-800 font-black">
-                    R${' '}
-                    {cart
-                      .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-                      .toFixed(2)}
-                  </span>
+                {/* Pergunta: Deseja receber por entrega? */}
+                <div className="bg-white p-3 rounded-xl border border-emerald-100 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <Truck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Deseja receber os produtos por entrega?</span>
+                    </span>
+                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Opcional</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setCartWantDelivery(false)}
+                      className={`py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        !cartWantDelivery
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      <Store className="w-3.5 h-3.5" />
+                      <span>NÃO (Retirada)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setCartWantDelivery(true)}
+                      className={`py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        cartWantDelivery
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      <Bike className="w-3.5 h-3.5" />
+                      <span>SIM (Entrega)</span>
+                    </button>
+                  </div>
+
+                  {/* Se SIM: Solicitar endereço e calcular pelo Portal de Entrega */}
+                  {cartWantDelivery && (
+                    <div className="mt-2 pt-2 border-t border-slate-100 space-y-2">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-emerald-600" />
+                          <span>Seu Bairro em Cachoeiras de Macacu:</span>
+                        </label>
+                        <select
+                          value={cartDeliveryNeighborhood}
+                          onChange={(e) => setCartDeliveryNeighborhood(e.target.value)}
+                          className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none font-medium"
+                        >
+                          {getAllCachoeirasNeighborhoods().map((b) => (
+                            <option key={b} value={b}>
+                              {b}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase">
+                          Rua, Número e Complemento:
+                        </label>
+                        <input
+                          type="text"
+                          value={cartDeliveryAddress}
+                          onChange={(e) => setCartDeliveryAddress(e.target.value)}
+                          placeholder="Ex: Rua Central, 120"
+                          className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none"
+                        />
+                      </div>
+
+                      {/* Discriminação da entrega por loja parceira */}
+                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-200/60 space-y-1">
+                        <span className="text-[10px] font-extrabold text-emerald-900 block">
+                          Cálculo pelo Portal de Entrega ({cartStoreDeliveries.length} origem(ns)):
+                        </span>
+                        {cartStoreDeliveries.map((sd) => (
+                          <div key={sd.merchantId} className="flex justify-between text-[11px] text-emerald-800">
+                            <span className="truncate max-w-[180px]">
+                              • {sd.merchantName} ({sd.originNeighborhood} → {sd.destNeighborhood}):
+                            </span>
+                            <span className="font-bold shrink-0">
+                              R$ {sd.fee.toFixed(2).replace('.', ',')}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
+
+                {/* Resumo de Valores */}
+                <div className="bg-slate-900 text-white p-3 rounded-xl space-y-1.5">
+                  <div className="flex items-center justify-between text-xs text-slate-300">
+                    <span>Produtos ({cart.reduce((s, it) => s + it.quantity, 0)} itens):</span>
+                    <span className="font-bold text-white">
+                      R$ {cartProductsSubtotal.toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-300">
+                    <span>Taxa de Entrega:</span>
+                    <span className="font-bold text-emerald-300">
+                      {cartWantDelivery
+                        ? `+ R$ ${cartTotalDeliveryFee.toFixed(2).replace('.', ',')}`
+                        : 'R$ 0,00 (Retirada)'}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-slate-700 pt-1.5 flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200">TOTAL FINAL:</span>
+                    <span className="text-base text-emerald-400 font-black">
+                      R${' '}
+                      {(
+                        cartProductsSubtotal +
+                        (cartWantDelivery ? cartTotalDeliveryFee : 0)
+                      )
+                        .toFixed(2)
+                        .replace('.', ',')}
+                    </span>
+                  </div>
+                </div>
+
                 <button
                   onClick={() => {
                     setIsCartOpen(false);
                     if (cart.length > 0) {
-                      if (!currentUser) {
-                        promptAuthRequirement('COMPRA', {
-                          title: cart.length === 1 ? cart[0].product.name : `${cart.length} produtos na sacola`,
-                          price: cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-                        });
-                        return;
-                      }
-                      handleOpenCheckout(cart[0].product);
+                      handleOpenCheckout(
+                        cart[0]?.product,
+                        cartWantDelivery ? 'DELIVERY' : 'RETIRADA',
+                        {},
+                        cart,
+                        {
+                          address: cartDeliveryAddress,
+                          neighborhood: cartDeliveryNeighborhood,
+                          fee: cartWantDelivery ? cartTotalDeliveryFee : 0
+                        }
+                      );
                     }
                   }}
                   className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer"
                 >
-                  <span>Finalizar Pedido</span>
+                  <span>Avançar para Checkout Asaas</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

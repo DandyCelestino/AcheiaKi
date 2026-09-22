@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DeliveryRide, DeliveryDriver, DeliveryDriverStatus } from '../../types';
 import {
@@ -29,6 +29,7 @@ import {
   PieChart as PieChartIcon
 } from 'lucide-react';
 import { SvgBarChart, SvgPieChart } from '../common/SvgCharts';
+import { DeliveryApprovalQueueView } from './DeliveryApprovalQueueView';
 
 export const MasterDeliveryView: React.FC = () => {
   const {
@@ -45,7 +46,7 @@ export const MasterDeliveryView: React.FC = () => {
     triggerToast
   } = useApp();
 
-  const [activeSubTab, setActiveSubTab] = useState<'rides' | 'drivers' | 'tariffs' | 'charts'>('rides');
+  const [activeSubTab, setActiveSubTab] = useState<'approval_queue' | 'rides' | 'drivers' | 'tariffs' | 'charts'>('approval_queue');
   const [rideStatusFilter, setRideStatusFilter] = useState<string>('all');
   const [driverStatusFilter, setDriverStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,6 +72,9 @@ export const MasterDeliveryView: React.FC = () => {
   // Estatísticas do Radar Master
   const stats = useMemo(() => {
     const totalRides = deliveryRides.length;
+    const pendingAnalysisCount = deliveryRides.filter((r) =>
+      r.status === 'AGUARDANDO_ANALISE' || r.status === 'CORRECAO_SOLICITADA'
+    ).length;
     const activeRides = deliveryRides.filter((r) =>
       ['AGUARDANDO_ENTREGADOR', 'ACEITA', 'EM_COLETA', 'COLETADA', 'EM_TRANSITO'].includes(r.status)
     ).length;
@@ -87,6 +91,7 @@ export const MasterDeliveryView: React.FC = () => {
 
     return {
       totalRides,
+      pendingAnalysisCount,
       activeRides,
       completedRides,
       onlineDrivers,
@@ -266,11 +271,30 @@ export const MasterDeliveryView: React.FC = () => {
       </div>
 
       {/* 2. SUB-ABAS MASTER */}
-      <div className="flex border-b border-slate-200 space-x-4">
+      <div className="flex border-b border-slate-200 space-x-4 overflow-x-auto pb-px">
+        <button
+          type="button"
+          id="btn-subtab-approval-queue"
+          onClick={() => setActiveSubTab('approval_queue')}
+          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 whitespace-nowrap cursor-pointer ${
+            activeSubTab === 'approval_queue'
+              ? 'border-amber-500 text-amber-600'
+              : 'border-transparent text-slate-400 hover:text-slate-700'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4 text-amber-500" />
+          <span>Solicitações aguardando análise</span>
+          {stats.pendingAnalysisCount > 0 && (
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500 text-slate-950">
+              {stats.pendingAnalysisCount}
+            </span>
+          )}
+        </button>
+
         <button
           type="button"
           onClick={() => setActiveSubTab('rides')}
-          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 ${
+          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 whitespace-nowrap ${
             activeSubTab === 'rides'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -283,7 +307,7 @@ export const MasterDeliveryView: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveSubTab('drivers')}
-          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 ${
+          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 whitespace-nowrap ${
             activeSubTab === 'drivers'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -296,7 +320,7 @@ export const MasterDeliveryView: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveSubTab('tariffs')}
-          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 ${
+          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 whitespace-nowrap ${
             activeSubTab === 'tariffs'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -310,7 +334,7 @@ export const MasterDeliveryView: React.FC = () => {
           type="button"
           id="btn-subtab-delivery-modo-grafico"
           onClick={() => setActiveSubTab('charts')}
-          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 cursor-pointer ${
+          className={`pb-3 text-xs font-bold border-b-2 transition-colors flex items-center space-x-1.5 cursor-pointer whitespace-nowrap ${
             activeSubTab === 'charts'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -320,6 +344,18 @@ export const MasterDeliveryView: React.FC = () => {
           <span>Modo Gráfico & Radar Operacional</span>
         </button>
       </div>
+
+      {/* SUB-ABA: FILA DE APROVAÇÃO (SEÇÃO 5 E 6) */}
+      {activeSubTab === 'approval_queue' && (
+        <DeliveryApprovalQueueView
+          onNavigateToRide={(rideId) => {
+            setActiveSubTab('rides');
+            setRideStatusFilter('all');
+            const found = deliveryRides.find((r) => r.id === rideId);
+            if (found) setSelectedRideDetails(found);
+          }}
+        />
+      )}
 
       {/* 3. CONTEÚDO DA SUB-ABA: CORRIDAS */}
       {activeSubTab === 'rides' && (
@@ -366,7 +402,7 @@ export const MasterDeliveryView: React.FC = () => {
                 <div key={ride.id} className="p-4 sm:p-5 space-y-3 hover:bg-slate-50/50 transition-colors">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-sans font-black text-sm text-slate-900">{ride.rideCode}</span>
+                      <span className="font-mono font-black text-sm text-slate-900">{ride.rideCode}</span>
                       <span className="text-xs text-slate-400">• Pedido: {ride.orderCode}</span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
@@ -449,7 +485,7 @@ export const MasterDeliveryView: React.FC = () => {
                       <span className="text-[10px] text-slate-400 font-semibold">
                         Cód. Segurança Cliente:
                       </span>
-                      <span className="font-sans font-black text-xs px-2 py-0.5 bg-slate-200 text-slate-800 rounded">
+                      <span className="font-mono font-black text-xs px-2 py-0.5 bg-slate-200 text-slate-800 rounded">
                         {ride.confirmationCode}
                       </span>
                     </div>
@@ -534,7 +570,7 @@ export const MasterDeliveryView: React.FC = () => {
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
                         Veículo: <strong>{driver.vehicleModel}</strong> ({driver.vehicleType}) • Placa:{' '}
-                        <strong className="font-sans text-emerald-800">{driver.vehiclePlate}</strong>
+                        <strong className="font-mono text-emerald-800">{driver.vehiclePlate}</strong>
                       </p>
                     </div>
                   </div>
@@ -845,7 +881,7 @@ export const MasterDeliveryView: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Auditoria de Entrega</span>
-                <h3 className="font-sans text-lg font-black text-slate-900">{selectedRideDetails.rideCode}</h3>
+                <h3 className="font-mono text-lg font-black text-slate-900">{selectedRideDetails.rideCode}</h3>
               </div>
               <button
                 type="button"
@@ -888,4 +924,3 @@ export const MasterDeliveryView: React.FC = () => {
     </div>
   );
 };
-

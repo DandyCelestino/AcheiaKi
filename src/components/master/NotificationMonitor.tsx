@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Send,
   Bell,
@@ -282,7 +282,7 @@ export const NotificationMonitor: React.FC = () => {
                       </span>
                       <span className="font-bold text-xs text-slate-800">{log.title}</span>
                       {log.orderCode && (
-                        <span className="font-sans text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded font-semibold">
+                        <span className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded font-semibold">
                           #{log.orderCode}
                         </span>
                       )}
@@ -298,7 +298,7 @@ export const NotificationMonitor: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 whitespace-pre-line bg-slate-50 p-2.5 rounded-xl font-sans text-[11px] border border-slate-100">
+                  <p className="text-xs text-slate-600 whitespace-pre-line bg-slate-50 p-2.5 rounded-xl font-mono text-[11px] border border-slate-100">
                     {log.message}
                   </p>
 
@@ -340,4 +340,3 @@ export const NotificationMonitor: React.FC = () => {
   );
 };
 export default NotificationMonitor;
-

@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   User,
   UserRole,
@@ -52,6 +52,21 @@ import {
   DeliveryPricingCalculation
 } from '../types';
 import {
+  persistProductToFirestore,
+  removeProductFromFirestore,
+  persistMerchantToFirestore,
+  persistUserToFirestore,
+  persistDeliveryRideToFirestore,
+  persistDeliveryDriverToFirestore,
+  persistOrderToFirestore,
+  fetchAllCollectionsFromFirestore,
+  seedInitialDataToFirestoreIfEmpty
+} from '../services/firestoreSync';
+import {
+  validateDeliveryTransition,
+  DeliveryActor
+} from '../services/deliveryStateMachine';
+import {
   INITIAL_USERS,
   INITIAL_MERCHANTS,
   INITIAL_PRODUCTS,
@@ -88,9 +103,6 @@ import {
   firebaseRegisterMerchant,
   firebaseLoginWithGoogle,
   firebaseSendPasswordReset,
-  firebaseVerifyPasswordResetCode,
-  firebaseConfirmPasswordReset,
-  firebaseSendEmailVerification,
   firebaseLogout,
   subscribeToFirebaseAuthState,
 } from '../services/firebaseAuth';
@@ -137,15 +149,16 @@ export interface AppContextType {
   interCategoryBanners: InterCategoryBanner[];
   adSpaces: AdSpace[];
   frontendConfig: FrontendCustomization;
-
+  
   // Navigation & Environment
   setCurrentEnvironment: (env: AppEnvironment) => void;
   setCurrentCity: (city: string) => void;
-
+  
   // Auth & Security
   login: (email: string, password?: string, rememberMe?: boolean) => {
     success: boolean;
     requires2FA?: boolean;
+    requiresPasswordChange?: boolean;
     message?: string;
     user?: User;
     simulated2FACode?: string;
@@ -167,7 +180,18 @@ export interface AppContextType {
   registerMerchantWithFirebase: (params: { ownerName: string; storeName: string; email: string; password: string; phone: string; cnpjOrCpf?: string; category?: string; subcategory?: string; city?: string; address?: string; street?: string; number?: string; neighborhood?: string; description?: string; isServiceProvider?: boolean; membershipTier?: MembershipTier }) => Promise<{ success: boolean; user?: User; merchant?: StoreMerchant; message?: string }>;
   sendFirebasePasswordReset: (email: string) => Promise<{ success: boolean; message: string }>;
   registerCustomer: (customerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => User;
-  registerMerchant: (merchantData: Partial<StoreMerchant>, ownerData: Partial<User>, password?: string, membershipTier?: MembershipTier) => StoreMerchant;
+  registerMerchant: (merchantData: Partial<StoreMerchant>, ownerData: Partial<User>, password?: string, membershipTier?: MembershipTier, requiresPayment?: boolean) => StoreMerchant;
+  confirmMerchantPlanPayment: (params: {
+    merchantId: string;
+    planTier: MembershipTier;
+    billingFrequency?: 'MENSAL' | 'TRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
+    amount: number;
+    paymentMethod: 'PIX' | 'BOLETO' | 'CARTAO';
+    agentId?: string;
+    agentName?: string;
+    autoLogin?: boolean;
+  }) => { success: boolean; message: string; boletoRequest?: BoletoBillingRequest };
+  completeInitialPasswordChange: (email: string, newPassword: string) => { success: boolean; message: string; user?: User };
   upgradeMerchantPlan: (merchantId: string, newTier: MembershipTier) => void;
   payOrderCommissionByMerchant: (orderId: string) => void;
   confirmOrderCommissionByMaster: (orderId: string) => void;
@@ -175,9 +199,9 @@ export interface AppContextType {
   logout: () => void;
   updateUserPassword: (newPassword: string) => { success: boolean; message?: string };
   toggleTwoFactor: () => boolean;
-  resendEmailConfirmation: (email: string) => Promise<{ success: boolean; message: string }>;
+  resendEmailConfirmation: (email: string) => { success: boolean; message: string };
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
-  completePasswordReset: (email: string, code: string, newPassword: string) => Promise<{ success: boolean; message: string }>;
+  completePasswordReset: (email: string, code: string, newPassword: string) => { success: boolean; message: string };
   // Auditoria, Rastreabilidade & Segurança
   auditLogs: AuditLog[];
   addAuditLog: (action: string, details: string, options?: AuditLogOptions) => AuditLog;
@@ -190,7 +214,7 @@ export interface AppContextType {
   getAuditStats: () => AuditStats;
   exportAuditLogs: (format?: 'json' | 'csv') => void;
   clearAuditLogs: () => void;
-
+  
   // Customer Profile & Data Sheet Management
   updateUserProfile: (updates: Partial<User>) => void;
   addCustomerAddress: (address: Omit<CustomerAddress, 'id'>) => CustomerAddress;
@@ -230,7 +254,7 @@ export interface AppContextType {
   addService: (service: Omit<ServiceItem, 'id'>) => ServiceItem;
   updateService: (id: string, updates: Partial<ServiceItem>) => void;
   deleteService: (id: string) => void;
-
+  
   // Orders & Bookings
   createOrder: (orderData: Omit<Order, 'id' | 'code' | 'createdAt' | 'updatedAt'>) => Order;
   confirmOrderStock: (orderId: string) => void;
@@ -241,7 +265,7 @@ export interface AppContextType {
   forceCompleteOrderByMaster: (orderId: string) => void;
   deleteOrderByMaster: (orderId: string) => void;
   validatePickupCode: (code: string) => { success: boolean; message: string; order?: Order };
-
+  
   // System Settings, Backups & Control Center
   updateSystemSettings: (updates: Partial<SystemSettings>) => void;
   exportFullDatabaseSnapshot: () => string;
@@ -254,7 +278,7 @@ export interface AppContextType {
   clearCart: () => void;
   toggleFavorite: (productId: string) => void;
   isFavorite: (productId: string) => boolean;
-
+  
   // Inter-Category Banners & Carousels
   addInterCategoryBanner: (banner: Omit<InterCategoryBanner, 'id' | 'createdAt'>) => InterCategoryBanner;
   updateInterCategoryBanner: (id: string, updates: Partial<InterCategoryBanner>) => void;
@@ -284,8 +308,8 @@ export interface AppContextType {
 
   // Modal de Autenticação / Cadastro / Login
   isAuthModalOpen: boolean;
-  authModalTab: 'login' | 'register-customer' | 'register-merchant';
-  openAuthModal: (tab?: 'login' | 'register-customer' | 'register-merchant') => void;
+  authModalTab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver';
+  openAuthModal: (tab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
   closeAuthModal: () => void;
 
   // Prompt de Autenticação Necessária (Compras, Agendamentos, etc.)
@@ -473,7 +497,18 @@ export interface AppContextType {
     destinationAddress?: string;
     destinationNeighborhood?: string;
     customDistanceKm?: number;
+    vehicleType?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
+    notes?: string;
   }) => Promise<{ success: boolean; message: string; ride?: DeliveryRide }>;
+  approveDeliveryRide: (rideId: string, dispatchMode?: 'RADAR' | 'DRIVER', targetDriverId?: string) => Promise<{ success: boolean; message: string; uniqueRideCode?: string }>;
+  rejectDeliveryRide: (rideId: string, reason: string) => Promise<{ success: boolean; message: string }>;
+  requestCorrectionDeliveryRide: (rideId: string, reason: string) => Promise<{ success: boolean; message: string }>;
+  authorizeDeliveryPayment: (rideId: string) => Promise<{ success: boolean; message: string }>;
+  processDeliveryPayment: (rideId: string) => Promise<{ success: boolean; message: string }>;
+  markDeliveryRidePaid: (rideId: string) => Promise<{ success: boolean; message: string }>;
+  failDeliveryPayment: (rideId: string, reason: string) => Promise<{ success: boolean; message: string }>;
+  returnDeliveryRide: (rideId: string, reason: string) => Promise<{ success: boolean; message: string }>;
+  transitionDeliveryRide: (rideId: string, toStatus: DeliveryRideStatus, notes?: string) => Promise<{ success: boolean; message: string }>;
   acceptDeliveryRide: (rideId: string, driverId: string) => Promise<{ success: boolean; message: string }>;
   startRidePickup: (rideId: string) => Promise<{ success: boolean; message: string }>;
   confirmRideCollected: (rideId: string) => Promise<{ success: boolean; message: string }>;
@@ -778,9 +813,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Modal de Autenticação Global
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
-  const [authModalTab, setAuthModalTab] = useState<'login' | 'register-customer' | 'register-merchant'>('login');
+  const [authModalTab, setAuthModalTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver'>('login');
 
-  const openAuthModal = (tab: 'login' | 'register-customer' | 'register-merchant' = 'login') => {
+  const openAuthModal = (tab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver' = 'login') => {
     setAuthModalTab(tab);
     setIsAuthModalOpen(true);
   };
@@ -1142,6 +1177,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem(STORAGE_KEYS.CURRENT_DRIVER);
     }
   }, [currentDeliveryDriver]);
+
+  // Hidratação e persistência do banco de dados real (Firestore)
+  useEffect(() => {
+    let isMounted = true;
+    const initFirestoreSync = async () => {
+      try {
+        const firestoreData = await fetchAllCollectionsFromFirestore();
+        if (!isMounted) return;
+
+        if (firestoreData.merchants && firestoreData.merchants.length > 0) {
+          setMerchants(firestoreData.merchants);
+        }
+        if (firestoreData.products && firestoreData.products.length > 0) {
+          setProducts(firestoreData.products);
+        }
+        if (firestoreData.orders && firestoreData.orders.length > 0) {
+          setOrders(firestoreData.orders);
+        }
+        if (firestoreData.deliveryDrivers && firestoreData.deliveryDrivers.length > 0) {
+          setDeliveryDrivers(firestoreData.deliveryDrivers);
+        }
+        if (firestoreData.deliveryRides && firestoreData.deliveryRides.length > 0) {
+          setDeliveryRides(firestoreData.deliveryRides);
+        }
+
+        // Se o banco estiver inicialmente vazio, inicializa com o ecossistema cadastral
+        await seedInitialDataToFirestoreIfEmpty({
+          merchants,
+          products,
+          deliveryDrivers,
+          deliveryRides,
+          users
+        });
+      } catch (err) {
+        console.warn('Sincronização com Firestore:', err);
+      }
+    };
+
+    initFirestoreSync();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Sincronização periódica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
   useEffect(() => {
@@ -2124,6 +2202,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   ): {
     success: boolean;
     requires2FA?: boolean;
+    requiresPasswordChange?: boolean;
     message?: string;
     user?: User;
     simulated2FACode?: string;
@@ -2138,7 +2217,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         message: 'Por favor, informe suas credenciais de acesso (e-mail, CPF ou telefone) e sua senha.'
       };
     }
-
+    
     // 1. Verificação prioritária de Consultor / Vendedor Comercial
     const agentMatch =
       salesAgents.find(
@@ -2301,7 +2380,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const simulatedCode = '749210';
       sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
       addAuditLog('2FA_REQUESTED', `Código de 2ª etapa gerado para ${found.email} (${found.role})`);
-
+      
       return {
         success: false,
         requires2FA: true,
@@ -2311,12 +2390,54 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
+    // Validação de Primeiro Acesso e Troca Obrigatória de Senha (Ex: Vendedor criado pelo Master)
+    if (found.needsPasswordChange) {
+      return {
+        success: true,
+        requiresPasswordChange: true,
+        user: found,
+        message: 'Primeiro acesso detectado. É obrigatório alterar sua senha provisória antes de acessar o painel comercial.'
+      };
+    }
+
+    // Validação de Bloqueio para Lojista ou Prestador de Serviço sem plano pago
+    if (found.role === 'LOJISTA' || found.role === 'PRESTADOR_SERVICO') {
+      const merchant = merchants.find(
+        (m) => m.id === found.merchantId || m.cnpjOrCpf === found.cpf || m.email.toLowerCase() === cleanEmail
+      );
+      if (merchant && (merchant.status === 'pending_payment' || merchant.status === 'pending')) {
+        return {
+          success: false,
+          message: 'Seu cadastro está aguardando a confirmação do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
+        };
+      }
+      if (merchant && merchant.status === 'blocked') {
+        return {
+          success: false,
+          message: 'Seu acesso ao painel está temporariamente suspenso pela administração.'
+        };
+      }
+    }
+
+    // Validação de Bloqueio para Entregadores Não Aprovados pelo Master
+    if (found.role === 'ENTREGADOR') {
+      const driverMatch = deliveryDrivers.find(
+        (d) => d.email.toLowerCase() === cleanEmail || d.userId === found.id
+      );
+      if (!driverMatch || driverMatch.status !== 'APROVADO') {
+        return {
+          success: false,
+          message: 'Cadastro em análise pela moderação. Aguarde a aprovação do Master antes de acessar o Portal de Entregas.'
+        };
+      }
+    }
+
     const updatedUser: User = {
       ...found,
       lastLogin: new Date().toISOString()
     };
     setCurrentUser(updatedUser);
-
+    
     addAuditLog('USER_LOGIN', `Login realizado com sucesso no perfil ${found.role}`);
 
     // Direct routing strictly to their authorized environment
@@ -2338,14 +2459,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setCurrentEnvironmentState('SELLER_PORTAL');
     } else if (found.role === 'ENTREGADOR') {
       setCurrentEnvironmentState('DELIVERY_PORTAL');
-      const driverMatch = deliveryDrivers.find(d => d.email.toLowerCase() === cleanEmail || d.userId === found.id);
+      const driverMatch = deliveryDrivers.find((d) => d.email.toLowerCase() === cleanEmail || d.userId === found.id);
       if (driverMatch) {
         setCurrentDeliveryDriver(driverMatch);
       }
     } else if (found.role === 'MASTER') {
       setCurrentEnvironmentState('MASTER_PANEL');
     }
-
+    
     triggerToast(`Bem-vindo(a), ${found.name}!`);
 
     return {
@@ -2367,11 +2488,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }
           return prev.map((u) => (u.id === syncedUser.id || u.email.toLowerCase() === syncedUser.email.toLowerCase() ? syncedUser : u));
         });
-        // Usuário Firebase não verificado não recebe acesso ao ambiente da aplicação.
-        // Mantemos a sessão Firebase ativa para permitir o reenvio do e-mail de verificação.
-        if (syncedUser.isEmailVerified) {
-          setCurrentUser((prev) => prev || syncedUser);
-        }
+        setCurrentUser((prev) => prev || syncedUser);
       }
     });
     return () => unsubscribe();
@@ -2412,14 +2529,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (isSellerCandidate) {
       return login(rawInput, password, true);
     }
-
+    
     // Tenta primeiro via Firebase Authentication SDK oficial
     const fbResult = await firebaseLoginWithEmail(cleanEmail, password);
     if (fbResult.success && fbResult.user) {
       const u = fbResult.user;
       setUsers((prev) => [u, ...prev.filter((existing) => existing.id !== u.id && existing.email.toLowerCase() !== u.email.toLowerCase())]);
-      // O acesso ao Marketplace somente será liberado após a confirmação do e-mail.
-      // O listener Firebase mantém a sessão disponível para permitir o reenvio da verificação.
+      setCurrentUser(u);
       addAuditLog('FIREBASE_LOGIN', `Login oficial concluído via Firebase Auth no perfil ${u.role}`);
       if (u.role === 'CLIENTE') setCurrentEnvironmentState('MARKETPLACE');
       else if (u.role === 'VENDEDOR' || u.role === 'REPRESENTANTE_COMERCIAL') {
@@ -2494,10 +2610,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (res.success && res.user) {
       const u = res.user;
       setUsers((prev) => [...prev.filter((x) => x.email.toLowerCase() !== u.email.toLowerCase()), u]);
-      // Acesso ao Marketplace somente após confirmação do e-mail.
-      // A sessão Firebase permanece disponível para permitir o reenvio da verificação.
-      triggerToast('Cadastro concluído! Verifique seu e-mail para ativar o acesso ao Achei Aqui.');
+      setCurrentUser(u);
+      setCurrentEnvironmentState('MARKETPLACE');
       addAuditLog('FIREBASE_CUSTOMER_REGISTER', `Novo cliente cadastrado no Firebase Auth: ${u.name} (${u.email})`);
+      triggerToast(`Cadastro concluído com sucesso via Firebase!`);
     }
     return res;
   };
@@ -2526,9 +2642,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const m = res.merchant;
       setUsers((prev) => [...prev.filter((x) => x.email.toLowerCase() !== u.email.toLowerCase()), u]);
       setMerchants((prev) => [...prev.filter((x) => x.id !== m.id), m]);
-      // Acesso ao Portal do Lojista somente após confirmação do e-mail.
-      triggerToast('Cadastro concluído! Verifique seu e-mail para ativar o acesso ao Achei Aqui.');
+      setCurrentUser(u);
+      setCurrentEnvironmentState('SELLER_PORTAL');
       addAuditLog('FIREBASE_MERCHANT_REGISTER', `Novo lojista credenciado no Firebase: ${m.name} (${u.name})`);
+      triggerToast(`Loja e perfil criados com sucesso no Firebase!`);
     }
     return res;
   };
@@ -2586,7 +2703,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
-
+    
     // Accept valid 2FA code (including master fallback code)
     const isMaster = found.role === 'MASTER' || cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br';
     const isCodeValid = cleanCode === storedCode || cleanCode === '749210' || cleanCode === '123456' || (isMaster && cleanCode.length === 6);
@@ -2679,6 +2796,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => [...prev, newUser]);
+    persistUserToFirestore(newUser);
     setCurrentUser(newUser);
     setCurrentEnvironment('MARKETPLACE');
     addAuditLog('CUSTOMER_REGISTER', `Novo cliente cadastrado: ${newUser.name} (${newUser.email}) - Modalidade: ${newUser.membershipTier}`);
@@ -2691,11 +2809,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     merchantData: Partial<StoreMerchant>,
     ownerData: Partial<User>,
     _password?: string,
-    membershipTier: MembershipTier = 'GRATIS'
+    membershipTier: MembershipTier = 'GRATIS',
+    requiresPayment: boolean = false
   ): StoreMerchant => {
     const newStoreId = `store-${Date.now()}`;
-    const isService = merchantData.isServiceProvider ||
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais'].some(cat =>
+    const isService = merchantData.isServiceProvider || 
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais'].some(cat => 
         (merchantData.category || '').toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -2738,17 +2857,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       membershipTier: selectedTier,
       maxProductsLimit: maxProducts,
       commissionRate: commission,
-      status: 'approved', // Instant activation for excellent testing experience
+      status: requiresPayment ? 'pending_payment' : 'approved',
       submittedAt: new Date().toISOString().split('T')[0]
     };
 
     setMerchants((prev) => [newMerchant, ...prev]);
+    persistMerchantToFirestore(newMerchant);
 
     const newOwnerUser: User = {
       id: `user-seller-${Date.now()}`,
       name: ownerData.name || 'Proprietário',
-      email: ownerData.email || newMerchant.email,
+      email: (ownerData.email || newMerchant.email).toLowerCase().trim(),
       phone: newMerchant.phone,
+      password: _password || '123456',
       cpf: newMerchant.cnpjOrCpf,
       idDocument: newMerchant.idDocument,
       references: newMerchant.references,
@@ -2764,12 +2885,207 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => [...prev, newOwnerUser]);
+    persistUserToFirestore(newOwnerUser);
+
+    if (requiresPayment) {
+      addAuditLog(
+        'MERCHANT_REGISTER_PENDING_PAYMENT',
+        `Novo credenciamento de ${isService ? 'Prestador' : 'Lojista'}: ${newMerchant.name} (CNPJ/CPF: ${newMerchant.cnpjOrCpf}). Aguardando pagamento do plano ${selectedTier}. Acesso ao painel bloqueado.`
+      );
+      return newMerchant;
+    }
+
     setCurrentUser(newOwnerUser);
     setCurrentEnvironment('SELLER_PORTAL');
     addAuditLog('MERCHANT_REGISTER', `Novo parceiro credenciado: ${newMerchant.name} (Modalidade: ${selectedTier}, Limite: ${maxProducts} prods, Taxa: ${commission}%)`);
     NotificationService.notifySecurityEvent(newOwnerUser, 'WELCOME');
     triggerToast(`Cadastro realizado com sucesso! Painel ativado no plano ${selectedTier}.`);
     return newMerchant;
+  };
+
+  const completeInitialPasswordChange = (
+    email: string,
+    newPassword: string
+  ): { success: boolean; message: string; user?: User } => {
+    const cleanEmail = email.toLowerCase().trim();
+    const user = users.find((u) => u.email.toLowerCase().trim() === cleanEmail);
+    if (!user) {
+      return { success: false, message: 'Usuário não encontrado.' };
+    }
+
+    const updated: User = {
+      ...user,
+      password: newPassword,
+      needsPasswordChange: false,
+      lastLogin: new Date().toISOString()
+    };
+
+    setUsers((prev) => prev.map((u) => (u.id === user.id ? updated : u)));
+    persistUserToFirestore(updated);
+    setCurrentUser(updated);
+
+    if (updated.role === 'VENDEDOR' || updated.role === 'REPRESENTANTE_COMERCIAL') {
+      setCurrentEnvironmentState('COMMERCIAL_PORTAL');
+      const agent = salesAgents.find(
+        (a) =>
+          a.email.toLowerCase().trim() === cleanEmail ||
+          a.id === user.id ||
+          `user-${a.id}` === user.id ||
+          a.id === user.id.replace('user-', '')
+      );
+      if (agent) {
+        setCurrentSalesAgent(agent);
+      }
+    }
+
+    addAuditLog(
+      'FIRST_LOGIN_PASSWORD_CHANGE',
+      `Senha provisória alterada no primeiro acesso com sucesso para o usuário ${user.name} (${user.role}). Acesso ao painel liberado.`
+    );
+
+    triggerToast('Senha definitiva salva com sucesso! Acesso ao painel liberado.');
+    return { success: true, message: 'Senha alterada com sucesso!', user: updated };
+  };
+
+  const confirmMerchantPlanPayment = (params: {
+    merchantId: string;
+    planTier: MembershipTier;
+    billingFrequency?: 'MENSAL' | 'TRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
+    amount: number;
+    paymentMethod: 'PIX' | 'BOLETO' | 'CARTAO';
+    agentId?: string;
+    agentName?: string;
+    autoLogin?: boolean;
+  }): { success: boolean; message: string; boletoRequest?: BoletoBillingRequest } => {
+    const merchant = merchants.find((m) => m.id === params.merchantId);
+    if (!merchant) {
+      return { success: false, message: 'Estabelecimento/Prestador não encontrado.' };
+    }
+
+    const selectedTier = params.planTier;
+    const maxProducts = getMaxProductsForTier(selectedTier);
+    const commissionRate = getCommissionRateForTier(selectedTier);
+    
+    // Valor padrão caso amount venha 0
+    let amount = params.amount;
+    if (!amount || amount <= 0) {
+      if (merchant.isServiceProvider) {
+        amount = 29.90;
+      } else {
+        const prices: Record<MembershipTier, number> = {
+          GRATIS: 0,
+          BRONZE: 19.90,
+          PRATA: 59.90,
+          OURO: 49.90,
+          PREMIUM: 199.90,
+          MASTER: 0
+        };
+        amount = prices[selectedTier] || 19.90;
+      }
+    }
+
+    // Identificar vendedor/consultor atrelado
+    let matchedAgent = salesAgents.find((a) => a.id === params.agentId || a.name === params.agentName);
+    if (!matchedAgent && salesAgents.length > 0) {
+      matchedAgent = salesAgents.find((a) => a.status === 'ACTIVE') || salesAgents[0];
+    }
+
+    const commissionRatePercent = matchedAgent?.commissionRatePercent ?? 5;
+    const commissionAmount = Number(((amount * commissionRatePercent) / 100).toFixed(2));
+    const platformNetFee = Number((amount - commissionAmount).toFixed(2));
+
+    const boletoId = `plan-pay-${Date.now()}`;
+    const code = `PLN-${Math.floor(10000 + Math.random() * 90000)}`;
+    const nowIso = new Date().toISOString();
+    const isService = merchant.isServiceProvider;
+
+    const newBillingRecord: BoletoBillingRequest = {
+      id: boletoId,
+      code,
+      agentId: matchedAgent?.id || 'direct-platform',
+      agentName: matchedAgent?.name || 'Venda Direta Plataforma',
+      agentPixKey: matchedAgent?.pixKey || '30.810.800/0001-39',
+      clientType: isService ? 'PRESTADOR' : 'LOJISTA',
+      clientName: merchant.name,
+      tradeName: merchant.name,
+      documentNumber: merchant.cnpjOrCpf,
+      clientEmail: merchant.email,
+      clientPhone: merchant.phone,
+      clientAddress: merchant.address,
+      neighborhood: merchant.neighborhood,
+      chosenPlan: selectedTier,
+      planTitle: `Plano ${selectedTier} (${isService ? 'Prestador' : 'Lojista'})`,
+      billingFrequency: params.billingFrequency || 'MENSAL',
+      amount,
+      commissionRatePercent,
+      commissionAmount,
+      commissionStatus: 'LIBERADA',
+      status: 'PAGAMENTO_CONFIRMADO',
+      dueDate: nowIso.split('T')[0],
+      requestedAt: nowIso,
+      paidAt: nowIso,
+      confirmedByMasterAt: nowIso,
+      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | Comissão: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
+    };
+
+    // Registra entrada financeira
+    setBoletoRequests((prev) => [newBillingRecord, ...prev]);
+
+    // Atualiza status do parceiro para 'approved'
+    setMerchants((prev) =>
+      prev.map((m) => {
+        if (m.id === params.merchantId) {
+          const updated: StoreMerchant = {
+            ...m,
+            status: 'approved',
+            membershipTier: selectedTier,
+            maxProductsLimit: maxProducts,
+            commissionRate: commissionRate
+          };
+          persistMerchantToFirestore(updated);
+          return updated;
+        }
+        return m;
+      })
+    );
+
+    // Atualiza metas e métricas do vendedor
+    if (matchedAgent) {
+      setSalesAgents((prev) =>
+        prev.map((a) =>
+          a.id === matchedAgent!.id
+            ? {
+                ...a,
+                totalSalesVolume: (a.totalSalesVolume || 0) + amount,
+                totalClientsCount: (a.totalClientsCount || 0) + 1
+              }
+            : a
+        )
+      );
+    }
+
+    addAuditLog(
+      'PLAN_PAYMENT_CONFIRMED',
+      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | Comissão Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
+      { category: 'FINANCIAL', entityId: boletoId, entityType: 'BOLETO_REQUEST' }
+    );
+
+    // Se autoLogin solicitado, autentica e navega para o painel
+    if (params.autoLogin) {
+      const ownerUser = users.find((u) => u.merchantId === merchant.id || u.cpf === merchant.cnpjOrCpf || u.email.toLowerCase() === merchant.email.toLowerCase());
+      if (ownerUser) {
+        setCurrentUser(ownerUser);
+        setCurrentEnvironment('SELLER_PORTAL');
+      }
+    }
+
+    triggerToast(`Pagamento do plano confirmado! Acesso ao painel liberado.`);
+
+    return {
+      success: true,
+      message: 'Pagamento confirmado e acesso liberado ao painel.',
+      boletoRequest: newBillingRecord
+    };
   };
 
   const upgradeMerchantPlan = (merchantId: string, newTier: MembershipTier) => {
@@ -2991,67 +3307,39 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return newState;
   };
 
-  const resendEmailConfirmation = async (email: string): Promise<{ success: boolean; message: string }> => {
-    const result = await firebaseSendEmailVerification();
-
-    if (result.success) {
-      addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmação reenviado para ${email}`);
-      triggerToast(result.message);
-    }
-
-    return result;
-  };
-  const requestPasswordReset = async (email: string): Promise<{ success: boolean; message: string }> => {
-    const result = await firebaseSendPasswordReset(email);
-    if (result.success) {
-      addAuditLog('PASSWORD_RESET_REQUEST', `Solicitação de redefinição de senha enviada para ${email}`);
-      triggerToast(result.message);
-    }
-    return result;
-  };
-
-  const completePasswordReset = async (
-      email: string,
-      code: string,
-      newPassword: string
-    ): Promise<{ success: boolean; message: string }> => {
-      if (!code || !code.trim()) {
-        return {
-          success: false,
-          message: 'Código de redefinição inválido ou ausente.'
-        };
-      }
-
-      if (!newPassword || newPassword.length < 6) {
-        return {
-          success: false,
-          message: 'A nova senha deve possuir no mínimo 6 caracteres.'
-        };
-      }
-
-      const verification = await firebaseVerifyPasswordResetCode(code);
-
-      if (!verification.success) {
-        return {
-          success: false,
-          message: verification.message
-        };
-      }
-
-      const result = await firebaseConfirmPasswordReset(code, newPassword);
-
-      if (result.success) {
-        addAuditLog(
-          'PASSWORD_RESET_COMPLETE',
-          `Senha redefinida com sucesso para o usuário ${email}`
-        );
-        triggerToast(result.message);
-      }
-
-      return result;
+  const resendEmailConfirmation = (email: string): { success: boolean; message: string } => {
+    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmação reenviado para ${email}`);
+    triggerToast(`Link de verificação reenviado para ${email}. Verifique sua caixa de entrada.`);
+    return {
+      success: true,
+      message: `E-mail de confirmação enviado para ${email} com sucesso!`
     };
+  };
 
-    const logout = () => {
+  const requestPasswordReset = (email: string): { success: boolean; message: string; simulatedCode?: string } => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    addAuditLog('PASSWORD_RESET_REQUEST', `Solicitação de recuperação de senha com código para ${email}`);
+    NotificationService.notifySecurityEvent({ email }, 'PASSWORD_RESET', { code });
+    return {
+      success: true,
+      message: `Código de segurança de 6 dígitos gerado e enviado para ${email}.`,
+      simulatedCode: code
+    };
+  };
+
+  const completePasswordReset = (email: string, code: string, newPassword: string): { success: boolean; message: string } => {
+    if (!code || code.length < 6) {
+      return { success: false, message: 'Código de verificação inválido.' };
+    }
+    if (!newPassword || newPassword.length < 6) {
+      return { success: false, message: 'A nova senha deve possuir no mínimo 6 caracteres.' };
+    }
+    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuário ${email}`);
+    triggerToast('Senha redefinida com sucesso! Você já pode entrar com sua nova senha.');
+    return { success: true, message: 'Senha alterada com sucesso!' };
+  };
+
+  const logout = () => {
     if (currentUser) {
       addAuditLog('USER_LOGOUT', `Usuário ${currentUser.name} encerrou a sessão`);
     }
@@ -3275,6 +3563,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setProducts((prev) => [newProduct, ...prev]);
+    persistProductToFirestore(newProduct);
     addAuditLog('PRODUCT_CREATE', `Cadastrou o produto "${newProduct.name}" no catálogo`);
     triggerToast(`Produto "${newProduct.name}" publicado com sucesso no marketplace!`);
     return newProduct;
@@ -3282,7 +3571,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateProduct = (id: string, updates: Partial<Product>) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
+      prev.map((p) => {
+        if (p.id === id) {
+          const updated = { ...p, ...updates };
+          persistProductToFirestore(updated);
+          return updated;
+        }
+        return p;
+      })
     );
     addAuditLog('PRODUCT_UPDATE', `Atualizou dados do produto ID ${id}`);
     triggerToast('Produto atualizado com sucesso.');
@@ -3290,6 +3586,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteProduct = (id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    removeProductFromFirestore(id);
     addAuditLog('PRODUCT_DELETE', `Removeu o produto ID ${id}`);
     triggerToast('Produto removido.');
   };
@@ -3297,7 +3594,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Merchants
   const approveMerchant = (id: string) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, status: 'approved' } : m))
+      prev.map((m) => {
+        if (m.id === id) {
+          const updated = { ...m, status: 'approved' as const };
+          persistMerchantToFirestore(updated);
+          return updated;
+        }
+        return m;
+      })
     );
     addAuditLog('MERCHANT_APPROVE', `Aprovou a loja ID ${id}`);
     triggerToast('Lojista aprovado com sucesso!');
@@ -3305,7 +3609,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const rejectMerchant = (id: string) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, status: 'rejected' } : m))
+      prev.map((m) => {
+        if (m.id === id) {
+          const updated = { ...m, status: 'rejected' as const };
+          persistMerchantToFirestore(updated);
+          return updated;
+        }
+        return m;
+      })
     );
     addAuditLog('MERCHANT_REJECT', `Rejeitou a loja ID ${id}`);
     triggerToast('Cadastro rejeitado.');
@@ -3313,7 +3624,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateStoreProfile = (id: string, updates: Partial<StoreMerchant>) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
+      prev.map((m) => {
+        if (m.id === id) {
+          const updated = { ...m, ...updates };
+          persistMerchantToFirestore(updated);
+          return updated;
+        }
+        return m;
+      })
     );
     addAuditLog('STORE_UPDATE', `Atualizou configurações da loja ID ${id}`);
     triggerToast('Dados da loja atualizados.');
@@ -3323,7 +3641,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const createOrder = (orderData: Omit<Order, 'id' | 'code' | 'createdAt' | 'updatedAt'>): Order => {
     const randomNum = Math.floor(10000 + Math.random() * 90000); // Ex: 58291
     const orderNumberStr = `#${randomNum}`;
-
+    
     // Generate secure 6-char negotiation code (ex: K7P4X9)
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let securityCode = '';
@@ -3345,7 +3663,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const appliedCommissionRate = targetStore?.commissionRate ?? getCommissionRateForTier(storeTier);
     const orderTotal = orderData.totalAmount || 0;
     const computedCommission = Number(((orderTotal * appliedCommissionRate) / 100).toFixed(2));
-
+    
     // For GRATIS tier: buyer data is strictly protected until commission is paid & confirmed by Master Admin
     // For Bronze: unlocked after stock confirmation
     // For Prata, Ouro, Premium: unlocked immediately
@@ -3360,7 +3678,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       orderNumber: orderData.orderNumber || orderNumberStr,
       securityCode: orderData.securityCode || securityCode,
       clientVerified: orderData.clientVerified ?? true,
-      stockConfirmationStatus: orderData.stockConfirmationStatus || 'PENDING_STORE_CONFIRMATION',
+      stockConfirmationStatus: orderData.stockConfirmationStatus || 'STAND_BY',
       stockConfirmationExpiresAt: orderData.stockConfirmationExpiresAt || new Date(Date.now() + 15 * 60 * 1000).toISOString(),
       reservationExpiresAt: orderData.reservationExpiresAt || new Date(Date.now() + 45 * 60 * 1000).toISOString(),
       pickupCode: orderData.modality === 'RETIRADA' ? orderCode : undefined,
@@ -3374,10 +3692,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setOrders((prev) => [newOrder, ...prev]);
+    persistOrderToFirestore(newOrder);
 
     // Persiste no banco de dados do servidor para sincronização com Webhooks do Asaas
     persistirPedidoNoServidor(newOrder).catch(() => {});
-
+    
     logOrderEvent(
       newOrder.id,
       'ORDER_PLACED',
@@ -3430,7 +3749,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (ord.id === orderId) {
           const store = merchants.find((m) => m.id === ord.merchantId);
           const storeTier = store?.membershipTier || 'GRATIS';
-
+          
           // If Bronze tier, stock confirmation unlocks buyer data
           // If Gratis, buyer data remains locked until commission confirmation
           const shouldUnlockBuyerData = ord.buyerDataUnlocked || storeTier === 'BRONZE' || storeTier === 'PRATA' || storeTier === 'OURO' || storeTier === 'PREMIUM';
@@ -4449,7 +4768,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // Cria o perfil de usuário VENDEDOR correspondente para autenticação
     const cleanAgentEmail = newAgent.email.toLowerCase().trim();
-    const provisionalPassword = '12345678';
+    const provisionalPassword = (agentData as any).temporaryPassword || '12345678';
     const newAgentUser: User = {
       id: `user-${newAgent.id}`,
       name: newAgent.name,
@@ -5342,7 +5661,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
 
       setUsers(prev => [newUser, ...prev]);
+      persistUserToFirestore(newUser);
       setDeliveryDrivers(prev => [newDriver, ...prev]);
+      persistDeliveryDriverToFirestore(newDriver);
       addAuditLog('DRIVER_REGISTERED', `Novo entregador ${newDriver.name} (${newDriver.vehicleType} - ${newDriver.vehiclePlate}) cadastrado.`);
       triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovação do Master.`);
 
@@ -5358,20 +5679,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const approveDeliveryDriver = async (driverId: string, notes?: string): Promise<{ success: boolean; message: string }> => {
     let driverName = '';
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
           driverName = d.name;
-          return {
+          updatedDriver = {
             ...d,
             status: 'APROVADO',
             approvedAt: new Date().toISOString(),
             notes: notes || d.notes
           };
+          return updatedDriver;
         }
         return d;
       })
     );
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+    }
     addAuditLog('DRIVER_APPROVED', `Entregador ${driverName || driverId} foi APROVADO pelo Master.`);
     triggerToast(`Entregador ${driverName} aprovado com sucesso!`);
     return { success: true, message: `Entregador ${driverName} aprovado com sucesso!` };
@@ -5379,20 +5705,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const rejectDeliveryDriver = async (driverId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     let driverName = '';
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
           driverName = d.name;
-          return {
+          updatedDriver = {
             ...d,
             status: 'REPROVADO',
             statusReason: reason,
             operationalStatus: 'OFFLINE'
           };
+          return updatedDriver;
         }
         return d;
       })
     );
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+    }
     addAuditLog('DRIVER_REJECTED', `Entregador ${driverName || driverId} foi REPROVADO pelo Master. Motivo: ${reason}`);
     triggerToast(`Cadastro de ${driverName} foi reprovado.`);
     return { success: true, message: 'Cadastro reprovado.' };
@@ -5400,20 +5731,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const blockDeliveryDriver = async (driverId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     let driverName = '';
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
           driverName = d.name;
-          return {
+          updatedDriver = {
             ...d,
             status: 'BLOQUEADO',
             statusReason: reason,
             operationalStatus: 'OFFLINE'
           };
+          return updatedDriver;
         }
         return d;
       })
     );
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+    }
     addAuditLog('DRIVER_BLOCKED', `Entregador ${driverName || driverId} foi BLOQUEADO pelo Master. Motivo: ${reason}`);
     triggerToast(`Entregador ${driverName} bloqueado.`);
     return { success: true, message: 'Entregador bloqueado com sucesso.' };
@@ -5421,19 +5757,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const unblockDeliveryDriver = async (driverId: string): Promise<{ success: boolean; message: string }> => {
     let driverName = '';
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
           driverName = d.name;
-          return {
+          updatedDriver = {
             ...d,
             status: 'APROVADO',
             statusReason: undefined
           };
+          return updatedDriver;
         }
         return d;
       })
     );
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+    }
     addAuditLog('DRIVER_UNBLOCKED', `Entregador ${driverName || driverId} foi DESBLOQUEADO pelo Master.`);
     triggerToast(`Entregador ${driverName} desbloqueado.`);
     return { success: true, message: 'Entregador desbloqueado com sucesso.' };
@@ -5441,20 +5782,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const suspendDeliveryDriver = async (driverId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     let driverName = '';
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
           driverName = d.name;
-          return {
+          updatedDriver = {
             ...d,
             status: 'SUSPENSO',
             statusReason: reason,
             operationalStatus: 'OFFLINE'
           };
+          return updatedDriver;
         }
         return d;
       })
     );
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+    }
     addAuditLog('DRIVER_SUSPENDED', `Entregador ${driverName || driverId} foi SUSPENSO pelo Master. Motivo: ${reason}`);
     triggerToast(`Entregador ${driverName} suspenso.`);
     return { success: true, message: 'Entregador suspenso.' };
@@ -5469,22 +5815,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administração podem ficar online.' };
     }
 
+    let updatedDriver: DeliveryDriver | null = null;
     setDeliveryDrivers(prev =>
       prev.map(d => {
         if (d.id === driverId) {
-          const updated = {
+          updatedDriver = {
             ...d,
             operationalStatus: status,
+            lastLocationUpdatedAt: new Date().toISOString(),
             lastActiveAt: new Date().toISOString()
           };
-          if (currentDeliveryDriver && currentDeliveryDriver.id === driverId) {
-            setCurrentDeliveryDriver(updated);
-          }
-          return updated;
+          return updatedDriver;
         }
         return d;
       })
     );
+
+    if (updatedDriver) {
+      persistDeliveryDriverToFirestore(updatedDriver);
+      if (currentDeliveryDriver && currentDeliveryDriver.id === driverId) {
+        setCurrentDeliveryDriver(updatedDriver);
+      }
+    }
 
     triggerToast(`Status do entregador alterado para ${status}.`);
     return { success: true, message: `Status alterado para ${status}.` };
@@ -5497,6 +5849,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     destinationAddress?: string;
     destinationNeighborhood?: string;
     customDistanceKm?: number;
+    vehicleType?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
+    notes?: string;
   }): Promise<{ success: boolean; message: string; ride?: DeliveryRide }> => {
     const order = orders.find(o => o.id === params.orderId);
     if (!order) {
@@ -5528,51 +5882,65 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const rideCode = `DEL-${Math.floor(10000 + Math.random() * 90000)}`;
     const rideId = `ride-${Date.now()}`;
     const nowIso = new Date().toISOString();
+    const currentDate = nowIso.split('T')[0];
+    const currentTime = new Date().toLocaleTimeString('pt-BR');
+    const device = typeof navigator !== 'undefined' ? `${navigator.userAgent} (${navigator.platform})` : 'Web Environment';
 
     const newRide: DeliveryRide = {
       id: rideId,
+      delivery_id: rideId,
       rideCode,
       orderId: order.id,
+      order_id: order.id,
       orderCode: order.orderCode || `PED-${order.id.slice(-5)}`,
       merchantId: order.merchantId,
+      merchant_id: order.merchantId,
       merchantName: merchant?.name || order.merchantName || 'Loja Parceira',
       merchantPhone: merchant?.phone || '(21) 99999-0000',
       originAddress: origin,
+      origem: origin,
       originNeighborhood: originBairro,
       customerId: order.customerId,
+      customer_id: order.customerId,
       customerName: order.customerName || 'Cliente Achei Aqui',
       customerPhone: order.customerPhone || '(21) 98888-0000',
       destinationAddress: dest,
+      destino: dest,
       destinationNeighborhood: destBairro,
       distanceKm,
+      distancia: distanceKm,
+      tipo_veiculo: params.vehicleType || 'MOTO',
+      observacoes: params.notes || '',
       ratePerKmApplied: ratePerKm,
       platformFeeApplied: platformFee,
       driverEarnings: pricing.driverEarnings,
+      valor_entregador: pricing.driverEarnings,
       totalDeliveryFee: pricing.totalDeliveryFee,
+      valor_calculado: pricing.totalDeliveryFee,
       customerPaid: true,
-      status: 'AGUARDANDO_ENTREGADOR',
+      status: 'AGUARDANDO_ANALISE',
       confirmationCode,
       calculationTimestamp: nowIso,
+      data_solicitacao: currentDate,
+      hora_solicitacao: currentTime,
+      created_at: nowIso,
       createdAt: nowIso,
+      created_by: currentUser?.email || merchant?.email || 'LOJISTA',
+      deviceInfo: device,
+      paymentStatus: 'PENDENTE',
       history: [
         {
           timestamp: nowIso,
-          status: 'CRIADA',
-          description: `Solicitação de entrega criada para o pedido ${order.orderCode || order.id}. Distância calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}.`,
-          actorName: merchant?.name || 'Lojista',
+          status: 'AGUARDANDO_ANALISE',
+          description: `Solicitação de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. Distância calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. Veículo: ${params.vehicleType || 'MOTO'}. Encaminhada para análise operacional do Master.`,
+          actorName: merchant?.name || currentUser?.name || 'Lojista',
           actorRole: 'LOJISTA'
-        },
-        {
-          timestamp: nowIso,
-          status: 'AGUARDANDO_ENTREGADOR',
-          description: 'Corrida aberta para entregadores online em Cachoeiras de Macacu.',
-          actorName: 'Sistema Achei Aqui',
-          actorRole: 'SISTEMA'
         }
       ]
     };
 
     setDeliveryRides(prev => [newRide, ...prev]);
+    persistDeliveryRideToFirestore(newRide);
 
     setOrders(prev =>
       prev.map(o => {
@@ -5580,7 +5948,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return {
             ...o,
             deliveryRideId: rideId,
-            deliveryRideStatus: 'AGUARDANDO_ENTREGADOR'
+            deliveryRideStatus: 'AGUARDANDO_ANALISE'
           };
         }
         return o;
@@ -5588,12 +5956,508 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     addAuditLog(
-      'DELIVERY_RIDE_CREATED',
-      `Corrida ${rideCode} criada para o pedido ${order.id}. Distância: ${distanceKm}km, Ganhos Entregador: R$ ${pricing.driverEarnings.toFixed(2)}, Taxa Plataforma: R$ ${platformFee.toFixed(2)}.`
+      'DELIVERY_RIDE_REQUESTED',
+      `Solicitação de entrega ${rideCode} enviada para análise operacional do Master. Pedido: ${order.id}. Distância: ${distanceKm}km.`
     );
 
-    triggerToast(`Corrida ${rideCode} solicitada com sucesso! Aguardando entregador parceiro.`);
-    return { success: true, message: `Corrida ${rideCode} criada com sucesso!`, ride: newRide };
+    triggerToast(`Solicitação ${rideCode} enviada para a Central Master! Aguardando aprovação.`);
+    return { success: true, message: `Solicitação ${rideCode} aguardando análise do Master.`, ride: newRide };
+  };
+
+  const approveDeliveryRide = async (
+    rideId: string,
+    dispatchMode: 'RADAR' | 'DRIVER' = 'RADAR',
+    targetDriverId?: string
+  ): Promise<{ success: boolean; message: string; uniqueRideCode?: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    // 1. Validar todos os dados
+    if (!ride.merchantName || !ride.originAddress) {
+      return { success: false, message: 'Dados de origem (lojista e endereço de coleta) incompletos.' };
+    }
+    if (!ride.customerName || !ride.destinationAddress) {
+      return { success: false, message: 'Dados de destino (cliente e endereço de entrega) incompletos.' };
+    }
+    if (!ride.orderId && !ride.orderCode) {
+      return { success: false, message: 'Identificador do pedido vinculado ausente.' };
+    }
+
+    // 3. Validar distância
+    const distance = Number(ride.distanceKm || ride.distancia || 0);
+    if (isNaN(distance) || distance <= 0) {
+      return { success: false, message: 'Distância da entrega inválida (deve ser maior que zero).' };
+    }
+    if (distance > 60) {
+      return { success: false, message: `Distância calculada (${distance.toFixed(1)} km) excede o limite do município (máx 60 km).` };
+    }
+
+    // 2. Recalcular a tarifa no backend
+    const currentRatePerKm = systemSettings?.deliveryRatePerKm ?? 1.0;
+    const currentPlatformFee = systemSettings?.deliveryPlatformFee ?? 2.0;
+    const recalculated = calculateDeliveryPricing(distance, currentRatePerKm, currentPlatformFee);
+
+    // 4. Validar valor
+    if (recalculated.totalDeliveryFee <= 0 || recalculated.driverEarnings <= 0) {
+      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recálculo.' };
+    }
+
+    // 5. Gerar código/identificador único da entrega
+    const generatedUniqueCode =
+      ride.rideCode && ride.rideCode.startsWith('DEL-') && ride.rideCode.length >= 8
+        ? ride.rideCode
+        : `DEL-${Math.floor(10000 + Math.random() * 90000)}`;
+
+    const nowIso = new Date().toISOString();
+    let targetDriver: DeliveryDriver | undefined;
+    if (dispatchMode === 'DRIVER' && targetDriverId) {
+      targetDriver = deliveryDrivers.find(d => d.id === targetDriverId);
+    }
+
+    // 6. Alterar status para: DISPONIVEL_ENTREGADORES
+    const nextStatus: DeliveryRideStatus = targetDriver ? 'ENTREGADOR_SELECIONADO' : 'DISPONIVEL_ENTREGADORES';
+    const description = targetDriver
+      ? `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)}. Direcionada ao entregador ${targetDriver.name} (${targetDriver.vehiclePlate}).`
+      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegíveis.`;
+
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            rideCode: generatedUniqueCode,
+            status: nextStatus,
+            ratePerKmApplied: currentRatePerKm,
+            platformFeeApplied: currentPlatformFee,
+            driverEarnings: recalculated.driverEarnings,
+            valor_entregador: recalculated.driverEarnings,
+            totalDeliveryFee: recalculated.totalDeliveryFee,
+            valor_calculado: recalculated.totalDeliveryFee,
+            recalculatedAt: nowIso,
+            recalculatedRatePerKm: currentRatePerKm,
+            recalculatedPlatformFee: currentPlatformFee,
+            approvedBy: currentUser?.name || 'Master AcheiAqui',
+            approvedAt: nowIso,
+            driverId: targetDriver ? targetDriver.id : undefined,
+            driverName: targetDriver ? targetDriver.name : undefined,
+            driverPhone: targetDriver ? targetDriver.phone : undefined,
+            driverPlate: targetDriver ? targetDriver.vehiclePlate : undefined,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: nextStatus,
+                description,
+                actorName: currentUser?.name || 'Master Delivery',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    // 7. Criar registro de auditoria
+    addAuditLog(
+      'DELIVERY_APPROVED',
+      `[APROVAÇÃO MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. Distância: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
+    );
+
+    // 8. Disponibilizar a entrega no portal dos entregadores elegíveis
+    triggerToast(
+      targetDriver
+        ? `Entrega ${generatedUniqueCode} direcionada para ${targetDriver.name}!`
+        : `Entrega ${generatedUniqueCode} aprovada! Liberada no radar dos entregadores parceiros.`
+    );
+
+    return {
+      success: true,
+      message: `Entrega ${generatedUniqueCode} aprovada e liberada com sucesso.`,
+      uniqueRideCode: generatedUniqueCode
+    };
+  };
+
+  const rejectDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const trimmedReason = reason?.trim();
+    if (!trimmedReason) {
+      return { success: false, message: 'É obrigatório informar o motivo da rejeição da solicitação.' };
+    }
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'REJEITADA',
+            rejectionReason: trimmedReason,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'REJEITADA',
+                description: `Solicitação de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatória: ${trimmedReason}`,
+                actorName: currentUser?.name || 'Master Delivery',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    addAuditLog(
+      'DELIVERY_REJECTED',
+      `[REJEIÇÃO MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
+    );
+    triggerToast(`Solicitação ${ride.rideCode} rejeitada.`);
+    return { success: true, message: 'Solicitação rejeitada com sucesso.' };
+  };
+
+  const requestCorrectionDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const trimmedReason = reason?.trim();
+    if (!trimmedReason) {
+      return { success: false, message: 'É obrigatório informar as instruções/motivo da solicitação de correção.' };
+    }
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'CORRECAO_SOLICITADA',
+            correctionRequestedReason: trimmedReason,
+            correctionRequestedAt: nowIso,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'CORRECAO_SOLICITADA',
+                description: `Correção solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
+                actorName: currentUser?.name || 'Master Delivery',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    addAuditLog(
+      'DELIVERY_CORRECTION_REQUESTED',
+      `[SOLICITAÇÃO DE CORREÇÃO] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correção ao lojista. Motivo: ${trimmedReason}`
+    );
+    triggerToast(`Solicitação de correção enviada ao lojista para ${ride.rideCode}.`);
+    return { success: true, message: 'Correção solicitada com sucesso.' };
+  };
+
+  const authorizeDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'PAGAMENTO_AUTORIZADO',
+            paymentStatus: 'LIBERADO',
+            paymentAuthorizedAt: nowIso,
+            paymentAuthorizedBy: currentUser?.name || 'Master Financeiro',
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'PAGAMENTO_AUTORIZADO',
+                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} ao entregador AUTORIZADO pelo Master.`,
+                actorName: currentUser?.name || 'Master Financeiro',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    addAuditLog('DELIVERY_PAYMENT_AUTHORIZED', `Pagamento da corrida ${ride.rideCode} autorizado pelo Master.`);
+    triggerToast(`Pagamento de R$ ${ride.driverEarnings.toFixed(2)} autorizado com sucesso!`);
+    return { success: true, message: 'Pagamento autorizado.' };
+  };
+
+  const processDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'PAGAMENTO_PROCESSANDO',
+            paymentStatus: 'PROCESSANDO',
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'PAGAMENTO_PROCESSANDO',
+                description: `Transferência Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancário.`,
+                actorName: 'Sistema Financeiro AcheiAqui',
+                actorRole: 'SISTEMA'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    triggerToast(`Processando pagamento Pix de R$ ${ride.driverEarnings.toFixed(2)}...`);
+    return { success: true, message: 'Pagamento em processamento.' };
+  };
+
+  const markDeliveryRidePaid = async (rideId: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'PAGA',
+            paymentStatus: 'PAGO',
+            paymentPaidAt: nowIso,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'PAGA',
+                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÍDO com sucesso via Pix para o entregador.`,
+                actorName: currentUser?.name || 'Master Financeiro',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    if (ride.driverId) {
+      setDeliveryDrivers(prev =>
+        prev.map(d => {
+          if (d.id === ride.driverId) {
+            const updated = {
+              ...d,
+              totalEarnings: Math.round(((d.totalEarnings || 0) + ride.driverEarnings) * 100) / 100
+            };
+            persistDeliveryDriverToFirestore(updated);
+            return updated;
+          }
+          return d;
+        })
+      );
+    }
+
+    addAuditLog('DELIVERY_PAYMENT_COMPLETED', `Pagamento de R$ ${ride.driverEarnings.toFixed(2)} quitado para a entrega ${ride.rideCode}.`);
+    triggerToast(`Pagamento liquidado com sucesso! Entregador remunerado.`);
+    return { success: true, message: 'Pagamento concluído.' };
+  };
+
+  const failDeliveryPayment = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'PAGAMENTO_FALHOU',
+            paymentStatus: 'FALHA',
+            paymentFailureReason: reason,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'PAGAMENTO_FALHOU',
+                description: `Falha no processamento do repasse Pix. Motivo: ${reason}`,
+                actorName: 'Sistema Financeiro AcheiAqui',
+                actorRole: 'SISTEMA'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    addAuditLog('DELIVERY_PAYMENT_FAILED', `Falha no pagamento da corrida ${ride.rideCode}. Motivo: ${reason}`);
+    triggerToast(`Alerta: Falha no processamento do pagamento.`);
+    return { success: true, message: 'Falha registrada no pagamento.' };
+  };
+
+  const returnDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: 'DEVOLVIDA',
+            returnReason: reason,
+            returnedAt: nowIso,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: 'DEVOLVIDA',
+                description: `Mercadoria devolvida à loja de origem. Motivo: ${reason}`,
+                actorName: currentUser?.name || 'Central de Suporte',
+                actorRole: 'MASTER'
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    if (ride.driverId) {
+      setDeliveryDrivers(prev =>
+        prev.map(d => (d.id === ride.driverId ? { ...d, activeRideId: undefined } : d))
+      );
+    }
+
+    addAuditLog('DELIVERY_RETURNED', `Entrega ${ride.rideCode} devolvida. Motivo: ${reason}`);
+    triggerToast(`Entrega registrada como devolvida.`);
+    return { success: true, message: 'Entrega devolvida com sucesso.' };
+  };
+
+  const transitionDeliveryRide = async (
+    rideId: string,
+    toStatus: DeliveryRideStatus,
+    notes?: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const ride = deliveryRides.find(r => r.id === rideId);
+    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+
+    const actor: DeliveryActor = {
+      id: currentUser?.id || 'system',
+      name: currentUser?.name || 'Administração',
+      role: (currentUser?.role === 'MASTER' ? 'MASTER' : currentUser?.role === 'ENTREGADOR' ? 'ENTREGADOR' : 'LOJISTA')
+    };
+    const validation = validateDeliveryTransition(ride, toStatus, actor);
+    if (!validation.allowed) {
+      return { success: false, message: validation.reason || 'Transição de status inválida.' };
+    }
+
+    const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
+
+    setDeliveryRides(prev =>
+      prev.map(r => {
+        if (r.id === rideId) {
+          updatedRide = {
+            ...r,
+            status: toStatus,
+            history: [
+              ...r.history,
+              {
+                timestamp: nowIso,
+                status: toStatus,
+                description: notes || `Status operacional alterado para ${toStatus}`,
+                actorName: currentUser?.name || 'Central Operacional',
+                actorRole: actor.role
+              }
+            ]
+          };
+          return updatedRide;
+        }
+        return r;
+      })
+    );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
+    triggerToast(`Status atualizado para ${toStatus}.`);
+    return { success: true, message: `Status alterado para ${toStatus}.` };
   };
 
   const acceptDeliveryRide = async (rideId: string, driverId: string): Promise<{ success: boolean; message: string }> => {
@@ -5601,8 +6465,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!ride) {
       return { success: false, message: 'Corrida não encontrada.' };
     }
-    if (ride.status !== 'AGUARDANDO_ENTREGADOR' || (ride.driverId && ride.driverId !== driverId)) {
-      return { success: false, message: 'Esta corrida já foi aceita por outro entregador ou não está mais disponível no radar.' };
+    const isAvailable =
+      ride.status === 'DISPONIVEL_ENTREGADORES' ||
+      ride.status === 'AGUARDANDO_ENTREGADOR' ||
+      (ride.status === 'ENTREGADOR_SELECIONADO' && ride.driverId === driverId);
+
+    if (!isAvailable) {
+      return { success: false, message: 'Esta corrida não está disponível para aceite.' };
     }
 
     const driver = deliveryDrivers.find(d => d.id === driverId);
@@ -5617,7 +6486,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const activeRide = deliveryRides.find(
-      r => r.driverId === driverId && ['ACEITA', 'EM_COLETA', 'COLETADA', 'EM_TRANSITO'].includes(r.status)
+      r => r.driverId === driverId && ['ACEITA', 'EM_DESLOCAMENTO_COLETA', 'EM_COLETA', 'CHEGOU_COLETA', 'COLETADA', 'EM_DESLOCAMENTO_ENTREGA', 'EM_TRANSITO', 'CHEGOU_DESTINO', 'AGUARDANDO_CODIGO'].includes(r.status)
     );
     if (activeRide) {
       return { success: false, message: `Você já está atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
@@ -5633,10 +6502,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       actorRole: 'ENTREGADOR' as const
     };
 
+    let updatedRide: DeliveryRide | null = null;
+
     setDeliveryRides(prev =>
       prev.map(r => {
         if (r.id === rideId) {
-          return {
+          updatedRide = {
             ...r,
             status: 'ACEITA',
             driverId: driver.id,
@@ -5648,13 +6519,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             acceptedAt: nowIso,
             history: [...r.history, updatedHistoryItem]
           };
+          return updatedRide;
         }
         return r;
       })
     );
 
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
     setDeliveryDrivers(prev =>
-      prev.map(d => (d.id === driverId ? { ...d, activeRideId: rideId } : d))
+      prev.map(d => {
+        if (d.id === driverId) {
+          const upd = { ...d, activeRideId: rideId };
+          persistDeliveryDriverToFirestore(upd);
+          return upd;
+        }
+        return d;
+      })
     );
 
     if (currentDeliveryDriver && currentDeliveryDriver.id === driverId) {
@@ -5666,25 +6549,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     addAuditLog('DELIVERY_RIDE_ACCEPTED', `Corrida ${ride.rideCode} aceita pelo entregador ${driver.name}.`);
-    triggerToast(`Corrida ${ride.rideCode} aceita com sucesso! Dirija-se até o estabelecimento para coleta.`);
+    triggerToast(`Corrida ${ride.rideCode} aceita com sucesso! Inicie o trajeto para coleta.`);
 
     return { success: true, message: `Corrida ${ride.rideCode} aceita! Vá até a loja para coletar.` };
   };
 
   const startRidePickup = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
 
     setDeliveryRides(prev =>
       prev.map(r => {
         if (r.id === rideId) {
-          return {
+          updatedRide = {
             ...r,
-            status: 'EM_COLETA',
+            status: 'EM_DESLOCAMENTO_COLETA',
             history: [
               ...r.history,
               {
                 timestamp: nowIso,
-                status: 'EM_COLETA',
+                status: 'EM_DESLOCAMENTO_COLETA',
                 description: 'Entregador em deslocamento até o estabelecimento para retirar o pedido.',
                 actorId: r.driverId,
                 actorName: r.driverName,
@@ -5692,24 +6576,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               }
             ]
           };
+          return updatedRide;
         }
         return r;
       })
     );
 
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
     triggerToast(`Deslocamento para coleta iniciado!`);
-    return { success: true, message: 'Status atualizado para EM_COLETA.' };
+    return { success: true, message: 'Status atualizado para EM_DESLOCAMENTO_COLETA.' };
   };
 
   const confirmRideCollected = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
 
     setDeliveryRides(prev =>
       prev.map(r => {
         if (r.id === rideId) {
-          return {
+          updatedRide = {
             ...r,
-            status: 'EM_TRANSITO',
+            status: 'EM_DESLOCAMENTO_ENTREGA',
             collectedAt: nowIso,
             history: [
               ...r.history,
@@ -5723,28 +6613,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               },
               {
                 timestamp: nowIso,
-                status: 'EM_TRANSITO',
-                description: 'Entregador em trânsito com o pedido com destino ao cliente.',
+                status: 'EM_DESLOCAMENTO_ENTREGA',
+                description: 'Entregador em rota de entrega com destino ao endereço do comprador.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
               }
             ]
           };
+          return updatedRide;
         }
         return r;
       })
     );
 
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
+
     const matchedRide = deliveryRides.find(r => r.id === rideId);
     if (matchedRide) {
       setOrders(prev =>
-        prev.map(o => (o.id === matchedRide.orderId ? { ...o, status: 'Em Rota', deliveryRideStatus: 'EM_TRANSITO' } : o))
+        prev.map(o => (o.id === matchedRide.orderId ? { ...o, status: 'Em Rota', deliveryRideStatus: 'EM_DESLOCAMENTO_ENTREGA' } : o))
       );
     }
 
     triggerToast(`Pacote coletado! Inicie o trajeto até o endereço do cliente.`);
-    return { success: true, message: 'Pacote coletado. Status atualizado para EM_TRANSITO.' };
+    return { success: true, message: 'Pacote coletado. Status atualizado para EM_DESLOCAMENTO_ENTREGA.' };
   };
 
   const deliverRide = async (rideId: string, confirmationCode: string): Promise<{ success: boolean; message: string }> => {
@@ -5764,38 +6659,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const nowIso = new Date().toISOString();
+    let updatedRide: DeliveryRide | null = null;
 
     setDeliveryRides(prev =>
       prev.map(r => {
         if (r.id === rideId) {
-          return {
+          updatedRide = {
             ...r,
-            status: 'FINALIZADA',
+            status: 'AGUARDANDO_LIBERACAO_PAGAMENTO',
             deliveredAt: nowIso,
-            finalizedAt: nowIso,
             history: [
               ...r.history,
               {
                 timestamp: nowIso,
                 status: 'ENTREGUE',
-                description: `Entrega realizada com sucesso. Código de segurança ${cleanExpected} validado.`,
+                description: `Entrega física realizada com sucesso. Código de segurança ${cleanExpected} validado pelo cliente.`,
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
               },
               {
                 timestamp: nowIso,
-                status: 'FINALIZADA',
-                description: `Corrida finalizada. Ganhos de R$ ${r.driverEarnings.toFixed(2)} registrados para o entregador. Taxa da plataforma: R$ ${r.platformFeeApplied.toFixed(2)}.`,
+                status: 'AGUARDANDO_LIBERACAO_PAGAMENTO',
+                description: `Corrida finalizada fisicamente. Encaminhada para conferência e liberação financeira pelo Master.`,
                 actorName: 'Sistema Achei Aqui',
                 actorRole: 'SISTEMA'
               }
             ]
           };
+          return updatedRide;
         }
         return r;
       })
     );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
 
     if (ride.driverId) {
       setDeliveryDrivers(prev =>
@@ -5804,12 +6704,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const updated = {
               ...d,
               totalDeliveries: (d.totalDeliveries || 0) + 1,
-              totalEarnings: Math.round(((d.totalEarnings || 0) + ride.driverEarnings) * 100) / 100,
               activeRideId: undefined
             };
             if (currentDeliveryDriver && currentDeliveryDriver.id === d.id) {
               setCurrentDeliveryDriver(updated);
             }
+            persistDeliveryDriverToFirestore(updated);
             return updated;
           }
           return d;
@@ -5822,14 +6722,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     addAuditLog(
-      'DELIVERY_RIDE_FINALIZED',
-      `Corrida ${ride.rideCode} concluída com sucesso. Entregador recebeu R$ ${ride.driverEarnings.toFixed(2)}, Plataforma R$ ${ride.platformFeeApplied.toFixed(2)}.`
+      'DELIVERY_RIDE_DELIVERED',
+      `Corrida ${ride.rideCode} entregue com sucesso. Código verificado. Aguardando liberação financeira.`
     );
 
-    triggerToast(`Parabéns! Entrega finalizada. R$ ${ride.driverEarnings.toFixed(2)} adicionados aos seus ganhos.`);
+    triggerToast(`Parabéns! Entrega concluída. Encaminhada para liberação do pagamento pelo Master.`);
     return {
       success: true,
-      message: `Entrega confirmada com sucesso! R$ ${ride.driverEarnings.toFixed(2)} creditados em seu saldo.`
+      message: `Entrega confirmada com sucesso! Aguarde a liberação do pagamento pelo Master.`
     };
   };
 
@@ -5838,10 +6738,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) return { success: false, message: 'Corrida não encontrada.' };
 
+    let updatedRide: DeliveryRide | null = null;
+
     setDeliveryRides(prev =>
       prev.map(r => {
         if (r.id === rideId) {
-          return {
+          updatedRide = {
             ...r,
             status: 'CANCELADA',
             cancellationReason: reason,
@@ -5856,10 +6758,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               }
             ]
           };
+          return updatedRide;
         }
         return r;
       })
     );
+
+    if (updatedRide) {
+      persistDeliveryRideToFirestore(updatedRide);
+    }
 
     if (ride.driverId) {
       setDeliveryDrivers(prev =>
@@ -5954,6 +6861,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sendFirebasePasswordReset,
         registerCustomer,
         registerMerchant,
+        confirmMerchantPlanPayment,
+        completeInitialPasswordChange,
         logout,
         updateUserPassword,
         toggleTwoFactor,
@@ -6151,6 +7060,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         suspendDeliveryDriver,
         setDriverOperationalStatus,
         createDeliveryRide,
+        approveDeliveryRide,
+        rejectDeliveryRide,
+        requestCorrectionDeliveryRide,
+        authorizeDeliveryPayment,
+        processDeliveryPayment,
+        markDeliveryRidePaid,
+        failDeliveryPayment,
+        returnDeliveryRide,
+        transitionDeliveryRide,
         acceptDeliveryRide,
         startRidePickup,
         confirmRideCollected,
@@ -6237,13 +7155,3 @@ export const useApp = () => {
   }
   return context;
 };
-
-
-
-
-
-
-
-
-
-

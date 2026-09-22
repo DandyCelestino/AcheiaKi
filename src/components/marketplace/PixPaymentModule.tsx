@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   QrCode,
   Copy,
@@ -19,7 +19,6 @@ import {
   getPixGatewayConfig,
   createPixPaymentForOrder,
   verifyPixPaymentStatus,
-  simulatePixSettlement,
   PixVerificationResult
 } from '../../services/pix_payment_service';
 import { criarCobrancaAsaas, CriarCobrancaResponse } from '../../services/asaasService';
@@ -86,7 +85,15 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
       try {
         const merchantWalletId = targetStore?.asaasWalletId || `wallet_${order.merchantId || 'lojista_default'}`;
 
-        const multiLojas = (order as any).subpedidos?.map((sub: any) => {
+        const multiLojas = (order as any).itensPorLojista?.map((loja: any) => {
+          const loj = merchants.find((m) => m.id === loja.lojistaId || m.name === loja.nomeLojista);
+          return {
+            lojistaId: loja.lojistaId,
+            nomeLojista: loja.nomeLojista || 'Lojista Credenciado',
+            walletId: loja.walletId || loj?.asaasWalletId || `wallet_${loja.lojistaId}`,
+            valorSubtotal: loja.subtotal || 0
+          };
+        }) || (order as any).subpedidos?.map((sub: any) => {
           const loj = merchants.find((m) => m.id === sub.merchantId || m.name === sub.merchantName);
           return {
             lojistaId: sub.merchantId,
@@ -237,21 +244,6 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
     }
   };
 
-  // Quick sandbox simulator
-  const handleSimulatePayment = () => {
-    setIsVerifying(true);
-    setTimeout(() => {
-      const receipt = simulatePixSettlement(
-        pixDetails.txid,
-        order.orderNumber || order.code,
-        pixDetails.amount,
-        order.customerName
-      );
-      setIsVerifying(false);
-      handlePaymentConfirmed(receipt);
-    }, 900);
-  };
-
   // Format timer
   const formatTimer = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -294,7 +286,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 }`}
               ></span>
             </span>
-            <span className="text-[10px] font-sans text-slate-300 font-bold">
+            <span className="text-[10px] font-mono text-slate-300 font-bold">
               {gatewayConfig.environmentMode === 'PRODUCTION'
                 ? 'PRODUÇÃO'
                 : gatewayConfig.environmentMode === 'HOMOLOGATION'
@@ -307,7 +299,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-800 text-[11px] text-slate-300">
           <div className="flex items-center space-x-1 truncate">
             <span className="text-slate-400">Chave:</span>
-            <span className="font-sans text-emerald-300 font-bold truncate" title={gatewayConfig.pixKey}>
+            <span className="font-mono text-emerald-300 font-bold truncate" title={gatewayConfig.pixKey}>
               {gatewayConfig.pixKey}
             </span>
           </div>
@@ -352,12 +344,12 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             <div className="grid grid-cols-1 gap-1 text-[11px] text-slate-600">
               <div className="flex justify-between">
                 <span>Identificador (TxID):</span>
-                <span className="font-sans font-bold text-slate-900">{pixDetails.txid}</span>
+                <span className="font-mono font-bold text-slate-900">{pixDetails.txid}</span>
               </div>
               {settlementReceipt?.endToEndId && (
                 <div className="flex justify-between">
                   <span>End-to-End ID:</span>
-                  <span className="font-sans font-bold text-slate-900 text-[10px]">
+                  <span className="font-mono font-bold text-slate-900 text-[10px]">
                     {settlementReceipt.endToEndId}
                   </span>
                 </div>
@@ -409,10 +401,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 <span className="text-[10px] text-emerald-300 block font-medium">
                   💼 Plataforma MEI (10%):
                 </span>
-                <span className="font-sans font-black text-white text-sm">
+                <span className="font-mono font-black text-white text-sm">
                   R$ {((order.totalAmount * 0.10) || 0).toFixed(2).replace('.', ',')}
                 </span>
-                <span className="text-[9px] text-emerald-400/80 block font-sans truncate">
+                <span className="text-[9px] text-emerald-400/80 block font-mono truncate">
                   Carteira Master MEI
                 </span>
               </div>
@@ -421,10 +413,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 <span className="text-[10px] text-emerald-300 block font-medium">
                   🏪 Repasse Lojista (90%):
                 </span>
-                <span className="font-sans font-black text-emerald-300 text-sm">
+                <span className="font-mono font-black text-emerald-300 text-sm">
                   R$ {((order.totalAmount * 0.90) || 0).toFixed(2).replace('.', ',')}
                 </span>
-                <span className="text-[9px] text-emerald-400/80 block font-sans truncate" title={targetStore?.asaasWalletId || `wallet_${order.merchantId}`}>
+                <span className="text-[9px] text-emerald-400/80 block font-mono truncate" title={targetStore?.asaasWalletId || `wallet_${order.merchantId}`}>
                   {targetStore?.asaasWalletId || `wallet_${order.merchantId || 'lojista'}`}
                 </span>
               </div>
@@ -473,7 +465,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
               <Clock className="w-3.5 h-3.5 text-amber-600" />
               <span>
                 {timeLeft > 0 ? (
-                  <>Válido por: <strong className="font-sans">{formatTimer(timeLeft)}</strong></>
+                  <>Válido por: <strong className="font-mono">{formatTimer(timeLeft)}</strong></>
                 ) : (
                   <span className="text-red-600 font-black">Tempo expirado</span>
                 )}
@@ -509,7 +501,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 readOnly
                 value={pixDetails.copiaECola}
                 onClick={handleCopyPix}
-                className="w-full pl-3 pr-24 py-3 bg-slate-100 hover:bg-slate-200/70 border border-slate-300 rounded-xl text-xs font-sans text-slate-700 truncate cursor-pointer outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-3 pr-24 py-3 bg-slate-100 hover:bg-slate-200/70 border border-slate-300 rounded-xl text-xs font-mono text-slate-700 truncate cursor-pointer outline-none focus:ring-2 focus:ring-emerald-500"
               />
               <button
                 type="button"
@@ -548,26 +540,15 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               <button
                 type="button"
                 disabled={isVerifying}
                 onClick={() => handleCheckPayment(false)}
-                className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
+                className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isVerifying ? 'animate-spin' : ''}`} />
-                <span>{isVerifying ? 'Verificando...' : 'Já Paguei (Checar Agora)'}</span>
-              </button>
-
-              <button
-                type="button"
-                disabled={isVerifying}
-                onClick={handleSimulatePayment}
-                className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
-                title="Simula a confirmação bancária imediata do Pix para testar o fluxo de liquidação"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Simular Pagamento (Teste)</span>
+                <RefreshCw className={`w-4 h-4 ${isVerifying ? 'animate-spin' : ''}`} />
+                <span>{isVerifying ? 'Consultando Asaas...' : 'Já Paguei (Verificar Pagamento no Asaas)'}</span>
               </button>
             </div>
           </div>
@@ -576,4 +557,3 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
     </div>
   );
 };
-

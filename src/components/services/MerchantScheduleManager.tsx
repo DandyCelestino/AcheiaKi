@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Calendar,
   Clock,
@@ -693,7 +693,7 @@ export const MerchantScheduleManager: React.FC<MerchantScheduleManagerProps> = (
                   value={registrationNumber}
                   onChange={(e) => setRegistrationNumber(e.target.value)}
                   placeholder="Ex: CRO-RJ 48920 ou CREA-RJ 2021190"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:bg-white focus:border-blue-500 font-sans font-bold text-slate-900"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:bg-white focus:border-blue-500 font-mono font-bold text-slate-900"
                 />
               </div>
 
@@ -760,7 +760,7 @@ export const MerchantScheduleManager: React.FC<MerchantScheduleManagerProps> = (
                   <div>
                     <div className="font-bold text-slate-900">{ref.name}</div>
                     <div className="text-slate-500 text-[11px]">
-                      {ref.relationshipOrRole} • <span className="font-sans text-emerald-700 font-semibold">{ref.phone}</span>
+                      {ref.relationshipOrRole} • <span className="font-mono text-emerald-700 font-semibold">{ref.phone}</span>
                     </div>
                   </div>
 
@@ -816,4 +816,3 @@ export const MerchantScheduleManager: React.FC<MerchantScheduleManagerProps> = (
     </div>
   );
 };
-
