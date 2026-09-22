@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+﻿import React, { useState, useRef, useCallback } from 'react';
 import {
   Upload,
   Camera,
@@ -417,7 +417,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
                 </button>
 
                 {/* Bottom index label */}
-                <span className="absolute bottom-1 right-1.5 px-1.5 py-0.2 bg-slate-950/70 text-slate-300 text-[9px] rounded font-mono">
+                <span className="absolute bottom-1 right-1.5 px-1.5 py-0.2 bg-slate-950/70 text-slate-300 text-[9px] rounded font-sans">
                   #{index + 1}
                 </span>
               </div>
@@ -574,7 +574,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
                   value={customUrl}
                   onChange={(e) => setCustomUrl(e.target.value)}
                   placeholder="https://exemplo.com/minha-imagem.jpg"
-                  className="flex-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs outline-none focus:border-blue-500 font-mono"
+                  className="flex-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs outline-none focus:border-blue-500 font-sans"
                 />
                 <button
                   type="submit"
@@ -621,3 +621,4 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
     </div>
   );
 };
+

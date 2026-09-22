@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import {
   DollarSign,
   TrendingUp,
@@ -170,7 +170,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <span className="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block" />
                 Valor Bruto (100%):
               </span>
-              <span className="font-bold text-blue-400 font-mono">
+              <span className="font-bold text-blue-400 font-sans">
                 R$ {gross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
@@ -181,7 +181,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />
                 Comissão Plataforma (10%):
               </span>
-              <span className="font-bold text-amber-400 font-mono">
+              <span className="font-bold text-amber-400 font-sans">
                 - R$ {commission.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
@@ -192,7 +192,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block" />
                 Líquido Lojista (90%):
               </span>
-              <span className="font-black text-emerald-400 font-mono text-sm">
+              <span className="font-black text-emerald-400 font-sans text-sm">
                 R$ {net.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
@@ -276,7 +276,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-2 font-mono">
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-2 font-sans">
               R$ {totalGross.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -294,7 +294,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <Percent className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               </div>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-amber-700 dark:text-amber-300 mt-2 font-mono">
+            <p className="text-xl sm:text-2xl font-black text-amber-700 dark:text-amber-300 mt-2 font-sans">
               - R$ {totalCommission.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -312,7 +312,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
                 <Wallet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-2 font-mono">
+            <p className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-2 font-sans">
               R$ {totalNet.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -335,7 +335,7 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
               <p className="text-xs font-bold text-white truncate">
                 {currentStore?.name || 'Sua Loja'}
               </p>
-              <p className="text-[10px] text-slate-300 font-mono truncate">
+              <p className="text-[10px] text-slate-300 font-sans truncate">
                 Wallet: {currentStore?.asaasWalletId || 'wallet_automatica_001'}
               </p>
             </div>
@@ -417,3 +417,4 @@ export const SellerFinancialBarChart: React.FC<SellerFinancialBarChartProps> = (
     </div>
   );
 };
+

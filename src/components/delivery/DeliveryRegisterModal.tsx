@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DeliveryVehicleType } from '../../types';
 import {
@@ -291,7 +291,7 @@ export const DeliveryRegisterModal: React.FC<DeliveryRegisterModalProps> = ({
                       value={vehiclePlate}
                       onChange={(e) => setVehiclePlate(e.target.value.toUpperCase())}
                       placeholder="ABC1D23"
-                      className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold uppercase outline-none focus:border-emerald-600"
+                      className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-sans font-bold uppercase outline-none focus:border-emerald-600"
                     />
                   </div>
 
@@ -322,7 +322,7 @@ export const DeliveryRegisterModal: React.FC<DeliveryRegisterModalProps> = ({
                     value={pixKey}
                     onChange={(e) => setPixKey(e.target.value)}
                     placeholder="Chave PIX (CPF, Celular, E-mail ou Aleatória)"
-                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-emerald-600 font-mono"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-emerald-600 font-sans"
                   />
                 </div>
               </div>
@@ -351,3 +351,4 @@ export const DeliveryRegisterModal: React.FC<DeliveryRegisterModalProps> = ({
     </div>
   );
 };
+

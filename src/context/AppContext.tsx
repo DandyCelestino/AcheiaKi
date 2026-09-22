@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   User,
   UserRole,
@@ -88,6 +88,9 @@ import {
   firebaseRegisterMerchant,
   firebaseLoginWithGoogle,
   firebaseSendPasswordReset,
+  firebaseVerifyPasswordResetCode,
+  firebaseConfirmPasswordReset,
+  firebaseSendEmailVerification,
   firebaseLogout,
   subscribeToFirebaseAuthState,
 } from '../services/firebaseAuth';
@@ -172,9 +175,9 @@ export interface AppContextType {
   logout: () => void;
   updateUserPassword: (newPassword: string) => { success: boolean; message?: string };
   toggleTwoFactor: () => boolean;
-  resendEmailConfirmation: (email: string) => { success: boolean; message: string };
+  resendEmailConfirmation: (email: string) => Promise<{ success: boolean; message: string }>;
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
-  completePasswordReset: (email: string, code: string, newPassword: string) => { success: boolean; message: string };
+  completePasswordReset: (email: string, code: string, newPassword: string) => Promise<{ success: boolean; message: string }>;
   // Auditoria, Rastreabilidade & Segurança
   auditLogs: AuditLog[];
   addAuditLog: (action: string, details: string, options?: AuditLogOptions) => AuditLog;
@@ -2364,7 +2367,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }
           return prev.map((u) => (u.id === syncedUser.id || u.email.toLowerCase() === syncedUser.email.toLowerCase() ? syncedUser : u));
         });
-        setCurrentUser((prev) => prev || syncedUser);
+        // Usuário Firebase não verificado não recebe acesso ao ambiente da aplicação.
+        // Mantemos a sessão Firebase ativa para permitir o reenvio do e-mail de verificação.
+        if (syncedUser.isEmailVerified) {
+          setCurrentUser((prev) => prev || syncedUser);
+        }
       }
     });
     return () => unsubscribe();
@@ -2411,7 +2418,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (fbResult.success && fbResult.user) {
       const u = fbResult.user;
       setUsers((prev) => [u, ...prev.filter((existing) => existing.id !== u.id && existing.email.toLowerCase() !== u.email.toLowerCase())]);
-      setCurrentUser(u);
+      // O acesso ao Marketplace somente será liberado após a confirmação do e-mail.
+      // O listener Firebase mantém a sessão disponível para permitir o reenvio da verificação.
       addAuditLog('FIREBASE_LOGIN', `Login oficial concluído via Firebase Auth no perfil ${u.role}`);
       if (u.role === 'CLIENTE') setCurrentEnvironmentState('MARKETPLACE');
       else if (u.role === 'VENDEDOR' || u.role === 'REPRESENTANTE_COMERCIAL') {
@@ -2486,10 +2494,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (res.success && res.user) {
       const u = res.user;
       setUsers((prev) => [...prev.filter((x) => x.email.toLowerCase() !== u.email.toLowerCase()), u]);
-      setCurrentUser(u);
-      setCurrentEnvironmentState('MARKETPLACE');
+      // Acesso ao Marketplace somente após confirmação do e-mail.
+      // A sessão Firebase permanece disponível para permitir o reenvio da verificação.
+      triggerToast('Cadastro concluído! Verifique seu e-mail para ativar o acesso ao Achei Aqui.');
       addAuditLog('FIREBASE_CUSTOMER_REGISTER', `Novo cliente cadastrado no Firebase Auth: ${u.name} (${u.email})`);
-      triggerToast(`Cadastro concluído com sucesso via Firebase!`);
     }
     return res;
   };
@@ -2518,10 +2526,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const m = res.merchant;
       setUsers((prev) => [...prev.filter((x) => x.email.toLowerCase() !== u.email.toLowerCase()), u]);
       setMerchants((prev) => [...prev.filter((x) => x.id !== m.id), m]);
-      setCurrentUser(u);
-      setCurrentEnvironmentState('SELLER_PORTAL');
+      // Acesso ao Portal do Lojista somente após confirmação do e-mail.
+      triggerToast('Cadastro concluído! Verifique seu e-mail para ativar o acesso ao Achei Aqui.');
       addAuditLog('FIREBASE_MERCHANT_REGISTER', `Novo lojista credenciado no Firebase: ${m.name} (${u.name})`);
-      triggerToast(`Loja e perfil criados com sucesso no Firebase!`);
     }
     return res;
   };
@@ -2984,39 +2991,67 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return newState;
   };
 
-  const resendEmailConfirmation = (email: string): { success: boolean; message: string } => {
-    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmação reenviado para ${email}`);
-    triggerToast(`Link de verificação reenviado para ${email}. Verifique sua caixa de entrada.`);
-    return {
-      success: true,
-      message: `E-mail de confirmação enviado para ${email} com sucesso!`
-    };
-  };
+  const resendEmailConfirmation = async (email: string): Promise<{ success: boolean; message: string }> => {
+    const result = await firebaseSendEmailVerification();
 
-  const requestPasswordReset = (email: string): { success: boolean; message: string; simulatedCode?: string } => {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    addAuditLog('PASSWORD_RESET_REQUEST', `Solicitação de recuperação de senha com código para ${email}`);
-    NotificationService.notifySecurityEvent({ email }, 'PASSWORD_RESET', { code });
-    return {
-      success: true,
-      message: `Código de segurança de 6 dígitos gerado e enviado para ${email}.`,
-      simulatedCode: code
-    };
-  };
-
-  const completePasswordReset = (email: string, code: string, newPassword: string): { success: boolean; message: string } => {
-    if (!code || code.length < 6) {
-      return { success: false, message: 'Código de verificação inválido.' };
+    if (result.success) {
+      addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmação reenviado para ${email}`);
+      triggerToast(result.message);
     }
-    if (!newPassword || newPassword.length < 6) {
-      return { success: false, message: 'A nova senha deve possuir no mínimo 6 caracteres.' };
+
+    return result;
+  };
+  const requestPasswordReset = async (email: string): Promise<{ success: boolean; message: string }> => {
+    const result = await firebaseSendPasswordReset(email);
+    if (result.success) {
+      addAuditLog('PASSWORD_RESET_REQUEST', `Solicitação de redefinição de senha enviada para ${email}`);
+      triggerToast(result.message);
     }
-    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuário ${email}`);
-    triggerToast('Senha redefinida com sucesso! Você já pode entrar com sua nova senha.');
-    return { success: true, message: 'Senha alterada com sucesso!' };
+    return result;
   };
 
-  const logout = () => {
+  const completePasswordReset = async (
+      email: string,
+      code: string,
+      newPassword: string
+    ): Promise<{ success: boolean; message: string }> => {
+      if (!code || !code.trim()) {
+        return {
+          success: false,
+          message: 'Código de redefinição inválido ou ausente.'
+        };
+      }
+
+      if (!newPassword || newPassword.length < 6) {
+        return {
+          success: false,
+          message: 'A nova senha deve possuir no mínimo 6 caracteres.'
+        };
+      }
+
+      const verification = await firebaseVerifyPasswordResetCode(code);
+
+      if (!verification.success) {
+        return {
+          success: false,
+          message: verification.message
+        };
+      }
+
+      const result = await firebaseConfirmPasswordReset(code, newPassword);
+
+      if (result.success) {
+        addAuditLog(
+          'PASSWORD_RESET_COMPLETE',
+          `Senha redefinida com sucesso para o usuário ${email}`
+        );
+        triggerToast(result.message);
+      }
+
+      return result;
+    };
+
+    const logout = () => {
     if (currentUser) {
       addAuditLog('USER_LOGOUT', `Usuário ${currentUser.name} encerrou a sessão`);
     }
@@ -6202,3 +6237,13 @@ export const useApp = () => {
   }
   return context;
 };
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Bell,
   CheckCheck,
@@ -192,7 +192,7 @@ export const UserNotificationsList: React.FC = () => {
                         {item.senderName}
                       </span>
                       {item.orderCode && (
-                        <span className="font-mono text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-bold">
+                        <span className="font-sans text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-bold">
                           #{item.orderCode}
                         </span>
                       )}
@@ -243,3 +243,4 @@ export const UserNotificationsList: React.FC = () => {
     </div>
   );
 };
+

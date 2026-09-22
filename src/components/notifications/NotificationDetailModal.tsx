@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   Bell,
   X,
@@ -184,7 +184,7 @@ export const NotificationDetailModal: React.FC<NotificationDetailModalProps> = (
           </div>
 
           {notification.orderCode && (
-            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-md font-mono text-[11px] font-bold shrink-0">
+            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-md font-sans text-[11px] font-bold shrink-0">
               #{notification.orderCode}
             </span>
           )}
@@ -202,7 +202,7 @@ export const NotificationDetailModal: React.FC<NotificationDetailModalProps> = (
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               <span>Notificação entregue via Internet do App Achei Aqui</span>
             </span>
-            <span className="font-mono text-[10px] text-slate-400">
+            <span className="font-sans text-[10px] text-slate-400">
               ID: {notification.id.substring(0, 14)}
             </span>
           </div>
@@ -231,3 +231,4 @@ export const NotificationDetailModal: React.FC<NotificationDetailModalProps> = (
     </div>
   );
 };
+

@@ -1,4 +1,4 @@
-import { PointOfInterest, StoreMerchant } from '../types';
+﻿import { PointOfInterest, StoreMerchant } from '../types';
 
 /**
  * Coordenadas centrais e limites de Cachoeiras de Macacu - RJ
@@ -34,7 +34,7 @@ export const CACHOEIRAS_POINTS_OF_INTEREST: PointOfInterest[] = [
     name: 'Cachoeira de Sete Quedas & Poço das Moças',
     category: 'TURISMO_ECO',
     tag: 'Balneário Natural',
-    description: 'Sequência espetacular de quedas d’água e piscinas naturais de água límpida, ideais para banho e lazer em família.',
+    description: 'Sequência espetacular de quedas d`água e piscinas naturais de água límpida, ideais para banho e lazer em família.',
     address: 'Estrada de Faraó, s/n',
     neighborhood: 'Faraó',
     latitude: -22.4210,
@@ -59,7 +59,7 @@ export const CACHOEIRAS_POINTS_OF_INTEREST: PointOfInterest[] = [
   },
   {
     id: 'poi-igreja-matriz',
-    name: 'Igreja Matriz de Sant’Ana',
+    name: "Igreja Matriz de Sant'Ana",
     category: 'HISTORICO',
     tag: 'Patrimônio Religioso',
     description: 'Templo histórico fundado no século XVIII, marco da colonização do vale do Macacu e celebração da padroeira municipal.',
@@ -183,3 +183,6 @@ export const getMerchantCoordinates = (merchant: StoreMerchant): { lat: number; 
     lng: base.lng + offsetLng
   };
 };
+
+
+

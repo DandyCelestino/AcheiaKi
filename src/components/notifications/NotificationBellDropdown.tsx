@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import {
   Bell,
   Check,
@@ -236,7 +236,7 @@ export const NotificationBellDropdown: React.FC<NotificationBellDropdownProps> =
 
                       {item.orderCode && (
                         <div className="mt-1 flex items-center space-x-1">
-                          <span className="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[9px] font-mono font-bold">
+                          <span className="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[9px] font-sans font-bold">
                             #{item.orderCode}
                           </span>
                         </div>
@@ -272,3 +272,4 @@ export const NotificationBellDropdown: React.FC<NotificationBellDropdownProps> =
     </div>
   );
 };
+

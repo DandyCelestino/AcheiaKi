@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   User,
   Package,
@@ -358,7 +358,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div className="flex items-center space-x-2">
-                    <span className="font-mono font-black text-sm text-slate-900">
+                    <span className="font-sans font-black text-sm text-slate-900">
                       {order.code}
                     </span>
                     <span className="text-slate-400 text-xs">• {order.createdAt}</span>
@@ -502,7 +502,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                       <span className="text-[10px] text-blue-300 font-bold uppercase tracking-wider block">
                         Código Único de Segurança & Negociação:
                       </span>
-                      <p className="font-mono text-lg font-black text-white tracking-widest">
+                      <p className="font-sans text-lg font-black text-white tracking-widest">
                         {order.securityCode}
                       </p>
                     </div>
@@ -524,7 +524,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                       <span className="text-[10px] text-blue-700 font-bold uppercase">
                         Código de Retirada no Balcão:
                       </span>
-                      <p className="font-mono text-base font-black text-blue-950">
+                      <p className="font-sans text-base font-black text-blue-950">
                         {order.pickupCode}
                       </p>
                     </div>
@@ -557,7 +557,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                             <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">
                               Achei Aqui Delivery • Rastreamento
                             </span>
-                            <span className="font-mono text-xs font-bold text-white">
+                            <span className="font-sans text-xs font-bold text-white">
                               {linkedRide.rideCode}
                             </span>
                           </div>
@@ -600,7 +600,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                             <span className="text-[10px] text-amber-300 font-bold uppercase block">
                               Código de Confirmação (Informe ao Entregador):
                             </span>
-                            <span className="font-mono text-xl font-black text-white tracking-widest">
+                            <span className="font-sans text-xl font-black text-white tracking-widest">
                               {linkedRide.confirmationCode}
                             </span>
                           </div>
@@ -701,7 +701,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
               <div className="p-4 bg-blue-50 border-2 border-dashed border-blue-300 rounded-xl flex items-center justify-between">
                 <div>
                   <p className="text-xs text-blue-800 font-bold">Apresente este código no caixa:</p>
-                  <p className="font-mono text-2xl font-black text-blue-950">{ord.pickupCode || ord.code}</p>
+                  <p className="font-sans text-2xl font-black text-blue-950">{ord.pickupCode || ord.code}</p>
                 </div>
                 <button
                   onClick={() => copyCode(ord.pickupCode || ord.code)}
@@ -764,7 +764,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                   {/* Top Bar with Status */}
                   <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                     <div className="flex items-center space-x-2">
-                      <span className="font-mono font-bold text-sm text-slate-900">{ord.code}</span>
+                      <span className="font-sans font-bold text-sm text-slate-900">{ord.code}</span>
                       <span className="text-slate-400 text-xs">•</span>
                       <span className="text-xs font-bold text-slate-800">{ord.merchantName}</span>
                     </div>
@@ -838,7 +838,7 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
                           <MessageSquare className="w-3.5 h-3.5" />
                           <span>Resposta Oficial do Prestador ({resp.merchantAuthorName}):</span>
                         </div>
-                        <span className="text-[10px] font-mono opacity-75">{resp.respondedAt}</span>
+                        <span className="text-[10px] font-sans opacity-75">{resp.respondedAt}</span>
                       </div>
 
                       <p className="leading-relaxed font-medium">"{resp.responseMessage}"</p>
@@ -1083,3 +1083,4 @@ export const CustomerAccountView: React.FC<CustomerAccountViewProps> = ({
     </div>
   );
 };
+

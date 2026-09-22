@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DeliveryRide, DeliveryDriver, DeliveryDriverStatus } from '../../types';
 import {
@@ -366,7 +366,7 @@ export const MasterDeliveryView: React.FC = () => {
                 <div key={ride.id} className="p-4 sm:p-5 space-y-3 hover:bg-slate-50/50 transition-colors">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-mono font-black text-sm text-slate-900">{ride.rideCode}</span>
+                      <span className="font-sans font-black text-sm text-slate-900">{ride.rideCode}</span>
                       <span className="text-xs text-slate-400">• Pedido: {ride.orderCode}</span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
@@ -449,7 +449,7 @@ export const MasterDeliveryView: React.FC = () => {
                       <span className="text-[10px] text-slate-400 font-semibold">
                         Cód. Segurança Cliente:
                       </span>
-                      <span className="font-mono font-black text-xs px-2 py-0.5 bg-slate-200 text-slate-800 rounded">
+                      <span className="font-sans font-black text-xs px-2 py-0.5 bg-slate-200 text-slate-800 rounded">
                         {ride.confirmationCode}
                       </span>
                     </div>
@@ -534,7 +534,7 @@ export const MasterDeliveryView: React.FC = () => {
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
                         Veículo: <strong>{driver.vehicleModel}</strong> ({driver.vehicleType}) • Placa:{' '}
-                        <strong className="font-mono text-emerald-800">{driver.vehiclePlate}</strong>
+                        <strong className="font-sans text-emerald-800">{driver.vehiclePlate}</strong>
                       </p>
                     </div>
                   </div>
@@ -845,7 +845,7 @@ export const MasterDeliveryView: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Auditoria de Entrega</span>
-                <h3 className="font-mono text-lg font-black text-slate-900">{selectedRideDetails.rideCode}</h3>
+                <h3 className="font-sans text-lg font-black text-slate-900">{selectedRideDetails.rideCode}</h3>
               </div>
               <button
                 type="button"
@@ -888,3 +888,4 @@ export const MasterDeliveryView: React.FC = () => {
     </div>
   );
 };
+

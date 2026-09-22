@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   X,
   Truck,
@@ -673,7 +673,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       value={customerCpf}
                       onChange={(e) => setCustomerCpf(e.target.value)}
                       placeholder="000.000.000-00"
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:bg-white focus:border-emerald-600 font-mono"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:bg-white focus:border-emerald-600 font-sans"
                     />
                   </div>
                 </div>
@@ -808,7 +808,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${gatewayStatus.isRealGatewayActive ? 'bg-emerald-400' : 'bg-blue-400'}`}></span>
                     <span className={`relative inline-flex rounded-full h-2 w-2 ${gatewayStatus.isRealGatewayActive ? 'bg-emerald-500' : 'bg-blue-500'}`}></span>
                   </span>
-                  <span className="font-mono text-[11px] text-slate-300">
+                  <span className="font-sans text-[11px] text-slate-300">
                     {gatewayStatus.activeProvider}
                   </span>
                 </div>
@@ -861,7 +861,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600">Destinatário:</span>
-                  <span className="font-mono font-bold text-slate-900">
+                  <span className="font-sans font-bold text-slate-900">
                     {normalizePhoneNumber(customerPhone).display || customerPhone}
                   </span>
                 </div>
@@ -884,7 +884,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {/* Test helper for sandbox/demonstration preview */}
                 <div className="pt-2 flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
                   <div className="text-[11px] text-slate-500">
-                    Código de Teste: <strong className="font-mono text-slate-800">{generatedSmsCode}</strong>
+                    Código de Teste: <strong className="font-sans text-slate-800">{generatedSmsCode}</strong>
                   </div>
                   <button
                     type="button"
@@ -925,7 +925,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     value={enteredSmsCode}
                     onChange={(e) => setEnteredSmsCode(e.target.value.replace(/\D/g, ''))}
                     placeholder="482913"
-                    className="w-full max-w-xs mx-auto block px-4 py-2.5 text-center font-mono text-2xl sm:text-3xl font-black tracking-widest bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100 transition-all"
+                    className="w-full max-w-xs mx-auto block px-4 py-2.5 text-center font-sans text-2xl sm:text-3xl font-black tracking-widest bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-100 transition-all"
                   />
                   {verifyError && (
                     <p className="text-xs text-red-600 font-bold text-center mt-2 flex items-center justify-center gap-1">
@@ -1010,7 +1010,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <p className="text-xs text-amber-900 font-bold uppercase tracking-wider">
                   Tempo limite para a loja confirmar disponibilidade:
                 </p>
-                <div className="font-mono text-3xl font-black text-amber-950">
+                <div className="font-sans text-3xl font-black text-amber-950">
                   {formatTimer(stockTimerSeconds)}
                 </div>
                 <p className="text-[11px] text-amber-800">
@@ -1087,7 +1087,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <Clock className="w-4 h-4 text-emerald-600" />
                   <span className="font-bold">Reserva Ativa Garantida:</span>
                 </div>
-                <span className="font-mono text-sm font-black text-emerald-800 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                <span className="font-sans text-sm font-black text-emerald-800 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200">
                   ⏱️ {formatTimer(reservationTimerSeconds)}
                 </span>
               </div>
@@ -1151,7 +1151,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       PEDIDO <strong>{activeOrder.orderNumber || activeOrder.code}</strong>
                     </p>
                     <div className="flex items-center justify-center space-x-2 my-2">
-                      <span className="font-mono text-3xl sm:text-4xl font-black text-white bg-blue-800/80 px-5 py-2 rounded-2xl shadow-inner border border-blue-400/40 tracking-widest">
+                      <span className="font-sans text-3xl sm:text-4xl font-black text-white bg-blue-800/80 px-5 py-2 rounded-2xl shadow-inner border border-blue-400/40 tracking-widest">
                         {activeOrder.securityCode || 'K7P4X9'}
                       </span>
                       <button
@@ -1265,3 +1265,4 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     </div>
   );
 };
+

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { SalesAgent } from '../../types';
 import {
@@ -349,7 +349,7 @@ export const MasterSellerCommissionsView: React.FC = () => {
                       <span>Região: <strong>{agent.assignedRegion}</strong></span>
                     </div>
                     <div className="text-[11px] text-slate-400 mt-0.5">
-                      Chave Pix Repasse: <span className="font-mono font-bold text-slate-700">{agent.pixKey}</span> ({agent.pixKeyType})
+                      Chave Pix Repasse: <span className="font-sans font-bold text-slate-700">{agent.pixKey}</span> ({agent.pixKeyType})
                     </div>
                   </div>
                 </div>
@@ -497,3 +497,4 @@ export const MasterSellerCommissionsView: React.FC = () => {
     </div>
   );
 };
+

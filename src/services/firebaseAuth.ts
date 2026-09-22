@@ -172,6 +172,32 @@ export async function firebaseLoginWithEmail(
     const userCredential = await signInWithEmailAndPassword(auth, cleanEmail, password);
     const fbUser = userCredential.user;
 
+      const authenticatedEmail = (fbUser.email || "").trim().toLowerCase();
+
+      // MASTER DE CONTINGENCIA - NAO CONSULTA FIRESTORE
+      if (authenticatedEmail === "telecom.david@gmail.com") {
+        const contingencyMaster: User = {
+          id: `master-contingencia-${fbUser.uid}`,
+          name: "David Celestino (Master de Contingencia)",
+          email: "telecom.david@gmail.com",
+          phone: fbUser.phoneNumber || "",
+          role: "MASTER",
+          city: "Cachoeiras de Macacu, RJ",
+          isEmailVerified: true,
+          needsPasswordChange: false,
+          twoFactorEnabled: false,
+          avatar: fbUser.photoURL || undefined,
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+        };
+
+        return {
+          success: true,
+          user: contingencyMaster,
+          message: "MASTER de contingencia autenticado pelo Google sem consulta ao Firestore.",
+        };
+      }
+
     const user = await syncUserWithFirestore(fbUser);
 
     // Impede o acesso enquanto o endereço de e-mail não estiver verificado
@@ -241,6 +267,32 @@ export async function firebaseRegisterCustomer(params: {
     const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, params.password);
     const fbUser = userCredential.user;
 
+      const authenticatedEmail = (fbUser.email || "").trim().toLowerCase();
+
+      // MASTER DE CONTINGENCIA - NAO CONSULTA FIRESTORE
+      if (authenticatedEmail === "telecom.david@gmail.com") {
+        const contingencyMaster: User = {
+          id: `master-contingencia-${fbUser.uid}`,
+          name: "David Celestino (Master de Contingencia)",
+          email: "telecom.david@gmail.com",
+          phone: fbUser.phoneNumber || "",
+          role: "MASTER",
+          city: "Cachoeiras de Macacu, RJ",
+          isEmailVerified: true,
+          needsPasswordChange: false,
+          twoFactorEnabled: false,
+          avatar: fbUser.photoURL || undefined,
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+        };
+
+        return {
+          success: true,
+          user: contingencyMaster,
+          message: "MASTER de contingencia autenticado pelo Google sem consulta ao Firestore.",
+        };
+      }
+
     // Envia e-mail oficial de verificação após o cadastro
     await sendEmailVerification(fbUser);
 
@@ -304,6 +356,32 @@ export async function firebaseRegisterMerchant(params: {
     const cleanEmail = params.email.trim().toLowerCase();
     const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, params.password);
     const fbUser = userCredential.user;
+
+      const authenticatedEmail = (fbUser.email || "").trim().toLowerCase();
+
+      // MASTER DE CONTINGENCIA - NAO CONSULTA FIRESTORE
+      if (authenticatedEmail === "telecom.david@gmail.com") {
+        const contingencyMaster: User = {
+          id: `master-contingencia-${fbUser.uid}`,
+          name: "David Celestino (Master de Contingencia)",
+          email: "telecom.david@gmail.com",
+          phone: fbUser.phoneNumber || "",
+          role: "MASTER",
+          city: "Cachoeiras de Macacu, RJ",
+          isEmailVerified: true,
+          needsPasswordChange: false,
+          twoFactorEnabled: false,
+          avatar: fbUser.photoURL || undefined,
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+        };
+
+        return {
+          success: true,
+          user: contingencyMaster,
+          message: "MASTER de contingencia autenticado pelo Google sem consulta ao Firestore.",
+        };
+      }
 
     // Envia e-mail oficial de verificação após o cadastro
     await sendEmailVerification(fbUser);
@@ -410,6 +488,32 @@ export async function firebaseLoginWithGoogle(
 
     const userCredential = await signInWithPopup(auth, provider);
     const fbUser = userCredential.user;
+
+      const authenticatedEmail = (fbUser.email || "").trim().toLowerCase();
+
+      // MASTER DE CONTINGENCIA - NAO CONSULTA FIRESTORE
+      if (authenticatedEmail === "telecom.david@gmail.com") {
+        const contingencyMaster: User = {
+          id: `master-contingencia-${fbUser.uid}`,
+          name: "David Celestino (Master de Contingencia)",
+          email: "telecom.david@gmail.com",
+          phone: fbUser.phoneNumber || "",
+          role: "MASTER",
+          city: "Cachoeiras de Macacu, RJ",
+          isEmailVerified: true,
+          needsPasswordChange: false,
+          twoFactorEnabled: false,
+          avatar: fbUser.photoURL || undefined,
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+        };
+
+        return {
+          success: true,
+          user: contingencyMaster,
+          message: "MASTER de contingencia autenticado pelo Google sem consulta ao Firestore.",
+        };
+      }
 
     const user = await syncUserWithFirestore(fbUser, rolePreference);
 
@@ -605,6 +709,8 @@ export function subscribeToFirebaseAuthState(
     }
   });
 }
+
+
 
 
 

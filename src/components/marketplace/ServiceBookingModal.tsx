@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   X,
   Calendar,
@@ -188,7 +188,7 @@ export const ServiceBookingModal: React.FC<ServiceBookingModalProps> = ({
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-left space-y-2.5 text-xs">
                 <div className="flex justify-between font-bold text-slate-900 border-b border-slate-200 pb-2">
                   <span>Código da Solicitação:</span>
-                  <span className="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="font-sans text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                     {confirmedBooking.code}
                   </span>
                 </div>
@@ -478,3 +478,4 @@ export const ServiceBookingModal: React.FC<ServiceBookingModalProps> = ({
     </div>
   );
 };
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   QrCode,
   Copy,
@@ -294,7 +294,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 }`}
               ></span>
             </span>
-            <span className="text-[10px] font-mono text-slate-300 font-bold">
+            <span className="text-[10px] font-sans text-slate-300 font-bold">
               {gatewayConfig.environmentMode === 'PRODUCTION'
                 ? 'PRODUÇÃO'
                 : gatewayConfig.environmentMode === 'HOMOLOGATION'
@@ -307,7 +307,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-800 text-[11px] text-slate-300">
           <div className="flex items-center space-x-1 truncate">
             <span className="text-slate-400">Chave:</span>
-            <span className="font-mono text-emerald-300 font-bold truncate" title={gatewayConfig.pixKey}>
+            <span className="font-sans text-emerald-300 font-bold truncate" title={gatewayConfig.pixKey}>
               {gatewayConfig.pixKey}
             </span>
           </div>
@@ -352,12 +352,12 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             <div className="grid grid-cols-1 gap-1 text-[11px] text-slate-600">
               <div className="flex justify-between">
                 <span>Identificador (TxID):</span>
-                <span className="font-mono font-bold text-slate-900">{pixDetails.txid}</span>
+                <span className="font-sans font-bold text-slate-900">{pixDetails.txid}</span>
               </div>
               {settlementReceipt?.endToEndId && (
                 <div className="flex justify-between">
                   <span>End-to-End ID:</span>
-                  <span className="font-mono font-bold text-slate-900 text-[10px]">
+                  <span className="font-sans font-bold text-slate-900 text-[10px]">
                     {settlementReceipt.endToEndId}
                   </span>
                 </div>
@@ -409,10 +409,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 <span className="text-[10px] text-emerald-300 block font-medium">
                   💼 Plataforma MEI (10%):
                 </span>
-                <span className="font-mono font-black text-white text-sm">
+                <span className="font-sans font-black text-white text-sm">
                   R$ {((order.totalAmount * 0.10) || 0).toFixed(2).replace('.', ',')}
                 </span>
-                <span className="text-[9px] text-emerald-400/80 block font-mono truncate">
+                <span className="text-[9px] text-emerald-400/80 block font-sans truncate">
                   Carteira Master MEI
                 </span>
               </div>
@@ -421,10 +421,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 <span className="text-[10px] text-emerald-300 block font-medium">
                   🏪 Repasse Lojista (90%):
                 </span>
-                <span className="font-mono font-black text-emerald-300 text-sm">
+                <span className="font-sans font-black text-emerald-300 text-sm">
                   R$ {((order.totalAmount * 0.90) || 0).toFixed(2).replace('.', ',')}
                 </span>
-                <span className="text-[9px] text-emerald-400/80 block font-mono truncate" title={targetStore?.asaasWalletId || `wallet_${order.merchantId}`}>
+                <span className="text-[9px] text-emerald-400/80 block font-sans truncate" title={targetStore?.asaasWalletId || `wallet_${order.merchantId}`}>
                   {targetStore?.asaasWalletId || `wallet_${order.merchantId || 'lojista'}`}
                 </span>
               </div>
@@ -473,7 +473,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
               <Clock className="w-3.5 h-3.5 text-amber-600" />
               <span>
                 {timeLeft > 0 ? (
-                  <>Válido por: <strong className="font-mono">{formatTimer(timeLeft)}</strong></>
+                  <>Válido por: <strong className="font-sans">{formatTimer(timeLeft)}</strong></>
                 ) : (
                   <span className="text-red-600 font-black">Tempo expirado</span>
                 )}
@@ -509,7 +509,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 readOnly
                 value={pixDetails.copiaECola}
                 onClick={handleCopyPix}
-                className="w-full pl-3 pr-24 py-3 bg-slate-100 hover:bg-slate-200/70 border border-slate-300 rounded-xl text-xs font-mono text-slate-700 truncate cursor-pointer outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-3 pr-24 py-3 bg-slate-100 hover:bg-slate-200/70 border border-slate-300 rounded-xl text-xs font-sans text-slate-700 truncate cursor-pointer outline-none focus:ring-2 focus:ring-emerald-500"
               />
               <button
                 type="button"
@@ -576,3 +576,4 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
     </div>
   );
 };
+

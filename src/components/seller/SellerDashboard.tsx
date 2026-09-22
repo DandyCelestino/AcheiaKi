@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Store,
   Package,
@@ -947,7 +947,7 @@ export const SellerDashboard: React.FC = () => {
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-2.5">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm font-black text-amber-950 font-mono">
+                          <span className="text-sm font-black text-amber-950 font-sans">
                             🔔 Solicitação de Compra {ord.orderNumber || ord.code}
                           </span>
                           <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-black flex items-center gap-1">
@@ -1027,7 +1027,7 @@ export const SellerDashboard: React.FC = () => {
                     <div key={order.id} className="py-3 flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="font-mono font-bold text-xs text-slate-900">
+                          <span className="font-sans font-bold text-xs text-slate-900">
                             {order.code}
                           </span>
                           <span className="text-xs text-slate-400">• {order.createdAt}</span>
@@ -1264,7 +1264,7 @@ export const SellerDashboard: React.FC = () => {
                   value={pickupCodeInput}
                   onChange={(e) => setPickupCodeInput(e.target.value.toUpperCase())}
                   placeholder="Ex: K7P4X9 ou #58291"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 focus:bg-white focus:border-emerald-500 rounded-xl font-mono text-lg font-black tracking-widest outline-none text-center"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 focus:bg-white focus:border-emerald-500 rounded-xl font-sans text-lg font-black tracking-widest outline-none text-center"
                 />
               </div>
 
@@ -1322,7 +1322,7 @@ export const SellerDashboard: React.FC = () => {
                   <div key={ord.id} className="p-4 sm:p-5 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono font-black text-sm text-slate-900">
+                        <span className="font-sans font-black text-sm text-slate-900">
                           {ord.orderNumber || ord.code}
                         </span>
                         <span className="text-xs text-slate-400">• {ord.createdAt}</span>
@@ -1335,7 +1335,7 @@ export const SellerDashboard: React.FC = () => {
                           </span>
                         )}
                         {ord.securityCode && (
-                          <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-black font-mono">
+                          <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-black font-sans">
                             Cód: {ord.securityCode}
                           </span>
                         )}
@@ -1547,7 +1547,7 @@ export const SellerDashboard: React.FC = () => {
                               </div>
                               <div>
                                 <div className="flex items-center space-x-2">
-                                  <span className="font-mono font-black text-slate-900">{linkedRide.rideCode}</span>
+                                  <span className="font-sans font-black text-slate-900">{linkedRide.rideCode}</span>
                                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                     linkedRide.status === 'FINALIZADA'
                                       ? 'bg-emerald-100 text-emerald-800'
@@ -1666,7 +1666,7 @@ export const SellerDashboard: React.FC = () => {
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                           <div className="flex items-center space-x-2">
-                            <span className="font-mono font-bold text-sm text-slate-900">{booking.code}</span>
+                            <span className="font-sans font-bold text-sm text-slate-900">{booking.code}</span>
                             <span className="text-xs text-slate-400">• {booking.createdAt}</span>
                             <span className="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 font-bold text-[10px] uppercase">
                               {booking.modality}
@@ -2054,7 +2054,7 @@ export const SellerDashboard: React.FC = () => {
                       value={storeCnpjOrCpf}
                       onChange={(e) => setStoreCnpjOrCpf(e.target.value)}
                       placeholder="00.000.000/0001-00"
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:bg-white font-mono"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:bg-white font-sans"
                     />
                   </div>
                 </div>
@@ -2466,7 +2466,7 @@ export const SellerDashboard: React.FC = () => {
                         value={storeAsaasWalletId}
                         onChange={(e) => setStoreAsaasWalletId(e.target.value)}
                         placeholder="wallet_lojista_exemplo"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-sans text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500"
                       />
                       <span className="text-[10px] text-slate-500 mt-1 block">
                         Identificador da carteira Asaas que receberá o repasse líquido de 90%.
@@ -2482,7 +2482,7 @@ export const SellerDashboard: React.FC = () => {
                         value={storeAsaasAccountId}
                         onChange={(e) => setStoreAsaasAccountId(e.target.value)}
                         placeholder="sub_acc_exemplo"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono text-slate-600 outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-sans text-slate-600 outline-none focus:ring-2 focus:ring-emerald-500"
                       />
                       <span className="text-[10px] text-slate-500 mt-1 block">
                         Código de registro da subconta cadastrada na API do Asaas.
@@ -2594,7 +2594,7 @@ export const SellerDashboard: React.FC = () => {
                         : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                     }`}
                   >
-                    <span className="text-base">⚡</span>
+                    <span className="text-base">âš¡</span>
                     <span className="text-[11px] leading-tight">Instalação</span>
                   </button>
 
@@ -2884,7 +2884,7 @@ export const SellerDashboard: React.FC = () => {
                           value={pixKey}
                           onChange={(e) => setPixKey(e.target.value)}
                           placeholder="Ex: 21999998888 ou email@loja.com"
-                          className="w-full px-3 py-1.5 bg-white border border-amber-200 rounded-lg text-xs outline-none font-mono"
+                          className="w-full px-3 py-1.5 bg-white border border-amber-200 rounded-lg text-xs outline-none font-sans"
                         />
                       </div>
                       <div>
@@ -3160,7 +3160,7 @@ export const SellerDashboard: React.FC = () => {
                 <span className="text-[11px] font-bold text-slate-700 mt-2">
                   Beneficiário: Bex Serviços e Comércios, CNPJ 30.810.800/0001-39
                 </span>
-                <span className="text-[10px] text-slate-500 font-mono">
+                <span className="text-[10px] text-slate-500 font-sans">
                   Chave Pix CNPJ: 30810800000139
                 </span>
               </div>
@@ -3175,7 +3175,7 @@ export const SellerDashboard: React.FC = () => {
                     type="text"
                     readOnly
                     value={extraServicePixModal.pixCopiaECola}
-                    className="flex-1 px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-[11px] font-mono text-slate-700 truncate"
+                    className="flex-1 px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-[11px] font-sans text-slate-700 truncate"
                   />
                   <button
                     type="button"
@@ -3241,3 +3241,4 @@ export const SellerDashboard: React.FC = () => {
     </div>
   );
 };
+

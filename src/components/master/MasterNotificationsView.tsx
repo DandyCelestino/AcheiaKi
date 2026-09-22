@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Bell,
   Send,
@@ -508,7 +508,7 @@ export const MasterNotificationsView: React.FC = () => {
                         </span>
                         <span className="font-bold text-xs text-slate-900">{log.title}</span>
                         {log.orderCode && (
-                          <span className="font-mono text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-bold">
+                          <span className="font-sans text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-bold">
                             #{log.orderCode}
                           </span>
                         )}
@@ -579,3 +579,4 @@ export const MasterNotificationsView: React.FC = () => {
 };
 
 export default MasterNotificationsView;
+

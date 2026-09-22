@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { MembershipTier } from '../../types';
 import {
@@ -764,7 +764,7 @@ export const SalesDashboard: React.FC = () => {
                   <h3 className="font-extrabold text-sm sm:text-base text-white">
                     {SALES_ORGANOGRAM_CONFIG.beneficiary}
                   </h3>
-                  <p className="text-xs text-blue-300 font-mono mt-0.5">
+                  <p className="text-xs text-blue-300 font-sans mt-0.5">
                     CNPJ Oficial: {SALES_ORGANOGRAM_CONFIG.officialCnpj}
                   </p>
                   <span className="mt-2 inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-[10px] font-bold border border-blue-400/30">
@@ -1011,7 +1011,7 @@ export const SalesDashboard: React.FC = () => {
                     Organograma Oficial • Bex Serviços e Comércios
                   </span>
                   <span className="text-[11px] text-slate-500 font-medium">
-                    Chave Pix do Sistema: <strong className="font-mono text-slate-800">{SALES_ORGANOGRAM_CONFIG.pixKeyClean}</strong>
+                    Chave Pix do Sistema: <strong className="font-sans text-slate-800">{SALES_ORGANOGRAM_CONFIG.pixKeyClean}</strong>
                   </span>
                 </div>
                 <h2 className="text-lg font-black text-slate-900 mt-1 flex items-center gap-2">
@@ -1187,7 +1187,7 @@ export const SalesDashboard: React.FC = () => {
                       placeholder={isMerchantRegistration ? '00.000.000/0001-00' : '000.000.000-00'}
                       value={documentNumber}
                       onChange={(e) => setDocumentNumber(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-sans"
                     />
                   </div>
 
@@ -1454,7 +1454,7 @@ export const SalesDashboard: React.FC = () => {
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center space-x-2">
-                          <span className="font-mono text-xs font-black bg-blue-100 text-blue-800 px-2.5 py-1 rounded-lg">
+                          <span className="font-sans text-xs font-black bg-blue-100 text-blue-800 px-2.5 py-1 rounded-lg">
                             {bol.code}
                           </span>
                           <span
@@ -1554,7 +1554,7 @@ export const SalesDashboard: React.FC = () => {
                               <span className="text-[10px] font-bold text-blue-900 block">
                                 Linha Digitável do Boleto para Envio ao Cliente:
                               </span>
-                              <code className="text-[11px] font-mono font-bold text-slate-800 select-all block truncate">
+                              <code className="text-[11px] font-sans font-bold text-slate-800 select-all block truncate">
                                 {bol.barcodeDigits}
                               </code>
                             </div>
@@ -1605,7 +1605,7 @@ export const SalesDashboard: React.FC = () => {
                             Comissão de R$ {bol.commissionAmount.toFixed(2)} repassada via Pix pelo
                             Master!
                           </span>
-                          <span className="font-mono text-[11px] text-emerald-800">
+                          <span className="font-sans text-[11px] text-emerald-800">
                             Comprovante: {bol.commissionPaymentReceipt}
                           </span>
                         </div>
@@ -1829,7 +1829,7 @@ export const SalesDashboard: React.FC = () => {
                 <span className="text-[11px] font-bold text-slate-700 mt-2">
                   Beneficiário Oficial: {pixModalData.beneficiary}
                 </span>
-                <span className="text-[10px] text-slate-500 font-mono">
+                <span className="text-[10px] text-slate-500 font-sans">
                   Chave Pix CNPJ: {pixModalData.pixKey}
                 </span>
               </div>
@@ -1844,7 +1844,7 @@ export const SalesDashboard: React.FC = () => {
                     type="text"
                     readOnly
                     value={pixModalData.pixCopiaECola}
-                    className="flex-1 px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-[11px] font-mono text-slate-700 truncate"
+                    className="flex-1 px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl text-[11px] font-sans text-slate-700 truncate"
                   />
                   <button
                     type="button"
@@ -1901,3 +1901,4 @@ export const SalesDashboard: React.FC = () => {
     </div>
   );
 };
+

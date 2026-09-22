@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   BookOpen,
   UserCheck,
@@ -459,7 +459,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
                         <strong className="text-slate-900 font-black">{OFFICIAL_PIX_INFO.beneficiary}</strong>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200">
+                        <span className="font-sans font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200">
                           {OFFICIAL_PIX_INFO.cnpj}
                         </span>
                         <button
@@ -665,3 +665,4 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
     </div>
   );
 };
+

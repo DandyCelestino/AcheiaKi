@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { BoletoWebhookEvent, WebhookGateway, BoletoBillingRequest, Order } from '../../types';
 import { WEBHOOK_SIMULATION_TEMPLATES } from '../../data/initialWebhookData';
@@ -307,7 +307,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2">
             <div className="bg-white/10 backdrop-blur-md rounded-xl px-4 py-2.5 border border-white/10 text-right">
               <span className="text-xs text-emerald-300 uppercase tracking-wider block font-semibold">Endpoint Ativo</span>
-              <code className="text-xs text-white font-mono">{webhookConfig.endpointPath}</code>
+              <code className="text-xs text-white font-sans">{webhookConfig.endpointPath}</code>
             </div>
             <button
               onClick={() => setActiveTab('simulator')}
@@ -567,11 +567,11 @@ export const MasterBoletoWebhookView: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3.5">
-                        <span className="font-mono font-bold text-slate-900 dark:text-white">
+                        <span className="font-sans font-bold text-slate-900 dark:text-white">
                           {evt.boletoCode || '—'}
                         </span>
                         {evt.externalTransactionId && (
-                          <div className="text-[11px] font-mono text-slate-400 truncate max-w-[140px]" title={evt.externalTransactionId}>
+                          <div className="text-[11px] font-sans text-slate-400 truncate max-w-[140px]" title={evt.externalTransactionId}>
                             TxID: {evt.externalTransactionId}
                           </div>
                         )}
@@ -666,7 +666,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 <div className="bg-slate-50 dark:bg-slate-900/70 p-3 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-between">
                   <div className="overflow-hidden">
                     <span className="text-[11px] font-semibold text-slate-400 block uppercase">Endpoint Principal</span>
-                    <code className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200 truncate block">
+                    <code className="text-xs font-sans font-bold text-slate-800 dark:text-slate-200 truncate block">
                       /api/webhooks/asaas
                     </code>
                   </div>
@@ -682,7 +682,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 <div className="bg-slate-50 dark:bg-slate-900/70 p-3 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-between">
                   <div className="overflow-hidden">
                     <span className="text-[11px] font-semibold text-slate-400 block uppercase">Endpoint Alternativo (Asaas SDK)</span>
-                    <code className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200 truncate block">
+                    <code className="text-xs font-sans font-bold text-slate-800 dark:text-slate-200 truncate block">
                       /api/asaas/webhook
                     </code>
                   </div>
@@ -797,11 +797,11 @@ export const MasterBoletoWebhookView: React.FC = () => {
                   <Check className="w-3.5 h-3.5" />
                   Última Resposta do Webhook Asaas
                 </span>
-                <span className="text-[11px] text-slate-400 font-mono">
+                <span className="text-[11px] text-slate-400 font-sans">
                   {new Date().toLocaleTimeString()}
                 </span>
               </div>
-              <pre className="text-xs font-mono bg-slate-950 p-3 rounded-lg overflow-x-auto text-emerald-300">
+              <pre className="text-xs font-sans bg-slate-950 p-3 rounded-lg overflow-x-auto text-emerald-300">
                 {JSON.stringify(asaasTestResult, null, 2)}
               </pre>
             </div>
@@ -853,10 +853,10 @@ export const MasterBoletoWebhookView: React.FC = () => {
                     return (
                       <tr key={ord.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
                         <td className="px-4 py-3">
-                          <span className="font-mono font-bold text-slate-900 dark:text-white block">
+                          <span className="font-sans font-bold text-slate-900 dark:text-white block">
                             {ord.orderNumber || ord.code}
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
+                          <span className="text-[11px] text-slate-400 font-sans">
                             ID: {ord.id}
                           </span>
                         </td>
@@ -892,7 +892,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                         </td>
                         <td className="px-4 py-3">
                           <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono ${
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold font-sans ${
                               isPago
                                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
                                 : isExp
@@ -1008,7 +1008,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                     value={simCustomCode}
                     onChange={(e) => setSimCustomCode(e.target.value)}
                     placeholder="Ex: BOL-2026-003"
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-sans focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                   />
                   <span className="text-[11px] text-slate-400 mt-1 block">
                     Altere para testar o comportamento com códigos não existentes (status UNMATCHED).
@@ -1086,7 +1086,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 value={simPayloadJson}
                 onChange={(e) => setSimPayloadJson(e.target.value)}
                 rows={16}
-                className="w-full font-mono text-xs p-3 bg-slate-900 text-emerald-400 rounded-lg border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
+                className="w-full font-sans text-xs p-3 bg-slate-900 text-emerald-400 rounded-lg border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
               />
 
               <div className="mt-4">
@@ -1097,7 +1097,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                   value={simHeadersJson}
                   onChange={(e) => setSimHeadersJson(e.target.value)}
                   rows={3}
-                  className="w-full font-mono text-xs p-2.5 bg-slate-900 text-slate-300 rounded-lg border border-slate-700 focus:outline-none resize-none"
+                  className="w-full font-sans text-xs p-2.5 bg-slate-900 text-slate-300 rounded-lg border border-slate-700 focus:outline-none resize-none"
                 />
               </div>
             </div>
@@ -1135,7 +1135,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                     type="text"
                     readOnly
                     value="https://acheiaqui.com.br/api/webhooks/boleto"
-                    className="flex-1 px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-800 dark:text-slate-200"
+                    className="flex-1 px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-sans text-slate-800 dark:text-slate-200"
                   />
                   <button
                     onClick={() => copyToClipboard('https://acheiaqui.com.br/api/webhooks/boleto', 'endpoint')}
@@ -1156,7 +1156,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                     type="password"
                     value={webhookConfig.secretKey}
                     onChange={(e) => updateWebhookConfig({ secretKey: e.target.value })}
-                    className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-800 dark:text-slate-200"
+                    className="flex-1 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-sans text-slate-800 dark:text-slate-200"
                   />
                   <button
                     onClick={() => copyToClipboard(webhookConfig.secretKey, 'secret')}
@@ -1276,7 +1276,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 No painel Asaas, acesse <strong>Configurações da Conta &gt; Integrações &gt; Webhooks &gt; Cobranças</strong>.
                 Ative o evento <code>Cobrança Recebida (PAYMENT_RECEIVED)</code> e aponte para a URL do endpoint Achei Aqui.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-emerald-400 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-emerald-400 overflow-x-auto">
                 externalReference = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1290,7 +1290,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 No portal de desenvolvedores do Mercado Pago, crie um Webhook para o evento <code>Pagamentos (payment)</code>.
                 O campo <code>external_reference</code> conterá o código do boleto emitido.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-cyan-300 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-cyan-300 overflow-x-auto">
                 external_reference = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1304,7 +1304,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 Cadastre o webhook via endpoint <code>PUT /cobranca/v2/boletos/webhook</code> do Banco Inter.
                 O campo <code>seuNumero</code> mapeará o código do boleto no Achei Aqui.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-orange-300 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-orange-300 overflow-x-auto">
                 seuNumero = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1318,7 +1318,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 No painel da Iugu, configure o gatilho <code>invoice.status_changed</code> com filtro de status <code>paid</code>.
                 O campo <code>order_id</code> conterá o código do boleto.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-emerald-300 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-emerald-300 overflow-x-auto">
                 order_id = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1332,7 +1332,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 Na Efí, ative as notificações de alteração de status de cobrança informando o parâmetro <code>custom_id</code>
                 como o identificador do boleto comercial.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-purple-300 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-purple-300 overflow-x-auto">
                 custom_id = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1346,7 +1346,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 Qualquer sistema de automação ou ERP externo pode postar diretamente um JSON no endpoint informado com
                 <code>{"{ boletoCode: 'BOL-...', amount: 49.90 }"}</code>.
               </p>
-              <div className="bg-slate-900 p-2.5 rounded-lg font-mono text-[11px] text-gray-300 overflow-x-auto">
+              <div className="bg-slate-900 p-2.5 rounded-lg font-sans text-[11px] text-gray-300 overflow-x-auto">
                 boletoCode = "BOL-YYYY-NNN"
               </div>
             </div>
@@ -1380,7 +1380,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
               </div>
               <div>
                 <span className="text-slate-400 block">Boleto Vinculado:</span>
-                <span className="font-mono font-bold text-slate-800 dark:text-slate-200">
+                <span className="font-sans font-bold text-slate-800 dark:text-slate-200">
                   {selectedEvent.boletoCode || 'Não identificado'}
                 </span>
               </div>
@@ -1398,7 +1398,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
               </div>
               <div>
                 <span className="text-slate-400 block">TxID / Gateway ID:</span>
-                <span className="font-mono text-slate-700 dark:text-slate-300">
+                <span className="font-sans text-slate-700 dark:text-slate-300">
                   {selectedEvent.externalTransactionId || '—'}
                 </span>
               </div>
@@ -1435,7 +1435,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                     value={reprocessBoletoCode}
                     onChange={(e) => setReprocessBoletoCode(e.target.value)}
                     placeholder="Ex: BOL-2026-003"
-                    className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg text-xs font-mono"
+                    className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg text-xs font-sans"
                   />
                   <button
                     onClick={() => handleReprocess(selectedEvent)}
@@ -1452,7 +1452,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
                 Payload JSON Recebido
               </span>
-              <pre className="p-3 bg-slate-950 text-emerald-400 rounded-xl font-mono text-xs overflow-x-auto max-h-60">
+              <pre className="p-3 bg-slate-950 text-emerald-400 rounded-xl font-sans text-xs overflow-x-auto max-h-60">
                 {JSON.stringify(selectedEvent.payload, null, 2)}
               </pre>
             </div>
@@ -1462,7 +1462,7 @@ export const MasterBoletoWebhookView: React.FC = () => {
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
                   Headers da Requisição
                 </span>
-                <pre className="p-3 bg-slate-950 text-slate-300 rounded-xl font-mono text-xs overflow-x-auto max-h-32">
+                <pre className="p-3 bg-slate-950 text-slate-300 rounded-xl font-sans text-xs overflow-x-auto max-h-32">
                   {JSON.stringify(selectedEvent.headers, null, 2)}
                 </pre>
               </div>
@@ -1482,3 +1482,4 @@ export const MasterBoletoWebhookView: React.FC = () => {
     </div>
   );
 };
+

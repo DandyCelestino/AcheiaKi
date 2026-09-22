@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
   Send,
@@ -212,7 +212,7 @@ export const SubOrderChatModal: React.FC = () => {
             </div>
             <div className="min-w-0">
               <div className="flex items-center space-x-2">
-                <span className="font-mono font-bold text-sm text-emerald-400">
+                <span className="font-sans font-bold text-sm text-emerald-400">
                   {codigoSubpedido}
                 </span>
                 <span className="text-slate-500 text-xs">•</span>
@@ -235,7 +235,7 @@ export const SubOrderChatModal: React.FC = () => {
             {securityCode && (
               <div className="hidden sm:flex flex-col items-end px-2.5 py-1 bg-slate-800 rounded-lg border border-slate-700">
                 <span className="text-[9px] text-slate-400 font-bold uppercase">Cód. Segurança</span>
-                <span className="font-mono text-xs font-black text-amber-300">{securityCode}</span>
+                <span className="font-sans text-xs font-black text-amber-300">{securityCode}</span>
               </div>
             )}
             <button
@@ -287,7 +287,7 @@ export const SubOrderChatModal: React.FC = () => {
               </div>
             </div>
             {activeChatSubOrder.productPrice !== undefined && (
-              <span className="text-xs font-black text-emerald-700 font-mono shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              <span className="text-xs font-black text-emerald-700 font-sans shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
                 R$ {activeChatSubOrder.productPrice.toFixed(2).replace('.', ',')}
               </span>
             )}
@@ -353,7 +353,7 @@ export const SubOrderChatModal: React.FC = () => {
                               {msg.statusBadge}
                             </span>
                           )}
-                          <span className="text-[9px] text-slate-500 font-mono">
+                          <span className="text-[9px] text-slate-500 font-sans">
                             {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
@@ -562,3 +562,4 @@ export const SubOrderChatModal: React.FC = () => {
     </div>
   );
 };
+

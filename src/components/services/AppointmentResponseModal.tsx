@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   X,
   CheckCircle2,
@@ -152,7 +152,7 @@ export const AppointmentResponseModal: React.FC<AppointmentResponseModalProps> =
           <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl space-y-1.5 text-xs">
             <div className="flex justify-between font-bold text-blue-950">
               <span>{order.serviceDetails?.serviceTitle || 'Serviço Solicitado'}</span>
-              <span className="font-mono text-blue-700">{order.code}</span>
+              <span className="font-sans text-blue-700">{order.code}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-700">
               <span>Profissional: <strong>{order.serviceDetails?.professional}</strong></span>
@@ -343,3 +343,4 @@ export const AppointmentResponseModal: React.FC<AppointmentResponseModalProps> =
     </div>
   );
 };
+

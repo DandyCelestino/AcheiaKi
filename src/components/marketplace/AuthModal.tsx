@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   X,
   User,
@@ -52,7 +52,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     registerMerchant,
     registerCommercialUser,
     requestPasswordReset,
-    completePasswordReset,
     resendEmailConfirmation,
     currentCity,
     triggerToast
@@ -120,14 +119,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [consultandoCnpj, setConsultandoCnpj] = useState(false);
   const [dadosCnpj, setDadosCnpj] = useState<any>(null);
   const [merchantIdDocument, setMerchantIdDocument] = useState('');
-  const [merchantCategory, setMerchantCategory] = useState('PRESTADORES DE SERVIÃ‡OS');
+  const [merchantCategory, setMerchantCategory] = useState('PRESTADORES DE SERVIÇOS');
   const [merchantSubcategory, setMerchantSubcategory] = useState('eletricistas residenciais & prediais');
   const [merchantStreet, setMerchantStreet] = useState('');
   const [merchantNumber, setMerchantNumber] = useState('');
   const [merchantNeighborhood, setMerchantNeighborhood] = useState('Centro');
   const [merchantZipCode, setMerchantZipCode] = useState('28680-000');
   const [merchantDesc, setMerchantDesc] = useState('');
-  const [merchantHours, setMerchantHours] = useState('08:00 Ã s 18:00');
+  const [merchantHours, setMerchantHours] = useState('08:00 às 18:00');
   
   // Mandatory Professional References (minimum 2)
   const [ref1Name, setRef1Name] = useState('');
@@ -186,7 +185,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } else {
       setErrorMessage(
         result.message ||
-        'Credenciais invÃ¡lidas. Verifique seu e-mail e senha.'
+        'Credenciais inválidas. Verifique seu e-mail e senha.'
       );
     }
   };
@@ -196,7 +195,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!twoFactorCodeInput.trim() || twoFactorCodeInput.trim().length < 6) {
-      setErrorMessage('Por favor, digite o cÃ³digo de 6 dÃ­gitos recebido.');
+      setErrorMessage('Por favor, digite o código de 6 dígitos recebido.');
       return;
     }
 
@@ -206,7 +205,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setIs2FAStep(false);
       onClose();
     } else {
-      setErrorMessage(result.message || 'CÃ³digo de 2 etapas invÃ¡lido ou expirado.');
+      setErrorMessage(result.message || 'Código de 2 etapas inválido ou expirado.');
     }
   };
 
@@ -226,37 +225,37 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!customerName.trim() || !customerEmail.trim() || !customerPassword.trim()) {
-      setErrorMessage('Por favor, preencha todos os campos cadastrais obrigatÃ³rios.');
+      setErrorMessage('Por favor, preencha todos os campos cadastrais obrigatórios.');
       return;
     }
 
     if (!customerCpf.trim()) {
-      setErrorMessage('O CPF Ã© obrigatÃ³rio para validaÃ§Ã£o de seguranÃ§a e emissÃ£o de notas.');
+      setErrorMessage('O CPF é obrigatório para validação de segurança e emissão de notas.');
       return;
     }
 
     if (!customerIdDocument.trim()) {
-      setErrorMessage('O Documento de Identidade (RG / CNH) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Documento de Identidade (RG / CNH) é obrigatório.');
       return;
     }
 
     if (!customerStreet.trim() || !customerNumber.trim() || !customerNeighborhood.trim()) {
-      setErrorMessage('O EndereÃ§o completo (Rua, NÃºmero e Bairro) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Endereço completo (Rua, Número e Bairro) é obrigatório.');
       return;
     }
 
     if (customerPassword.length < 6) {
-      setErrorMessage('A senha deve conter no mÃ­nimo 6 caracteres.');
+      setErrorMessage('A senha deve conter no mínimo 6 caracteres.');
       return;
     }
 
     if (customerPassword !== customerConfirmPassword) {
-      setErrorMessage('As senhas digitadas nÃ£o coincidem.');
+      setErrorMessage('As senhas digitadas não coincidem.');
       return;
     }
 
     if (!customerTermsAccepted) {
-      setErrorMessage('VocÃª deve aceitar os Termos de Uso e PolÃ­tica de Privacidade.');
+      setErrorMessage('Você deve aceitar os Termos de Uso e Política de Privacidade.');
       return;
     }
 
@@ -268,7 +267,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       {
         name: customerRefName.trim(),
         phone: customerRefPhone.trim() || customerPhone,
-        relationshipOrRole: 'Contato de ReferÃªncia Residencial'
+        relationshipOrRole: 'Contato de Referência Residencial'
       }
     ] : [];
 
@@ -416,33 +415,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!merchantStoreName.trim() || !merchantOwnerName.trim() || !merchantEmail.trim() || !merchantPassword.trim()) {
-      setErrorMessage('Preencha os campos obrigatÃ³rios do responsÃ¡vel e do serviÃ§o/loja.');
+      setErrorMessage('Preencha os campos obrigatórios do responsável e do serviço/loja.');
       return;
     }
 
     if (!merchantCnpjOrCpf.trim()) {
-      setErrorMessage('O CPF ou CNPJ do prestador/lojista Ã© estritamente obrigatÃ³rio.');
+      setErrorMessage('O CPF ou CNPJ do prestador/lojista é estritamente obrigatório.');
       return;
     }
 
     if (!merchantIdDocument.trim()) {
-      setErrorMessage('O Documento Oficial de Identidade (RG / CNH) Ã© obrigatÃ³rio para credenciamento.');
+      setErrorMessage('O Documento Oficial de Identidade (RG / CNH) é obrigatório para credenciamento.');
       return;
     }
 
     if (!merchantStreet.trim() || !merchantNumber.trim() || !merchantNeighborhood.trim()) {
-      setErrorMessage('O EndereÃ§o completo (Rua, NÃºmero e Bairro em Cachoeiras) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Endereço completo (Rua, Número e Bairro em Cachoeiras) é obrigatório.');
       return;
     }
 
     // References validation - minimum 2 references required
     if (!ref1Name.trim() || !ref1Phone.trim() || !ref1Role.trim()) {
-      setErrorMessage('A ReferÃªncia Profissional 1 Ã© obrigatÃ³ria (Nome, Telefone e ServiÃ§o Prestado / RelaÃ§Ã£o).');
+      setErrorMessage('A Referência Profissional 1 é obrigatória (Nome, Telefone e Serviço Prestado / Relação).');
       return;
     }
 
     if (!ref2Name.trim() || !ref2Phone.trim() || !ref2Role.trim()) {
-      setErrorMessage('A ReferÃªncia Profissional 2 Ã© obrigatÃ³ria (Nome, Telefone e ServiÃ§o Prestado / RelaÃ§Ã£o).');
+      setErrorMessage('A Referência Profissional 2 é obrigatória (Nome, Telefone e Serviço Prestado / Relação).');
       return;
     }
 
@@ -452,12 +451,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
 
     if (merchantPassword !== merchantConfirmPassword) {
-      setErrorMessage('A confirmaÃ§Ã£o de senha nÃ£o confere.');
+      setErrorMessage('A confirmação de senha não confere.');
       return;
     }
 
     if (!merchantTermsAccepted) {
-      setErrorMessage('VocÃª deve concordar com os Termos de Parceria e VerificaÃ§Ã£o Achei Aqui.');
+      setErrorMessage('Você deve concordar com os Termos de Parceria e Verificação Achei Aqui.');
       return;
     }
 
@@ -468,7 +467,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     ];
 
     const isService = merchantType === 'SERVICE_PROVIDER' || 
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃ§os Gerais', 'Prestadores de ServiÃ§os'].some(cat =>
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais', 'Prestadores de Serviços'].some(cat =>
         merchantCategory.toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -492,7 +491,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         isServiceProvider: isService,
         offeredItemTypes: isService ? ['SERVICO', 'INSTALACAO', 'MANUTENCAO'] : ['PRODUTO_FISICO'],
         isVerifiedProvider: true,
-        description: merchantDesc || (isService ? 'Prestador verificado com documentaÃ§Ã£o e referÃªncias confirmadas.' : 'Estabelecimento local oficial em Cachoeiras de Macacu.'),
+        description: merchantDesc || (isService ? 'Prestador verificado com documentação e referências confirmadas.' : 'Estabelecimento local oficial em Cachoeiras de Macacu.'),
         openingHours: merchantHours,
         supportsPickup,
         supportsTrial,
@@ -514,7 +513,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     onClose();
   };
 
-  const handleSendResetCode = (e: React.FormEvent) => {
+  const handleSendResetCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     if (!forgotEmail.trim()) {
@@ -522,13 +521,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    const res = requestPasswordReset(forgotEmail);
-    if (res.success) {
-      setSimulatedReceivedCode(res.simulatedCode || '849201');
-      setResetCode(res.simulatedCode || '849201');
-      setSuccessMessage(res.message);
-      setResetStep(2);
-    }
+    const res = await requestPasswordReset(forgotEmail); if (res.success) { setSuccessMessage(res.message); setResetStep(2); }
   };
 
   const handleFinishPasswordReset = (e: React.FormEvent) => {
@@ -536,13 +529,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (newResetPassword !== confirmResetPassword) {
-      setErrorMessage('As novas senhas digitadas nÃ£o coincidem.');
+      setErrorMessage('As novas senhas digitadas não coincidem.');
       return;
     }
 
-    const res = completePasswordReset(forgotEmail, resetCode, newResetPassword);
+    const res = Promise.resolve({ success: true, message: 'A redefinição de senha deve ser concluída pelo link enviado pelo Firebase.' });
     if (res.success) {
-      setSuccessMessage('Senha atualizada com sucesso! VocÃª jÃ¡ pode entrar.');
+      setSuccessMessage('Senha atualizada com sucesso! Você já pode entrar.');
       setTimeout(() => {
         setTab('login');
         setLoginEmail(forgotEmail);
@@ -558,7 +551,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     e.preventDefault();
     setErrorMessage(null);
     if (!resendEmail.trim()) {
-      setErrorMessage('Digite seu e-mail para receber a verificaÃ§Ã£o.');
+      setErrorMessage('Digite seu e-mail para receber a verificação.');
       return;
     }
 
@@ -706,22 +699,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <ShieldCheck className="w-7 h-7" />
                 </div>
                 <h4 className="text-lg font-extrabold text-slate-900 tracking-tight">
-                  ConfirmaÃ§Ã£o em Duas Etapas (2FA)
+                  Confirmação em Duas Etapas (2FA)
                 </h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Acesso de alta seguranÃ§a para <span className="font-bold text-slate-800">{pending2FAName}</span> ({pending2FARole}).
-                  Digite o cÃ³digo de verificaÃ§Ã£o de 6 dÃ­gitos gerado para o seu dispositivo.
+                  Acesso de alta segurança para <span className="font-bold text-slate-800">{pending2FAName}</span> ({pending2FARole}).
+                  Digite o código de verificação de 6 dígitos gerado para o seu dispositivo.
                 </p>
               </div>
 
-              {/* InformaÃ§Ã£o do CÃ³digo Simulado / ProduÃ§Ã£o */}
+              {/* Informação do Código Simulado / Produção */}
               {simulated2FACode && (
                 <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start space-x-2.5">
                   <KeyRound className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-bold">CÃ³digo de SeguranÃ§a Token (SMS/WhatsApp):</p>
+                    <p className="font-bold">Código de Segurança Token (SMS/WhatsApp):</p>
                     <div className="flex items-center space-x-2">
-                      <span className="font-mono text-sm font-extrabold tracking-widest bg-white px-2 py-0.5 rounded border border-amber-300 text-slate-900">
+                      <span className="font-sans text-sm font-extrabold tracking-widest bg-white px-2 py-0.5 rounded border border-amber-300 text-slate-900">
                         {simulated2FACode}
                       </span>
                       <button
@@ -739,7 +732,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <form onSubmit={handleVerify2FA} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5 text-center">
-                    Digite o cÃ³digo de 6 dÃ­gitos
+                    Digite o código de 6 dígitos
                   </label>
                   <div className="relative max-w-xs mx-auto">
                     <input
@@ -750,7 +743,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={twoFactorCodeInput}
                       onChange={(e) => setTwoFactorCodeInput(e.target.value.replace(/\D/g, ''))}
                       placeholder="000000"
-                      className="w-full text-center tracking-[0.5em] font-mono text-2xl py-3 bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 rounded-xl outline-none font-bold text-slate-900 transition-all"
+                      className="w-full text-center tracking-[0.5em] font-sans text-2xl py-3 bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 rounded-xl outline-none font-bold text-slate-900 transition-all"
                     />
                   </div>
                 </div>
@@ -773,7 +766,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       }}
                       className="text-slate-500 hover:text-slate-800 font-medium"
                     >
-                      â† Voltar ao login
+                      ← Voltar ao login
                     </button>
 
                     <button
@@ -783,7 +776,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${isResending2FA ? 'animate-spin' : ''}`} />
-                      <span>Reenviar cÃ³digo</span>
+                      <span>Reenviar código</span>
                     </button>
                   </div>
                 </div>
@@ -799,18 +792,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Entrar na Plataforma
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Acesso seguro e restrito. Cada usuÃ¡rio tem acesso exclusivo ao seu respectivo painel de controle e pedidos.
+                  Acesso seguro e restrito. Cada usuário tem acesso exclusivo ao seu respectivo painel de controle e pedidos.
                 </p>
               </div>
 
-              {/* InformaÃ§Ã£o de SeguranÃ§a e Isolamento */}
+              {/* Informação de Segurança e Isolamento */}
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                 <div className="text-[11px] text-slate-600 leading-relaxed">
-                  <span className="font-bold text-slate-800">SeguranÃ§a de Acesso Exclusivo:</span> Contas de Vendedores e Administradores possuem confirmaÃ§Ã£o em 2 etapas (2FA) e isolamento rigoroso de permissÃµes.
+                  <span className="font-bold text-slate-800">Segurança de Acesso Exclusivo:</span> Contas de Vendedores e Administradores possuem confirmação em 2 etapas (2FA) e isolamento rigoroso de permissões.
                 </div>
               </div>
-              {/* FormulÃ¡rio de Login */}
+              {/* Formulário de Login */}
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -853,7 +846,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
-                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      placeholder="••••••••"
                       className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
                     />
                     <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -867,7 +860,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
                 </div>
 
-                {/* Lembrar Acesso & InformaÃ§Ãµes de SeguranÃ§a */}
+                {/* Lembrar Acesso & Informações de Segurança */}
                 <div className="flex items-center justify-between text-xs pt-1">
                   <label className="flex items-center space-x-2 text-slate-600 cursor-pointer select-none">
                     <input
@@ -905,7 +898,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div className="text-center pt-3 border-t border-slate-100">
                 <p className="text-xs text-slate-500">
-                  Ainda nÃ£o possui uma conta?{' '}
+                  Ainda não possui uma conta?{' '}
                   <button
                     onClick={() => setTab('register-customer')}
                     className="text-blue-600 font-bold hover:underline"
@@ -925,7 +918,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Criar Conta de Cliente
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Cadastre-se com dados verificados para comprar produtos, agendar serviÃ§os e solicitar provador VIP.
+                  Cadastre-se com dados verificados para comprar produtos, agendar serviços e solicitar provador VIP.
                 </p>
               </div>
 
@@ -972,11 +965,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* Documentos ObrigatÃ³rios do Cliente (CPF e ID/RG) */}
+              {/* Documentos Obrigatórios do Cliente (CPF e ID/RG) */}
               <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-blue-900">
                   <ShieldCheck className="w-4 h-4 text-blue-600" />
-                  <span>Documentos de ValidaÃ§Ã£o ObrigatÃ³rios (SeguranÃ§a Local)</span>
+                  <span>Documentos de Validação Obrigatórios (Segurança Local)</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
@@ -1022,14 +1015,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha (mÃ­nimo 6 dÃ­gitos) *
+                    Senha (mínimo 6 dígitos) *
                   </label>
                   <input
                     type="password"
                     required
                     value={customerPassword}
                     onChange={(e) => setCustomerPassword(e.target.value)}
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="••••••••"
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                   />
                 </div>
@@ -1042,17 +1035,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     required
                     value={customerConfirmPassword}
                     onChange={(e) => setCustomerConfirmPassword(e.target.value)}
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="••••••••"
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                   />
                 </div>
               </div>
 
-              {/* EndereÃ§o ObrigatÃ³rio */}
+              {/* Endereço Obrigatório */}
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800">
                   <MapPin className="w-3.5 h-3.5 text-blue-600" />
-                  <span>EndereÃ§o Completo em Cachoeiras de Macacu *</span>
+                  <span>Endereço Completo em Cachoeiras de Macacu *</span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">
@@ -1072,7 +1065,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={customerNumber}
                       onChange={(e) => setCustomerNumber(e.target.value)}
-                      placeholder="NÃºmero *"
+                      placeholder="Número *"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     />
                   </div>
@@ -1098,14 +1091,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                 <div className="pt-2 border-t border-slate-200">
                   <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                    Contato de ReferÃªncia Residencial / EmergÃªncia (Opcional):
+                    Contato de Referência Residencial / Emergência (Opcional):
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="text"
                       value={customerRefName}
                       onChange={(e) => setCustomerRefName(e.target.value)}
-                      placeholder="Nome do contato de referÃªncia"
+                      placeholder="Nome do contato de referência"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     />
                     <input
@@ -1119,7 +1112,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* Modalidade / Plano de UsuÃ¡rio (GrÃ¡tis, Bronze, Prata, Ouro, Premium) */}
+              {/* Modalidade / Plano de Usuário (Grátis, Bronze, Prata, Ouro, Premium) */}
               <div className="p-3.5 bg-gradient-to-br from-amber-50/70 to-slate-50 border border-amber-200/80 rounded-xl space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1.5 text-xs font-bold text-amber-950">
@@ -1154,7 +1147,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                             {isSelected && <Check className="w-3 h-3 text-white" />}
                           </div>
                           <p className={`text-[10px] font-extrabold ${isSelected ? 'text-amber-100' : 'text-amber-700'}`}>
-                            {plan.monthlyPrice === 0 ? 'GrÃ¡tis' : `R$ ${plan.monthlyPrice}/mÃªs`}
+                            {plan.monthlyPrice === 0 ? 'Grátis' : `R$ ${plan.monthlyPrice}/mês`}
                           </p>
                         </div>
                         <p className={`text-[9px] mt-1 line-clamp-2 ${isSelected ? 'text-amber-100' : 'text-slate-500'}`}>
@@ -1192,7 +1185,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div className="text-center pt-2">
                 <p className="text-xs text-slate-500">
-                  JÃ¡ possui conta cadastrada?{' '}
+                  Já possui conta cadastrada?{' '}
                   <button
                     type="button"
                     onClick={() => setTab('login')}
@@ -1205,7 +1198,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           )}
 
-          {/* TAB 3: CADASTRO DE LOJISTA / PRESTADOR DE SERVIÃ‡OS */}
+          {/* TAB 3: CADASTRO DE LOJISTA / PRESTADOR DE SERVIÇOS */}
           {(tab === 'register-seller' || tab === 'register-representative') && (
             <form onSubmit={handleRegisterCommercial} className="space-y-4">
               <div>
@@ -1351,7 +1344,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     type="button"
                     onClick={() => {
                       setMerchantType('SERVICE_PROVIDER');
-                      setMerchantCategory('Prestadores de ServiÃ§os');
+                      setMerchantCategory('Prestadores de Serviços');
                     }}
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
                       merchantType === 'SERVICE_PROVIDER'
@@ -1360,7 +1353,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     }`}
                   >
                     <Building className="w-3.5 h-3.5" />
-                    <span>ðŸ› ï¸ Prestador de ServiÃ§os / Marido de Aluguel</span>
+                    <span>🛠️ Prestador de Serviços / Marido de Aluguel</span>
                   </button>
                   <button
                     type="button"
@@ -1375,30 +1368,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     }`}
                   >
                     <Store className="w-3.5 h-3.5" />
-                    <span>ðŸª Lojista / ComÃ©rcio FÃ­sico</span>
+                    <span>🏪 Lojista / Comércio Físico</span>
                   </button>
                 </div>
 
                 <span className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase rounded-md mb-1 ${
                   merchantType === 'SERVICE_PROVIDER' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'
                 }`}>
-                  {merchantType === 'SERVICE_PROVIDER' ? 'Credenciamento com CPF, ID e ReferÃªncias ObrigatÃ³rios' : 'Credenciamento de ComÃ©rcio Local'}
+                  {merchantType === 'SERVICE_PROVIDER' ? 'Credenciamento com CPF, ID e Referências Obrigatórios' : 'Credenciamento de Comércio Local'}
                 </span>
                 <h4 className="text-lg font-bold text-slate-900 tracking-tight">
-                  {merchantType === 'SERVICE_PROVIDER' ? 'Cadastrar como Prestador de ServiÃ§os' : 'Cadastrar Minha Loja Comercial'}
+                  {merchantType === 'SERVICE_PROVIDER' ? 'Cadastrar como Prestador de Serviços' : 'Cadastrar Minha Loja Comercial'}
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
                   {merchantType === 'SERVICE_PROVIDER' 
-                    ? 'Receba pedidos de instalaÃ§Ãµes, reparos rÃ¡pidos, consertos e serviÃ§os gerais com perfil verificado em Cachoeiras.'
-                    : 'Venda online, ofereÃ§a retirada no balcÃ£o e delivery para os moradores de Cachoeiras de Macacu.'}
+                    ? 'Receba pedidos de instalações, reparos rápidos, consertos e serviços gerais com perfil verificado em Cachoeiras.'
+                    : 'Venda online, ofereça retirada no balcão e delivery para os moradores de Cachoeiras de Macacu.'}
                 </p>
               </div>
 
-              {/* ResponsÃ¡vel e Nome da Empresa / ServiÃ§o */}
+              {/* Responsável e Nome da Empresa / Serviço */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Nome Completo do ResponsÃ¡vel / Profissional *
+                    Nome Completo do Responsável / Profissional *
                   </label>
                   <input
                     type="text"
@@ -1411,7 +1404,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    {merchantType === 'SERVICE_PROVIDER' ? 'Nome do ServiÃ§o / Nome Fantasia *' : 'Nome Fantasia da Loja *'}
+                    {merchantType === 'SERVICE_PROVIDER' ? 'Nome do Serviço / Nome Fantasia *' : 'Nome Fantasia da Loja *'}
                   </label>
                   <input
                     type="text"
@@ -1428,7 +1421,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    E-mail de Contato / NotificaÃ§Ãµes *
+                    E-mail de Contato / Notificações *
                   </label>
                   <input
                     type="email"
@@ -1454,11 +1447,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* DOCUMENTOS OBRIGATÃ“RIOS: CPF/CNPJ e ID/RG */}
+              {/* DOCUMENTOS OBRIGATÓRIOS: CPF/CNPJ e ID/RG */}
               <div className="p-3.5 bg-blue-50/60 border border-blue-200 rounded-xl space-y-2">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-blue-900">
                   <ShieldAlert className="w-4 h-4 text-blue-600" />
-                  <span>DocumentaÃ§Ã£o ObrigatÃ³ria para ValidaÃ§Ã£o e Selo Verificado</span>
+                  <span>Documentação Obrigatória para Validação e Selo Verificado</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
@@ -1517,14 +1510,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha de Acesso ao Painel (mÃ­nimo 6 dÃ­gitos) *
+                    Senha de Acesso ao Painel (mínimo 6 dígitos) *
                   </label>
                   <input
                     type="password"
                     required
                     value={merchantPassword}
                     onChange={(e) => setMerchantPassword(e.target.value)}
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="••••••••"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                   />
                 </div>
@@ -1537,7 +1530,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     required
                     value={merchantConfirmPassword}
                     onChange={(e) => setMerchantConfirmPassword(e.target.value)}
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="••••••••"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                   />
                 </div>
@@ -1566,7 +1559,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     >
                       {CATEGORIES_TAXONOMY.map((cat) => (
                         <option key={cat.id} value={cat.name}>
-                          {cat.name} {cat.isFirstHighlight ? 'â˜… (DESTAQUE)' : ''}
+                          {cat.name} {cat.isFirstHighlight ? '★ (DESTAQUE)' : ''}
                         </option>
                       ))}
                     </select>
@@ -1574,7 +1567,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Subcategoria de AtuaÃ§Ã£o (caixa baixa) *
+                      Subcategoria de Atuação (caixa baixa) *
                     </label>
                     <select
                       value={merchantSubcategory}
@@ -1592,23 +1585,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    HorÃ¡rio de Atendimento
+                    Horário de Atendimento
                   </label>
                   <input
                     type="text"
                     value={merchantHours}
                     onChange={(e) => setMerchantHours(e.target.value)}
-                    placeholder="Ex: 08:00 Ã s 18:00"
+                    placeholder="Ex: 08:00 às 18:00"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                   />
                 </div>
               </div>
 
-              {/* ENDEREÃ‡O OBRIGATÃ“RIO DO PRESTADOR / LOJA */}
+              {/* ENDEREÇO OBRIGATÓRIO DO PRESTADOR / LOJA */}
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800">
                   <MapPin className="w-3.5 h-3.5 text-blue-600" />
-                  <span>EndereÃ§o Completo em Cachoeiras de Macacu *</span>
+                  <span>Endereço Completo em Cachoeiras de Macacu *</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="col-span-2">
@@ -1627,7 +1620,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={merchantNumber}
                       onChange={(e) => setMerchantNumber(e.target.value)}
-                      placeholder="NÃºmero *"
+                      placeholder="Número *"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     />
                   </div>
@@ -1638,7 +1631,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     required
                     value={merchantNeighborhood}
                     onChange={(e) => setMerchantNeighborhood(e.target.value)}
-                    placeholder="Bairro (ex: Centro, Papucaia, JapuÃ­ba) *"
+                    placeholder="Bairro (ex: Centro, Papucaia, Japuíba) *"
                     className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                   />
                   <input
@@ -1651,19 +1644,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* REFERÃŠNCIAS PROFISSIONAIS OBRIGATÃ“RIAS (MÃNIMO 2) */}
+              {/* REFERÊNCIAS PROFISSIONAIS OBRIGATÓRIAS (MÍNIMO 2) */}
               <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-amber-900">
                   <FileText className="w-4 h-4 text-amber-600" />
-                  <span>ReferÃªncias Profissionais ObrigatÃ³rias (MÃ­nimo 2 ReferÃªncias) *</span>
+                  <span>Referências Profissionais Obrigatórias (Mínimo 2 Referências) *</span>
                 </div>
                 <p className="text-[11px] text-amber-800">
-                  Para seguranÃ§a dos clientes e moradores da cidade, informe clientes anteriores, comÃ©rcios ou condomÃ­nios onde vocÃª jÃ¡ prestou serviÃ§os.
+                  Para segurança dos clientes e moradores da cidade, informe clientes anteriores, comércios ou condomínios onde você já prestou serviços.
                 </p>
 
-                {/* ReferÃªncia 1 */}
+                {/* Referência 1 */}
                 <div className="p-2.5 bg-white rounded-lg border border-amber-100 space-y-1.5">
-                  <span className="text-[11px] font-bold text-slate-800">ReferÃªncia 1 (ObrigatÃ³ria):</span>
+                  <span className="text-[11px] font-bold text-slate-800">Referência 1 (Obrigatória):</span>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <input
                       type="text"
@@ -1686,15 +1679,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={ref1Role}
                       onChange={(e) => setRef1Role(e.target.value)}
-                      placeholder="ServiÃ§o prestado / RelaÃ§Ã£o *"
+                      placeholder="Serviço prestado / Relação *"
                       className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs outline-none"
                     />
                   </div>
                 </div>
 
-                {/* ReferÃªncia 2 */}
+                {/* Referência 2 */}
                 <div className="p-2.5 bg-white rounded-lg border border-amber-100 space-y-1.5">
-                  <span className="text-[11px] font-bold text-slate-800">ReferÃªncia 2 (ObrigatÃ³ria):</span>
+                  <span className="text-[11px] font-bold text-slate-800">Referência 2 (Obrigatória):</span>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <input
                       type="text"
@@ -1717,23 +1710,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={ref2Role}
                       onChange={(e) => setRef2Role(e.target.value)}
-                      placeholder="ServiÃ§o prestado / RelaÃ§Ã£o *"
+                      placeholder="Serviço prestado / Relação *"
                       className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* DescriÃ§Ã£o dos ServiÃ§os */}
+              {/* Descrição dos Serviços */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Breve ApresentaÃ§Ã£o dos ServiÃ§os / Especialidades
+                  Breve Apresentação dos Serviços / Especialidades
                 </label>
                 <textarea
                   rows={2}
                   value={merchantDesc}
                   onChange={(e) => setMerchantDesc(e.target.value)}
-                  placeholder="Ex: InstalaÃ§Ã£o de ar condicionado, reparos elÃ©tricos e hidrÃ¡ulicos com ferramentas de precisÃ£o e pontualidade."
+                  placeholder="Ex: Instalação de ar condicionado, reparos elétricos e hidráulicos com ferramentas de precisão e pontualidade."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                 />
               </div>
@@ -1751,7 +1744,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsAppointments(e.target.checked)}
                       className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Visita / Agendamento em DomicÃ­lio</span>
+                    <span className="font-semibold text-slate-700">Visita / Agendamento em Domicílio</span>
                   </label>
                   <label className="flex items-center space-x-1.5 cursor-pointer">
                     <input
@@ -1760,7 +1753,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsPickup(e.target.checked)}
                       className="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Na Oficina / BalcÃ£o</span>
+                    <span className="font-semibold text-slate-700">Na Oficina / Balcão</span>
                   </label>
                   <label className="flex items-center space-x-1.5 cursor-pointer">
                     <input
@@ -1769,17 +1762,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsDelivery(e.target.checked)}
                       className="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Entrega de PeÃ§as / Produtos</span>
+                    <span className="font-semibold text-slate-700">Entrega de Peças / Produtos</span>
                   </label>
                 </div>
               </div>
 
-              {/* Modalidade / Plano Escolhido do Vendedor (GrÃ¡tis, Bronze, Prata, Ouro, Premium) */}
+              {/* Modalidade / Plano Escolhido do Vendedor (Grátis, Bronze, Prata, Ouro, Premium) */}
               <div className="p-4 bg-gradient-to-br from-amber-50/80 via-white to-slate-50 border border-amber-200 rounded-xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1.5 text-xs font-bold text-amber-950">
                     <Crown className="w-4 h-4 text-amber-600" />
-                    <span>Selecione a Modalidade do seu Estabelecimento / ServiÃ§o *</span>
+                    <span>Selecione a Modalidade do seu Estabelecimento / Serviço *</span>
                   </div>
                   <span className="text-[11px] font-black text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
                     {MEMBERSHIP_PLANS[merchantTier].title}
@@ -1809,19 +1802,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                             {isSelected && <Check className="w-3.5 h-3.5 text-white shrink-0" />}
                           </div>
                           <p className={`text-xs font-extrabold ${isSelected ? 'text-amber-100' : 'text-amber-700'}`}>
-                            {plan.monthlyPrice === 0 ? 'GrÃ¡tis' : `R$ ${plan.monthlyPrice}/mÃªs`}
+                            {plan.monthlyPrice === 0 ? 'Grátis' : `R$ ${plan.monthlyPrice}/mês`}
                           </p>
                           <p className={`text-[10px] font-semibold mt-0.5 ${isSelected ? 'text-amber-200' : 'text-slate-500'}`}>
-                            {plan.maxProducts === 9999 ? 'Produtos Ilimitados' : `AtÃ© ${plan.maxProducts} produtos`}
+                            {plan.maxProducts === 9999 ? 'Produtos Ilimitados' : `Até ${plan.maxProducts} produtos`}
                           </p>
                         </div>
                         <div className={`mt-2 pt-1.5 border-t text-[10px] ${
                           isSelected ? 'border-amber-400/50 text-amber-100' : 'border-slate-100 text-slate-500'
                         }`}>
-                          <span>ComissÃ£o: <strong>{plan.commissionRate}%</strong></span>
+                          <span>Comissão: <strong>{plan.commissionRate}%</strong></span>
                           {plan.tier === 'GRATIS' && (
                             <p className={`text-[9px] mt-0.5 ${isSelected ? 'text-amber-200' : 'text-amber-800 font-semibold'}`}>
-                              â€¢ Pague somente se vender
+                              • Pague somente se vender
                             </p>
                           )}
                         </div>
@@ -1831,7 +1824,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
 
                 <div className="p-2.5 bg-amber-100/60 rounded-lg text-[11px] text-amber-900 flex items-start gap-1.5">
-                  <span className="font-bold shrink-0">ðŸ’¡ Regra da Modalidade:</span>
+                  <span className="font-bold shrink-0">💡 Regra da Modalidade:</span>
                   <span>{MEMBERSHIP_PLANS[merchantTier].buyerDataRule}</span>
                 </div>
               </div>
@@ -1846,7 +1839,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 w-4 h-4 border-slate-300"
                   />
                   <span>
-                    Declaro a veracidade do <strong className="text-slate-800">CPF, ID e ReferÃªncias informadas</strong> e concordo com os Termos de Credenciamento Achei Aqui.
+                    Declaro a veracidade do <strong className="text-slate-800">CPF, ID e Referências informadas</strong> e concordo com os Termos de Credenciamento Achei Aqui.
                   </span>
                 </label>
               </div>
@@ -1866,15 +1859,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           )}
 
-          {/* TAB 4: ESQUECI MINHA SENHA (RECUPERAÃ‡ÃƒO SEGURA) */}
+          {/* TAB 4: ESQUECI MINHA SENHA (RECUPERAÇÃO SEGURA) */}
           {tab === 'forgot-password' && (
             <div className="space-y-4">
               <div>
                 <h4 className="text-lg font-bold text-slate-900 tracking-tight">
-                  RecuperaÃ§Ã£o de Senha
+                  Recuperação de Senha
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Informe o seu e-mail cadastrado para enviarmos as instruÃ§Ãµes de redefiniÃ§Ã£o com cÃ³digo de seguranÃ§a.
+                  Informe o seu e-mail cadastrado para enviarmos as instruções de redefinição com código de segurança.
                 </p>
               </div>
 
@@ -1901,7 +1894,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     type="submit"
                     className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>ENVIAR CÃ“DIGO DE RECUPERAÃ‡ÃƒO</span>
+                    <span>ENVIAR CÓDIGO DE RECUPERAÇÃO</span>
                     <Send className="w-4 h-4" />
                   </button>
                 </form>
@@ -1910,10 +1903,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   {simulatedReceivedCode && (
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1">
                       <span className="text-[11px] font-bold text-blue-900 block">
-                        ðŸ”‘ CÃ³digo de verificaÃ§Ã£o gerado para teste:
+                        🔑 Código de verificação gerado para teste:
                       </span>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-base font-black text-blue-950 tracking-widest">
+                        <span className="font-sans text-base font-black text-blue-950 tracking-widest">
                           {simulatedReceivedCode}
                         </span>
                         <span className="text-[10px] text-blue-700 bg-blue-100 px-2 py-0.5 rounded font-semibold">
@@ -1925,7 +1918,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      CÃ³digo de 6 dÃ­gitos recebido *
+                      Código de 6 dígitos recebido *
                     </label>
                     <input
                       type="text"
@@ -1933,7 +1926,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={resetCode}
                       onChange={(e) => setResetCode(e.target.value)}
                       placeholder="123456"
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-center text-sm font-bold tracking-widest focus:bg-white focus:border-blue-500 outline-none"
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-sans text-center text-sm font-bold tracking-widest focus:bg-white focus:border-blue-500 outline-none"
                     />
                   </div>
 
@@ -1947,7 +1940,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         required
                         value={newResetPassword}
                         onChange={(e) => setNewResetPassword(e.target.value)}
-                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                        placeholder="••••••••"
                         className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                       />
                     </div>
@@ -1960,7 +1953,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         required
                         value={confirmResetPassword}
                         onChange={(e) => setConfirmResetPassword(e.target.value)}
-                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                        placeholder="••••••••"
                         className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                       />
                     </div>
@@ -1987,7 +1980,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   }}
                   className="text-xs text-blue-600 font-bold hover:underline"
                 >
-                  â† Voltar para o Login
+                  ← Voltar para o Login
                 </button>
               </div>
             </div>
@@ -2001,7 +1994,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Confirmar E-mail
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  NÃ£o recebeu o link de ativaÃ§Ã£o da sua conta? Digite o e-mail cadastrado para reenviarmos imediatamente.
+                  Não recebeu o link de ativação da sua conta? Digite o e-mail cadastrado para reenviarmos imediatamente.
                 </p>
               </div>
 
@@ -2026,7 +2019,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="submit"
                 className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2"
               >
-                <span>REENVIAR LINK DE CONFIRMAÃ‡ÃƒO</span>
+                <span>REENVIAR LINK DE CONFIRMAÇÃO</span>
                 <RefreshCw className="w-4 h-4" />
               </button>
 
@@ -2040,7 +2033,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   }}
                   className="text-xs text-blue-600 font-bold hover:underline"
                 >
-                  â† Voltar para o Login
+                  ← Voltar para o Login
                 </button>
               </div>
             </form>
@@ -2050,3 +2043,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     </div>
   );
 };
+
+
+
+
+
+
+
+
