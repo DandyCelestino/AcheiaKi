@@ -1,0 +1,6 @@
+{
+  "name": "Achei Aqui - Painel Administrativo",
+  "description": "Marketplace local completo com plataforma pública de vendas, painel do vendedor/lojista e painel master integrado.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

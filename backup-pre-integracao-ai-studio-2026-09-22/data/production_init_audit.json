@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-09-14T18:16:14.043Z",
+  "status": "SUCCESS",
+  "clearedOrdersCount": 0,
+  "clearedWebhookLogsCount": 0,
+  "envFileCreated": true,
+  "productionVariablesSet": {
+    "NODE_ENV": "production",
+    "PORT": "3000",
+    "ASAAS_URL": "https://api.asaas.com/v3",
+    "ASAAS_COMMISSION_PERCENT": "10.0",
+    "VITE_PIX_KEY": "financeiro@acheiaquicachoeiras.com.br",
+    "VITE_PIX_CNPJ": "30.810.800/0001-39",
+    "VITE_PIX_GATEWAY_PROVIDER": "ASAAS"
+  },
+  "checks": [
+    {
+      "check": "BANCO_DE_PEDIDOS",
+      "status": "PASS",
+      "message": "Banco de dados de pedidos zerado com sucesso ([]). Pronto para novos pedidos reais."
+    },
+    {
+      "check": "LOGS_DE_WEBHOOK",
+      "status": "PASS",
+      "message": "Fila de webhooks zerada ([]). Pronta para escutar notificações de pagamento oficiais do Asaas."
+    },
+    {
+      "check": "ASAAS_API_KEY",
+      "status": "WARN",
+      "message": "Chave de produção do Asaas pendente de inserção nas configurações seguras (.env / Secrets)."
+    },
+    {
+      "check": "CADASTROS_E_PLANOS",
+      "status": "PASS",
+      "message": "Regras comerciais ativas: Usuário Comprador R$ 0,00; Prestador R$ 29,90 (+R$ 9,90/extra); Lojistas com split 10%."
+    },
+    {
+      "check": "SEGURANCA_MASTER",
+      "status": "PASS",
+      "message": "Acesso ao Painel Master e determinação de comissões restrito com exclusividade ao Administrador Master."
+    }
+  ]
+}

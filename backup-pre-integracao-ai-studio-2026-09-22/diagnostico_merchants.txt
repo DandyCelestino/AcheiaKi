@@ -1,0 +1,332 @@
+﻿
+  src\context\AppContext.tsx:110:  users: User[];
+  src\context\AppContext.tsx:111:  systemSettings: SystemSettings;
+  src\context\AppContext.tsx:112:  currentEnvironment: AppEnvironment;
+  src\context\AppContext.tsx:113:  currentCity: string;
+> src\context\AppContext.tsx:114:  merchants: StoreMerchant[];
+  src\context\AppContext.tsx:115:  products: Product[];
+  src\context\AppContext.tsx:116:  services: ServiceItem[];
+  src\context\AppContext.tsx:117:  orders: Order[];
+  src\context\AppContext.tsx:118:  cart: CartItem[];
+  src\context\AppContext.tsx:119:  favorites: string[];
+  src\context\AppContext.tsx:120:  interCategoryBanners: InterCategoryBanner[];
+  src\context\AppContext.tsx:121:  adSpaces: AdSpace[];
+  src\context\AppContext.tsx:122:  frontendConfig: FrontendCustomization;
+  src\context\AppContext.tsx:123:  
+  src\context\AppContext.tsx:124:  // Navigation & Environment
+  src\context\AppContext.tsx:125:  setCurrentEnvironment: (env: AppEnvironment) => void;
+  src\context\AppContext.tsx:126:  setCurrentCity: (city: string) => void;
+  src\context\AppContext.tsx:311:  userManualModalTab: 'CLIENTES' | 'LOGISTAS' | 'LEGAL';
+  src\context\AppContext.tsx:312:  openUserManualModal: (tab?: 'CLIENTES' | 'LOGISTAS' | 'LEGAL') => void;
+  src\context\AppContext.tsx:313:  closeUserManualModal: () => void;
+  src\context\AppContext.tsx:314:  addCustomerReview: (reviewData: Omit<CustomerToMerchantReview, 'id' | 'createdAt'>) => 
+CustomerToMerchantReview;
+> src\context\AppContext.tsx:315:  addMerchantReview: (reviewData: Omit<MerchantToCustomerReview, 'id' | 'createdAt'>) => 
+MerchantToCustomerReview;
+  src\context\AppContext.tsx:316:  replyToCustomerReview: (reviewId: string, replyText: string, merchantAuthorName?: string) => void;
+  src\context\AppContext.tsx:317:  getCustomerReputationSummary: (userId: string) => CustomerReputationSummary;
+  src\context\AppContext.tsx:318:  isOrderReviewedByCustomer: (orderId: string) => boolean;
+  src\context\AppContext.tsx:319:  isOrderReviewedByMerchant: (orderId: string) => boolean;
+  src\context\AppContext.tsx:320:  // In-App Notifications
+  src\context\AppContext.tsx:321:  notifications: InAppNotification[];
+  src\context\AppContext.tsx:322:  sendInAppNotification: (data: Omit<InAppNotification, 'id' | 'createdAt' | 'readBy'>) => 
+InAppNotification;
+  src\context\AppContext.tsx:323:  markNotificationAsRead: (id: string, userId?: string) => void;
+  src\context\AppContext.tsx:324:  markAllNotificationsAsRead: (userId?: string) => void;
+  src\context\AppContext.tsx:325:  deleteInAppNotification: (id: string) => void;
+  src\context\AppContext.tsx:326:  getUserNotifications: (user?: User | null) => InAppNotification[];
+  src\context\AppContext.tsx:327:  getUnreadNotificationsCount: (user?: User | null) => number;
+  src\context\AppContext.tsx:445:  USER: 'acheiaqui_user',
+  src\context\AppContext.tsx:446:  USERS: 'acheiaqui_users_list',
+  src\context\AppContext.tsx:447:  SETTINGS: 'acheiaqui_system_settings',
+  src\context\AppContext.tsx:448:  ENV: 'acheiaqui_env',
+> src\context\AppContext.tsx:449:  MERCHANTS: 'acheiaqui_merchants',
+  src\context\AppContext.tsx:450:  PRODUCTS: 'acheiaqui_products',
+  src\context\AppContext.tsx:451:  SERVICES: 'acheiaqui_services',
+  src\context\AppContext.tsx:452:  ORDERS: 'acheiaqui_orders',
+  src\context\AppContext.tsx:453:  CART: 'acheiaqui_cart',
+  src\context\AppContext.tsx:454:  FAVORITES: 'acheiaqui_favorites',
+  src\context\AppContext.tsx:455:  CITY: 'acheiaqui_city',
+  src\context\AppContext.tsx:456:  AUDIT: 'acheiaqui_audit_logs',
+  src\context\AppContext.tsx:457:  INTER_BANNERS: 'acheiaqui_inter_banners',
+  src\context\AppContext.tsx:458:  AD_SPACES: 'acheiaqui_ad_spaces',
+  src\context\AppContext.tsx:459:  FRONTEND_CONFIG: 'acheiaqui_frontend_config',
+  src\context\AppContext.tsx:460:  REVIEWS: 'acheiaqui_customer_reviews',
+  src\context\AppContext.tsx:461:  MERCHANT_REVIEWS: 'acheiaqui_merchant_reviews',
+  src\context\AppContext.tsx:546:  const [currentCity, setCurrentCity] = useState<string>(() => {
+  src\context\AppContext.tsx:547:    return localStorage.getItem(STORAGE_KEYS.CITY) || 'Cachoeiras de Macacu, RJ';
+  src\context\AppContext.tsx:548:  });
+  src\context\AppContext.tsx:549:
+> src\context\AppContext.tsx:550:  const [merchants, setMerchants] = useState<StoreMerchant[]>(() => {
+  src\context\AppContext.tsx:551:    const saved = localStorage.getItem(STORAGE_KEYS.MERCHANTS);
+  src\context\AppContext.tsx:552:    if (saved) {
+  src\context\AppContext.tsx:553:      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+  src\context\AppContext.tsx:554:    }
+  src\context\AppContext.tsx:555:    return INITIAL_MERCHANTS;
+  src\context\AppContext.tsx:556:  });
+  src\context\AppContext.tsx:557:
+  src\context\AppContext.tsx:558:  const [products, setProducts] = useState<Product[]>(() => {
+  src\context\AppContext.tsx:559:    const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+  src\context\AppContext.tsx:560:    if (saved) {
+  src\context\AppContext.tsx:561:      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+  src\context\AppContext.tsx:562:    }
+  src\context\AppContext.tsx:2332:      status: 'approved', // Instant activation for excellent testing experience
+  src\context\AppContext.tsx:2333:      submittedAt: new Date().toISOString().split('T')[0]
+  src\context\AppContext.tsx:2334:    };
+  src\context\AppContext.tsx:2335:
+> src\context\AppContext.tsx:2336:    setMerchants((prev) => [newMerchant, ...prev]);
+  src\context\AppContext.tsx:2337:
+  src\context\AppContext.tsx:2338:    const newOwnerUser: User = {
+  src\context\AppContext.tsx:2339:      id: `user-seller-${Date.now()}`,
+  src\context\AppContext.tsx:2340:      name: ownerData.name || 'ProprietÃ¡rio',
+  src\context\AppContext.tsx:2341:      email: ownerData.email || newMerchant.email,
+  src\context\AppContext.tsx:2342:      phone: newMerchant.phone,
+  src\context\AppContext.tsx:2343:      cpf: newMerchant.cnpjOrCpf,
+  src\context\AppContext.tsx:2344:      idDocument: newMerchant.idDocument,
+  src\context\AppContext.tsx:2345:      references: newMerchant.references,
+  src\context\AppContext.tsx:2346:      firebaseUid: firebaseResult.firebaseUser.uid,
+  src\context\AppContext.tsx:2347:      role: isService ? 'PRESTADOR_SERVICO' : 'LOJISTA',
+  src\context\AppContext.tsx:2348:      membershipTier: selectedTier,
+  src\context\AppContext.tsx:2367:  const upgradeMerchantPlan = (merchantId: string, newTier: MembershipTier) => {
+  src\context\AppContext.tsx:2368:    const maxProducts = getMaxProductsForTier(newTier);
+  src\context\AppContext.tsx:2369:    const commission = getCommissionRateForTier(newTier);
+  src\context\AppContext.tsx:2370:
+> src\context\AppContext.tsx:2371:    setMerchants((prev) =>
+  src\context\AppContext.tsx:2372:      prev.map((m) => {
+  src\context\AppContext.tsx:2373:        if (m.id === merchantId) {
+  src\context\AppContext.tsx:2374:          return {
+  src\context\AppContext.tsx:2375:            ...m,
+  src\context\AppContext.tsx:2376:            membershipTier: newTier,
+  src\context\AppContext.tsx:2377:            maxProductsLimit: maxProducts,
+  src\context\AppContext.tsx:2378:            commissionRate: commission
+  src\context\AppContext.tsx:2379:          };
+  src\context\AppContext.tsx:2380:        }
+  src\context\AppContext.tsx:2381:        return m;
+  src\context\AppContext.tsx:2382:      })
+  src\context\AppContext.tsx:2383:    );
+  src\context\AppContext.tsx:2920:  };
+  src\context\AppContext.tsx:2921:
+  src\context\AppContext.tsx:2922:  // Merchants
+  src\context\AppContext.tsx:2923:  const approveMerchant = (id: string) => {
+> src\context\AppContext.tsx:2924:    setMerchants((prev) =>
+  src\context\AppContext.tsx:2925:      prev.map((m) => (m.id === id ? { ...m, status: 'approved' } : m))
+  src\context\AppContext.tsx:2926:    );
+  src\context\AppContext.tsx:2927:    addAuditLog('MERCHANT_APPROVE', `Aprovou a loja ID ${id}`);
+  src\context\AppContext.tsx:2928:    triggerToast('Lojista aprovado com sucesso!');
+  src\context\AppContext.tsx:2929:  };
+  src\context\AppContext.tsx:2930:
+  src\context\AppContext.tsx:2931:  const rejectMerchant = (id: string) => {
+> src\context\AppContext.tsx:2932:    setMerchants((prev) =>
+  src\context\AppContext.tsx:2933:      prev.map((m) => (m.id === id ? { ...m, status: 'rejected' } : m))
+  src\context\AppContext.tsx:2934:    );
+  src\context\AppContext.tsx:2935:    addAuditLog('MERCHANT_REJECT', `Rejeitou a loja ID ${id}`);
+  src\context\AppContext.tsx:2936:    triggerToast('Cadastro rejeitado.');
+  src\context\AppContext.tsx:2937:  };
+  src\context\AppContext.tsx:2938:
+  src\context\AppContext.tsx:2939:  const updateStoreProfile = (id: string, updates: Partial<StoreMerchant>) => {
+> src\context\AppContext.tsx:2940:    setMerchants((prev) =>
+  src\context\AppContext.tsx:2941:      prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
+  src\context\AppContext.tsx:2942:    );
+  src\context\AppContext.tsx:2943:    addAuditLog('STORE_UPDATE', `Atualizou configuraÃ§Ãµes da loja ID ${id}`);
+  src\context\AppContext.tsx:2944:    triggerToast('Dados da loja atualizados.');
+  src\context\AppContext.tsx:2945:  };
+  src\context\AppContext.tsx:2946:
+  src\context\AppContext.tsx:2947:  // Orders
+  src\context\AppContext.tsx:2948:  const createOrder = (orderData: Omit<Order, 'id' | 'code' | 'createdAt' | 'updatedAt'>): Order 
+=> {
+  src\context\AppContext.tsx:2949:    const randomNum = Math.floor(10000 + Math.random() * 90000); // Ex: 58291
+  src\context\AppContext.tsx:2950:    const orderNumberStr = `#${randomNum}`;
+  src\context\AppContext.tsx:2951:    
+  src\context\AppContext.tsx:2952:    // Generate secure 6-char negotiation code (ex: K7P4X9)
+  src\context\AppContext.tsx:3434:      reviewsCount: merchantData.reviewsCount || 0,
+  src\context\AppContext.tsx:3435:      status: 'approved',
+  src\context\AppContext.tsx:3436:      submittedAt: new Date().toISOString().split('T')[0]
+  src\context\AppContext.tsx:3437:    };
+> src\context\AppContext.tsx:3438:    setMerchants((prev) => [newMerchant, ...prev]);
+  src\context\AppContext.tsx:3439:    addAuditLog('MASTER_MERCHANT_CREATE', `Master cadastrou a loja/prestador 
+"${newMerchant.name}"`);
+  src\context\AppContext.tsx:3440:    triggerToast(`Estabelecimento "${newMerchant.name}" cadastrado e ativado!`);
+  src\context\AppContext.tsx:3441:    return newMerchant;
+  src\context\AppContext.tsx:3442:  };
+  src\context\AppContext.tsx:3443:
+  src\context\AppContext.tsx:3444:  const suspendMerchant = (id: string, reason?: string) => {
+> src\context\AppContext.tsx:3445:    setMerchants((prev) =>
+  src\context\AppContext.tsx:3446:      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 
+'Suspenso pela moderaÃ§Ã£o' } : m))
+  src\context\AppContext.tsx:3447:    );
+  src\context\AppContext.tsx:3448:    addAuditLog('MASTER_MERCHANT_SUSPEND', `Loja ID ${id} SUSPENSA pelo Master. Motivo: ${reason 
+|| 'Ajustes contratuais'}`);
+  src\context\AppContext.tsx:3449:    triggerToast('Loja suspensa com sucesso.');
+  src\context\AppContext.tsx:3450:  };
+  src\context\AppContext.tsx:3451:
+  src\context\AppContext.tsx:3452:  const reactivateMerchant = (id: string) => {
+> src\context\AppContext.tsx:3453:    setMerchants((prev) =>
+  src\context\AppContext.tsx:3454:      prev.map((m) => (m.id === id ? { ...m, status: 'approved', statusReason: undefined } : m))
+  src\context\AppContext.tsx:3455:    );
+  src\context\AppContext.tsx:3456:    addAuditLog('MASTER_MERCHANT_REACTIVATE', `Loja ID ${id} REATIVADA pelo Master`);
+  src\context\AppContext.tsx:3457:    triggerToast('Loja reativada no marketplace!');
+  src\context\AppContext.tsx:3458:  };
+  src\context\AppContext.tsx:3459:
+  src\context\AppContext.tsx:3460:  const deleteMerchant = (id: string) => {
+> src\context\AppContext.tsx:3461:    setMerchants((prev) => prev.filter((m) => m.id !== id));
+  src\context\AppContext.tsx:3462:    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÃDA do sistema pelo Master`);
+  src\context\AppContext.tsx:3463:    triggerToast('Loja excluÃ­da do catÃ¡logo.');
+  src\context\AppContext.tsx:3464:  };
+  src\context\AppContext.tsx:3465:
+  src\context\AppContext.tsx:3466:  const setMerchantCommissionRate = (id: string, rate: number) => {
+> src\context\AppContext.tsx:3467:    setMerchants((prev) =>
+  src\context\AppContext.tsx:3468:      prev.map((m) => (m.id === id ? { ...m, commissionRate: rate } : m))
+  src\context\AppContext.tsx:3469:    );
+  src\context\AppContext.tsx:3470:    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissÃ£o da loja ID ${id} ajustada para 
+${rate}%`);
+  src\context\AppContext.tsx:3471:    triggerToast(`ComissÃ£o ajustada para ${rate}%.`);
+  src\context\AppContext.tsx:3472:  };
+  src\context\AppContext.tsx:3473:
+  src\context\AppContext.tsx:3474:  // Products & Services Control Master
+  src\context\AppContext.tsx:3475:  const toggleProductStatus = (id: string, status: 'active' | 'paused' | 'draft' | 'archived') => {
+  src\context\AppContext.tsx:3476:    setProducts((prev) =>
+  src\context\AppContext.tsx:3477:      prev.map((p) => (p.id === id ? { ...p, status } : p))
+  src\context\AppContext.tsx:3478:    );
+  src\context\AppContext.tsx:3479:    addAuditLog('MASTER_PRODUCT_STATUS', `Status do produto ID ${id} alterado para "${status}"`);
+  src\context\AppContext.tsx:3627:      if (!data.users || !data.merchants || !data.products) {
+  src\context\AppContext.tsx:3628:        throw new Error('Arquivo de backup invÃ¡lido ou incompatÃ­vel.');
+  src\context\AppContext.tsx:3629:      }
+  src\context\AppContext.tsx:3630:      if (data.users) setUsers(data.users);
+> src\context\AppContext.tsx:3631:      if (data.merchants) setMerchants(data.merchants);
+  src\context\AppContext.tsx:3632:      if (data.products) setProducts(data.products);
+  src\context\AppContext.tsx:3633:      if (data.services) setServices(data.services);
+  src\context\AppContext.tsx:3634:      if (data.orders) setOrders(data.orders);
+  src\context\AppContext.tsx:3635:      if (data.auditLogs) setAuditLogs(data.auditLogs);
+  src\context\AppContext.tsx:3636:      if (data.systemSettings) setSystemSettings(data.systemSettings);
+  src\context\AppContext.tsx:3637:      if (data.city) setCurrentCity(data.city);
+  src\context\AppContext.tsx:3638:
+  src\context\AppContext.tsx:3639:      addAuditLog('SYSTEM_SNAPSHOT_RESTORE', 'Snapshot completo do banco de dados restaurado com 
+sucesso');
+  src\context\AppContext.tsx:3640:      triggerToast('Backup e banco de dados restaurados com 100% de integridade!');
+  src\context\AppContext.tsx:3641:      return true;
+  src\context\AppContext.tsx:3642:    } catch (err: unknown) {
+  src\context\AppContext.tsx:3643:      const msg = err instanceof Error ? err.message : 'Erro ao importar';
+  src\context\AppContext.tsx:3647:  };
+  src\context\AppContext.tsx:3648:
+  src\context\AppContext.tsx:3649:  const resetDatabaseToDefaults = () => {
+  src\context\AppContext.tsx:3650:    setUsers(INITIAL_USERS);
+> src\context\AppContext.tsx:3651:    setMerchants(INITIAL_MERCHANTS);
+  src\context\AppContext.tsx:3652:    setProducts(INITIAL_PRODUCTS);
+  src\context\AppContext.tsx:3653:    setServices(INITIAL_SERVICES);
+  src\context\AppContext.tsx:3654:    setOrders(INITIAL_ORDERS);
+  src\context\AppContext.tsx:3655:    setAuditLogs(INITIAL_AUDIT_LOGS);
+  src\context\AppContext.tsx:3656:    setSystemSettings(INITIAL_SYSTEM_SETTINGS);
+  src\context\AppContext.tsx:3657:    setInterCategoryBanners(INITIAL_INTER_CATEGORY_BANNERS);
+  src\context\AppContext.tsx:3658:    setAdSpaces(INITIAL_AD_SPACES);
+  src\context\AppContext.tsx:3659:    setFrontendConfig(INITIAL_FRONTEND_CONFIG);
+  src\context\AppContext.tsx:3660:    setCurrentCity('Cachoeiras de Macacu, RJ');
+  src\context\AppContext.tsx:3661:    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrÃ£o inicial de 
+fÃ¡brica');
+  src\context\AppContext.tsx:3662:    triggerToast('Sistema restaurado para os dados originais padrÃ£o!');
+  src\context\AppContext.tsx:3663:  };
+  src\context\AppContext.tsx:3912:
+  src\context\AppContext.tsx:3913:    setReviews((prev) => [newReview, ...prev]);
+  src\context\AppContext.tsx:3914:
+  src\context\AppContext.tsx:3915:    // Recalculate merchant overall rating
+> src\context\AppContext.tsx:3916:    setMerchants((prev) =>
+  src\context\AppContext.tsx:3917:      prev.map((m) => {
+  src\context\AppContext.tsx:3918:        if (m.id === reviewData.merchantId) {
+  src\context\AppContext.tsx:3919:          const storeReviews = [...reviews.filter((r) => r.merchantId === m.id), newReview];
+  src\context\AppContext.tsx:3920:          const newAvg =
+  src\context\AppContext.tsx:3921:            storeReviews.reduce((sum, r) => sum + r.rating, 0) / storeReviews.length;
+  src\context\AppContext.tsx:3922:          return {
+  src\context\AppContext.tsx:3923:            ...m,
+  src\context\AppContext.tsx:3924:            rating: Number(newAvg.toFixed(1)),
+  src\context\AppContext.tsx:3925:            reviewsCount: storeReviews.length
+  src\context\AppContext.tsx:3926:          };
+  src\context\AppContext.tsx:3927:        }
+  src\context\AppContext.tsx:3928:        return m;
+  src\context\AppContext.tsx:3936:    triggerToast('AvaliaÃ§Ã£o enviada com sucesso! Obrigado pela contribuiÃ§Ã£o.');
+  src\context\AppContext.tsx:3937:    return newReview;
+  src\context\AppContext.tsx:3938:  };
+  src\context\AppContext.tsx:3939:
+> src\context\AppContext.tsx:3940:  const addMerchantReview = (
+  src\context\AppContext.tsx:3941:    reviewData: Omit<MerchantToCustomerReview, 'id' | 'createdAt'>
+  src\context\AppContext.tsx:3942:  ): MerchantToCustomerReview => {
+  src\context\AppContext.tsx:3943:    const newReview: MerchantToCustomerReview = {
+  src\context\AppContext.tsx:3944:      ...reviewData,
+  src\context\AppContext.tsx:3945:      id: `rev-m-${Date.now()}`,
+  src\context\AppContext.tsx:3946:      createdAt: new Date().toISOString().split('T')[0]
+  src\context\AppContext.tsx:3947:    };
+  src\context\AppContext.tsx:3948:
+  src\context\AppContext.tsx:3949:    setMerchantReviews((prev) => [newReview, ...prev]);
+  src\context\AppContext.tsx:3950:
+  src\context\AppContext.tsx:3951:    addAuditLog(
+  src\context\AppContext.tsx:3952:      'MERCHANT_REVIEW_SUBMITTED',
+  src\context\AppContext.tsx:4302:        supportsAppointments: isProvider,
+  src\context\AppContext.tsx:4303:        isServiceProvider: isProvider,
+  src\context\AppContext.tsx:4304:        submittedAt: new Date().toISOString()
+  src\context\AppContext.tsx:4305:      };
+> src\context\AppContext.tsx:4306:      setMerchants((prev) => [newMerchant, ...prev]);
+  src\context\AppContext.tsx:4307:    }
+  src\context\AppContext.tsx:4308:
+  src\context\AppContext.tsx:4309:    addAuditLog(
+  src\context\AppContext.tsx:4310:      'REGISTER_CLIENT_BY_AGENT',
+  src\context\AppContext.tsx:4311:      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: 
+${clientData.name} (${isUser ? 'GrÃ¡tis - Compras' : `R$ ${finalAmount.toFixed(2)} - ComissÃ£o 5%`}).`,
+  src\context\AppContext.tsx:4312:      { category: 'USER_MANAGEMENT', entityId: clientId, entityType: 'AGENT_CLIENT' }
+  src\context\AppContext.tsx:4313:    );
+  src\context\AppContext.tsx:4314:
+  src\context\AppContext.tsx:4315:    triggerToast(
+  src\context\AppContext.tsx:4316:      isUser
+  src\context\AppContext.tsx:4317:        ? `UsuÃ¡rio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
+  src\context\AppContext.tsx:4318:        : `${clientData.clientType === 'PRESTADOR' ? 'Prestador' : 'Lojista'} "${clientData.name}" 
+cadastrado! Chave Pix gerada.`
+  src\context\AppContext.tsx:4406:      })
+  src\context\AppContext.tsx:4407:    );
+  src\context\AppContext.tsx:4408:
+  src\context\AppContext.tsx:4409:    if (targetReq) {
+> src\context\AppContext.tsx:4410:      setMerchants((prev) =>
+  src\context\AppContext.tsx:4411:        prev.map((m) => {
+  src\context\AppContext.tsx:4412:          if (
+  src\context\AppContext.tsx:4413:            m.cnpjOrCpf === targetReq!.documentNumber ||
+  src\context\AppContext.tsx:4414:            m.name.toLowerCase() === targetReq!.clientName.toLowerCase()
+  src\context\AppContext.tsx:4415:          ) {
+  src\context\AppContext.tsx:4416:            return { ...m, status: 'approved' };
+  src\context\AppContext.tsx:4417:          }
+  src\context\AppContext.tsx:4418:          return m;
+  src\context\AppContext.tsx:4419:        })
+  src\context\AppContext.tsx:4420:      );
+  src\context\AppContext.tsx:4421:
+  src\context\AppContext.tsx:4422:      addAuditLog(
+  src\context\AppContext.tsx:4811:    }
+  src\context\AppContext.tsx:4812:
+  src\context\AppContext.tsx:4813:    // 8. AprovaÃ§Ã£o AutomÃ¡tica do Estabelecimento Lojista / Prestador
+  src\context\AppContext.tsx:4814:    if (webhookConfig.autoApproveMerchant) {
+> src\context\AppContext.tsx:4815:      setMerchants((prev) =>
+  src\context\AppContext.tsx:4816:        prev.map((m) => {
+  src\context\AppContext.tsx:4817:          if (
+  src\context\AppContext.tsx:4818:            m.cnpjOrCpf === matchedBoleto.documentNumber ||
+  src\context\AppContext.tsx:4819:            m.name.toLowerCase() === matchedBoleto.clientName.toLowerCase()
+  src\context\AppContext.tsx:4820:          ) {
+  src\context\AppContext.tsx:4821:            return { ...m, status: 'approved' };
+  src\context\AppContext.tsx:4822:          }
+  src\context\AppContext.tsx:4823:          return m;
+  src\context\AppContext.tsx:4824:        })
+  src\context\AppContext.tsx:4825:      );
+  src\context\AppContext.tsx:4826:    }
+  src\context\AppContext.tsx:4827:
+  src\context\AppContext.tsx:5043:        payOrderCommissionByMerchant,
+  src\context\AppContext.tsx:5044:        confirmOrderCommissionByMaster,
+  src\context\AppContext.tsx:5045:        toggleOrderBuyerDataByMaster,
+  src\context\AppContext.tsx:5046:        addCustomerReview,
+> src\context\AppContext.tsx:5047:        addMerchantReview,
+  src\context\AppContext.tsx:5048:        replyToCustomerReview,
+  src\context\AppContext.tsx:5049:        getCustomerReputationSummary,
+  src\context\AppContext.tsx:5050:        isOrderReviewedByCustomer,
+  src\context\AppContext.tsx:5051:        isOrderReviewedByMerchant,
+  src\context\AppContext.tsx:5052:        notifications,
+  src\context\AppContext.tsx:5053:        sendInAppNotification,
+  src\context\AppContext.tsx:5054:        markNotificationAsRead,
+  src\context\AppContext.tsx:5055:        markAllNotificationsAsRead,
+  src\context\AppContext.tsx:5056:        deleteInAppNotification,
+  src\context\AppContext.tsx:5057:        getUserNotifications,
+  src\context\AppContext.tsx:5058:        getUnreadNotificationsCount,
+  src\context\AppContext.tsx:5059:        isNotificationModalOpen,
+
+

@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Perfil de usuário da plataforma Achei Aqui (Master, Vendedor, Cliente ou Prestador).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["CLIENTE", "VENDEDOR", "PRESTADOR_SERVICOS", "MASTER", "REPRESENTANTE_COMERCIAL"] },
+        "phone": { "type": "string", "maxLength": 30 },
+        "city": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "StoreMerchant": {
+      "title": "StoreMerchant",
+      "description": "Estabelecimento comercial ou prestador de serviços registrado em Cachoeiras de Macacu.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "ownerName": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "cnpjOrCpf": { "type": "string", "maxLength": 30 },
+        "category": { "type": "string", "maxLength": 100 },
+        "city": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "suspended"] },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "name", "email", "category", "status"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Item ou serviço catalogado para venda no marketplace local.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "merchantId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "price": { "type": "number" },
+        "category": { "type": "string", "maxLength": 100 },
+        "stock": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "paused", "draft"] },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "merchantId", "name", "price"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Pedido de compra ou contratação registrado no marketplace.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "code": { "type": "string", "maxLength": 50 },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 150 },
+        "merchantId": { "type": "string", "maxLength": 128 },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "in_preparation", "ready_for_pickup", "out_for_delivery", "delivered", "cancelled"] },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "code", "customerId", "merchantId", "totalAmount", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Notificação in-app transacional ou comunicativa.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "category": { "type": "string", "maxLength": 50 },
+        "recipientUserId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "title", "message"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Registro imutável de auditoria e conformidade da plataforma.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "action": { "type": "string", "maxLength": 100 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "timestamp": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "action", "details", "timestamp"]
+    },
+    "DeliveryDriver": {
+      "title": "DeliveryDriver",
+      "description": "Cadastro oficial e credenciamento de entregadores parceiros com veículos.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "cpf": { "type": "string", "maxLength": 30 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 150 },
+        "vehicleType": { "type": "string", "enum": ["MOTO", "CARRO", "BICICLETA", "VAN"] },
+        "vehiclePlate": { "type": "string", "maxLength": 20 },
+        "status": { "type": "string", "enum": ["PENDENTE", "EM_ANALISE", "APROVADO", "REPROVADO", "BLOQUEADO", "SUSPENSO", "DESATIVADO"] },
+        "operationalStatus": { "type": "string", "enum": ["ONLINE", "OFFLINE"] },
+        "registeredAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "userId", "name", "cpf", "vehicleType", "status"]
+    },
+    "DeliveryRide": {
+      "title": "DeliveryRide",
+      "description": "Corrida e entrega em trânsito vinculada a um pedido da plataforma Achei Aqui.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "rideCode": { "type": "string", "maxLength": 50 },
+        "orderId": { "type": "string", "maxLength": 128 },
+        "merchantId": { "type": "string", "maxLength": 128 },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "distanceKm": { "type": "number" },
+        "driverEarnings": { "type": "number" },
+        "totalDeliveryFee": { "type": "number" },
+        "status": { "type": "string", "enum": ["CRIADA", "AGUARDANDO_ENTREGADOR", "ACEITA", "EM_COLETA", "COLETADA", "EM_TRANSITO", "ENTREGUE", "FINALIZADA", "CANCELADA", "OCORRENCIA"] },
+        "confirmationCode": { "type": "string", "maxLength": 10 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "rideCode", "orderId", "merchantId", "distanceKm", "totalDeliveryFee", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Coleção de perfis de usuários com RBAC."
+    },
+    "/merchants/{merchantId}": {
+      "schema": { "$ref": "#/entities/StoreMerchant" },
+      "description": "Lojas e prestadores credenciados."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Itens do catálogo de produtos e serviços."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Pedidos de compra e subpedidos."
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "Avisos e notificações em tempo real."
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Trilha de auditoria administrativa do Master."
+    },
+    "/deliveryDrivers/{driverId}": {
+      "schema": { "$ref": "#/entities/DeliveryDriver" },
+      "description": "Perfis e credenciais de entregadores cadastrados."
+    },
+    "/deliveryRides/{rideId}": {
+      "schema": { "$ref": "#/entities/DeliveryRide" },
+      "description": "Corridas e despachos de delivery em tempo real."
+    }
+  }
+}

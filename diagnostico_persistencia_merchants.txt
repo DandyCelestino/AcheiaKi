@@ -1,0 +1,177 @@
+﻿
+  src\context\AppContext.tsx:548:  });
+  src\context\AppContext.tsx:549:
+  src\context\AppContext.tsx:550:  const [merchants, setMerchants] = useState<StoreMerchant[]>(() => {
+> src\context\AppContext.tsx:551:    const saved = localStorage.getItem(STORAGE_KEYS.MERCHANTS);
+  src\context\AppContext.tsx:552:    if (saved) {
+  src\context\AppContext.tsx:553:      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+  src\context\AppContext.tsx:554:    }
+  src\context\AppContext.tsx:555:    return INITIAL_MERCHANTS;
+  src\context\AppContext.tsx:556:  });
+  src\context\AppContext.tsx:557:
+  src\context\AppContext.tsx:558:  const [products, setProducts] = useState<Product[]>(() => {
+  src\context\AppContext.tsx:559:    const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+  src\context\AppContext.tsx:841:    if (currentUser) {
+  src\context\AppContext.tsx:842:      const safeUser = sanitizeUserForStorage(currentUser);
+  src\context\AppContext.tsx:843:
+> src\context\AppContext.tsx:844:      localStorage.setItem(
+  src\context\AppContext.tsx:845:        STORAGE_KEYS.USER,
+  src\context\AppContext.tsx:846:        JSON.stringify(safeUser)
+  src\context\AppContext.tsx:847:      );
+  src\context\AppContext.tsx:848:    } else {
+  src\context\AppContext.tsx:849:      localStorage.removeItem(STORAGE_KEYS.USER);
+  src\context\AppContext.tsx:850:    }
+  src\context\AppContext.tsx:851:  }, [currentUser]);
+  src\context\AppContext.tsx:852:
+  src\context\AppContext.tsx:853:  useEffect(() => {
+> src\context\AppContext.tsx:854:    localStorage.setItem(STORAGE_KEYS.ENV, currentEnvironment);
+  src\context\AppContext.tsx:855:  }, [currentEnvironment]);
+  src\context\AppContext.tsx:856:
+  src\context\AppContext.tsx:857:  useEffect(() => {
+> src\context\AppContext.tsx:858:    localStorage.setItem(STORAGE_KEYS.CITY, currentCity);
+  src\context\AppContext.tsx:859:  }, [currentCity]);
+  src\context\AppContext.tsx:860:
+  src\context\AppContext.tsx:861:  useEffect(() => {
+> src\context\AppContext.tsx:862:    localStorage.setItem(STORAGE_KEYS.MERCHANTS, JSON.stringify(merchants));
+  src\context\AppContext.tsx:863:  }, [merchants]);
+  src\context\AppContext.tsx:864:
+  src\context\AppContext.tsx:865:  useEffect(() => {
+> src\context\AppContext.tsx:866:    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  src\context\AppContext.tsx:867:  }, [products]);
+  src\context\AppContext.tsx:868:
+  src\context\AppContext.tsx:869:  useEffect(() => {
+> src\context\AppContext.tsx:870:    localStorage.setItem(STORAGE_KEYS.SERVICES, JSON.stringify(services));
+  src\context\AppContext.tsx:871:  }, [services]);
+  src\context\AppContext.tsx:872:
+  src\context\AppContext.tsx:873:  useEffect(() => {
+> src\context\AppContext.tsx:874:    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+  src\context\AppContext.tsx:875:  }, [orders]);
+  src\context\AppContext.tsx:876:
+  src\context\AppContext.tsx:877:  useEffect(() => {
+> src\context\AppContext.tsx:878:    localStorage.setItem(STORAGE_KEYS.AUDIT, JSON.stringify(auditLogs));
+  src\context\AppContext.tsx:879:  }, [auditLogs]);
+  src\context\AppContext.tsx:880:
+  src\context\AppContext.tsx:881:  useEffect(() => {
+> src\context\AppContext.tsx:882:    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
+  src\context\AppContext.tsx:883:  }, [cart]);
+  src\context\AppContext.tsx:884:
+  src\context\AppContext.tsx:885:  useEffect(() => {
+> src\context\AppContext.tsx:886:    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+  src\context\AppContext.tsx:887:  }, [favorites]);
+  src\context\AppContext.tsx:888:
+  src\context\AppContext.tsx:889:  useEffect(() => {
+  src\context\AppContext.tsx:890:    const safeUsers = users.map(sanitizeUserForStorage);
+  src\context\AppContext.tsx:891:
+> src\context\AppContext.tsx:892:    localStorage.setItem(
+  src\context\AppContext.tsx:893:      STORAGE_KEYS.USERS,
+  src\context\AppContext.tsx:894:      JSON.stringify(safeUsers)
+  src\context\AppContext.tsx:895:    );
+  src\context\AppContext.tsx:896:  }, [users]);
+  src\context\AppContext.tsx:897:
+  src\context\AppContext.tsx:898:  useEffect(() => {
+> src\context\AppContext.tsx:899:    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(systemSettings));
+  src\context\AppContext.tsx:900:  }, [systemSettings]);
+  src\context\AppContext.tsx:901:
+  src\context\AppContext.tsx:902:  useEffect(() => {
+> src\context\AppContext.tsx:903:    localStorage.setItem(STORAGE_KEYS.INTER_BANNERS, JSON.stringify(interCategoryBanners));
+  src\context\AppContext.tsx:904:  }, [interCategoryBanners]);
+  src\context\AppContext.tsx:905:
+  src\context\AppContext.tsx:906:  useEffect(() => {
+> src\context\AppContext.tsx:907:    localStorage.setItem(STORAGE_KEYS.AD_SPACES, JSON.stringify(adSpaces));
+  src\context\AppContext.tsx:908:  }, [adSpaces]);
+  src\context\AppContext.tsx:909:
+  src\context\AppContext.tsx:910:  useEffect(() => {
+> src\context\AppContext.tsx:911:    localStorage.setItem(STORAGE_KEYS.FRONTEND_CONFIG, JSON.stringify(frontendConfig));
+  src\context\AppContext.tsx:912:  }, [frontendConfig]);
+  src\context\AppContext.tsx:913:
+  src\context\AppContext.tsx:914:  useEffect(() => {
+> src\context\AppContext.tsx:915:    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+  src\context\AppContext.tsx:916:  }, [reviews]);
+  src\context\AppContext.tsx:917:
+  src\context\AppContext.tsx:918:  useEffect(() => {
+> src\context\AppContext.tsx:919:    localStorage.setItem(STORAGE_KEYS.MERCHANT_REVIEWS, JSON.stringify(merchantReviews));
+  src\context\AppContext.tsx:920:  }, [merchantReviews]);
+  src\context\AppContext.tsx:921:
+  src\context\AppContext.tsx:922:  useEffect(() => {
+> src\context\AppContext.tsx:923:    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
+  src\context\AppContext.tsx:924:  }, [notifications]);
+  src\context\AppContext.tsx:925:
+  src\context\AppContext.tsx:926:  useEffect(() => {
+> src\context\AppContext.tsx:927:    localStorage.setItem(STORAGE_KEYS.SUBORDER_MESSAGES, JSON.stringify(subOrderMessages));
+  src\context\AppContext.tsx:928:  }, [subOrderMessages]);
+  src\context\AppContext.tsx:929:
+  src\context\AppContext.tsx:930:  useEffect(() => {
+> src\context\AppContext.tsx:931:    localStorage.setItem(STORAGE_KEYS.SALES_AGENTS, JSON.stringify(salesAgents));
+  src\context\AppContext.tsx:932:  }, [salesAgents]);
+  src\context\AppContext.tsx:933:
+  src\context\AppContext.tsx:934:  useEffect(() => {
+> src\context\AppContext.tsx:935:    localStorage.setItem(STORAGE_KEYS.BOLETO_REQUESTS, JSON.stringify(boletoRequests));
+  src\context\AppContext.tsx:936:  }, [boletoRequests]);
+  src\context\AppContext.tsx:937:
+  src\context\AppContext.tsx:938:  useEffect(() => {
+> src\context\AppContext.tsx:939:    localStorage.setItem(STORAGE_KEYS.REGISTERED_CLIENTS_BY_AGENTS, 
+JSON.stringify(registeredClientsByAgents));
+  src\context\AppContext.tsx:940:  }, [registeredClientsByAgents]);
+  src\context\AppContext.tsx:941:
+  src\context\AppContext.tsx:942:  useEffect(() => {
+> src\context\AppContext.tsx:943:    localStorage.setItem(STORAGE_KEYS.COMMERCIAL_GOALS, JSON.stringify(commercialGoals));
+  src\context\AppContext.tsx:944:  }, [commercialGoals]);
+  src\context\AppContext.tsx:945:
+  src\context\AppContext.tsx:946:  useEffect(() => {
+> src\context\AppContext.tsx:947:    localStorage.setItem(STORAGE_KEYS.COMMERCIAL_AREAS, JSON.stringify(commercialAreas));
+  src\context\AppContext.tsx:948:  }, [commercialAreas]);
+  src\context\AppContext.tsx:949:
+  src\context\AppContext.tsx:950:  useEffect(() => {
+> src\context\AppContext.tsx:951:    localStorage.setItem(STORAGE_KEYS.WEBHOOK_EVENTS, JSON.stringify(webhookEvents));
+  src\context\AppContext.tsx:952:  }, [webhookEvents]);
+  src\context\AppContext.tsx:953:
+  src\context\AppContext.tsx:954:  useEffect(() => {
+> src\context\AppContext.tsx:955:    localStorage.setItem(STORAGE_KEYS.WEBHOOK_CONFIG, JSON.stringify(webhookConfig));
+  src\context\AppContext.tsx:956:  }, [webhookConfig]);
+  src\context\AppContext.tsx:957:
+  src\context\AppContext.tsx:958:  // SincronizaÃ§Ã£o periÃ³dica com o banco de dados de pedidos (atualizados em tempo real pelo 
+Asaas Webhook)
+  src\context\AppContext.tsx:959:  useEffect(() => {
+  src\context\AppContext.tsx:960:    let isMounted = true;
+  src\context\AppContext.tsx:961:
+  src\context\AppContext.tsx:962:    const syncWithServerDb = async () => {
+  src\context\AppContext.tsx:963:      try {
+  src\context\AppContext.tsx:2131:      finalUser.needsPasswordChange = false;
+  src\context\AppContext.tsx:2132:    }
+  src\context\AppContext.tsx:2133:    setCurrentUser(finalUser);
+> src\context\AppContext.tsx:2134:    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(finalUser));
+  src\context\AppContext.tsx:2135:    addAuditLog('USER_SWITCH', `Troca de perfil para ${finalUser.name} (${finalUser.role})`);
+  src\context\AppContext.tsx:2136:    if (finalUser.role === 'CLIENTE') {
+  src\context\AppContext.tsx:2137:      setCurrentEnvironmentState('MARKETPLACE');
+  src\context\AppContext.tsx:2138:    } else if (
+  src\context\AppContext.tsx:2139:      ['VENDEDOR', 'LOJISTA', 'PRESTADOR_SERVICO'].includes(finalUser.role)
+  src\context\AppContext.tsx:2140:    ) {
+  src\context\AppContext.tsx:2141:      setCurrentEnvironmentState('SELLER_PORTAL');
+  src\context\AppContext.tsx:2142:    } else if (finalUser.role === 'REPRESENTANTE_COMERCIAL') {
+  src\context\AppContext.tsx:3628:        throw new Error('Arquivo de backup invÃ¡lido ou incompatÃ­vel.');
+  src\context\AppContext.tsx:3629:      }
+  src\context\AppContext.tsx:3630:      if (data.users) setUsers(data.users);
+> src\context\AppContext.tsx:3631:      if (data.merchants) setMerchants(data.merchants);
+  src\context\AppContext.tsx:3632:      if (data.products) setProducts(data.products);
+  src\context\AppContext.tsx:3633:      if (data.services) setServices(data.services);
+  src\context\AppContext.tsx:3634:      if (data.orders) setOrders(data.orders);
+  src\context\AppContext.tsx:3635:      if (data.auditLogs) setAuditLogs(data.auditLogs);
+  src\context\AppContext.tsx:3636:      if (data.systemSettings) setSystemSettings(data.systemSettings);
+  src\context\AppContext.tsx:3637:      if (data.city) setCurrentCity(data.city);
+  src\context\AppContext.tsx:3638:
+  src\context\AppContext.tsx:3639:      addAuditLog('SYSTEM_SNAPSHOT_RESTORE', 'Snapshot completo do banco de dados restaurado com 
+sucesso');
+  src\context\AppContext.tsx:3648:
+  src\context\AppContext.tsx:3649:  const resetDatabaseToDefaults = () => {
+  src\context\AppContext.tsx:3650:    setUsers(INITIAL_USERS);
+> src\context\AppContext.tsx:3651:    setMerchants(INITIAL_MERCHANTS);
+  src\context\AppContext.tsx:3652:    setProducts(INITIAL_PRODUCTS);
+  src\context\AppContext.tsx:3653:    setServices(INITIAL_SERVICES);
+  src\context\AppContext.tsx:3654:    setOrders(INITIAL_ORDERS);
+  src\context\AppContext.tsx:3655:    setAuditLogs(INITIAL_AUDIT_LOGS);
+  src\context\AppContext.tsx:3656:    setSystemSettings(INITIAL_SYSTEM_SETTINGS);
+  src\context\AppContext.tsx:3657:    setInterCategoryBanners(INITIAL_INTER_CATEGORY_BANNERS);
+  src\context\AppContext.tsx:3658:    setAdSpaces(INITIAL_AD_SPACES);
+  src\context\AppContext.tsx:3659:    setFrontendConfig(INITIAL_FRONTEND_CONFIG);
+
+

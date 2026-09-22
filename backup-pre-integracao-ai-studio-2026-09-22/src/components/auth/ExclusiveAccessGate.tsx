@@ -1,0 +1,595 @@
+﻿import React, { useState } from 'react';
+import {
+  ShieldAlert,
+  ShieldCheck,
+  Lock,
+  Mail,
+  ArrowLeft,
+  KeyRound,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle2,
+  Store,
+  Sparkles,
+  Briefcase,
+  Eye,
+  EyeOff,
+  UserCheck
+} from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+import { UserRole } from '../../types';
+
+interface ExclusiveAccessGateProps {
+  requiredRole: UserRole;
+  title: string;
+  subtitle: string;
+}
+
+export const ExclusiveAccessGate: React.FC<ExclusiveAccessGateProps> = ({
+  requiredRole,
+  title,
+  subtitle
+}) => {
+  const {
+    currentUser,
+    login,
+    loginWithFirebaseEmail,
+    loginWithFirebaseGoogle,
+    verifyTwoFactorCode,
+    resendTwoFactorCode,
+    resendEmailConfirmation,
+    setCurrentEnvironment,
+    loginAsUser,
+    logout,
+    salesAgents
+  } = useApp();
+
+  const isSellerPortal = requiredRole === 'VENDEDOR' || requiredRole === 'REPRESENTANTE_COMERCIAL';
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [is2FAStep, setIs2FAStep] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState('');
+  const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const targetEnv =
+    requiredRole === 'MASTER'
+      ? 'MASTER_PANEL'
+      : requiredRole === 'REPRESENTANTE_COMERCIAL' || requiredRole === 'VENDEDOR'
+      ? 'COMMERCIAL_PORTAL'
+      : requiredRole === 'ENTREGADOR'
+      ? 'DELIVERY_PORTAL'
+      : 'SELLER_PORTAL';
+
+  const isRoleAuthorized = (userRole?: UserRole, userMerchantId?: string) => {
+    if (!userRole) return false;
+    if (requiredRole === 'MASTER') return userRole === 'MASTER';
+    if (requiredRole === 'ENTREGADOR') return userRole === 'ENTREGADOR' || userRole === 'MASTER';
+    if (requiredRole === 'VENDEDOR' || requiredRole === 'REPRESENTANTE_COMERCIAL') {
+      return userRole === 'VENDEDOR' || userRole === 'REPRESENTANTE_COMERCIAL' || userRole === 'MASTER';
+    }
+    // LOJISTA / PRESTADOR_SERVICO
+    return (
+      userRole === 'LOJISTA' ||
+      userRole === 'PRESTADOR_SERVICO' ||
+      (userRole === 'VENDEDOR' && !!userMerchantId) ||
+      userRole === 'MASTER'
+    );
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage(
+        isSellerPortal
+          ? 'Por favor, informe seu e-mail, CPF ou telefone e a senha de acesso.'
+          : 'Por favor, informe suas credenciais completas.'
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Para o Portal do Vendedor, validação comercial direta com as credenciais do vendedor
+      const res = isSellerPortal
+        ? login(email.trim(), password.trim(), true)
+        : await loginWithFirebaseEmail(email.trim(), password);
+
+      if (res.requires2FA) {
+        if (!isRoleAuthorized(res.user?.role, res.user?.merchantId)) {
+          setErrorMessage('Esta conta não possui privilégios para acessar este portal.');
+          return;
+        }
+        setIs2FAStep(true);
+        setSimulatedCode(res.simulated2FACode || '749210');
+        setSuccessMessage(res.message || 'Código de 2ª etapa enviado com sucesso.');
+        return;
+      }
+
+      if (res.success) {
+        if (!isRoleAuthorized(res.user?.role, res.user?.merchantId)) {
+          setErrorMessage(
+            isSellerPortal
+              ? 'Esta conta não possui privilégios de consultor comercial. O acesso a este portal é exclusivo para vendedores credenciados.'
+              : 'Esta conta não possui permissão para acessar este portal.'
+          );
+          return;
+        }
+        setCurrentEnvironment(targetEnv);
+      } else {
+        setErrorMessage(
+          res.message ||
+            (isSellerPortal
+              ? 'Credenciais incorretas. Caso seja seu primeiro acesso, informe a senha padrão 12345678.'
+              : 'Falha na autenticação. Verifique suas credenciais.')
+        );
+      }
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Falha ao autenticar.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    setIsSubmitting(true);
+    try {
+      const res = await loginWithFirebaseGoogle(requiredRole);
+      if (res.success) {
+        if (res.user?.role !== requiredRole && requiredRole === 'MASTER') {
+          setErrorMessage('A conta Google conectada não possui nível Master.');
+          return;
+        }
+        setCurrentEnvironment(targetEnv);
+      } else {
+        setErrorMessage(res.message || 'Falha no login com Google.');
+      }
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Erro no login com Google.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleVerify2FA = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    if (!twoFactorCode.trim() || twoFactorCode.trim().length < 6) {
+      setErrorMessage('Digite o código de 6 dígitos recebido.');
+      return;
+    }
+
+    const res = verifyTwoFactorCode(email.trim(), twoFactorCode.trim(), true);
+    if (!res.success) {
+      setErrorMessage(res.message || 'Código de autenticação em 2 etapas inválido.');
+    } else {
+      setCurrentEnvironment(targetEnv);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (isSellerPortal) {
+      return;
+    }
+
+    if (!email.trim()) {
+      setErrorMessage('Informe seu e-mail para reenviar a verificação.');
+      return;
+    }
+
+    setIsResendingVerification(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      const result = await resendEmailConfirmation(email.trim().toLowerCase());
+
+      if (result.success) {
+        setSuccessMessage(result.message);
+      } else {
+        setErrorMessage(result.message);
+      }
+    } catch (err: any) {
+      setErrorMessage(
+        err?.message || 'Não foi possível reenviar o e-mail de verificação.'
+      );
+    } finally {
+      setIsResendingVerification(false);
+    }
+  };
+
+  const handleResend = () => {
+    setIsResending(true);
+    const res = resendTwoFactorCode(email.trim());
+    setSimulatedCode(res.simulatedCode);
+    setSuccessMessage(res.message);
+    setTimeout(() => setIsResending(false), 1000);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 flex flex-col justify-between text-slate-100 font-sans selection:bg-blue-600 selection:text-white">
+      {/* Top Bar */}
+      <header className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-base">
+            A
+          </div>
+          <span className="font-extrabold text-sm tracking-tight text-white">
+            Achei Aqui <span className="text-blue-400 font-normal">| Segurança de Acessos</span>
+          </span>
+        </div>
+
+        <button
+          onClick={() => setCurrentEnvironment('MARKETPLACE')}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Voltar ao Marketplace</span>
+        </button>
+      </header>
+
+      {/* Main Container */}
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Header Icon */}
+          <div className="text-center space-y-2 mb-6">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20 mb-1">
+              {requiredRole === 'MASTER' ? (
+                <ShieldAlert className="w-7 h-7" />
+              ) : isSellerPortal ? (
+                <Briefcase className="w-7 h-7" />
+              ) : (
+                <Store className="w-7 h-7" />
+              )}
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              {title}
+            </h1>
+            <p className="text-xs text-slate-400 leading-relaxed max-w-xs mx-auto">
+              {subtitle}
+            </p>
+          </div>
+
+          {/* Feedback Messages */}
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-rose-950/60 border border-rose-800 rounded-xl text-xs text-rose-300 flex items-start space-x-2">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <span className="font-medium">{errorMessage}</span>
+            </div>
+          )}
+
+          {errorMessage.toLowerCase().includes('e-mail ainda não foi verificado') && !isSellerPortal && (
+            <button
+              type="button"
+              onClick={handleResendVerification}
+              disabled={isResendingVerification || !email.trim()}
+              className="mb-4 w-full py-2.5 px-3 rounded-xl border border-amber-700/70 bg-amber-950/50 text-amber-200 text-xs font-bold hover:bg-amber-900/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${isResendingVerification ? 'animate-spin' : ''}`}
+              />
+              {isResendingVerification
+                ? 'Reenviando verificação...'
+                : 'Reenviar e-mail de verificação'}
+            </button>
+          )}
+
+          {successMessage && (
+            <div className="mb-4 p-3 bg-emerald-950/60 border border-emerald-800 rounded-xl text-xs text-emerald-300 flex items-start space-x-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <span className="font-medium">{successMessage}</span>
+            </div>
+          )}
+
+          {/* Current Logged In Status Banner if wrong user */}
+          {currentUser && !isRoleAuthorized(currentUser.role, currentUser.merchantId) && !is2FAStep && (
+            <div className="mb-4 p-3.5 bg-slate-800/90 border border-slate-700 rounded-2xl text-xs space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-slate-400">Você está conectado como:</p>
+                  <p className="font-bold text-white">
+                    {currentUser.name} ({currentUser.role === 'CUSTOMER' ? 'Usuário / Cliente Grátis R$ 0,00' : currentUser.role})
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setCurrentEnvironment('MARKETPLACE')}
+                    className="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-[11px] font-bold transition-colors cursor-pointer"
+                  >
+                    Voltar ao App
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="px-2.5 py-1 bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 rounded-lg text-[11px] font-bold transition-colors cursor-pointer"
+                  >
+                    Sair
+                  </button>
+                </div>
+              </div>
+
+              {currentUser.role === 'CUSTOMER' && (
+                <div className="p-2.5 bg-blue-950/70 border border-blue-800/80 rounded-xl text-[11px] text-blue-200 space-y-1">
+                  <p className="font-bold text-blue-100 flex items-center gap-1.5">
+                    <span>ℹ️</span> Perfil de Usuário Gratuito (R$ 0,00)
+                  </p>
+                  <p className="leading-relaxed">
+                    O cadastro de usuário é 100% gratuito e exclusivo para realizar compras e agendamentos no marketplace. Usuários não possuem permissão para postar produtos, inserir banners ou interagir comercialmente. Para anunciar, solicite um credenciamento como <strong>Prestador de Serviços (R$ 29,90)</strong> ou <strong>Lojista</strong> com nossa equipe comercial.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 2FA Confirmation Step */}
+          {is2FAStep ? (
+            <form onSubmit={handleVerify2FA} className="space-y-4">
+              <div className="p-3 bg-slate-800 border border-slate-700 rounded-xl text-xs space-y-1.5">
+                <div className="flex items-center space-x-2 text-amber-400 font-bold">
+                  <KeyRound className="w-4 h-4" />
+                  <span>Código de Verificação 2FA:</span>
+                </div>
+                {simulatedCode && (
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="font-sans text-base font-black tracking-widest bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-blue-400">
+                      {simulatedCode}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      (Digite o código abaixo)
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 text-center">
+                  Digite o código de 6 dígitos
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  autoFocus
+                  required
+                  value={twoFactorCode}
+                  onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="000000"
+                  className="w-full text-center tracking-[0.4em] font-sans text-2xl py-3 bg-slate-950 border border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl outline-none font-bold text-white transition-all"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center space-x-2"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>Confirmar Código 2FA</span>
+              </button>
+
+              <div className="flex items-center justify-between pt-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setIs2FAStep(false)}
+                  className="text-slate-400 hover:text-slate-200"
+                >
+                  ← Alterar credenciais
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={isResending}
+                  className="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isResending ? 'animate-spin' : ''}`} />
+                  <span>Reenviar token</span>
+                </button>
+              </div>
+            </form>
+          ) : (
+            /* Login Form */
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  {isSellerPortal
+                    ? 'E-mail, CPF ou Telefone do Consultor'
+                    : requiredRole === 'MASTER'
+                    ? 'E-mail do Administrador Master'
+                    : 'E-mail do Administrador / Lojista'}
+                </label>
+                <div className="relative">
+                  <input
+                    type={isSellerPortal ? 'text' : 'email'}
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={
+                      isSellerPortal
+                        ? 'Digite seu e-mail, CPF ou celular'
+                        : 'seu.email@acheiaqui.com'
+                    }
+                    className="w-full pl-9 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+                  />
+                  {isSellerPortal ? (
+                    <Briefcase className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                  ) : (
+                    <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-slate-300">
+                    Senha de acesso
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <>
+                        <EyeOff className="w-3 h-3" />
+                        <span>Ocultar</span>
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="w-3 h-3" />
+                        <span>Mostrar</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-9 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
+                  />
+                  <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                </div>
+                {isSellerPortal && (
+                  <p className="text-[11px] text-indigo-300/90 mt-1.5 flex items-center gap-1 bg-indigo-950/40 p-2 rounded-lg border border-indigo-900/50">
+                    <span>🔑</span>
+                    <span>
+                      Primeiro acesso? Digite a senha padrão <strong>12345678</strong>.
+                    </span>
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-3 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
+              >
+                {isSellerPortal ? (
+                  <>
+                    <Briefcase className="w-4 h-4" />
+                    <span>{isSubmitting ? 'Acessando Portal...' : 'Entrar no Portal do Vendedor'}</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>{isSubmitting ? 'Autenticando no Firebase...' : 'Autenticar com Confirmação em 2 Etapas'}</span>
+                  </>
+                )}
+              </button>
+
+              {isSellerPortal && salesAgents && salesAgents.length > 0 && (
+                <div className="mt-4 pt-3.5 border-t border-slate-800">
+                  <p className="text-[11px] font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                    <UserCheck className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Consultores cadastrados (preenchimento em 1 clique):</span>
+                  </p>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                    {salesAgents.map((sa) => (
+                      <button
+                        key={sa.id}
+                        type="button"
+                        onClick={() => {
+                          setEmail(sa.email);
+                          setPassword('12345678');
+                          setErrorMessage(null);
+                          setSuccessMessage(`Credenciais de ${sa.name} preenchidas. Clique no botão de entrar.`);
+                        }}
+                        className="w-full text-left p-2 rounded-xl bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 flex items-center justify-between transition-all group cursor-pointer"
+                      >
+                        <div className="truncate pr-2">
+                          <p className="text-xs font-bold text-slate-200 group-hover:text-white truncate">
+                            {sa.name}
+                          </p>
+                          <p className="text-[10px] text-slate-400 truncate">
+                            {sa.email} • {sa.phone || 'Cachoeiras de Macacu'}
+                          </p>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 group-hover:bg-indigo-600 group-hover:text-white shrink-0 transition-colors">
+                          Selecionar
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!isSellerPortal && (
+                <>
+                  <div className="relative my-2">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-slate-800" />
+                    </div>
+                    <div className="relative flex justify-center text-[10px] uppercase">
+                      <span className="bg-slate-900 px-2 text-slate-400 font-bold">
+                        Ou entrar via
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    disabled={isSubmitting}
+                    className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-700 rounded-xl text-xs sm:text-sm font-bold text-white transition-all flex items-center justify-center space-x-2.5 shadow-sm disabled:opacity-50"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                      />
+                    </svg>
+                    <span>Acessar com Google Workspace / Firebase</span>
+                  </button>
+                </>
+              )}
+            </form>
+          )}
+
+          {/* Footer Security Badge */}
+          <div className="mt-6 pt-4 border-t border-slate-800/80 text-center">
+            <p className="text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Isolamento total de painéis e criptografia de ponta a ponta</span>
+            </p>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-4 text-center text-xs text-slate-600">
+        Plataforma Achei Aqui • Cachoeiras de Macacu / RJ • Protocolo de Segurança Rigoroso
+      </footer>
+    </div>
+  );
+};
+
+
+
+

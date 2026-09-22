@@ -1,0 +1,257 @@
+﻿===== LINHAS 88-190 =====
+  } = useApp();
+
+  // Find seller's active merchant store strictly matching the logged in user
+  const currentStore =
+    merchants.find((m) => m.id === currentUser?.merchantId) ||
+    merchants.find((m) => m.ownerName?.toLowerCase() === currentUser?.name?.toLowerCase()) ||
+    merchants.find((m) => m.ownerEmail?.toLowerCase() === currentUser?.email?.toLowerCase()) ||
+    merchants.find((m) => m.contactPhone === currentUser?.phone) ||
+    (currentUser?.role === 'MASTER' ? merchants[0] : undefined);
+
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'financial' | 'products' | 'orders' | 'validate-pickup' | 'appointments' | 'schedule' | 'settings' | 'reviews'>('dashboard');
+  const [reviewingOrderForCustomer, setReviewingOrderForCustomer] = useState<Order | null>(null);
+  const [respondingAppointment, setRespondingAppointment] = useState<Order | null>(null);
+  const [pixCommissionModalOrder, setPixCommissionModalOrder] = useState<Order | null>(null);
+
+  // Prestador de ServiÃ§os: 1 serviÃ§o incluso (R$ 29,90), R$ 9,90 por serviÃ§o adicional
+  const [extraServicePixModal, setExtraServicePixModal] = useState<{
+    serviceName: string;
+    amount: number;
+    serviceIndex: number;
+    productPayload: any;
+    qrCodeUrl: string;
+    pixCopiaECola: string;
+  } | null>(null);
+  const [copiedExtraServicePix, setCopiedExtraServicePix] = useState(false);
+
+  // Identify if the active store is a service provider
+  const isPrestador = Boolean(
+    currentStore?.isServiceProvider ||
+    currentStore?.category === 'prestadores-de-servicos' ||
+    (currentUser as any)?.clientType === 'PRESTADOR' ||
+    currentStore?.membershipTier === 'PRESTADOR'
+  );
+
+  // Filter store-specific data
+  const storeProducts = currentStore ? products.filter((p) => p.merchantId === currentStore.id) : [];
+  const storeOrders = currentStore ? orders.filter((o) => o.merchantId === currentStore.id) : [];
+  const pendingOrders = storeOrders.filter((o) => o.status !== 'ConcluÃ­do' && o.status !== 'Cancelado');
+  const storeReviews = currentStore ? reviews.filter((r) => r.merchantId === currentStore.id) : [];
+
+  // Store Profile & Visual Identity State
+  const [storeName, setStoreName] = useState(currentStore?.name || '');
+  const [storeOwnerName, setStoreOwnerName] = useState(currentStore?.ownerName || '');
+  const [storeCategory, setStoreCategory] = useState(currentStore?.category || 'COMÃ‰RCIO EM GERAL');
+  const [storeSubcategory, setStoreSubcategory] = useState(currentStore?.subcategory || '');
+  const [storePhone, setStorePhone] = useState(currentStore?.contactPhone || currentStore?.phone || '');
+  const [storeCnpjOrCpf, setStoreCnpjOrCpf] = useState(currentStore?.cnpjOrCpf || '');
+  const [storeAddress, setStoreAddress] = useState(currentStore?.address || '');
+  const [storeNeighborhood, setStoreNeighborhood] = useState(currentStore?.neighborhood || 'Centro');
+  const [storeZipCode, setStoreZipCode] = useState(currentStore?.zipCode || '28680-000');
+  const [storeDescription, setStoreDescription] = useState(currentStore?.description || '');
+  const [storeOpeningHours, setStoreOpeningHours] = useState(currentStore?.openingHours || '08:00 Ã s 18:00');
+  const [storeDeliveryFee, setStoreDeliveryFee] = useState(currentStore?.deliveryFee !== undefined ? currentStore.deliveryFee.toString() : '0');
+  const [storeDeliveryTime, setStoreDeliveryTime] = useState(currentStore?.deliveryTimeEstimate || '30-45 min');
+  const [storeLogo, setStoreLogo] = useState(currentStore?.logo || '');
+  const [storeBanner, setStoreBanner] = useState(currentStore?.banner || '');
+  const [storeGallery, setStoreGallery] = useState<string[]>(currentStore?.gallery || []);
+  const [storeSupportsPickup, setStoreSupportsPickup] = useState(currentStore?.supportsPickup ?? true);
+  const [storeSupportsTrial, setStoreSupportsTrial] = useState(currentStore?.supportsTrial ?? false);
+  const [storeSupportsAppointments, setStoreSupportsAppointments] = useState(currentStore?.supportsAppointments ?? true);
+  const [storeAllowDirectChat, setStoreAllowDirectChat] = useState<boolean>(currentStore?.allowDirectChat ?? true);
+  const [storeAsaasWalletId, setStoreAsaasWalletId] = useState(currentStore?.asaasWalletId || '');
+  const [storeAsaasAccountId, setStoreAsaasAccountId] = useState(currentStore?.asaasAccountId || '');
+  const [isCreatingAsaasSubaccount, setIsCreatingAsaasSubaccount] = useState(false);
+  const [serviceButtonsConfig, setServiceButtonsConfig] = useState<{
+    showSchedule?: boolean;
+    showHomeService?: boolean;
+    showStoreService?: boolean;
+    showQuote?: boolean;
+    showChat?: boolean;
+  }>({
+    showSchedule: currentStore?.serviceButtonsConfig?.showSchedule !== false,
+    showHomeService: currentStore?.serviceButtonsConfig?.showHomeService !== false,
+    showStoreService: currentStore?.serviceButtonsConfig?.showStoreService !== false,
+    showQuote: currentStore?.serviceButtonsConfig?.showQuote !== false,
+    showChat: currentStore?.serviceButtonsConfig?.showChat !== false
+  });
+
+  useEffect(() => {
+    if (currentStore) {
+      setStoreName(currentStore.name || '');
+      setStoreOwnerName(currentStore.ownerName || '');
+      setStoreCategory(currentStore.category || '');
+      setStoreSubcategory(currentStore.subcategory || '');
+      setStorePhone(currentStore.contactPhone || currentStore.phone || '');
+      setStoreCnpjOrCpf(currentStore.cnpjOrCpf || '');
+      setStoreAddress(currentStore.address || '');
+      setStoreNeighborhood(currentStore.neighborhood || 'Centro');
+      setStoreZipCode(currentStore.zipCode || '28680-000');
+      setStoreDescription(currentStore.description || '');
+      setStoreOpeningHours(currentStore.openingHours || '08:00 Ã s 18:00');
+      setStoreDeliveryFee(currentStore.deliveryFee !== undefined ? currentStore.deliveryFee.toString() : '0');
+      setStoreDeliveryTime(currentStore.deliveryTimeEstimate || '30-45 min');
+      setStoreLogo(currentStore.logo || '');
+      setStoreBanner(currentStore.banner || '');
+      setStoreGallery(currentStore.gallery || []);
+      setStoreSupportsPickup(currentStore.supportsPickup ?? true);
+      setStoreSupportsTrial(currentStore.supportsTrial ?? false);
+      setStoreSupportsAppointments(currentStore.supportsAppointments ?? true);
+      setStoreAllowDirectChat(currentStore.allowDirectChat ?? true);
+      setStoreAsaasWalletId(currentStore.asaasWalletId || '');
+      setStoreAsaasAccountId(currentStore.asaasAccountId || '');
+      setServiceButtonsConfig({
+
+===== OCORRENCIAS DE currentStore =====
+
+LineNumber Line                                                                                                                      
+---------- ----                                                                                                                      
+        91   const currentStore =                                                                                                    
+       116     currentStore?.isServiceProvider ||                                                                                    
+       117     currentStore?.category === 'prestadores-de-servicos' ||                                                               
+       119     currentStore?.membershipTier === 'PRESTADOR'                                                                          
+       123   const storeProducts = currentStore ? products.filter((p) => p.merchantId === currentStore.id) : [];                     
+       124   const storeOrders = currentStore ? orders.filter((o) => o.merchantId === currentStore.id) : [];                         
+       126   const storeReviews = currentStore ? reviews.filter((r) => r.merchantId === currentStore.id) : [];                       
+       129   const [storeName, setStoreName] = useState(currentStore?.name || '');                                                   
+       130   const [storeOwnerName, setStoreOwnerName] = useState(currentStore?.ownerName || '');                                    
+       131   const [storeCategory, setStoreCategory] = useState(currentStore?.category || 'COMÉRCIO EM GERAL');                      
+       132   const [storeSubcategory, setStoreSubcategory] = useState(currentStore?.subcategory || '');                              
+       133   const [storePhone, setStorePhone] = useState(currentStore?.contactPhone || currentStore?.phone || '');                  
+       134   const [storeCnpjOrCpf, setStoreCnpjOrCpf] = useState(currentStore?.cnpjOrCpf || '');                                    
+       135   const [storeAddress, setStoreAddress] = useState(currentStore?.address || '');                                          
+       136   const [storeNeighborhood, setStoreNeighborhood] = useState(currentStore?.neighborhood || 'Centro');                     
+       137   const [storeZipCode, setStoreZipCode] = useState(currentStore?.zipCode || '28680-000');                                 
+       138   const [storeDescription, setStoreDescription] = useState(currentStore?.description || '');                              
+       139   const [storeOpeningHours, setStoreOpeningHours] = useState(currentStore?.openingHours || '08:00 às 18:00');             
+       140   const [storeDeliveryFee, setStoreDeliveryFee] = useState(currentStore?.deliveryFee !== undefined ? currentStore.deliv...
+       141   const [storeDeliveryTime, setStoreDeliveryTime] = useState(currentStore?.deliveryTimeEstimate || '30-45 min');          
+       142   const [storeLogo, setStoreLogo] = useState(currentStore?.logo || '');                                                   
+       143   const [storeBanner, setStoreBanner] = useState(currentStore?.banner || '');                                             
+       144   const [storeGallery, setStoreGallery] = useState<string[]>(currentStore?.gallery || []);                                
+       145   const [storeSupportsPickup, setStoreSupportsPickup] = useState(currentStore?.supportsPickup ?? true);                   
+       146   const [storeSupportsTrial, setStoreSupportsTrial] = useState(currentStore?.supportsTrial ?? false);                     
+       147   const [storeSupportsAppointments, setStoreSupportsAppointments] = useState(currentStore?.supportsAppointments ?? true); 
+       148   const [storeAllowDirectChat, setStoreAllowDirectChat] = useState<boolean>(currentStore?.allowDirectChat ?? true);       
+       149   const [storeAsaasWalletId, setStoreAsaasWalletId] = useState(currentStore?.asaasWalletId || '');                        
+       150   const [storeAsaasAccountId, setStoreAsaasAccountId] = useState(currentStore?.asaasAccountId || '');                     
+       159     showSchedule: currentStore?.serviceButtonsConfig?.showSchedule !== false,                                             
+       160     showHomeService: currentStore?.serviceButtonsConfig?.showHomeService !== false,                                       
+       161     showStoreService: currentStore?.serviceButtonsConfig?.showStoreService !== false,                                     
+       162     showQuote: currentStore?.serviceButtonsConfig?.showQuote !== false,                                                   
+       163     showChat: currentStore?.serviceButtonsConfig?.showChat !== false                                                      
+       167     if (currentStore) {                                                                                                   
+       168       setStoreName(currentStore.name || '');                                                                              
+       169       setStoreOwnerName(currentStore.ownerName || '');                                                                    
+       170       setStoreCategory(currentStore.category || '');                                                                      
+       171       setStoreSubcategory(currentStore.subcategory || '');                                                                
+       172       setStorePhone(currentStore.contactPhone || currentStore.phone || '');                                               
+       173       setStoreCnpjOrCpf(currentStore.cnpjOrCpf || '');                                                                    
+       174       setStoreAddress(currentStore.address || '');                                                                        
+       175       setStoreNeighborhood(currentStore.neighborhood || 'Centro');                                                        
+       176       setStoreZipCode(currentStore.zipCode || '28680-000');                                                               
+       177       setStoreDescription(currentStore.description || '');                                                                
+       178       setStoreOpeningHours(currentStore.openingHours || '08:00 às 18:00');                                                
+       179       setStoreDeliveryFee(currentStore.deliveryFee !== undefined ? currentStore.deliveryFee.toString() : '0');            
+       180       setStoreDeliveryTime(currentStore.deliveryTimeEstimate || '30-45 min');                                             
+       181       setStoreLogo(currentStore.logo || '');                                                                              
+       182       setStoreBanner(currentStore.banner || '');                                                                          
+       183       setStoreGallery(currentStore.gallery || []);                                                                        
+       184       setStoreSupportsPickup(currentStore.supportsPickup ?? true);                                                        
+       185       setStoreSupportsTrial(currentStore.supportsTrial ?? false);                                                         
+       186       setStoreSupportsAppointments(currentStore.supportsAppointments ?? true);                                            
+       187       setStoreAllowDirectChat(currentStore.allowDirectChat ?? true);                                                      
+       188       setStoreAsaasWalletId(currentStore.asaasWalletId || '');                                                            
+       189       setStoreAsaasAccountId(currentStore.asaasAccountId || '');                                                          
+       191         showSchedule: currentStore.serviceButtonsConfig?.showSchedule !== false,                                          
+       192         showHomeService: currentStore.serviceButtonsConfig?.showHomeService !== false,                                    
+       193         showStoreService: currentStore.serviceButtonsConfig?.showStoreService !== false,                                  
+       194         showQuote: currentStore.serviceButtonsConfig?.showQuote !== false,                                                
+       195         showChat: currentStore.serviceButtonsConfig?.showChat !== false                                                   
+       198   }, [currentStore]);                                                                                                     
+       204     currentStore?.isServiceProvider ? 'SERVICO' : 'PRODUTO_FISICO'                                                        
+       208     currentStore?.isServiceProvider ? 'prestadores-de-servicos' : (currentStore?.category?.toLowerCase()?.includes('mod...
+       222   const [allowTrial, setAllowTrial] = useState(currentStore?.supportsTrial ?? false);                                     
+       252     setNewProdItemType(currentStore?.isServiceProvider ? 'SERVICO' : 'PRODUTO_FISICO');                                   
+       254     setNewProdCategory(currentStore?.isServiceProvider ? 'prestadores-de-servicos' : 'moda');                             
+       265     setAllowTrial(currentStore?.supportsTrial ?? false);                                                                  
+       314     if (!currentStore) return;                                                                                            
+       317     updateStoreProfile(currentStore.id, { allowDirectChat: nextVal });                                                    
+       327     if (!currentStore) return;                                                                                            
+       329     updateStoreProfile(currentStore.id, {                                                                                 
+       344       logo: storeLogo || currentStore.logo,                                                                               
+       345       banner: storeBanner || currentStore.banner,                                                                         
+       360     if (!currentStore) return;                                                                                            
+       364         nome: storeName || currentStore.name,                                                                             
+       366         email: currentStore.ownerEmail || currentUser?.email || 'contato@lojista.com',                                    
+       367         telefone: storePhone || currentStore.phone || '21999998888'                                                       
+       371       updateStoreProfile(currentStore.id, {                                                                               
+       430       const sellerTier = currentStore?.membershipTier || 'GRATIS';                                                        
+       439         merchantId: currentStore?.id || 'm-custom',                                                                       
+       440         merchantName: currentStore?.name || 'Minha Loja',                                                                 
+       441         merchantCategory: currentStore?.category || 'Comércio',                                                           
+       442         merchantRating: currentStore?.rating || 5.0,                                                                      
+       443         merchantAddress: currentStore ? `${currentStore.address} - ${currentStore.neighborhood}` : 'Cachoeiras de Macac...
+       511   if (!currentStore) {                                                                                                    
+       564                 src={currentStore.logo}                                                                                   
+       565                 alt={currentStore.name}                                                                                   
+       575                     {MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].name}                                      
+       579                   {currentStore.name}                                                                                     
+       581                 <p className="text-[11px] text-slate-400 truncate">{currentStore.ownerName}</p>                           
+       653               <span>{currentStore?.isServiceProvider ? 'Validar Atendimento' : 'Validar Código Retirada'}</span>          
+       667                 <span>{currentStore?.isServiceProvider ? 'Meus Serviços' : 'Meus Produtos'}</span>                        
+       732                 {currentStore?.rating?.toFixed(1) || '5.0'} ★                                                             
+       778                   {MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].title}                                       
+       782                 {currentStore.name}                                                                                       
+       785                 {MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].description}                                   
+       794                     {storeProducts.length} / {MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].maxProducts ===...
+       802                         MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].maxProducts === 9999                    
+       804                           : Math.min(100, (storeProducts.length / MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRAT...
+       810                   <span>Comissão: <strong>{MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].commissionRate}%</...
+       811                   <span>{MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS'].monthlyPrice === 0 ? 'Grátis' : `R$ ...
+       828               <strong>Regra de Dados do Comprador:</strong> {MEMBERSHIP_PLANS[currentStore.membershipTier || 'GRATIS']....
+       839                   Painel de Controle — {currentStore.name}                                                                
+       892                   {currentStore.rating} ★                                                                                 
+       895                   {currentStore.reviewsCount} clientes avaliaram                                                          
+       922             <SellerFinancialBarChart orders={storeOrders} currentStore={currentStore} />                                  
+      1072                   Acompanhe em tempo real o valor total bruto vendido, a dedução automática da comissão de 10% da plata...
+      1077             <SellerFinancialBarChart orders={storeOrders} currentStore={currentStore} />                                  
+      1413                                   🔒 Dados do comprador protegidos pela plataforma ({MEMBERSHIP_PLANS[currentStore.memb...
+      1492                               merchantId: currentStore?.id,                                                               
+      1493                               merchantName: currentStore?.name,                                                           
+      1672                                 merchantId: currentStore?.id,                                                             
+      1673                                 merchantName: currentStore?.name,                                                         
+      1739         {activeTab === 'schedule' && currentStore && (                                                                    
+      1742               merchant={currentStore}                                                                                     
+      1775               merchantId={currentStore?.id}                                                                               
+      1776               merchantName={currentStore?.name}                                                                           
+      1779                 replyToCustomerReview(reviewId, replyText, currentStore?.name || 'Lojista');                              
+      1787         {activeTab === 'settings' && currentStore && (                                                                    
+      2023                     {currentStore?.isServiceProvider ? (                                                                  
+      2037                 {currentStore?.isServiceProvider ? (                                                                      
+      2111                 {currentStore?.isServiceProvider ? (                                                                      
+      2970           merchantName={currentStore?.name || 'Lojista'}                                                                  
+      2971           merchantOwnerName={currentUser?.name || currentStore?.ownerName}                                                
+      2986           merchantName={currentStore?.name || 'Prestador de Serviços'}                                                    
+      2987           merchantOwnerName={currentUser?.name || currentStore?.ownerName}                                                
+      3005           currentTierName={MEMBERSHIP_PLANS[currentStore?.membershipTier || 'GRATIS'].name}                               
+
+
+
+
+===== OCORRENCIAS DE merchantId =====
+
+LineNumber Line                                                                                                 
+---------- ----                                                                                                 
+        92     merchants.find((m) => m.id === currentUser?.merchantId) ||                                       
+       123   const storeProducts = currentStore ? products.filter((p) => p.merchantId === currentStore.id) : [];
+       124   const storeOrders = currentStore ? orders.filter((o) => o.merchantId === currentStore.id) : [];    
+       126   const storeReviews = currentStore ? reviews.filter((r) => r.merchantId === currentStore.id) : [];  
+       439         merchantId: currentStore?.id || 'm-custom',                                                  
+      1492                               merchantId: currentStore?.id,                                          
+      1672                                 merchantId: currentStore?.id,                                        
+      1775               merchantId={currentStore?.id}                                                          
+
+
+
