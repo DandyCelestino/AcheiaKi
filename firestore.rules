@@ -15,6 +15,7 @@ service cloud.firestore {
     function isMaster() {
       return isSignedIn() && (
         request.auth.token.email == 'telecom.david@gmail.com' ||
+        request.auth.token.email == 'espier.telecom@gmail.com' ||
         request.auth.uid == 'user-master-david'
       );
     }
@@ -27,7 +28,7 @@ service cloud.firestore {
       return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
 
-    // Coleção de Usuários
+    // ColeÃ§Ã£o de UsuÃ¡rios
     match /users/{userId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn() && (isOwner(userId) || isMaster());
@@ -35,7 +36,7 @@ service cloud.firestore {
       allow delete: if isMaster();
     }
 
-    // Coleção de Lojas / Estabelecimentos
+    // ColeÃ§Ã£o de Lojas / Estabelecimentos
     match /merchants/{merchantId} {
       allow read: if true;
       allow create: if isSignedIn();
@@ -43,7 +44,7 @@ service cloud.firestore {
       allow delete: if isMaster();
     }
 
-    // Coleção de Produtos do Catálogo
+    // ColeÃ§Ã£o de Produtos do CatÃ¡logo
     match /products/{productId} {
       allow read: if true;
       allow create: if isSignedIn();
@@ -51,7 +52,7 @@ service cloud.firestore {
       allow delete: if isMaster() || isSignedIn();
     }
 
-    // Coleção de Pedidos e Transações
+    // ColeÃ§Ã£o de Pedidos e TransaÃ§Ãµes
     match /orders/{orderId} {
       allow read: if isMaster() || (isSignedIn() && (resource.data.customerId == request.auth.uid || resource.data.merchantId == request.auth.uid));
       allow create: if isSignedIn();
@@ -59,20 +60,20 @@ service cloud.firestore {
       allow delete: if isMaster();
     }
 
-    // Coleção de Notificações
+    // ColeÃ§Ã£o de NotificaÃ§Ãµes
     match /notifications/{notificationId} {
       allow read: if isMaster() || (isSignedIn() && (resource.data.recipientUserId == request.auth.uid || resource.data.recipientUserId == 'ALL'));
       allow create, update, delete: if isMaster();
     }
 
-    // Trilha de Auditoria (Imutável)
+    // Trilha de Auditoria (ImutÃ¡vel)
     match /auditLogs/{logId} {
       allow read: if isMaster();
       allow create: if isSignedIn();
       allow update, delete: if false;
     }
 
-    // Coleção de Entregadores Parceiros
+    // ColeÃ§Ã£o de Entregadores Parceiros
     match /deliveryDrivers/{driverId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn();
@@ -80,7 +81,7 @@ service cloud.firestore {
       allow delete: if isMaster();
     }
 
-    // Coleção de Corridas e Despacho de Delivery
+    // ColeÃ§Ã£o de Corridas e Despacho de Delivery
     match /deliveryRides/{rideId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn();
@@ -88,9 +89,10 @@ service cloud.firestore {
       allow delete: if isMaster();
     }
 
-    // Conexão de teste de saúde
+    // ConexÃ£o de teste de saÃºde
     match /test/{docId} {
       allow read, write: if true;
     }
   }
 }
+

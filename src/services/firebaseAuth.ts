@@ -67,7 +67,7 @@ export async function syncUserWithFirestore(
   try {
     const snap = await getDoc(userDocRef);
     const email = fbUser.email?.toLowerCase().trim() || '';
-    const isMasterEmail = email === 'telecom.david@gmail.com' || email === 'admin@acheiaqui.com.br';
+    const isMasterEmail = email === 'telecom.david@gmail.com' || email === 'admin@acheiaqui.com.br' || email === 'espier.telecom@gmail.com';
 
     if (snap.exists()) {
       const data = snap.data();
@@ -468,7 +468,7 @@ export function subscribeToFirebaseAuthState(
           name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário',
           email: fbUser.email || '',
           phone: fbUser.phoneNumber || '(21) 99999-0000',
-          role: fbUser.email === 'telecom.david@gmail.com' ? 'MASTER' : 'CLIENTE',
+          role: (fbUser.email === 'telecom.david@gmail.com' || fbUser.email === 'espier.telecom@gmail.com') ? 'MASTER' : 'CLIENTE',
           city: 'Cachoeiras de Macacu, RJ',
           isEmailVerified: fbUser.emailVerified,
           createdAt: new Date().toISOString(),

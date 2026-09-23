@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   User,
   UserRole,
@@ -202,7 +202,7 @@ export interface AppContextType {
   resendEmailConfirmation: (email: string) => { success: boolean; message: string };
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
   completePasswordReset: (email: string, code: string, newPassword: string) => { success: boolean; message: string };
-  // Auditoria, Rastreabilidade & Segurança
+  // Auditoria, Rastreabilidade & SeguranÃ§a
   auditLogs: AuditLog[];
   addAuditLog: (action: string, details: string, options?: AuditLogOptions) => AuditLog;
   logSecurityEvent: (action: string, details: string, meta?: Record<string, any>, severity?: AuditSeverity) => AuditLog;
@@ -306,13 +306,13 @@ export interface AppContextType {
   toastMessage: string | null;
   triggerToast: (msg: string) => void;
 
-  // Modal de Autenticação / Cadastro / Login
+  // Modal de AutenticaÃ§Ã£o / Cadastro / Login
   isAuthModalOpen: boolean;
   authModalTab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver';
   openAuthModal: (tab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
   closeAuthModal: () => void;
 
-  // Prompt de Autenticação Necessária (Compras, Agendamentos, etc.)
+  // Prompt de AutenticaÃ§Ã£o NecessÃ¡ria (Compras, Agendamentos, etc.)
   authPromptModal: {
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -324,7 +324,7 @@ export interface AppContextType {
   ) => void;
   closeAuthPromptModal: () => void;
 
-  // Avaliações Mútuas & Reputação
+  // AvaliaÃ§Ãµes MÃºtuas & ReputaÃ§Ã£o
   reviews: CustomerToMerchantReview[];
   merchantReviews: MerchantToCustomerReview[];
   isPolicyModalOpen: boolean;
@@ -457,7 +457,7 @@ export interface AppContextType {
     roleTitle?: string
   ) => void;
 
-  // Camada de Processamento de Webhooks de Boletos & Comissões
+  // Camada de Processamento de Webhooks de Boletos & ComissÃµes
   webhookEvents: BoletoWebhookEvent[];
   webhookConfig: WebhookConfig;
   updateWebhookConfig: (updates: Partial<WebhookConfig>) => void;
@@ -476,7 +476,7 @@ export interface AppContextType {
   deleteWebhookEvent: (eventId: string) => void;
   clearWebhookLogs: () => void;
 
-  // Módulo de Delivery (V1 - Ciclo Operacional Completo)
+  // MÃ³dulo de Delivery (V1 - Ciclo Operacional Completo)
   deliveryDrivers: DeliveryDriver[];
   deliveryRides: DeliveryRide[];
   currentDeliveryDriver: DeliveryDriver | null;
@@ -593,7 +593,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch (e) { /* ignore */ }
     }
 
-    // Inicializa vendedores padrão e consultores de vendas em users com credencial garantida
+    // Inicializa vendedores padrÃ£o e consultores de vendas em users com credencial garantida
     let allAgentsToSync = [...INITIAL_SALES_AGENTS];
     const savedAgents = localStorage.getItem(STORAGE_KEYS.SALES_AGENTS);
     if (savedAgents) {
@@ -628,7 +628,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           createdAt: sa.createdAt || '2026-01-10'
         });
       } else {
-        // Assegura que o vendedor tenha senha válida para primeiro acesso se ainda não cadastrada
+        // Assegura que o vendedor tenha senha vÃ¡lida para primeiro acesso se ainda nÃ£o cadastrada
         const existing = list[existingUserIndex];
         if (!existing.password || existing.password.trim() === '') {
           list[existingUserIndex] = {
@@ -811,7 +811,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return INITIAL_MERCHANT_REVIEWS;
   });
 
-  // Modal de Autenticação Global
+  // Modal de AutenticaÃ§Ã£o Global
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver'>('login');
 
@@ -824,7 +824,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsAuthModalOpen(false);
   };
 
-  // Modal de Exigência de Autenticação para Ações Restritas (Compra, Agendar, etc.)
+  // Modal de ExigÃªncia de AutenticaÃ§Ã£o para AÃ§Ãµes Restritas (Compra, Agendar, etc.)
   const [authPromptModal, setAuthPromptModal] = useState<{
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -844,11 +844,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       details
     });
     if (actionType === 'COMPRA') {
-      triggerToast('Atenção: Cadastre-se ou faça login para realizar compras.');
+      triggerToast('AtenÃ§Ã£o: Cadastre-se ou faÃ§a login para realizar compras.');
     } else if (actionType === 'AGENDAMENTO') {
-      triggerToast('Atenção: Cadastre-se ou faça login para agendar serviços.');
+      triggerToast('AtenÃ§Ã£o: Cadastre-se ou faÃ§a login para agendar serviÃ§os.');
     } else {
-      triggerToast('Atenção: Cadastre-se ou faça login para continuar.');
+      triggerToast('AtenÃ§Ã£o: Cadastre-se ou faÃ§a login para continuar.');
     }
   };
 
@@ -979,7 +979,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const setCurrentSalesAgent = useCallback((agent: SalesAgent | null) => {
-    // Isolamento estrito de vendedor: se for VENDEDOR, só pode estar vinculado ao seu próprio perfil
+    // Isolamento estrito de vendedor: se for VENDEDOR, sÃ³ pode estar vinculado ao seu prÃ³prio perfil
     if (currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') {
       const cleanEmail = currentUser.email.toLowerCase().trim();
       if (
@@ -989,7 +989,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         `user-${agent.id}` !== currentUser.id &&
         agent.id !== currentUser.id.replace('user-', '')
       ) {
-        console.warn('Isolamento Comercial Ativo: Vendedor não possui permissão para alternar para outro agente.');
+        console.warn('Isolamento Comercial Ativo: Vendedor nÃ£o possui permissÃ£o para alternar para outro agente.');
         return;
       }
     }
@@ -1013,7 +1013,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return DEFAULT_WEBHOOK_CONFIG;
   });
 
-  // Módulo de Delivery & Entregadores
+  // MÃ³dulo de Delivery & Entregadores
   const [deliveryDrivers, setDeliveryDrivers] = useState<DeliveryDriver[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.DELIVERY_DRIVERS);
     if (saved) {
@@ -1178,7 +1178,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [currentDeliveryDriver]);
 
-  // Hidratação e persistência do banco de dados real (Firestore)
+  // HidrataÃ§Ã£o e persistÃªncia do banco de dados real (Firestore)
   useEffect(() => {
     let isMounted = true;
     const initFirestoreSync = async () => {
@@ -1211,7 +1211,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           users
         });
       } catch (err) {
-        console.warn('Sincronização com Firestore:', err);
+        console.warn('SincronizaÃ§Ã£o com Firestore:', err);
       }
     };
 
@@ -1221,7 +1221,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
-  // Sincronização periódica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
+  // SincronizaÃ§Ã£o periÃ³dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
   useEffect(() => {
     let isMounted = true;
 
@@ -1255,11 +1255,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return hasChange ? merged : prevOrders;
         });
       } catch {
-        // Falha transitória ignorada
+        // Falha transitÃ³ria ignorada
       }
     };
 
-    // Executa sincronização inicial e depois a cada 8 segundos
+    // Executa sincronizaÃ§Ã£o inicial e depois a cada 8 segundos
     syncWithServerDb();
     const interval = setInterval(syncWithServerDb, 8000);
 
@@ -1274,7 +1274,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   // ==========================================
-  // AUDITORIA, RASTREABILIDADE & SEGURANÇA
+  // AUDITORIA, RASTREABILIDADE & SEGURANÃ‡A
   // ==========================================
 
   const addAuditLog = useCallback(
@@ -1282,7 +1282,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const now = new Date();
       const timestampFormatted = now.toISOString().replace('T', ' ').substring(0, 19);
 
-      // Categorização e severidade inteligentes caso não informadas
+      // CategorizaÃ§Ã£o e severidade inteligentes caso nÃ£o informadas
       let category: AuditCategory = options?.category || 'GENERAL';
       let severity: AuditSeverity = options?.severity || 'INFO';
 
@@ -1410,7 +1410,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     (orderId: string, targetMerchantId: string, buyerName: string, reason: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'BUYER_DATA_RELEASE',
-        `[LGPD / RASTREABILIDADE] Liberação de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
+        `[LGPD / RASTREABILIDADE] LiberaÃ§Ã£o de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'CRITICAL',
@@ -1423,7 +1423,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             reason,
             authorizedBy: currentUser?.email || 'master@acheiaqui.com',
             authorizedRole: currentUser?.role || 'MASTER',
-            complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
+            complianceStandard: 'LGPD Art. 7Âº V / TransaÃ§Ã£o Segura Achei Aqui',
             ...meta
           }
         }
@@ -1436,7 +1436,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     (subpedidoId: string, senderRole: string, messageSummary: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'SUBORDER_MESSAGE_SENT',
-        `[COMUNICAÇÃO SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
+        `[COMUNICAÃ‡ÃƒO SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -1457,7 +1457,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     (orderId: string, action: string, amount: number, details: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         action,
-        `[INTERMEDIAÇÃO FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
+        `[INTERMEDIAÃ‡ÃƒO FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
         {
           category: 'FINANCIAL',
           severity: 'INFO',
@@ -1569,7 +1569,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         downloadAnchor.remove();
       }
 
-      addAuditLog('AUDIT_REPORT_EXPORTED', `Exportação de relatório de auditoria realizada no formato ${format.toUpperCase()}`, {
+      addAuditLog('AUDIT_REPORT_EXPORTED', `ExportaÃ§Ã£o de relatÃ³rio de auditoria realizada no formato ${format.toUpperCase()}`, {
         category: 'SECURITY',
         severity: 'INFO'
       });
@@ -1589,7 +1589,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setNotifications((prev) => [newNotif, ...prev]);
       addAuditLog(
         'NOTIFICATION_SENT',
-        `Notificação "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
+        `NotificaÃ§Ã£o "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
       );
       return newNotif;
     },
@@ -1621,7 +1621,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return { ...n, readBy: [...n.readBy, effectiveUserId] };
         })
       );
-      triggerToast('Todas as notificações foram marcadas como lidas.');
+      triggerToast('Todas as notificaÃ§Ãµes foram marcadas como lidas.');
     },
     [currentUser]
   );
@@ -1629,12 +1629,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const deleteInAppNotification = useCallback(
     (id: string) => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
-      addAuditLog('NOTIFICATION_DELETED', `Notificação ID ${id} removida pelo Master.`);
+      addAuditLog('NOTIFICATION_DELETED', `NotificaÃ§Ã£o ID ${id} removida pelo Master.`);
     },
     []
   );
 
-  // Garante que cada usuário receba uma notificação de boas-vindas personalizada com seu próprio nome
+  // Garante que cada usuÃ¡rio receba uma notificaÃ§Ã£o de boas-vindas personalizada com seu prÃ³prio nome
   const ensureUserWelcomeNotification = useCallback(
     (user: User) => {
       setNotifications((prev) => {
@@ -1648,12 +1648,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
         const welcomeNotif: InAppNotification = {
           id: `welcome-${user.id}-${Date.now()}`,
-          title: `🌿 Olá, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
+          title: `ðŸŒ¿ OlÃ¡, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
           message: isSeller
-            ? `Olá, ${user.name}! Seu acesso como Lojista / Prestador está ativo. Você pode gerenciar seu catálogo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
+            ? `OlÃ¡, ${user.name}! Seu acesso como Lojista / Prestador estÃ¡ ativo. VocÃª pode gerenciar seu catÃ¡logo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
             : isMaster
-            ? `Olá, ${user.name}! O painel Master Administrativo está pronto para monitoramento e auditoria com segurança jurídica.`
-            : `Olá, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu está ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
+            ? `OlÃ¡, ${user.name}! O painel Master Administrativo estÃ¡ pronto para monitoramento e auditoria com seguranÃ§a jurÃ­dica.`
+            : `OlÃ¡, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu estÃ¡ ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
           category: 'SISTEMA',
           audience: isSeller ? 'SPECIFIC_MERCHANT' : 'SPECIFIC_USER',
           recipientUserId: user.id,
@@ -1661,7 +1661,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           recipientName: user.name,
           recipientPhone: user.phone,
           recipientEmail: user.email,
-          senderName: 'Administração Achei Aqui',
+          senderName: 'AdministraÃ§Ã£o Achei Aqui',
           senderRole: 'SISTEMA',
           priority: 'HIGH',
           actionUrl: isSeller ? 'orders' : 'home',
@@ -1685,17 +1685,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const getUserNotifications = useCallback(
     (user?: User | null): InAppNotification[] => {
       const targetUser = user !== undefined ? user : currentUser;
-      // Visitantes não logados não possuem acesso a notificações particulares
+      // Visitantes nÃ£o logados nÃ£o possuem acesso a notificaÃ§Ãµes particulares
       if (!targetUser) {
         return [];
       }
 
-      // Master possui visão administrativa geral
+      // Master possui visÃ£o administrativa geral
       if (targetUser.role === 'MASTER') {
         return notifications;
       }
 
-      // VENDEDOR: Apenas notificações destinadas especificamente a ele ou à sua loja
+      // VENDEDOR: Apenas notificaÃ§Ãµes destinadas especificamente a ele ou Ã  sua loja
       if (targetUser.role === 'VENDEDOR') {
         const userMerchantId = targetUser.merchantId;
         return notifications.filter((n) => {
@@ -1705,7 +1705,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         });
       }
 
-      // CLIENTE: Apenas notificações estritamente particulares com o seu nome e ID
+      // CLIENTE: Apenas notificaÃ§Ãµes estritamente particulares com o seu nome e ID
       return notifications.filter((n) => {
         if (n.recipientUserId && n.recipientUserId === targetUser.id) return true;
         if (
@@ -1742,19 +1742,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // CONVERSAS & MENSAGENS INTERNAS POR SUBPEDIDO
   // ==========================================
 
-  // Validação estrita de permissão de acesso a mensagens e dados de subpedidos
+  // ValidaÃ§Ã£o estrita de permissÃ£o de acesso a mensagens e dados de subpedidos
   const checkAccessPermission = useCallback(
     (
       userId: string | undefined | null,
       subOrderId: string,
       contextHint?: Partial<ActiveChatSubOrder>
     ): boolean => {
-      // 1. Usuário não autenticado ou subpedido inválido: acesso terminantemente negado
+      // 1. UsuÃ¡rio nÃ£o autenticado ou subpedido invÃ¡lido: acesso terminantemente negado
       if (!userId || !subOrderId) {
         return false;
       }
 
-      // 2. Identificar usuário
+      // 2. Identificar usuÃ¡rio
       const user =
         currentUser && currentUser.id === userId
           ? currentUser
@@ -1764,12 +1764,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return false;
       }
 
-      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e mediação
+      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e mediaÃ§Ã£o
       if (user.role === 'MASTER') {
         return true;
       }
 
-      // 4. Verificação com base em metadados contextuais explícitos passados na abertura
+      // 4. VerificaÃ§Ã£o com base em metadados contextuais explÃ­citos passados na abertura
       if (contextHint) {
         if (user.role === 'CLIENTE') {
           if (contextHint.customerId && contextHint.customerId === user.id) {
@@ -1804,7 +1804,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       }
 
-      // 6. Canal de dúvida sobre produto específico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
+      // 6. Canal de dÃºvida sobre produto especÃ­fico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
       if (
         subOrderId.startsWith('chat-prod-') ||
         subOrderId.startsWith('product-inquiry-') ||
@@ -1871,7 +1871,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         // Fallback gracioso
       }
 
-      // 9. Verificação por histórico de mensagens já trocadas no subpedido
+      // 9. VerificaÃ§Ã£o por histÃ³rico de mensagens jÃ¡ trocadas no subpedido
       const existingThread = subOrderMessages.filter((m) => m.subpedidoId === subOrderId);
       if (existingThread.length > 0) {
         const userParticipated = existingThread.some(
@@ -1887,14 +1887,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const openSubOrderChat = useCallback(
     (params: ActiveChatSubOrder) => {
-      // Validação estrita de permissão antes de abrir o modal do chat
+      // ValidaÃ§Ã£o estrita de permissÃ£o antes de abrir o modal do chat
       const hasPermission = checkAccessPermission(currentUser?.id, params.subpedidoId, params);
 
       if (!hasPermission) {
-        triggerToast('Acesso negado: Você não tem permissão para acessar esta conversa.');
+        triggerToast('Acesso negado: VocÃª nÃ£o tem permissÃ£o para acessar esta conversa.');
         logSecurityEvent(
           'UNAUTHORIZED_CHAT_ACCESS_BLOCKED',
-          `Tentativa de acesso não autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usuário ${currentUser?.email || 'Anônimo'} (${currentUser?.role || 'NÃO_AUTENTICADO'}).`,
+          `Tentativa de acesso nÃ£o autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usuÃ¡rio ${currentUser?.email || 'AnÃ´nimo'} (${currentUser?.role || 'NÃƒO_AUTENTICADO'}).`,
           {
             subpedidoId: params.subpedidoId,
             codigoSubpedido: params.codigoSubpedido,
@@ -1989,7 +1989,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       addAuditLog(
         'SUBORDER_SYSTEM_MESSAGE',
-        `[SISTEMA AUTOMÁTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
+        `[SISTEMA AUTOMÃTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -2020,45 +2020,45 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const subId = (order as any).subpedidos?.[0]?.id || `sub-${order.id}`;
       const subCode = (order as any).subpedidos?.[0]?.codigoSubpedido || `#${order.orderNumber || order.code}-A`;
 
-      let icon = '🔄';
+      let icon = 'ðŸ”„';
       let statusText = `Status atualizado para "${newStatus}"`;
 
       switch (newStatus) {
         case 'Confirmado':
-          icon = '✅';
+          icon = 'âœ…';
           statusText = `Estoque e disponibilidade confirmados pelo estabelecimento! Status: "Confirmado". Reserva garantida por 30 minutos.`;
           break;
         case 'Em Preparo':
-          icon = '👨‍🍳';
-          statusText = `Pedido entrou em fase de separação / preparo na loja.`;
+          icon = 'ðŸ‘¨â€ðŸ³';
+          statusText = `Pedido entrou em fase de separaÃ§Ã£o / preparo na loja.`;
           break;
         case 'Em Rota':
-          icon = '🛵';
-          statusText = `Pedido despachado! O entregador está em rota de entrega para o endereço informado.`;
+          icon = 'ðŸ›µ';
+          statusText = `Pedido despachado! O entregador estÃ¡ em rota de entrega para o endereÃ§o informado.`;
           break;
         case 'Pronto para Retirada':
-          icon = '🛍️';
-          statusText = `Pedido pronto para retirada no balcão da loja! Código de segurança: ${order.securityCode || order.pickupCode || 'N/A'}.`;
+          icon = 'ðŸ›ï¸';
+          statusText = `Pedido pronto para retirada no balcÃ£o da loja! CÃ³digo de seguranÃ§a: ${order.securityCode || order.pickupCode || 'N/A'}.`;
           break;
-        case 'Concluído':
-          icon = '🎉';
-          statusText = `Pedido/Atendimento concluído com sucesso! Obrigado pela preferência.`;
+        case 'ConcluÃ­do':
+          icon = 'ðŸŽ‰';
+          statusText = `Pedido/Atendimento concluÃ­do com sucesso! Obrigado pela preferÃªncia.`;
           break;
         case 'Sem Estoque':
-          icon = '❌';
+          icon = 'âŒ';
           statusText = `Pedido marcado como Sem Estoque pelo estabelecimento.${note ? ` Motivo: ${note}` : ''}`;
           break;
         case 'Cancelado':
-          icon = '🚫';
+          icon = 'ðŸš«';
           statusText = `Pedido cancelado.${note ? ` Motivo: ${note}` : ''}`;
           break;
         case 'Aguardando':
-          icon = '⏳';
-          statusText = `Solicitação recebida e aguardando confirmação do estabelecimento.`;
+          icon = 'â³';
+          statusText = `SolicitaÃ§Ã£o recebida e aguardando confirmaÃ§Ã£o do estabelecimento.`;
           break;
       }
 
-      const fullMessage = `${icon} [HISTÓRICO OFICIAL] ${statusText}`;
+      const fullMessage = `${icon} [HISTÃ“RICO OFICIAL] ${statusText}`;
 
       return sendSubOrderSystemMessage({
         subpedidoId: subId,
@@ -2086,11 +2086,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (eventType === 'MERCHANT_PAID') {
         const commissionFormatted = (order.commissionAmount || 0).toFixed(2).replace('.', ',');
-        message = `💳 [TAXA DA PLATAFORMA] O lojista registrou o pagamento da comissão de R$ ${commissionFormatted}. Aguardando validação do Administrador Master.`;
-        badge = 'Comissão Enviada';
+        message = `ðŸ’³ [TAXA DA PLATAFORMA] O lojista registrou o pagamento da comissÃ£o de R$ ${commissionFormatted}. Aguardando validaÃ§Ã£o do Administrador Master.`;
+        badge = 'ComissÃ£o Enviada';
       } else {
-        message = `🛡️ [TRANSAÇÃO AUDITADA] Pagamento da comissão homologado pelo Administrador Master! Dados do comprador liberados e histórico registrado com conformidade fiscal e jurídica.`;
-        badge = 'Comissão Homologada';
+        message = `ðŸ›¡ï¸ [TRANSAÃ‡ÃƒO AUDITADA] Pagamento da comissÃ£o homologado pelo Administrador Master! Dados do comprador liberados e histÃ³rico registrado com conformidade fiscal e jurÃ­dica.`;
+        badge = 'ComissÃ£o Homologada';
       }
 
       if (extraNote) {
@@ -2165,7 +2165,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteSubOrderMessage = useCallback((messageId: string) => {
     setSubOrderMessages((prev) => prev.filter((m) => m.id !== messageId));
-    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} excluída do histórico do subpedido.`, {
+    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} excluÃ­da do histÃ³rico do subpedido.`, {
       category: 'COMMUNICATION',
       severity: 'WARNING',
       entityId: messageId,
@@ -2174,7 +2174,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [addAuditLog]);
 
   const setCurrentEnvironment = (env: AppEnvironment) => {
-    // Se estiver navegando para o portal comercial e o usuário for vendedor, assegura vinculação ao seu perfil de agente
+    // Se estiver navegando para o portal comercial e o usuÃ¡rio for vendedor, assegura vinculaÃ§Ã£o ao seu perfil de agente
     if (env === 'COMMERCIAL_PORTAL' && currentUser && (currentUser.role === 'VENDEDOR' || currentUser.role === 'REPRESENTANTE_COMERCIAL')) {
       const cleanEmail = currentUser.email.toLowerCase().trim();
       const matchedAgent = salesAgents.find(
@@ -2218,7 +2218,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
     
-    // 1. Verificação prioritária de Consultor / Vendedor Comercial
+    // 1. VerificaÃ§Ã£o prioritÃ¡ria de Consultor / Vendedor Comercial
     const agentMatch =
       salesAgents.find(
         (a) =>
@@ -2266,9 +2266,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         };
       }
 
-      // Validação de senha para Vendedor:
-      // Primeiro acesso: senha padrão 12345678
-      // Pós-primeiro acesso: senha pessoal cadastrada pelo vendedor
+      // ValidaÃ§Ã£o de senha para Vendedor:
+      // Primeiro acesso: senha padrÃ£o 12345678
+      // PÃ³s-primeiro acesso: senha pessoal cadastrada pelo vendedor
       const isDefaultPassword = password === '12345678';
       const isConfiguredPassword = Boolean(sellerUser.password && sellerUser.password === password);
       const isFirstAccessAllowed = sellerUser.needsPasswordChange === true || sellerUser.password === '12345678' || !sellerUser.password;
@@ -2284,12 +2284,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (isFirstAccessAllowed) {
           return {
             success: false,
-            message: 'Senha incorreta. Como este é o primeiro acesso deste vendedor, utilize a senha padrão 12345678.'
+            message: 'Senha incorreta. Como este Ã© o primeiro acesso deste vendedor, utilize a senha padrÃ£o 12345678.'
           };
         }
         return {
           success: false,
-          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefinição com a administração.'
+          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefiniÃ§Ã£o com a administraÃ§Ã£o.'
         };
       }
 
@@ -2319,7 +2319,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     let found = users.find((u) => u.email.toLowerCase() === cleanEmail) ||
                 INITIAL_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
 
-    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
+    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'espier.telecom@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
       const isDavid = cleanEmail === 'telecom.david@gmail.com';
       found = {
         id: isDavid ? 'user-master-david' : 'user-master-1',
@@ -2342,7 +2342,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!found) {
       return {
         success: false,
-        message: 'Usuário ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'UsuÃ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
@@ -2350,7 +2350,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (found.status === 'blocked' || found.status === 'suspended') {
       return {
         success: false,
-        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administração.'}`
+        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÃ§Ã£o.'}`
       };
     }
 
@@ -2367,40 +2367,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } else if (found.password && password && found.password !== password) {
       return {
         success: false,
-        message: 'Usuário ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'UsuÃ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
     // Check if user requires Two-Factor Authentication (2FA)
     // Master Admins have 2FA required for maximum security
-    // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃO -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
+    // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃƒO -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
     const isHighPrivilege = found.role === 'MASTER' || (found.role !== 'VENDEDOR' && found.role !== 'REPRESENTANTE_COMERCIAL' && found.twoFactorEnabled);
 
     if (isHighPrivilege) {
       const simulatedCode = '749210';
       sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-      addAuditLog('2FA_REQUESTED', `Código de 2ª etapa gerado para ${found.email} (${found.role})`);
+      addAuditLog('2FA_REQUESTED', `CÃ³digo de 2Âª etapa gerado para ${found.email} (${found.role})`);
       
       return {
         success: false,
         requires2FA: true,
         simulated2FACode: simulatedCode,
         user: found,
-        message: `Código de verificação em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
+        message: `CÃ³digo de verificaÃ§Ã£o em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
       };
     }
 
-    // Validação de Primeiro Acesso e Troca Obrigatória de Senha (Ex: Vendedor criado pelo Master)
+    // ValidaÃ§Ã£o de Primeiro Acesso e Troca ObrigatÃ³ria de Senha (Ex: Vendedor criado pelo Master)
     if (found.needsPasswordChange) {
       return {
         success: true,
         requiresPasswordChange: true,
         user: found,
-        message: 'Primeiro acesso detectado. É obrigatório alterar sua senha provisória antes de acessar o painel comercial.'
+        message: 'Primeiro acesso detectado. Ã‰ obrigatÃ³rio alterar sua senha provisÃ³ria antes de acessar o painel comercial.'
       };
     }
 
-    // Validação de Bloqueio para Lojista ou Prestador de Serviço sem plano pago
+    // ValidaÃ§Ã£o de Bloqueio para Lojista ou Prestador de ServiÃ§o sem plano pago
     if (found.role === 'LOJISTA' || found.role === 'PRESTADOR_SERVICO') {
       const merchant = merchants.find(
         (m) => m.id === found.merchantId || m.cnpjOrCpf === found.cpf || m.email.toLowerCase() === cleanEmail
@@ -2408,18 +2408,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (merchant && (merchant.status === 'pending_payment' || merchant.status === 'pending')) {
         return {
           success: false,
-          message: 'Seu cadastro está aguardando a confirmação do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
+          message: 'Seu cadastro estÃ¡ aguardando a confirmaÃ§Ã£o do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
         };
       }
       if (merchant && merchant.status === 'blocked') {
         return {
           success: false,
-          message: 'Seu acesso ao painel está temporariamente suspenso pela administração.'
+          message: 'Seu acesso ao painel estÃ¡ temporariamente suspenso pela administraÃ§Ã£o.'
         };
       }
     }
 
-    // Validação de Bloqueio para Entregadores Não Aprovados pelo Master
+    // ValidaÃ§Ã£o de Bloqueio para Entregadores NÃ£o Aprovados pelo Master
     if (found.role === 'ENTREGADOR') {
       const driverMatch = deliveryDrivers.find(
         (d) => d.email.toLowerCase() === cleanEmail || d.userId === found.id
@@ -2427,7 +2427,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (!driverMatch || driverMatch.status !== 'APROVADO') {
         return {
           success: false,
-          message: 'Cadastro em análise pela moderação. Aguarde a aprovação do Master antes de acessar o Portal de Entregas.'
+          message: 'Cadastro em anÃ¡lise pela moderaÃ§Ã£o. Aguarde a aprovaÃ§Ã£o do Master antes de acessar o Portal de Entregas.'
         };
       }
     }
@@ -2508,7 +2508,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
 
-    // Para consultores e vendedores comerciais: o acesso e validação são realizados diretamente com as credenciais do vendedor
+    // Para consultores e vendedores comerciais: o acesso e validaÃ§Ã£o sÃ£o realizados diretamente com as credenciais do vendedor
     const isSellerCandidate =
       salesAgents.some(
         (a) =>
@@ -2536,7 +2536,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const u = fbResult.user;
       setUsers((prev) => [u, ...prev.filter((existing) => existing.id !== u.id && existing.email.toLowerCase() !== u.email.toLowerCase())]);
       setCurrentUser(u);
-      addAuditLog('FIREBASE_LOGIN', `Login oficial concluído via Firebase Auth no perfil ${u.role}`);
+      addAuditLog('FIREBASE_LOGIN', `Login oficial concluÃ­do via Firebase Auth no perfil ${u.role}`);
       if (u.role === 'CLIENTE') setCurrentEnvironmentState('MARKETPLACE');
       else if (u.role === 'VENDEDOR' || u.role === 'REPRESENTANTE_COMERCIAL') {
         setCurrentEnvironmentState('COMMERCIAL_PORTAL');
@@ -2558,7 +2558,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return fbResult;
     }
 
-    // Fallback de contingência para credenciais locais ou Master
+    // Fallback de contingÃªncia para credenciais locais ou Master
     const localResult = login(rawInput, password, true);
     if (localResult.success || localResult.requires2FA) {
       return localResult;
@@ -2566,7 +2566,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     return {
       success: false,
-      message: localResult.message || fbResult.message || 'Falha na autenticação. Verifique seus dados.',
+      message: localResult.message || fbResult.message || 'Falha na autenticaÃ§Ã£o. Verifique seus dados.',
     };
   };
 
@@ -2613,7 +2613,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setCurrentUser(u);
       setCurrentEnvironmentState('MARKETPLACE');
       addAuditLog('FIREBASE_CUSTOMER_REGISTER', `Novo cliente cadastrado no Firebase Auth: ${u.name} (${u.email})`);
-      triggerToast(`Cadastro concluído com sucesso via Firebase!`);
+      triggerToast(`Cadastro concluÃ­do com sucesso via Firebase!`);
     }
     return res;
   };
@@ -2665,7 +2665,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     let found = users.find((u) => u.email.toLowerCase() === cleanEmail) ||
                 INITIAL_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
 
-    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
+    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'espier.telecom@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
       const isDavid = cleanEmail === 'telecom.david@gmail.com';
       found = {
         id: isDavid ? 'user-master-david' : 'user-master-1',
@@ -2699,13 +2699,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     if (!found) {
-      return { success: false, message: 'Usuário não localizado no sistema.' };
+      return { success: false, message: 'UsuÃ¡rio nÃ£o localizado no sistema.' };
     }
 
     const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
     
     // Accept valid 2FA code (including master fallback code)
-    const isMaster = found.role === 'MASTER' || cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br';
+    const isMaster = found?.role === 'MASTER' || cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'espier.telecom@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br';
     const isCodeValid = cleanCode === storedCode || cleanCode === '749210' || cleanCode === '123456' || (isMaster && cleanCode.length === 6);
 
     if (isCodeValid) {
@@ -2716,7 +2716,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setCurrentUser(updatedUser);
       sessionStorage.removeItem(`2fa_code_${cleanEmail}`);
 
-      addAuditLog('2FA_LOGIN_SUCCESS', `Autenticação 2FA concluída com sucesso para ${found.name} (${found.role})`);
+      addAuditLog('2FA_LOGIN_SUCCESS', `AutenticaÃ§Ã£o 2FA concluÃ­da com sucesso para ${found.name} (${found.role})`);
 
       if (found.role === 'MASTER') {
         setCurrentEnvironmentState('MASTER_PANEL');
@@ -2732,13 +2732,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setCurrentEnvironmentState('MARKETPLACE');
       }
 
-      triggerToast(`Autenticação em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
+      triggerToast(`AutenticaÃ§Ã£o em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
       return { success: true, user: updatedUser };
     }
 
     return {
       success: false,
-      message: 'Código de confirmação de 2 etapas incorreto. Digite o código de 6 dígitos válido.'
+      message: 'CÃ³digo de confirmaÃ§Ã£o de 2 etapas incorreto. Digite o cÃ³digo de 6 dÃ­gitos vÃ¡lido.'
     };
   };
 
@@ -2746,10 +2746,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = email.trim().toLowerCase();
     const simulatedCode = '749210';
     sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-    addAuditLog('2FA_RESENT', `Reenvio de código 2FA solicitado para ${cleanEmail}`);
+    addAuditLog('2FA_RESENT', `Reenvio de cÃ³digo 2FA solicitado para ${cleanEmail}`);
     return {
       success: true,
-      message: 'Novo código de segurança 2FA enviado com sucesso via SMS/WhatsApp!',
+      message: 'Novo cÃ³digo de seguranÃ§a 2FA enviado com sucesso via SMS/WhatsApp!',
       simulatedCode
     };
   };
@@ -2814,7 +2814,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   ): StoreMerchant => {
     const newStoreId = `store-${Date.now()}`;
     const isService = merchantData.isServiceProvider || 
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais'].some(cat => 
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃ§os Gerais'].some(cat => 
         (merchantData.category || '').toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -2824,15 +2824,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const newMerchant: StoreMerchant = {
       id: newStoreId,
-      name: merchantData.name || (isService ? 'Novo Prestador de Serviços' : 'Nova Loja Macacu'),
-      ownerName: ownerData.name || 'Proprietário / Profissional',
+      name: merchantData.name || (isService ? 'Novo Prestador de ServiÃ§os' : 'Nova Loja Macacu'),
+      ownerName: ownerData.name || 'ProprietÃ¡rio / Profissional',
       email: (ownerData.email || `parceiro-${Date.now()}@acheiaqui.com`).toLowerCase().trim(),
       phone: merchantData.phone || '(21) 99999-7777',
       cnpjOrCpf: merchantData.cnpjOrCpf || '00.000.000/0001-00',
       idDocument: merchantData.idDocument || ownerData.idDocument || 'RJ-12.345.678-9',
-      category: merchantData.category || (isService ? 'PRESTADORES DE SERVIÇOS' : 'GASTRONOMIA'),
+      category: merchantData.category || (isService ? 'PRESTADORES DE SERVIÃ‡OS' : 'GASTRONOMIA'),
       subcategory: merchantData.subcategory,
-      description: merchantData.description || (isService ? 'Prestador de serviços com documentação e referências verificadas.' : 'Loja parceira oficial no Achei Aqui.'),
+      description: merchantData.description || (isService ? 'Prestador de serviÃ§os com documentaÃ§Ã£o e referÃªncias verificadas.' : 'Loja parceira oficial no Achei Aqui.'),
       address: merchantData.address || 'Rua Principal, 100',
       street: merchantData.street,
       number: merchantData.number,
@@ -2848,7 +2848,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       rating: 5.0,
       reviewsCount: 1,
       isOpen: true,
-      openingHours: merchantData.openingHours || '08:00 às 18:00',
+      openingHours: merchantData.openingHours || '08:00 Ã s 18:00',
       deliveryFee: merchantData.deliveryFee ?? 0,
       deliveryTimeEstimate: isService ? 'Sob Agendamento' : '30-45 min',
       supportsPickup: merchantData.supportsPickup ?? true,
@@ -2866,7 +2866,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const newOwnerUser: User = {
       id: `user-seller-${Date.now()}`,
-      name: ownerData.name || 'Proprietário',
+      name: ownerData.name || 'ProprietÃ¡rio',
       email: (ownerData.email || newMerchant.email).toLowerCase().trim(),
       phone: newMerchant.phone,
       password: _password || '123456',
@@ -2910,7 +2910,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = email.toLowerCase().trim();
     const user = users.find((u) => u.email.toLowerCase().trim() === cleanEmail);
     if (!user) {
-      return { success: false, message: 'Usuário não encontrado.' };
+      return { success: false, message: 'UsuÃ¡rio nÃ£o encontrado.' };
     }
 
     const updated: User = {
@@ -2940,7 +2940,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'FIRST_LOGIN_PASSWORD_CHANGE',
-      `Senha provisória alterada no primeiro acesso com sucesso para o usuário ${user.name} (${user.role}). Acesso ao painel liberado.`
+      `Senha provisÃ³ria alterada no primeiro acesso com sucesso para o usuÃ¡rio ${user.name} (${user.role}). Acesso ao painel liberado.`
     );
 
     triggerToast('Senha definitiva salva com sucesso! Acesso ao painel liberado.');
@@ -2959,14 +2959,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }): { success: boolean; message: string; boletoRequest?: BoletoBillingRequest } => {
     const merchant = merchants.find((m) => m.id === params.merchantId);
     if (!merchant) {
-      return { success: false, message: 'Estabelecimento/Prestador não encontrado.' };
+      return { success: false, message: 'Estabelecimento/Prestador nÃ£o encontrado.' };
     }
 
     const selectedTier = params.planTier;
     const maxProducts = getMaxProductsForTier(selectedTier);
     const commissionRate = getCommissionRateForTier(selectedTier);
     
-    // Valor padrão caso amount venha 0
+    // Valor padrÃ£o caso amount venha 0
     let amount = params.amount;
     if (!amount || amount <= 0) {
       if (merchant.isServiceProvider) {
@@ -3025,7 +3025,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       requestedAt: nowIso,
       paidAt: nowIso,
       confirmedByMasterAt: nowIso,
-      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | Comissão: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
+      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃ£o: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
     };
 
     // Registra entrada financeira
@@ -3049,7 +3049,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    // Atualiza metas e métricas do vendedor
+    // Atualiza metas e mÃ©tricas do vendedor
     if (matchedAgent) {
       setSalesAgents((prev) =>
         prev.map((a) =>
@@ -3066,7 +3066,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'PLAN_PAYMENT_CONFIRMED',
-      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | Comissão Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
+      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃ£o Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
       { category: 'FINANCIAL', entityId: boletoId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -3112,7 +3112,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     addAuditLog('MEMBERSHIP_UPGRADE', `Loja ID ${merchantId} atualizou o plano para "${newTier}" (${maxProducts > 1000 ? 'Produtos Ilimitados' : `${maxProducts} prods`}, Taxa: ${commission}%)`);
-    triggerToast(`Parabéns! Seu estabelecimento foi atualizado para o ${newTier}!`);
+    triggerToast(`ParabÃ©ns! Seu estabelecimento foi atualizado para o ${newTier}!`);
   };
 
   const payOrderCommissionByMerchant = (orderId: string) => {
@@ -3137,14 +3137,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       orderId,
       'COMMISSION_PAID_BY_MERCHANT',
       updatedOrderRef?.commissionAmount || 0,
-      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando validação do Administrador Master.`,
+      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando validaÃ§Ã£o do Administrador Master.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
         commissionAmount: updatedOrderRef?.commissionAmount
       }
     );
-    triggerToast('Comprovante/Pagamento de comissão enviado! O Administrador Master irá validar e liberar os dados do comprador.');
+    triggerToast('Comprovante/Pagamento de comissÃ£o enviado! O Administrador Master irÃ¡ validar e liberar os dados do comprador.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MERCHANT_PAID');
@@ -3175,7 +3175,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       orderId,
       'COMMISSION_CONFIRMED_BY_MASTER',
       updatedOrderRef?.commissionAmount || 0,
-      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Homologação e quitação concluídas.`,
+      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. HomologaÃ§Ã£o e quitaÃ§Ã£o concluÃ­das.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
@@ -3188,11 +3188,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'Homologação e liquidação da taxa de intermediação da plataforma pelo Administrador Master'
+        'HomologaÃ§Ã£o e liquidaÃ§Ã£o da taxa de intermediaÃ§Ã£o da plataforma pelo Administrador Master'
       );
     }
 
-    triggerToast('Comissão confirmada pelo Master! Dados do comprador liberados para a loja.');
+    triggerToast('ComissÃ£o confirmada pelo Master! Dados do comprador liberados para a loja.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MASTER_CONFIRMED');
@@ -3218,12 +3218,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         orderId,
         targetOrder.merchantId,
         targetOrder.customerName,
-        'Autorização discricionária direta emitida pelo Administrador Master Supremo'
+        'AutorizaÃ§Ã£o discricionÃ¡ria direta emitida pelo Administrador Master Supremo'
       );
     } else {
       addAuditLog(
         'BUYER_DATA_REVOCATION_MASTER',
-        `[LGPD / SEGURANÇA] Administrador Master BLOQUEOU a visualização de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
+        `[LGPD / SEGURANÃ‡A] Administrador Master BLOQUEOU a visualizaÃ§Ã£o de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'WARNING',
@@ -3238,21 +3238,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       );
     }
 
-    triggerToast(`Visualização de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
+    triggerToast(`VisualizaÃ§Ã£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
   };
 
   const updateUserPassword = (newPassword: string): { success: boolean; message?: string } => {
     if (!currentUser) {
-      return { success: false, message: 'Nenhum usuário autenticado.' };
+      return { success: false, message: 'Nenhum usuÃ¡rio autenticado.' };
     }
 
     const trimmed = newPassword.trim();
     if (trimmed.length < 8) {
-      return { success: false, message: 'A nova senha deve possuir no mínimo 8 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no mÃ­nimo 8 caracteres.' };
     }
 
     if (trimmed === '12345678') {
-      return { success: false, message: 'Você precisa cadastrar uma nova senha diferente da senha padrão.' };
+      return { success: false, message: 'VocÃª precisa cadastrar uma nova senha diferente da senha padrÃ£o.' };
     }
 
     const updatedUser: User = {
@@ -3270,7 +3270,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       )
     );
 
-    // Persistência robusta no localStorage
+    // PersistÃªncia robusta no localStorage
     try {
       localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
       const savedUsersRaw = localStorage.getItem(STORAGE_KEYS.USERS);
@@ -3289,7 +3289,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       /* ignore */
     }
 
-    addAuditLog('PASSWORD_UPDATE', `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluído.`);
+    addAuditLog('PASSWORD_UPDATE', `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluÃ­do.`);
     triggerToast('Senha atualizada com sucesso! Acesso liberado ao Portal do Vendedor.');
     return { success: true, message: 'Senha atualizada com sucesso!' };
   };
@@ -3302,51 +3302,51 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       twoFactorEnabled: newState
     };
     setCurrentUser(updatedUser);
-    addAuditLog('2FA_TOGGLE', `Autenticação em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
-    triggerToast(`Autenticação de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
+    addAuditLog('2FA_TOGGLE', `AutenticaÃ§Ã£o em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
+    triggerToast(`AutenticaÃ§Ã£o de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
     return newState;
   };
 
   const resendEmailConfirmation = (email: string): { success: boolean; message: string } => {
-    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmação reenviado para ${email}`);
-    triggerToast(`Link de verificação reenviado para ${email}. Verifique sua caixa de entrada.`);
+    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmaÃ§Ã£o reenviado para ${email}`);
+    triggerToast(`Link de verificaÃ§Ã£o reenviado para ${email}. Verifique sua caixa de entrada.`);
     return {
       success: true,
-      message: `E-mail de confirmação enviado para ${email} com sucesso!`
+      message: `E-mail de confirmaÃ§Ã£o enviado para ${email} com sucesso!`
     };
   };
 
   const requestPasswordReset = (email: string): { success: boolean; message: string; simulatedCode?: string } => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    addAuditLog('PASSWORD_RESET_REQUEST', `Solicitação de recuperação de senha com código para ${email}`);
+    addAuditLog('PASSWORD_RESET_REQUEST', `SolicitaÃ§Ã£o de recuperaÃ§Ã£o de senha com cÃ³digo para ${email}`);
     NotificationService.notifySecurityEvent({ email }, 'PASSWORD_RESET', { code });
     return {
       success: true,
-      message: `Código de segurança de 6 dígitos gerado e enviado para ${email}.`,
+      message: `CÃ³digo de seguranÃ§a de 6 dÃ­gitos gerado e enviado para ${email}.`,
       simulatedCode: code
     };
   };
 
   const completePasswordReset = (email: string, code: string, newPassword: string): { success: boolean; message: string } => {
     if (!code || code.length < 6) {
-      return { success: false, message: 'Código de verificação inválido.' };
+      return { success: false, message: 'CÃ³digo de verificaÃ§Ã£o invÃ¡lido.' };
     }
     if (!newPassword || newPassword.length < 6) {
-      return { success: false, message: 'A nova senha deve possuir no mínimo 6 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no mÃ­nimo 6 caracteres.' };
     }
-    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuário ${email}`);
-    triggerToast('Senha redefinida com sucesso! Você já pode entrar com sua nova senha.');
+    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuÃ¡rio ${email}`);
+    triggerToast('Senha redefinida com sucesso! VocÃª jÃ¡ pode entrar com sua nova senha.');
     return { success: true, message: 'Senha alterada com sucesso!' };
   };
 
   const logout = () => {
     if (currentUser) {
-      addAuditLog('USER_LOGOUT', `Usuário ${currentUser.name} encerrou a sessão`);
+      addAuditLog('USER_LOGOUT', `UsuÃ¡rio ${currentUser.name} encerrou a sessÃ£o`);
     }
     firebaseLogout().catch(() => {});
     setCurrentUser(null);
     setCurrentEnvironment('MARKETPLACE');
-    triggerToast('Você saiu da sua conta.');
+    triggerToast('VocÃª saiu da sua conta.');
   };
 
   // ==========================================
@@ -3361,7 +3361,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updatedAt: new Date().toISOString()
     };
 
-    // Se o usuário atualizou endereço primário na ficha básica
+    // Se o usuÃ¡rio atualizou endereÃ§o primÃ¡rio na ficha bÃ¡sica
     if (updates.neighborhood && !updates.city) {
       updatedUser.city = currentCity;
     }
@@ -3369,14 +3369,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_PROFILE_UPDATE',
-      `Ficha cadastral de ${updatedUser.name} (${updatedUser.email}) modificada pelo próprio cliente.`
+      `Ficha cadastral de ${updatedUser.name} (${updatedUser.email}) modificada pelo prÃ³prio cliente.`
     );
     triggerToast('Ficha cadastral atualizada com sucesso!');
   };
 
   const addCustomerAddress = (addressData: Omit<CustomerAddress, 'id'>): CustomerAddress => {
     if (!currentUser) {
-      throw new Error('Nenhum usuário autenticado para adicionar endereço.');
+      throw new Error('Nenhum usuÃ¡rio autenticado para adicionar endereÃ§o.');
     }
 
     const currentAddresses = currentUser.addresses || [];
@@ -3411,9 +3411,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_ADD',
-      `Novo endereço "${newAddress.label}" (${newAddress.neighborhood}) adicionado à ficha do cliente.`
+      `Novo endereÃ§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado Ã  ficha do cliente.`
     );
-    triggerToast(`Endereço "${newAddress.label}" adicionado com sucesso!`);
+    triggerToast(`EndereÃ§o "${newAddress.label}" adicionado com sucesso!`);
     return newAddress;
   };
 
@@ -3455,8 +3455,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
-    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `Endereço "${targetAddress.label}" modificado pelo cliente.`);
-    triggerToast('Endereço atualizado com sucesso!');
+    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÃ§o "${targetAddress.label}" modificado pelo cliente.`);
+    triggerToast('EndereÃ§o atualizado com sucesso!');
   };
 
   const deleteCustomerAddress = (id: string) => {
@@ -3465,7 +3465,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const addressToDelete = currentUser.addresses.find((a) => a.id === id);
     const filteredAddresses = currentUser.addresses.filter((a) => a.id !== id);
 
-    // Se o removido era o padrão, definir o primeiro restante como padrão
+    // Se o removido era o padrÃ£o, definir o primeiro restante como padrÃ£o
     if (addressToDelete?.isDefault && filteredAddresses.length > 0) {
       filteredAddresses[0].isDefault = true;
     }
@@ -3488,9 +3488,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_DELETE',
-      `Endereço "${addressToDelete?.label || id}" removido da ficha cadastral.`
+      `EndereÃ§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
     );
-    triggerToast('Endereço removido com sucesso.');
+    triggerToast('EndereÃ§o removido com sucesso.');
   };
 
   const setDefaultCustomerAddress = (id: string) => {
@@ -3519,9 +3519,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_SET_DEFAULT',
-      `Endereço "${targetAddress.label}" definido como principal pelo cliente.`
+      `EndereÃ§o "${targetAddress.label}" definido como principal pelo cliente.`
     );
-    triggerToast(`"${targetAddress.label}" agora é seu endereço de entrega principal.`);
+    triggerToast(`"${targetAddress.label}" agora Ã© seu endereÃ§o de entrega principal.`);
   };
 
   const updateVipMeasurements = (measurements: VipMeasurements) => {
@@ -3534,7 +3534,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
-    addAuditLog('VIP_MEASUREMENTS_UPDATE', 'Ficha de medidas e preferências para Provador VIP atualizada.');
+    addAuditLog('VIP_MEASUREMENTS_UPDATE', 'Ficha de medidas e preferÃªncias para Provador VIP atualizada.');
     triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
   };
 
@@ -3550,8 +3550,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setCurrentUser(updatedUser);
     setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
-    addAuditLog('CUSTOMER_PREFERENCES_UPDATE', 'Preferências de comunicação e canais atualizadas.');
-    triggerToast('Preferências de notificação salvas com sucesso!');
+    addAuditLog('CUSTOMER_PREFERENCES_UPDATE', 'PreferÃªncias de comunicaÃ§Ã£o e canais atualizadas.');
+    triggerToast('PreferÃªncias de notificaÃ§Ã£o salvas com sucesso!');
   };
 
   // Products
@@ -3564,7 +3564,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setProducts((prev) => [newProduct, ...prev]);
     persistProductToFirestore(newProduct);
-    addAuditLog('PRODUCT_CREATE', `Cadastrou o produto "${newProduct.name}" no catálogo`);
+    addAuditLog('PRODUCT_CREATE', `Cadastrou o produto "${newProduct.name}" no catÃ¡logo`);
     triggerToast(`Produto "${newProduct.name}" publicado com sucesso no marketplace!`);
     return newProduct;
   };
@@ -3633,7 +3633,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return m;
       })
     );
-    addAuditLog('STORE_UPDATE', `Atualizou configurações da loja ID ${id}`);
+    addAuditLog('STORE_UPDATE', `Atualizou configuraÃ§Ãµes da loja ID ${id}`);
     triggerToast('Dados da loja atualizados.');
   };
 
@@ -3652,7 +3652,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString(36).toUpperCase();
     let prefix = 'DEL-';
     if (orderData.modality === 'RETIRADA') prefix = 'RET-';
-    if (orderData.modality === 'EXPERIMENTAÇÃO') prefix = 'EXP-';
+    if (orderData.modality === 'EXPERIMENTAÃ‡ÃƒO') prefix = 'EXP-';
     if (orderData.modality === 'AGENDAMENTO') prefix = 'AGE-';
 
     const orderCode = `${prefix}${randomSuffix}`;
@@ -3694,13 +3694,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setOrders((prev) => [newOrder, ...prev]);
     persistOrderToFirestore(newOrder);
 
-    // Persiste no banco de dados do servidor para sincronização com Webhooks do Asaas
+    // Persiste no banco de dados do servidor para sincronizaÃ§Ã£o com Webhooks do Asaas
     persistirPedidoNoServidor(newOrder).catch(() => {});
     
     logOrderEvent(
       newOrder.id,
       'ORDER_PLACED',
-      `Solicitação de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
+      `SolicitaÃ§Ã£o de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
       {
         orderId: newOrder.id,
         code: newOrder.code,
@@ -3722,15 +3722,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       subpedidoId: initialSubId,
       pedidoPrincipalId: newOrder.id,
       codigoSubpedido: initialSubCode,
-      message: `📦 [HISTÓRICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). Código de segurança: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirmação do estabelecimento.`,
+      message: `ðŸ“¦ [HISTÃ“RICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). CÃ³digo de seguranÃ§a: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirmaÃ§Ã£o do estabelecimento.`,
       systemEventType: 'ORDER_CREATED',
       statusBadge: newOrder.status || 'Pendente'
     });
 
-    // Disparo de notificação transacional via NotificationService (com Supabase e WhatsApp)
+    // Disparo de notificaÃ§Ã£o transacional via NotificationService (com Supabase e WhatsApp)
     NotificationService.notifyOrderEvent(newOrder, 'ORDER_PLACED');
 
-    if (orderData.modality === 'EXPERIMENTAÇÃO') {
+    if (orderData.modality === 'EXPERIMENTAÃ‡ÃƒO') {
       NotificationService.notifyTrialEvent(newOrder, 'TRIAL_REQUESTED');
     } else if (orderData.modality === 'AGENDAMENTO') {
       NotificationService.notifyServiceBookingEvent(newOrder, 'SERVICE_BOOKED');
@@ -3772,7 +3772,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     logOrderEvent(
       orderId,
       'STOCK_CONFIRMED',
-      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (até ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
+      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (atÃ© ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
       {
         orderId,
         reservationExpiresAt,
@@ -3786,7 +3786,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'Desbloqueio autorizado automaticamente após confirmação de estoque e verificação de plano do parceiro'
+        'Desbloqueio autorizado automaticamente apÃ³s confirmaÃ§Ã£o de estoque e verificaÃ§Ã£o de plano do parceiro'
       );
     }
 
@@ -3798,7 +3798,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const rejectOrderStock = (orderId: string, reason: string = 'Produto indisponível no momento') => {
+  const rejectOrderStock = (orderId: string, reason: string = 'Produto indisponÃ­vel no momento') => {
     let updatedOrderRef: Order | undefined;
 
     setOrders((prev) =>
@@ -3871,7 +3871,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       persistirPedidoNoServidor(updatedOrderRef).catch(() => {});
     }
 
-    // Disparar mensagem de sistema automática no chat do subpedido
+    // Disparar mensagem de sistema automÃ¡tica no chat do subpedido
     if (updatedOrderRef) {
       dispatchOrderStatusSystemMessage(updatedOrderRef, status, prevStatusRef);
 
@@ -3883,7 +3883,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_DISPATCHED');
       } else if (status === 'Pronto para Retirada') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_READY_PICKUP');
-      } else if (status === 'Concluído') {
+      } else if (status === 'ConcluÃ­do') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_COMPLETED');
       } else if (status === 'Cancelado' || status === 'Sem Estoque') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_CANCELLED');
@@ -3904,23 +3904,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!found) {
       logSecurityEvent(
         'PICKUP_VALIDATION_FAILED',
-        `Tentativa de validação com código inválido ou não encontrado: "${cleanCode}"`,
+        `Tentativa de validaÃ§Ã£o com cÃ³digo invÃ¡lido ou nÃ£o encontrado: "${cleanCode}"`,
         { attemptedCode: cleanCode },
         'WARNING'
       );
-      return { success: false, message: 'Código de segurança ou retirada não encontrado ou inválido.' };
+      return { success: false, message: 'CÃ³digo de seguranÃ§a ou retirada nÃ£o encontrado ou invÃ¡lido.' };
     }
 
-    if (found.status === 'Concluído') {
-      return { success: false, message: 'Este código já foi validado e o pedido concluído anteriormente.', order: found };
+    if (found.status === 'ConcluÃ­do') {
+      return { success: false, message: 'Este cÃ³digo jÃ¡ foi validado e o pedido concluÃ­do anteriormente.', order: found };
     }
 
-    // Update order to Concluído
-    updateOrderStatus(found.id, 'Concluído');
+    // Update order to ConcluÃ­do
+    updateOrderStatus(found.id, 'ConcluÃ­do');
     logOrderEvent(
       found.id,
       'PICKUP_VALIDATED',
-      `Código de segurança/retirada ${cleanCode} validado com sucesso no balcão. Pedido entregue a ${found.customerName}.`,
+      `CÃ³digo de seguranÃ§a/retirada ${cleanCode} validado com sucesso no balcÃ£o. Pedido entregue a ${found.customerName}.`,
       {
         orderId: found.id,
         validatedCode: cleanCode,
@@ -3930,15 +3930,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
     return {
       success: true,
-      message: `Código ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
-      order: { ...found, status: 'Concluído' }
+      message: `CÃ³digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
+      order: { ...found, status: 'ConcluÃ­do' }
     };
   };
 
   // Cart & Favorites
   const addToCart = (item: CartItem) => {
     setCart((prev) => [...prev, item]);
-    triggerToast(`${item.product.name} adicionado à sua sacola!`);
+    triggerToast(`${item.product.name} adicionado Ã  sua sacola!`);
   };
 
   const removeFromCart = (indexOrProductId: number | string) => {
@@ -3984,8 +3984,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setUsers((prev) => [newUser, ...prev]);
-    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usuário "${newUser.name}" (${newUser.role} - ${newUser.email})`);
-    triggerToast(`Usuário "${newUser.name}" criado com sucesso!`);
+    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usuÃ¡rio "${newUser.name}" (${newUser.role} - ${newUser.email})`);
+    triggerToast(`UsuÃ¡rio "${newUser.name}" criado com sucesso!`);
     return newUser;
   };
 
@@ -4003,8 +4003,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usuário ID ${userId}`);
-    triggerToast('Cadastro de usuário atualizado com sucesso.');
+    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usuÃ¡rio ID ${userId}`);
+    triggerToast('Cadastro de usuÃ¡rio atualizado com sucesso.');
   };
 
   const blockUserByMaster = (userId: string, reason?: string) => {
@@ -4014,7 +4014,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const updated = {
             ...u,
             status: 'blocked' as const,
-            statusReason: reason || 'Bloqueado por decisão administrativa Master'
+            statusReason: reason || 'Bloqueado por decisÃ£o administrativa Master'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4022,8 +4022,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
-    addAuditLog('MASTER_USER_BLOCK', `Usuário ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
-    triggerToast('Usuário bloqueado com sucesso.');
+    addAuditLog('MASTER_USER_BLOCK', `UsuÃ¡rio ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
+    triggerToast('UsuÃ¡rio bloqueado com sucesso.');
   };
 
   const suspendUserByMaster = (userId: string, reason?: string) => {
@@ -4033,7 +4033,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const updated = {
             ...u,
             status: 'suspended' as const,
-            statusReason: reason || 'Suspenso preventivamente para verificação'
+            statusReason: reason || 'Suspenso preventivamente para verificaÃ§Ã£o'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4041,8 +4041,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
-    addAuditLog('MASTER_USER_SUSPEND', `Usuário ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'Prevenção'}`);
-    triggerToast('Usuário suspenso temporariamente.');
+    addAuditLog('MASTER_USER_SUSPEND', `UsuÃ¡rio ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'PrevenÃ§Ã£o'}`);
+    triggerToast('UsuÃ¡rio suspenso temporariamente.');
   };
 
   const reactivateUserByMaster = (userId: string) => {
@@ -4060,14 +4060,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
-    addAuditLog('MASTER_USER_REACTIVATE', `Usuário ID ${userId} REATIVADO com status Ativo pelo Master`);
-    triggerToast('Usuário reativado com sucesso!');
+    addAuditLog('MASTER_USER_REACTIVATE', `UsuÃ¡rio ID ${userId} REATIVADO com status Ativo pelo Master`);
+    triggerToast('UsuÃ¡rio reativado com sucesso!');
   };
 
   const deleteUserByMaster = (userId: string) => {
     setUsers((prev) => prev.filter((u) => u.id !== userId));
-    addAuditLog('MASTER_USER_DELETE', `Usuário ID ${userId} EXCLUÍDO definitivamente do sistema pelo Master`);
-    triggerToast('Usuário removido da base de dados.');
+    addAuditLog('MASTER_USER_DELETE', `UsuÃ¡rio ID ${userId} EXCLUÃDO definitivamente do sistema pelo Master`);
+    triggerToast('UsuÃ¡rio removido da base de dados.');
   };
 
   const resetUserPasswordByMaster = (userId: string): string => {
@@ -4080,8 +4080,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
-    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuário ID ${userId} resetada pelo Master. Nova provisória gerada.`);
-    triggerToast(`Senha resetada! Nova senha provisória: ${tempPass}`);
+    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuÃ¡rio ID ${userId} resetada pelo Master. Nova provisÃ³ria gerada.`);
+    triggerToast(`Senha resetada! Nova senha provisÃ³ria: ${tempPass}`);
     return tempPass;
   };
 
@@ -4095,13 +4095,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return u;
       })
     );
-    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verificação alterado para o usuário ID ${userId}`);
-    triggerToast('Status de verificação do usuário atualizado.');
+    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verificaÃ§Ã£o alterado para o usuÃ¡rio ID ${userId}`);
+    triggerToast('Status de verificaÃ§Ã£o do usuÃ¡rio atualizado.');
   };
 
   const impersonateUser = (user: User) => {
     setCurrentUser(user);
-    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessão do usuário "${user.name}" (${user.role})`);
+    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessÃ£o do usuÃ¡rio "${user.name}" (${user.role})`);
     if (user.role === 'CLIENTE') {
       setCurrentEnvironment('MARKETPLACE');
     } else if (user.role === 'VENDEDOR') {
@@ -4130,7 +4130,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const suspendMerchant = (id: string, reason?: string) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela moderação' } : m))
+      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela moderaÃ§Ã£o' } : m))
     );
     addAuditLog('MASTER_MERCHANT_SUSPEND', `Loja ID ${id} SUSPENSA pelo Master. Motivo: ${reason || 'Ajustes contratuais'}`);
     triggerToast('Loja suspensa com sucesso.');
@@ -4146,16 +4146,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteMerchant = (id: string) => {
     setMerchants((prev) => prev.filter((m) => m.id !== id));
-    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÍDA do sistema pelo Master`);
-    triggerToast('Loja excluída do catálogo.');
+    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÃDA do sistema pelo Master`);
+    triggerToast('Loja excluÃ­da do catÃ¡logo.');
   };
 
   const setMerchantCommissionRate = (id: string, rate: number) => {
     setMerchants((prev) =>
       prev.map((m) => (m.id === id ? { ...m, commissionRate: rate } : m))
     );
-    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissão da loja ID ${id} ajustada para ${rate}%`);
-    triggerToast(`Comissão ajustada para ${rate}%.`);
+    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissÃ£o da loja ID ${id} ajustada para ${rate}%`);
+    triggerToast(`ComissÃ£o ajustada para ${rate}%.`);
   };
 
   // Products & Services Control Master
@@ -4178,7 +4178,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return p;
       })
     );
-    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'NÃO'}`);
+    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'NÃƒO'}`);
     triggerToast(nextState ? 'Produto destacado na Home!' : 'Destaque removido.');
   };
 
@@ -4188,8 +4188,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `srv-${Date.now()}`
     };
     setServices((prev) => [newService, ...prev]);
-    addAuditLog('SERVICE_CREATE', `Serviço "${newService.title}" cadastrado`);
-    triggerToast(`Serviço "${newService.title}" adicionado!`);
+    addAuditLog('SERVICE_CREATE', `ServiÃ§o "${newService.title}" cadastrado`);
+    triggerToast(`ServiÃ§o "${newService.title}" adicionado!`);
     return newService;
   };
 
@@ -4197,14 +4197,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setServices((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('SERVICE_UPDATE', `Serviço ID ${id} atualizado`);
-    triggerToast('Serviço atualizado com sucesso.');
+    addAuditLog('SERVICE_UPDATE', `ServiÃ§o ID ${id} atualizado`);
+    triggerToast('ServiÃ§o atualizado com sucesso.');
   };
 
   const deleteService = (id: string) => {
     setServices((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('SERVICE_DELETE', `Serviço ID ${id} removido`);
-    triggerToast('Serviço removido.');
+    addAuditLog('SERVICE_DELETE', `ServiÃ§o ID ${id} removido`);
+    triggerToast('ServiÃ§o removido.');
   };
 
   // Orders Intervention Master
@@ -4247,7 +4247,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (o.id === orderId) {
           const updated = {
             ...o,
-            status: 'Concluído' as OrderStatus,
+            status: 'ConcluÃ­do' as OrderStatus,
             pickupValidatedAt: new Date().toISOString(),
             updatedAt: 'Agora'
           };
@@ -4260,21 +4260,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (targetOrder) {
       NotificationService.notifyOrderEvent(targetOrder, 'ORDER_COMPLETED');
     }
-    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLUÍDO manualmente com baixa forçada pelo Master`);
+    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLUÃDO manualmente com baixa forÃ§ada pelo Master`);
     triggerToast('Pedido finalizado com sucesso.');
   };
 
   const deleteOrderByMaster = (orderId: string) => {
     setOrders((prev) => prev.filter((o) => o.id !== orderId));
-    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLUÍDO do sistema`);
-    triggerToast('Pedido excluído.');
+    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLUÃDO do sistema`);
+    triggerToast('Pedido excluÃ­do.');
   };
 
   // System Settings & Database Control
   const updateSystemSettings = (updates: Partial<SystemSettings>) => {
     setSystemSettings((prev) => ({ ...prev, ...updates }));
-    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'Configurações e parâmetros globais da plataforma atualizados');
-    triggerToast('Parâmetros do sistema salvos com sucesso!');
+    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'ConfiguraÃ§Ãµes e parÃ¢metros globais da plataforma atualizados');
+    triggerToast('ParÃ¢metros do sistema salvos com sucesso!');
   };
 
   const clearAuditLogs = () => {
@@ -4289,7 +4289,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19)
     };
     setAuditLogs([initialLog]);
-    triggerToast('Histórico de logs reinicializado.');
+    triggerToast('HistÃ³rico de logs reinicializado.');
   };
 
   const exportFullDatabaseSnapshot = (): string => {
@@ -4312,7 +4312,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try {
       const data = JSON.parse(jsonString);
       if (!data.users || !data.merchants || !data.products) {
-        throw new Error('Arquivo de backup inválido ou incompatível.');
+        throw new Error('Arquivo de backup invÃ¡lido ou incompatÃ­vel.');
       }
       if (data.users) setUsers(data.users);
       if (data.merchants) setMerchants(data.merchants);
@@ -4328,7 +4328,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return true;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erro ao importar';
-      triggerToast(`Falha na restauração: ${msg}`);
+      triggerToast(`Falha na restauraÃ§Ã£o: ${msg}`);
       return false;
     }
   };
@@ -4345,8 +4345,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAdSpaces(INITIAL_AD_SPACES);
     setFrontendConfig(INITIAL_FRONTEND_CONFIG);
     setCurrentCity('Cachoeiras de Macacu, RJ');
-    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrão inicial de fábrica');
-    triggerToast('Sistema restaurado para os dados originais padrão!');
+    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrÃ£o inicial de fÃ¡brica');
+    triggerToast('Sistema restaurado para os dados originais padrÃ£o!');
   };
 
   // Inter-Category Banners Operations
@@ -4398,8 +4398,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       bids: []
     };
     setAdSpaces((prev) => [newSpace, ...prev]);
-    addAuditLog('AD_SPACE_CREATE', `Espaço publicitário criado: "${newSpace.name}"`);
-    triggerToast('Espaço de publicidade disponibilizado!');
+    addAuditLog('AD_SPACE_CREATE', `EspaÃ§o publicitÃ¡rio criado: "${newSpace.name}"`);
+    triggerToast('EspaÃ§o de publicidade disponibilizado!');
     return newSpace;
   };
 
@@ -4407,14 +4407,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAdSpaces((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('AD_SPACE_UPDATE', `Espaço publicitário #${id} atualizado`);
-    triggerToast('Espaço publicitário atualizado!');
+    addAuditLog('AD_SPACE_UPDATE', `EspaÃ§o publicitÃ¡rio #${id} atualizado`);
+    triggerToast('EspaÃ§o publicitÃ¡rio atualizado!');
   };
 
   const deleteAdSpace = (id: string) => {
     setAdSpaces((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('AD_SPACE_DELETE', `Espaço publicitário #${id} excluído`);
-    triggerToast('Espaço publicitário excluído!');
+    addAuditLog('AD_SPACE_DELETE', `EspaÃ§o publicitÃ¡rio #${id} excluÃ­do`);
+    triggerToast('EspaÃ§o publicitÃ¡rio excluÃ­do!');
   };
 
   const placeAdBid = (
@@ -4425,13 +4425,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     notes?: string
   ): { success: boolean; message: string } => {
     const space = adSpaces.find((s) => s.id === adSpaceId);
-    if (!space) return { success: false, message: 'Espaço não encontrado.' };
+    if (!space) return { success: false, message: 'EspaÃ§o nÃ£o encontrado.' };
 
     const minAmount = space.currentHighestBid ? space.currentHighestBid + 10 : (space.minimumBid || 50);
     if (bidAmount < minAmount) {
       return {
         success: false,
-        message: `O lance mínimo para superar a oferta atual é de R$ ${minAmount.toFixed(2)}`
+        message: `O lance mÃ­nimo para superar a oferta atual Ã© de R$ ${minAmount.toFixed(2)}`
       };
     }
 
@@ -4465,8 +4465,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espaço #${space.name}`);
-    triggerToast(`🎉 Lance de R$ ${bidAmount.toFixed(2)} registrado com sucesso!`);
+    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espaÃ§o #${space.name}`);
+    triggerToast(`ðŸŽ‰ Lance de R$ ${bidAmount.toFixed(2)} registrado com sucesso!`);
     return { success: true, message: 'Lance registrado com sucesso!' };
   };
 
@@ -4493,8 +4493,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return s;
       })
     );
-    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `Leilão arrematado para o espaço #${adSpaceId}`);
-    triggerToast('Vencedor do leilão confirmado e espaço ativado!');
+    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `LeilÃ£o arrematado para o espaÃ§o #${adSpaceId}`);
+    triggerToast('Vencedor do leilÃ£o confirmado e espaÃ§o ativado!');
   };
 
   const sellAdSpaceDirectly = (
@@ -4519,8 +4519,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return s;
       })
     );
-    addAuditLog('AD_DIRECT_SALE', `Espaço #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
-    triggerToast(`Espaço publicitário vendido para ${merchantName}!`);
+    addAuditLog('AD_DIRECT_SALE', `EspaÃ§o #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
+    triggerToast(`EspaÃ§o publicitÃ¡rio vendido para ${merchantName}!`);
   };
 
   const trackAdImpression = useCallback((adSpaceId: string) => {
@@ -4542,8 +4542,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Master Frontend Customization Operations
   const updateFrontendConfig = (updates: Partial<FrontendCustomization>) => {
     setFrontendConfig((prev) => ({ ...prev, ...updates }));
-    addAuditLog('FRONTEND_CONFIG_UPDATE', 'Configurações de visual do frontend atualizadas pelo Master');
-    triggerToast('Visual e configurações do frontend atualizados com sucesso!');
+    addAuditLog('FRONTEND_CONFIG_UPDATE', 'ConfiguraÃ§Ãµes de visual do frontend atualizadas pelo Master');
+    triggerToast('Visual e configuraÃ§Ãµes do frontend atualizados com sucesso!');
   };
 
   const addNavMenuItem = (item: Omit<NavMenuItem, 'id'>) => {
@@ -4555,7 +4555,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       ...prev,
       navMenuItems: [...prev.navMenuItems, newItem]
     }));
-    triggerToast('Item adicionado ao menu de navegação!');
+    triggerToast('Item adicionado ao menu de navegaÃ§Ã£o!');
   };
 
   const updateNavMenuItem = (id: string, updates: Partial<NavMenuItem>) => {
@@ -4585,7 +4585,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // ==========================================
-  // AVALIAÇÕES MÚTUAS & REPUTAÇÃO LOCAL
+  // AVALIAÃ‡Ã•ES MÃšTUAS & REPUTAÃ‡ÃƒO LOCAL
   // ==========================================
 
   const addCustomerReview = (
@@ -4620,7 +4620,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'CUSTOMER_REVIEW_SUBMITTED',
       `Cliente ${reviewData.userName} avaliou o estabelecimento ${reviewData.merchantName} com nota ${reviewData.rating}.0`
     );
-    triggerToast('Avaliação enviada com sucesso! Obrigado pela contribuição.');
+    triggerToast('AvaliaÃ§Ã£o enviada com sucesso! Obrigado pela contribuiÃ§Ã£o.');
     return newReview;
   };
 
@@ -4639,7 +4639,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'MERCHANT_REVIEW_SUBMITTED',
       `Lojista ${reviewData.merchantName} avaliou a conduta do cliente ${reviewData.userName} (Pedido #${reviewData.orderCode}) com nota ${reviewData.rating}.0`
     );
-    triggerToast(`Avaliação de conduta de ${reviewData.userName} registrada com sucesso!`);
+    triggerToast(`AvaliaÃ§Ã£o de conduta de ${reviewData.userName} registrada com sucesso!`);
     return newReview;
   };
 
@@ -4655,7 +4655,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             ...r,
             merchantReply: {
               replyText,
-              repliedAt: `${new Date().toISOString().split('T')[0]} às ${new Date()
+              repliedAt: `${new Date().toISOString().split('T')[0]} Ã s ${new Date()
                 .toTimeString()
                 .slice(0, 5)}`,
               merchantAuthorName: merchantAuthorName || 'Estabelecimento'
@@ -4665,8 +4665,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return r;
       })
     );
-    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta pública adicionada para a avaliação #${reviewId}`);
-    triggerToast('Resposta pública publicada com sucesso!');
+    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta pÃºblica adicionada para a avaliaÃ§Ã£o #${reviewId}`);
+    triggerToast('Resposta pÃºblica publicada com sucesso!');
   };
 
   const getCustomerReputationSummary = useCallback(
@@ -4755,7 +4755,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // ==========================================
-  // OPERAÇÕES DA EQUIPE COMERCIAL & VENDEDORES
+  // OPERAÃ‡Ã•ES DA EQUIPE COMERCIAL & VENDEDORES
   // ==========================================
 
   const addSalesAgent = (agentData: Omit<SalesAgent, 'id' | 'createdAt'>): SalesAgent => {
@@ -4766,7 +4766,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setSalesAgents((prev) => [newAgent, ...prev]);
 
-    // Cria o perfil de usuário VENDEDOR correspondente para autenticação
+    // Cria o perfil de usuÃ¡rio VENDEDOR correspondente para autenticaÃ§Ã£o
     const cleanAgentEmail = newAgent.email.toLowerCase().trim();
     const provisionalPassword = (agentData as any).temporaryPassword || '12345678';
     const newAgentUser: User = {
@@ -4786,10 +4786,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'ADD_SALES_AGENT',
-      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comissão de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padrão 12345678 (troca obrigatória no primeiro acesso).`,
+      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comissÃ£o de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padrÃ£o 12345678 (troca obrigatÃ³ria no primeiro acesso).`,
       { category: 'USER_MANAGEMENT', entityId: newAgent.id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padrão gerada: 12345678`);
+    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padrÃ£o gerada: 12345678`);
     return newAgent;
   };
 
@@ -4834,10 +4834,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     addAuditLog(
       'SET_SALES_AGENT_COMMISSION',
-      `Taxa de comissão do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (Bônus fixo: R$ ${bonusPerActivation ?? 0}).`,
+      `Taxa de comissÃ£o do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (BÃ´nus fixo: R$ ${bonusPerActivation ?? 0}).`,
       { category: 'FINANCIAL', entityId: id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`Comissão de ${ratePercent}% configurada com sucesso!`);
+    triggerToast(`ComissÃ£o de ${ratePercent}% configurada com sucesso!`);
   };
 
   const submitBoletoRequest = (
@@ -4875,19 +4875,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'SUBMIT_BOLETO_REQUEST',
-      `Cobrança Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - Comissão 5%: R$ ${commissionAmount.toFixed(2)}).`,
+      `CobranÃ§a Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - ComissÃ£o 5%: R$ ${commissionAmount.toFixed(2)}).`,
       { category: 'FINANCIAL', entityId: newReq.id, entityType: 'BOLETO_REQUEST' }
     );
 
     sendInAppNotification({
-      title: `Nova Cobrança Pix / Cadastro: ${newReq.code}`,
-      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - Comissão: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
+      title: `Nova CobranÃ§a Pix / Cadastro: ${newReq.code}`,
+      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - ComissÃ£o: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'HIGH'
     });
 
-    triggerToast(`Cobrança Pix ${code} gerada para ${newReq.clientName}!`);
+    triggerToast(`CobranÃ§a Pix ${code} gerada para ${newReq.clientName}!`);
     return newReq;
   };
 
@@ -4917,9 +4917,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     // Regras de Organograma:
-    // 1) Usuário: R$ 0,00 Grátis • Sem mensalidade • Somente compras • Sem permissão comercial
-    // 2) Prestador: R$ 29,90 Fixo • 1 serviço incluso (+R$ 9,90 adicional) • Comissão 5% = R$ 1,50
-    // 3) Lojista: Escolhe o plano • Pix CNPJ 30810800000139 • Comissão 5% do plano
+    // 1) UsuÃ¡rio: R$ 0,00 GrÃ¡tis â€¢ Sem mensalidade â€¢ Somente compras â€¢ Sem permissÃ£o comercial
+    // 2) Prestador: R$ 29,90 Fixo â€¢ 1 serviÃ§o incluso (+R$ 9,90 adicional) â€¢ ComissÃ£o 5% = R$ 1,50
+    // 3) Lojista: Escolhe o plano â€¢ Pix CNPJ 30810800000139 â€¢ ComissÃ£o 5% do plano
     let finalAmount = 0;
     let chosenPlan: MembershipTier = clientData.chosenPlan;
     const commissionRate = 5; // 5% fixo conforme organograma oficial
@@ -4937,7 +4937,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const agent = salesAgents.find((a) => a.id === clientData.agentId) || currentSalesAgent;
 
-    // Se NÃO for usuário comum (cliente comprador), gera cobrança Pix/Boleto oficial
+    // Se NÃƒO for usuÃ¡rio comum (cliente comprador), gera cobranÃ§a Pix/Boleto oficial
     if (!isUser && options?.shouldRequestBoleto !== false) {
       const defaultDueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       createdBoleto = submitBoletoRequest({
@@ -4954,7 +4954,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         neighborhood: clientData.neighborhood,
         chosenPlan,
         planTitle: isProvider
-          ? 'Assinatura Prestador de Serviços (1 serviço incluso)'
+          ? 'Assinatura Prestador de ServiÃ§os (1 serviÃ§o incluso)'
           : `Plano ${chosenPlan}`,
         billingFrequency: options?.billingFrequency || 'MENSAL',
         amount: finalAmount,
@@ -4974,8 +4974,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setRegisteredClientsByAgents((prev) => [newClient, ...prev]);
 
-    // Cadastro comercial no catálogo APENAS para Prestadores e Lojistas
-    // Usuários comuns não possuem perfil comercial nem permissão para postar produtos/banners
+    // Cadastro comercial no catÃ¡logo APENAS para Prestadores e Lojistas
+    // UsuÃ¡rios comuns nÃ£o possuem perfil comercial nem permissÃ£o para postar produtos/banners
     if (isMerchant || isProvider) {
       const merchantId = `store-${Date.now()}`;
       const newMerchant: StoreMerchant = {
@@ -4985,22 +4985,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         cnpjOrCpf: clientData.documentNumber,
         email: clientData.email,
         phone: clientData.phone,
-        category: isProvider ? 'Serviços' : 'Geral',
+        category: isProvider ? 'ServiÃ§os' : 'Geral',
         city: clientData.city || 'Cachoeiras de Macacu',
         neighborhood: clientData.neighborhood || 'Centro',
         address: `${clientData.neighborhood}, ${clientData.city}`,
         logo: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=150&auto=format&fit=crop&q=80',
         description: isProvider
-          ? `Prestador de serviços credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 serviço incluso.`
+          ? `Prestador de serviÃ§os credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 serviÃ§o incluso.`
           : `Estabelecimento comercial credenciado pelo consultor ${clientData.agentName}.`,
         status: 'approved',
         membershipTier: chosenPlan,
         commissionRate: getCommissionRateForTier(chosenPlan),
-        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 serviço incluso (+R$ 9,90 adicional)
+        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 serviÃ§o incluso (+R$ 9,90 adicional)
         rating: 5.0,
         reviewsCount: 0,
         isOpen: true,
-        openingHours: 'Segunda a Sábado: 08h às 19h',
+        openingHours: 'Segunda a SÃ¡bado: 08h Ã s 19h',
         deliveryFee: 0,
         deliveryTimeEstimate: '30 - 60 min',
         supportsPickup: true,
@@ -5014,13 +5014,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'REGISTER_CLIENT_BY_AGENT',
-      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'Grátis - Compras' : `R$ ${finalAmount.toFixed(2)} - Comissão 5%`}).`,
+      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'GrÃ¡tis - Compras' : `R$ ${finalAmount.toFixed(2)} - ComissÃ£o 5%`}).`,
       { category: 'USER_MANAGEMENT', entityId: clientId, entityType: 'AGENT_CLIENT' }
     );
 
     triggerToast(
       isUser
-        ? `Usuário "${clientData.name}" cadastrado gratuitamente (somente compras)!`
+        ? `UsuÃ¡rio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
         : `${clientData.clientType === 'PRESTADOR' ? 'Prestador' : 'Lojista'} "${clientData.name}" cadastrado! Chave Pix gerada.`
     );
     return { client: newClient, boletoRequest: createdBoleto };
@@ -5055,7 +5055,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             barcodeDigits: barcode,
             pixCopiaECola: pix,
             boletoPdfUrl: pdf,
-            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto bancário registrado e enviado ao cliente.'
+            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto bancÃ¡rio registrado e enviado ao cliente.'
           };
           return targetReq;
         }
@@ -5074,7 +5074,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'MARK_BOLETO_SENT',
-      `Boleto bancário da solicitação ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
+      `Boleto bancÃ¡rio da solicitaÃ§Ã£o ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -5095,7 +5095,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             masterNotes:
               notes ||
               req.masterNotes ||
-              'Pagamento confirmado pelo Master. Comissão liberada para o vendedor.'
+              'Pagamento confirmado pelo Master. ComissÃ£o liberada para o vendedor.'
           };
           return targetReq;
         }
@@ -5127,20 +5127,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       addAuditLog(
         'CONFIRM_BOLETO_PAYMENT',
-        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! Comissão de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
+        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! ComissÃ£o de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
         { category: 'FINANCIAL', entityId: targetReq.id, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `Comissão Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comissão está liberada para saque Pix.`,
+        title: `ComissÃ£o Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comissÃ£o estÃ¡ liberada para saque Pix.`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
       triggerToast(
-        `Pagamento do boleto ${targetReq.code} confirmado! Comissão de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
+        `Pagamento do boleto ${targetReq.code} confirmado! ComissÃ£o de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
       );
     }
   };
@@ -5161,10 +5161,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
     addAuditLog(
       'CANCEL_BOLETO_REQUEST',
-      `Solicitação de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
+      `SolicitaÃ§Ã£o de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
-    triggerToast('Solicitação de boleto cancelada.');
+    triggerToast('SolicitaÃ§Ã£o de boleto cancelada.');
   };
 
   const markCommissionAsPaidToAgent = (requestId: string, receiptCode?: string) => {
@@ -5188,19 +5188,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (targetReq) {
       addAuditLog(
         'PAY_COMMISSION_TO_AGENT',
-        `Comissão de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
+        `ComissÃ£o de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
         { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `Comissão Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O Administrador Master efetuou o pagamento da sua comissão referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
+        title: `ComissÃ£o Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O Administrador Master efetuou o pagamento da sua comissÃ£o referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
-      triggerToast(`Comissão de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
+      triggerToast(`ComissÃ£o de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
     }
   };
 
@@ -5215,10 +5215,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCommercialGoals((prev) => [newGoal, ...prev]);
     addAuditLog(
       'ADD_COMMERCIAL_GOAL',
-      `Nova meta comercial lançada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
+      `Nova meta comercial lanÃ§ada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
       { category: 'GENERAL', entityId: newGoal.id, entityType: 'COMMERCIAL_GOAL' }
     );
-    triggerToast(`Meta "${newGoal.title}" criada e lançada com sucesso!`);
+    triggerToast(`Meta "${newGoal.title}" criada e lanÃ§ada com sucesso!`);
     return newGoal;
   };
 
@@ -5231,7 +5231,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const deleteCommercialGoal = (id: string) => {
     setCommercialGoals((prev) => prev.filter((g) => g.id !== id));
     addAuditLog('DELETE_COMMERCIAL_GOAL', `Meta comercial ${id} removida pelo Master.`);
-    triggerToast('Meta comercial excluída.');
+    triggerToast('Meta comercial excluÃ­da.');
   };
 
   const addCommercialArea = (areaData: Omit<CommercialArea, 'id'>): CommercialArea => {
@@ -5242,23 +5242,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCommercialAreas((prev) => [...prev, newArea]);
     addAuditLog(
       'ADD_COMMERCIAL_AREA',
-      `Nova área comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
+      `Nova Ã¡rea comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
       { category: 'GENERAL', entityId: newArea.id, entityType: 'COMMERCIAL_AREA' }
     );
-    triggerToast(`Área comercial "${newArea.name}" criada com sucesso!`);
+    triggerToast(`Ãrea comercial "${newArea.name}" criada com sucesso!`);
     return newArea;
   };
 
   const updateCommercialArea = (id: string, updates: Partial<CommercialArea>) => {
     setCommercialAreas((prev) => prev.map((a) => (a.id === id ? { ...a, ...updates } : a)));
-    addAuditLog('UPDATE_COMMERCIAL_AREA', `Área comercial ${id} atualizada pelo Master.`);
-    triggerToast('Área comercial atualizada!');
+    addAuditLog('UPDATE_COMMERCIAL_AREA', `Ãrea comercial ${id} atualizada pelo Master.`);
+    triggerToast('Ãrea comercial atualizada!');
   };
 
   const deleteCommercialArea = (id: string) => {
     setCommercialAreas((prev) => prev.filter((a) => a.id !== id));
-    addAuditLog('DELETE_COMMERCIAL_AREA', `Área comercial ${id} removida pelo Master.`);
-    triggerToast('Área comercial excluída.');
+    addAuditLog('DELETE_COMMERCIAL_AREA', `Ãrea comercial ${id} removida pelo Master.`);
+    triggerToast('Ãrea comercial excluÃ­da.');
   };
 
   const assignAgentHierarchyAndArea = (
@@ -5295,11 +5295,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'ASSIGN_AGENT_HIERARCHY',
-      `Vendedor ${agentName} atribuído pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. Área: ${assignedRegion}. Nível: ${roleLevel || targetAgent?.roleLevel}.`,
+      `Vendedor ${agentName} atribuÃ­do pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. Ãrea: ${assignedRegion}. NÃ­vel: ${roleLevel || targetAgent?.roleLevel}.`,
       { category: 'USER_MANAGEMENT', entityId: agentId, entityType: 'SALES_AGENT' }
     );
 
-    triggerToast(`Estrutura e área de ${agentName} atualizadas com sucesso!`);
+    triggerToast(`Estrutura e Ã¡rea de ${agentName} atualizadas com sucesso!`);
   };
 
   // ==========================================
@@ -5309,20 +5309,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setWebhookConfig((prev) => ({ ...prev, ...updates }));
     addAuditLog(
       'UPDATE_WEBHOOK_CONFIG',
-      'Configurações da camada de webhooks de boletos atualizadas pelo Master.',
+      'ConfiguraÃ§Ãµes da camada de webhooks de boletos atualizadas pelo Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_CONFIG' }
     );
-    triggerToast('Configurações de Webhook atualizadas com sucesso!');
+    triggerToast('ConfiguraÃ§Ãµes de Webhook atualizadas com sucesso!');
   };
 
   const clearWebhookLogs = () => {
     setWebhookEvents([]);
     addAuditLog(
       'CLEAR_WEBHOOK_LOGS',
-      'Histórico de eventos de webhooks limpo pelo Administrador Master.',
+      'HistÃ³rico de eventos de webhooks limpo pelo Administrador Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_LOGS' }
     );
-    triggerToast('Histórico de logs de webhook limpo com sucesso.');
+    triggerToast('HistÃ³rico de logs de webhook limpo com sucesso.');
   };
 
   const deleteWebhookEvent = (eventId: string) => {
@@ -5345,7 +5345,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const eventId = `wh-evt-${Date.now()}`;
     const { gateway, payload, headers, manualBoletoCode } = input;
 
-    // 1. Extração da Referência / Código do Boleto
+    // 1. ExtraÃ§Ã£o da ReferÃªncia / CÃ³digo do Boleto
     let extractedCode = manualBoletoCode?.trim() || '';
 
     if (!extractedCode) {
@@ -5371,7 +5371,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
-    // Busca por regex de padrão BOL-YYYY-NNN caso o código esteja embutido em texto livre
+    // Busca por regex de padrÃ£o BOL-YYYY-NNN caso o cÃ³digo esteja embutido em texto livre
     if (extractedCode && !extractedCode.startsWith('BOL-') && extractedCode.includes('BOL-')) {
       const match = extractedCode.match(/BOL-\d{4}-\d{3}/i);
       if (match) {
@@ -5379,7 +5379,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
-    // 2. Extração do Tipo de Evento
+    // 2. ExtraÃ§Ã£o do Tipo de Evento
     let eventType = 'PAYMENT_CONFIRMED';
     if (gateway === 'ASAAS') {
       eventType = payload.event || 'PAYMENT_RECEIVED';
@@ -5395,7 +5395,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       eventType = payload.event || 'BOLETO_PAID';
     }
 
-    // 3. Extração do ID da Transação Externa
+    // 3. ExtraÃ§Ã£o do ID da TransaÃ§Ã£o Externa
     let externalTxId = '';
     if (gateway === 'ASAAS') {
       externalTxId = payload.payment?.id || payload.id || `asaas_tx_${Date.now()}`;
@@ -5411,7 +5411,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       externalTxId = payload.transactionId || payload.id || `tx_gen_${Date.now()}`;
     }
 
-    // 4. Extração do Valor Pago
+    // 4. ExtraÃ§Ã£o do Valor Pago
     let amountPaid = 0;
     if (gateway === 'ASAAS') {
       amountPaid = Number(payload.payment?.value || 0);
@@ -5427,7 +5427,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       amountPaid = Number(payload.amount || payload.valor || 0);
     }
 
-    // 5. Localização do Boleto no Banco de Dados da Aplicação
+    // 5. LocalizaÃ§Ã£o do Boleto no Banco de Dados da AplicaÃ§Ã£o
     const matchedBoleto = boletoRequests.find((req) => {
       if (extractedCode) {
         if (req.code.toUpperCase() === extractedCode.toUpperCase()) return true;
@@ -5451,8 +5451,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         durationMs,
         status: 'UNMATCHED',
         statusMessage: extractedCode
-          ? `Boleto com código ou referência '${extractedCode}' não foi localizado no sistema.`
-          : 'Nenhum código de boleto foi identificado no payload recebido.',
+          ? `Boleto com cÃ³digo ou referÃªncia '${extractedCode}' nÃ£o foi localizado no sistema.`
+          : 'Nenhum cÃ³digo de boleto foi identificado no payload recebido.',
         payload,
         headers,
         ipAddress: '177.136.204.88'
@@ -5462,11 +5462,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       addAuditLog(
         'WEBHOOK_UNMATCHED',
-        `Webhook ${gateway} recebido, mas nenhum boleto com a referência '${extractedCode}' foi localizado.`,
+        `Webhook ${gateway} recebido, mas nenhum boleto com a referÃªncia '${extractedCode}' foi localizado.`,
         { category: 'FINANCIAL', entityId: eventId, entityType: 'WEBHOOK_EVENT' }
       );
 
-      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' não encontrado.`);
+      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' nÃ£o encontrado.`);
 
       return {
         success: false,
@@ -5479,7 +5479,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const effectiveAmount = amountPaid > 0 ? amountPaid : matchedBoleto.amount;
     const isAlreadyPaid = matchedBoleto.status === 'PAGAMENTO_CONFIRMADO';
 
-    // 6. Atualização Automática do Boleto e Liberação de Comissão
+    // 6. AtualizaÃ§Ã£o AutomÃ¡tica do Boleto e LiberaÃ§Ã£o de ComissÃ£o
     let updatedBoleto: BoletoBillingRequest = { ...matchedBoleto };
 
     setBoletoRequests((prev) =>
@@ -5496,7 +5496,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             webhookEventId: eventId,
             webhookReceivedAt: nowIso,
             externalTransactionId: externalTxId,
-            masterNotes: `Liquidação confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). Comissão liberada para o consultor.`
+            masterNotes: `LiquidaÃ§Ã£o confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). ComissÃ£o liberada para o consultor.`
           };
           return updatedBoleto;
         }
@@ -5504,7 +5504,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    // 7. Atualização do Cliente Vinculado para 'ATIVO_PAGO'
+    // 7. AtualizaÃ§Ã£o do Cliente Vinculado para 'ATIVO_PAGO'
     if (webhookConfig.autoActivateClient) {
       setRegisteredClientsByAgents((prev) =>
         prev.map((c) => {
@@ -5516,7 +5516,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       );
     }
 
-    // 8. Aprovação Automática do Estabelecimento Lojista / Prestador
+    // 8. AprovaÃ§Ã£o AutomÃ¡tica do Estabelecimento Lojista / Prestador
     if (webhookConfig.autoApproveMerchant) {
       setMerchants((prev) =>
         prev.map((m) => {
@@ -5534,15 +5534,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // 9. Auditoria Completa
     addAuditLog(
       'WEBHOOK_PAYMENT_CONFIRMED',
-      `Webhook ${gateway} (${externalTxId}) confirmou liquidação do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). Comissão de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
+      `Webhook ${gateway} (${externalTxId}) confirmou liquidaÃ§Ã£o do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). ComissÃ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
       { category: 'FINANCIAL', entityId: matchedBoleto.id, entityType: 'BOLETO_REQUEST' }
     );
 
-    // 10. Notificações In-App para Vendedor e Administrador Master
+    // 10. NotificaÃ§Ãµes In-App para Vendedor e Administrador Master
     if (webhookConfig.notifySalesAgentInApp) {
       sendInAppNotification({
-        title: `Comissão Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
-        message: `O gateway ${gateway} confirmou a liquidação do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comissão já está LIBERADA para saque Pix!`,
+        title: `ComissÃ£o Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
+        message: `O gateway ${gateway} confirmou a liquidaÃ§Ã£o do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comissÃ£o jÃ¡ estÃ¡ LIBERADA para saque Pix!`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
@@ -5551,7 +5551,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     sendInAppNotification({
       title: `Boleto Liquidado via Webhook: ${matchedBoleto.code}`,
-      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | Comissão: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
+      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | ComissÃ£o: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'MEDIUM'
@@ -5576,8 +5576,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       durationMs,
       status: 'SUCCESS',
       statusMessage: isAlreadyPaid
-        ? `Boleto ${matchedBoleto.code} já havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
-        : `Boleto ${matchedBoleto.code} liquidado com sucesso! Comissão de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
+        ? `Boleto ${matchedBoleto.code} jÃ¡ havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
+        : `Boleto ${matchedBoleto.code} liquidado com sucesso! ComissÃ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
       payload,
       headers,
       ipAddress: '177.136.204.88'
@@ -5586,7 +5586,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setWebhookEvents((prev) => [successEvent, ...prev]);
 
     triggerToast(
-      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! Comissão de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
+      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! ComissÃ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
     );
 
     return {
@@ -5620,13 +5620,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try {
       const cleanEmail = driverData.email.trim().toLowerCase();
       if (!cleanEmail || !driverData.cpf || !driverData.name || !driverData.phone) {
-        return { success: false, message: 'Preencha todos os campos obrigatórios para o cadastro.' };
+        return { success: false, message: 'Preencha todos os campos obrigatÃ³rios para o cadastro.' };
       }
       if (!driverData.cnhNumber || !driverData.vehiclePlate) {
-        return { success: false, message: 'CNH e dados do veículo são obrigatórios para entregadores parceiros.' };
+        return { success: false, message: 'CNH e dados do veÃ­culo sÃ£o obrigatÃ³rios para entregadores parceiros.' };
       }
       if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
-        return { success: false, message: 'Este e-mail já está cadastrado na plataforma.' };
+        return { success: false, message: 'Este e-mail jÃ¡ estÃ¡ cadastrado na plataforma.' };
       }
 
       const newUserId = 'user-driver-' + Date.now();
@@ -5665,11 +5665,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setDeliveryDrivers(prev => [newDriver, ...prev]);
       persistDeliveryDriverToFirestore(newDriver);
       addAuditLog('DRIVER_REGISTERED', `Novo entregador ${newDriver.name} (${newDriver.vehicleType} - ${newDriver.vehiclePlate}) cadastrado.`);
-      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovação do Master.`);
+      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovaÃ§Ã£o do Master.`);
 
       return {
         success: true,
-        message: 'Cadastro enviado com sucesso! Seus documentos estão na fila para validação pela administração.',
+        message: 'Cadastro enviado com sucesso! Seus documentos estÃ£o na fila para validaÃ§Ã£o pela administraÃ§Ã£o.',
         driver: newDriver
       };
     } catch (err: any) {
@@ -5809,10 +5809,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const setDriverOperationalStatus = async (driverId: string, status: DeliveryOperationalStatus): Promise<{ success: boolean; message: string }> => {
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador não encontrado.' };
+      return { success: false, message: 'Entregador nÃ£o encontrado.' };
     }
     if (driver.status !== 'APROVADO' && status === 'ONLINE') {
-      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administração podem ficar online.' };
+      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administraÃ§Ã£o podem ficar online.' };
     }
 
     let updatedDriver: DeliveryDriver | null = null;
@@ -5854,18 +5854,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }): Promise<{ success: boolean; message: string; ride?: DeliveryRide }> => {
     const order = orders.find(o => o.id === params.orderId);
     if (!order) {
-      return { success: false, message: 'Pedido não localizado.' };
+      return { success: false, message: 'Pedido nÃ£o localizado.' };
     }
 
     const existingRide = deliveryRides.find(r => r.orderId === order.id && r.status !== 'CANCELADA');
     if (existingRide) {
-      return { success: false, message: `Já existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
+      return { success: false, message: `JÃ¡ existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
     }
 
     const merchant = merchants.find(m => m.id === order.merchantId);
     const origin = params.originAddress || merchant?.address || 'Centro, Cachoeiras de Macacu - RJ';
     const originBairro = params.originNeighborhood || merchant?.neighborhood || 'Centro';
-    const dest = params.destinationAddress || order.deliveryAddress || 'Castália, Cachoeiras de Macacu - RJ';
+    const dest = params.destinationAddress || order.deliveryAddress || 'CastÃ¡lia, Cachoeiras de Macacu - RJ';
     const destBairro = params.destinationNeighborhood || 'Centro';
 
     let distanceKm = params.customDistanceKm;
@@ -5932,7 +5932,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         {
           timestamp: nowIso,
           status: 'AGUARDANDO_ANALISE',
-          description: `Solicitação de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. Distância calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. Veículo: ${params.vehicleType || 'MOTO'}. Encaminhada para análise operacional do Master.`,
+          description: `SolicitaÃ§Ã£o de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. DistÃ¢ncia calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. VeÃ­culo: ${params.vehicleType || 'MOTO'}. Encaminhada para anÃ¡lise operacional do Master.`,
           actorName: merchant?.name || currentUser?.name || 'Lojista',
           actorRole: 'LOJISTA'
         }
@@ -5957,11 +5957,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'DELIVERY_RIDE_REQUESTED',
-      `Solicitação de entrega ${rideCode} enviada para análise operacional do Master. Pedido: ${order.id}. Distância: ${distanceKm}km.`
+      `SolicitaÃ§Ã£o de entrega ${rideCode} enviada para anÃ¡lise operacional do Master. Pedido: ${order.id}. DistÃ¢ncia: ${distanceKm}km.`
     );
 
-    triggerToast(`Solicitação ${rideCode} enviada para a Central Master! Aguardando aprovação.`);
-    return { success: true, message: `Solicitação ${rideCode} aguardando análise do Master.`, ride: newRide };
+    triggerToast(`SolicitaÃ§Ã£o ${rideCode} enviada para a Central Master! Aguardando aprovaÃ§Ã£o.`);
+    return { success: true, message: `SolicitaÃ§Ã£o ${rideCode} aguardando anÃ¡lise do Master.`, ride: newRide };
   };
 
   const approveDeliveryRide = async (
@@ -5970,26 +5970,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     targetDriverId?: string
   ): Promise<{ success: boolean; message: string; uniqueRideCode?: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     // 1. Validar todos os dados
     if (!ride.merchantName || !ride.originAddress) {
-      return { success: false, message: 'Dados de origem (lojista e endereço de coleta) incompletos.' };
+      return { success: false, message: 'Dados de origem (lojista e endereÃ§o de coleta) incompletos.' };
     }
     if (!ride.customerName || !ride.destinationAddress) {
-      return { success: false, message: 'Dados de destino (cliente e endereço de entrega) incompletos.' };
+      return { success: false, message: 'Dados de destino (cliente e endereÃ§o de entrega) incompletos.' };
     }
     if (!ride.orderId && !ride.orderCode) {
       return { success: false, message: 'Identificador do pedido vinculado ausente.' };
     }
 
-    // 3. Validar distância
+    // 3. Validar distÃ¢ncia
     const distance = Number(ride.distanceKm || ride.distancia || 0);
     if (isNaN(distance) || distance <= 0) {
-      return { success: false, message: 'Distância da entrega inválida (deve ser maior que zero).' };
+      return { success: false, message: 'DistÃ¢ncia da entrega invÃ¡lida (deve ser maior que zero).' };
     }
     if (distance > 60) {
-      return { success: false, message: `Distância calculada (${distance.toFixed(1)} km) excede o limite do município (máx 60 km).` };
+      return { success: false, message: `DistÃ¢ncia calculada (${distance.toFixed(1)} km) excede o limite do municÃ­pio (mÃ¡x 60 km).` };
     }
 
     // 2. Recalcular a tarifa no backend
@@ -5999,10 +5999,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // 4. Validar valor
     if (recalculated.totalDeliveryFee <= 0 || recalculated.driverEarnings <= 0) {
-      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recálculo.' };
+      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recÃ¡lculo.' };
     }
 
-    // 5. Gerar código/identificador único da entrega
+    // 5. Gerar cÃ³digo/identificador Ãºnico da entrega
     const generatedUniqueCode =
       ride.rideCode && ride.rideCode.startsWith('DEL-') && ride.rideCode.length >= 8
         ? ride.rideCode
@@ -6018,7 +6018,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const nextStatus: DeliveryRideStatus = targetDriver ? 'ENTREGADOR_SELECIONADO' : 'DISPONIVEL_ENTREGADORES';
     const description = targetDriver
       ? `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)}. Direcionada ao entregador ${targetDriver.name} (${targetDriver.vehiclePlate}).`
-      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegíveis.`;
+      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegÃ­veis.`;
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -6068,10 +6068,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // 7. Criar registro de auditoria
     addAuditLog(
       'DELIVERY_APPROVED',
-      `[APROVAÇÃO MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. Distância: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
+      `[APROVAÃ‡ÃƒO MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. DistÃ¢ncia: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
     );
 
-    // 8. Disponibilizar a entrega no portal dos entregadores elegíveis
+    // 8. Disponibilizar a entrega no portal dos entregadores elegÃ­veis
     triggerToast(
       targetDriver
         ? `Entrega ${generatedUniqueCode} direcionada para ${targetDriver.name}!`
@@ -6087,11 +6087,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const rejectDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-      return { success: false, message: 'É obrigatório informar o motivo da rejeição da solicitação.' };
+      return { success: false, message: 'Ã‰ obrigatÃ³rio informar o motivo da rejeiÃ§Ã£o da solicitaÃ§Ã£o.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6109,7 +6109,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'REJEITADA',
-                description: `Solicitação de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatória: ${trimmedReason}`,
+                description: `SolicitaÃ§Ã£o de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatÃ³ria: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6127,19 +6127,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'DELIVERY_REJECTED',
-      `[REJEIÇÃO MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
+      `[REJEIÃ‡ÃƒO MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
     );
-    triggerToast(`Solicitação ${ride.rideCode} rejeitada.`);
-    return { success: true, message: 'Solicitação rejeitada com sucesso.' };
+    triggerToast(`SolicitaÃ§Ã£o ${ride.rideCode} rejeitada.`);
+    return { success: true, message: 'SolicitaÃ§Ã£o rejeitada com sucesso.' };
   };
 
   const requestCorrectionDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-      return { success: false, message: 'É obrigatório informar as instruções/motivo da solicitação de correção.' };
+      return { success: false, message: 'Ã‰ obrigatÃ³rio informar as instruÃ§Ãµes/motivo da solicitaÃ§Ã£o de correÃ§Ã£o.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6158,7 +6158,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'CORRECAO_SOLICITADA',
-                description: `Correção solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
+                description: `CorreÃ§Ã£o solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6176,15 +6176,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog(
       'DELIVERY_CORRECTION_REQUESTED',
-      `[SOLICITAÇÃO DE CORREÇÃO] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correção ao lojista. Motivo: ${trimmedReason}`
+      `[SOLICITAÃ‡ÃƒO DE CORREÃ‡ÃƒO] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correÃ§Ã£o ao lojista. Motivo: ${trimmedReason}`
     );
-    triggerToast(`Solicitação de correção enviada ao lojista para ${ride.rideCode}.`);
-    return { success: true, message: 'Correção solicitada com sucesso.' };
+    triggerToast(`SolicitaÃ§Ã£o de correÃ§Ã£o enviada ao lojista para ${ride.rideCode}.`);
+    return { success: true, message: 'CorreÃ§Ã£o solicitada com sucesso.' };
   };
 
   const authorizeDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6226,7 +6226,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const processDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6243,7 +6243,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'PAGAMENTO_PROCESSANDO',
-                description: `Transferência Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancário.`,
+                description: `TransferÃªncia Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancÃ¡rio.`,
                 actorName: 'Sistema Financeiro AcheiAqui',
                 actorRole: 'SISTEMA'
               }
@@ -6265,7 +6265,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const markDeliveryRidePaid = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6283,7 +6283,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'PAGA',
-                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÍDO com sucesso via Pix para o entregador.`,
+                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÃDO com sucesso via Pix para o entregador.`,
                 actorName: currentUser?.name || 'Master Financeiro',
                 actorRole: 'MASTER'
               }
@@ -6317,12 +6317,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addAuditLog('DELIVERY_PAYMENT_COMPLETED', `Pagamento de R$ ${ride.driverEarnings.toFixed(2)} quitado para a entrega ${ride.rideCode}.`);
     triggerToast(`Pagamento liquidado com sucesso! Entregador remunerado.`);
-    return { success: true, message: 'Pagamento concluído.' };
+    return { success: true, message: 'Pagamento concluÃ­do.' };
   };
 
   const failDeliveryPayment = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6363,7 +6363,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const returnDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6381,7 +6381,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'DEVOLVIDA',
-                description: `Mercadoria devolvida à loja de origem. Motivo: ${reason}`,
+                description: `Mercadoria devolvida Ã  loja de origem. Motivo: ${reason}`,
                 actorName: currentUser?.name || 'Central de Suporte',
                 actorRole: 'MASTER'
               }
@@ -6414,16 +6414,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     notes?: string
   ): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     const actor: DeliveryActor = {
       id: currentUser?.id || 'system',
-      name: currentUser?.name || 'Administração',
+      name: currentUser?.name || 'AdministraÃ§Ã£o',
       role: (currentUser?.role === 'MASTER' ? 'MASTER' : currentUser?.role === 'ENTREGADOR' ? 'ENTREGADOR' : 'LOJISTA')
     };
     const validation = validateDeliveryTransition(ride, toStatus, actor);
     if (!validation.allowed) {
-      return { success: false, message: validation.reason || 'Transição de status inválida.' };
+      return { success: false, message: validation.reason || 'TransiÃ§Ã£o de status invÃ¡lida.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6463,7 +6463,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const acceptDeliveryRide = async (rideId: string, driverId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida não encontrada.' };
+      return { success: false, message: 'Corrida nÃ£o encontrada.' };
     }
     const isAvailable =
       ride.status === 'DISPONIVEL_ENTREGADORES' ||
@@ -6471,15 +6471,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (ride.status === 'ENTREGADOR_SELECIONADO' && ride.driverId === driverId);
 
     if (!isAvailable) {
-      return { success: false, message: 'Esta corrida não está disponível para aceite.' };
+      return { success: false, message: 'Esta corrida nÃ£o estÃ¡ disponÃ­vel para aceite.' };
     }
 
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador não encontrado.' };
+      return { success: false, message: 'Entregador nÃ£o encontrado.' };
     }
     if (driver.status !== 'APROVADO') {
-      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administração para aceitar corridas.' };
+      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administraÃ§Ã£o para aceitar corridas.' };
     }
     if (driver.operationalStatus !== 'ONLINE') {
       return { success: false, message: 'Fique ONLINE no topo do painel para poder aceitar entregas.' };
@@ -6489,7 +6489,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       r => r.driverId === driverId && ['ACEITA', 'EM_DESLOCAMENTO_COLETA', 'EM_COLETA', 'CHEGOU_COLETA', 'COLETADA', 'EM_DESLOCAMENTO_ENTREGA', 'EM_TRANSITO', 'CHEGOU_DESTINO', 'AGUARDANDO_CODIGO'].includes(r.status)
     );
     if (activeRide) {
-      return { success: false, message: `Você já está atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
+      return { success: false, message: `VocÃª jÃ¡ estÃ¡ atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
     }
 
     const nowIso = new Date().toISOString();
@@ -6551,7 +6551,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addAuditLog('DELIVERY_RIDE_ACCEPTED', `Corrida ${ride.rideCode} aceita pelo entregador ${driver.name}.`);
     triggerToast(`Corrida ${ride.rideCode} aceita com sucesso! Inicie o trajeto para coleta.`);
 
-    return { success: true, message: `Corrida ${ride.rideCode} aceita! Vá até a loja para coletar.` };
+    return { success: true, message: `Corrida ${ride.rideCode} aceita! VÃ¡ atÃ© a loja para coletar.` };
   };
 
   const startRidePickup = async (rideId: string): Promise<{ success: boolean; message: string }> => {
@@ -6569,7 +6569,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_COLETA',
-                description: 'Entregador em deslocamento até o estabelecimento para retirar o pedido.',
+                description: 'Entregador em deslocamento atÃ© o estabelecimento para retirar o pedido.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6614,7 +6614,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_ENTREGA',
-                description: 'Entregador em rota de entrega com destino ao endereço do comprador.',
+                description: 'Entregador em rota de entrega com destino ao endereÃ§o do comprador.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6638,14 +6638,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       );
     }
 
-    triggerToast(`Pacote coletado! Inicie o trajeto até o endereço do cliente.`);
+    triggerToast(`Pacote coletado! Inicie o trajeto atÃ© o endereÃ§o do cliente.`);
     return { success: true, message: 'Pacote coletado. Status atualizado para EM_DESLOCAMENTO_ENTREGA.' };
   };
 
   const deliverRide = async (rideId: string, confirmationCode: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida não encontrada.' };
+      return { success: false, message: 'Corrida nÃ£o encontrada.' };
     }
 
     const cleanInput = confirmationCode.replace(/\D/g, '').trim();
@@ -6654,7 +6654,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (cleanInput !== cleanExpected) {
       return {
         success: false,
-        message: 'Código de confirmação incorreto! Solicite o código de 4 dígitos ao cliente no ato da entrega.'
+        message: 'CÃ³digo de confirmaÃ§Ã£o incorreto! Solicite o cÃ³digo de 4 dÃ­gitos ao cliente no ato da entrega.'
       };
     }
 
@@ -6673,7 +6673,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'ENTREGUE',
-                description: `Entrega física realizada com sucesso. Código de segurança ${cleanExpected} validado pelo cliente.`,
+                description: `Entrega fÃ­sica realizada com sucesso. CÃ³digo de seguranÃ§a ${cleanExpected} validado pelo cliente.`,
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6681,7 +6681,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'AGUARDANDO_LIBERACAO_PAGAMENTO',
-                description: `Corrida finalizada fisicamente. Encaminhada para conferência e liberação financeira pelo Master.`,
+                description: `Corrida finalizada fisicamente. Encaminhada para conferÃªncia e liberaÃ§Ã£o financeira pelo Master.`,
                 actorName: 'Sistema Achei Aqui',
                 actorRole: 'SISTEMA'
               }
@@ -6718,25 +6718,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setOrders(prev =>
-      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'Concluído', deliveryRideStatus: 'FINALIZADA' } : o))
+      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'ConcluÃ­do', deliveryRideStatus: 'FINALIZADA' } : o))
     );
 
     addAuditLog(
       'DELIVERY_RIDE_DELIVERED',
-      `Corrida ${ride.rideCode} entregue com sucesso. Código verificado. Aguardando liberação financeira.`
+      `Corrida ${ride.rideCode} entregue com sucesso. CÃ³digo verificado. Aguardando liberaÃ§Ã£o financeira.`
     );
 
-    triggerToast(`Parabéns! Entrega concluída. Encaminhada para liberação do pagamento pelo Master.`);
+    triggerToast(`ParabÃ©ns! Entrega concluÃ­da. Encaminhada para liberaÃ§Ã£o do pagamento pelo Master.`);
     return {
       success: true,
-      message: `Entrega confirmada com sucesso! Aguarde a liberação do pagamento pelo Master.`
+      message: `Entrega confirmada com sucesso! Aguarde a liberaÃ§Ã£o do pagamento pelo Master.`
     };
   };
 
   const cancelDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const nowIso = new Date().toISOString();
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida não encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃ£o encontrada.' };
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -6753,7 +6753,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 timestamp: nowIso,
                 status: 'CANCELADA',
                 description: `Corrida cancelada. Motivo: ${reason}`,
-                actorName: currentUser?.name || 'Administração',
+                actorName: currentUser?.name || 'AdministraÃ§Ã£o',
                 actorRole: currentUser?.role || 'MASTER'
               }
             ]
@@ -6793,8 +6793,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               {
                 timestamp: nowIso,
                 status: 'OCORRENCIA',
-                description: `Ocorrência registrada: ${notes}`,
-                actorName: currentUser?.name || 'Usuário',
+                description: `OcorrÃªncia registrada: ${notes}`,
+                actorName: currentUser?.name || 'UsuÃ¡rio',
                 actorRole: currentUser?.role || 'SISTEMA'
               }
             ]
@@ -6804,14 +6804,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    addAuditLog('DELIVERY_RIDE_INCIDENT', `Ocorrência na corrida ${rideId}: ${notes}`);
-    triggerToast('Ocorrência registrada e encaminhada para a administração Master.');
-    return { success: true, message: 'Ocorrência registrada com sucesso.' };
+    addAuditLog('DELIVERY_RIDE_INCIDENT', `OcorrÃªncia na corrida ${rideId}: ${notes}`);
+    triggerToast('OcorrÃªncia registrada e encaminhada para a administraÃ§Ã£o Master.');
+    return { success: true, message: 'OcorrÃªncia registrada com sucesso.' };
   };
 
   const updateDeliveryTariffs = async (ratePerKm: number, platformFee: number): Promise<{ success: boolean; message: string }> => {
     if (ratePerKm < 0 || platformFee < 0) {
-      return { success: false, message: 'Os valores de tarifas não podem ser negativos.' };
+      return { success: false, message: 'Os valores de tarifas nÃ£o podem ser negativos.' };
     }
 
     const newSettings = {
@@ -6826,7 +6826,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km (Entregador), R$ ${newSettings.deliveryPlatformFee.toFixed(2)} (Taxa Plataforma).`
     );
 
-    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas já abertas mantêm seus valores.');
+    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas jÃ¡ abertas mantÃªm seus valores.');
     return { success: true, message: 'Tarifas atualizadas com sucesso!' };
   };
 
@@ -7047,7 +7047,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteWebhookEvent,
         clearWebhookLogs,
 
-        // Módulo de Delivery & Entregadores (V1)
+        // MÃ³dulo de Delivery & Entregadores (V1)
         deliveryDrivers,
         deliveryRides,
         currentDeliveryDriver,
@@ -7155,3 +7155,5 @@ export const useApp = () => {
   }
   return context;
 };
+
+

@@ -9,8 +9,8 @@
  * Cidade foco: Cachoeiras de Macacu, RJ
  */
 
-import { SupabaseClient } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+// Supabase desabilitado temporariamente
+// Supabase desabilitado temporariamente
 import {
   Order,
   User,
