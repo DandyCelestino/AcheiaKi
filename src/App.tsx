@@ -4,6 +4,7 @@ import { Header } from './components/marketplace/Header';
 import { BottomNav } from './components/marketplace/BottomNav';
 import { MobileCategoryDrawer } from './components/marketplace/MobileCategoryDrawer';
 import { HomeView } from './components/marketplace/HomeView';
+import { InitialLandingPanel } from './components/marketplace/InitialLandingPanel';
 import { StoreDetailView } from './components/marketplace/StoreDetailView';
 import { CustomerAccountView } from './components/marketplace/CustomerAccountView';
 import { ProductDetailModal } from './components/marketplace/ProductDetailModal';
@@ -53,6 +54,16 @@ function MarketplaceApp() {
 
   // Navigation tabs in marketplace
   const [currentTab, setCurrentTab] = useState<string>('home');
+  const [showInitialLanding, setShowInitialLanding] = useState(() => {
+    try {
+      return !(
+        window.matchMedia('(display-mode: standalone)').matches ||
+        localStorage.getItem('acheiaki_pwa_installed') === 'true'
+      );
+    } catch {
+      return true;
+    }
+  });
   const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -328,6 +339,14 @@ function MarketplaceApp() {
   }
 
   // DEFAULT: PLATAFORMA PÚBLICA DE VENDAS (MARKETPLACE)
+  if (showInitialLanding) {
+    return (
+      <InitialLandingPanel
+        onEnterMarketplace={() => setShowInitialLanding(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f4fbf6] flex flex-col justify-between selection:bg-emerald-200">
       <div>
