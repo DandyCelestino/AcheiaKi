@@ -1215,11 +1215,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     };
 
-    initFirestoreSync();
+    if (currentUser) {
+      initFirestoreSync();
+    }
+
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentUser]);
 
   // SincronizaÃ§Ã£o periÃ³dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
   useEffect(() => {
@@ -2210,6 +2213,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const rawInput = (email || '').trim();
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
+    // ============================================================
+
+    // ============================================================
 
     if (!cleanEmail || !password || !password.trim()) {
       return {
@@ -2289,7 +2295,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
         return {
           success: false,
-          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefiniÃ§Ã£o com a administraÃ§Ã£o.'
+          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefinição com a administraÃ§Ã£o.'
         };
       }
 
@@ -2350,7 +2356,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (found.status === 'blocked' || found.status === 'suspended') {
       return {
         success: false,
-        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÃ§Ã£o.'}`
+        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administração.'}`
       };
     }
 
@@ -2507,7 +2513,92 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const rawInput = (email || '').trim();
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
+    // ============================================================
+    // MASTER DE CONTINGÊNCIA - AUTENTICAÇÃO PELO BACKEND
+    // Não depende do Firebase Authentication nem do Firestore.
+    // ============================================================
 
+    if (cleanEmail === 'telecom.david@gmail.com') {
+      try {
+        const masterResponse = await fetch('/api/master-contingency/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            password,
+          }),
+        });
+
+        const masterResult = await masterResponse.json();
+
+        if (masterResponse.ok && masterResult.success && masterResult.user) {
+          const contingencyMaster = masterResult.user as User;
+
+          setUsers((prev) => [
+            contingencyMaster,
+            ...prev.filter(
+              (u) =>
+                u.email.toLowerCase() !==
+                contingencyMaster.email.toLowerCase()
+            ),
+          ]);
+
+          setCurrentUser(contingencyMaster);
+          setCurrentEnvironmentState('MASTER_PANEL');
+
+          localStorage.setItem(
+            STORAGE_KEYS.USER,
+            JSON.stringify(contingencyMaster)
+          );
+
+          if (masterResult.token) {
+            sessionStorage.setItem(
+              'MASTER_CONTINGENCY_TOKEN',
+              masterResult.token
+            );
+          }
+
+          addAuditLog(
+            'MASTER_CONTINGENCY_LOGIN',
+            'Acesso realizado pelo MASTER de contingência autenticado no backend.'
+          );
+
+          triggerToast('Acesso MASTER de contingência autorizado.');
+
+          return {
+            success: true,
+            user: contingencyMaster,
+            message: 'Acesso MASTER de contingência autorizado.',
+          };
+        }
+
+        // Se for 401/429, não tenta Firebase com o MASTER.
+        if (masterResponse.status === 401 || masterResponse.status === 429) {
+          return {
+            success: false,
+            message:
+              masterResult.message ||
+              'Credenciais MASTER de contingência inválidas.',
+          };
+        }
+      } catch (masterError) {
+        console.warn(
+          '[MASTER CONTINGENCY] Backend indisponível. Continuando fluxo normal.',
+          masterError
+        );
+      }
+    }
+
+    // ============================================================
+    // FIM DO MASTER DE CONTINGÊNCIA
+    // ============================================================
+
+
+    // ============================================================
+    
+    // ============================================================
     // Para consultores e vendedores comerciais: o acesso e validaÃ§Ã£o sÃ£o realizados diretamente com as credenciais do vendedor
     const isSellerCandidate =
       salesAgents.some(
@@ -3367,6 +3458,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog(
       'CUSTOMER_PROFILE_UPDATE',
       `Ficha cadastral de ${updatedUser.name} (${updatedUser.email}) modificada pelo prÃ³prio cliente.`
@@ -3409,6 +3501,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_ADD',
       `Novo endereÃ§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado Ã  ficha do cliente.`
@@ -3455,6 +3548,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÃ§o "${targetAddress.label}" modificado pelo cliente.`);
     triggerToast('EndereÃ§o atualizado com sucesso!');
   };
@@ -3486,6 +3580,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_DELETE',
       `EndereÃ§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
@@ -3517,6 +3612,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog(
       'CUSTOMER_ADDRESS_SET_DEFAULT',
       `EndereÃ§o "${targetAddress.label}" definido como principal pelo cliente.`
@@ -3534,6 +3630,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     addAuditLog('VIP_MEASUREMENTS_UPDATE', 'Ficha de medidas e preferÃªncias para Provador VIP atualizada.');
     triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
   };
@@ -3549,6 +3646,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+    persistUserToFirestore(updatedUser);
     setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
     addAuditLog('CUSTOMER_PREFERENCES_UPDATE', 'PreferÃªncias de comunicaÃ§Ã£o e canais atualizadas.');
     triggerToast('PreferÃªncias de notificaÃ§Ã£o salvas com sucesso!');
@@ -4540,10 +4638,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   // Master Frontend Customization Operations
+  // Master Frontend Customization Operations
   const updateFrontendConfig = (updates: Partial<FrontendCustomization>) => {
-    setFrontendConfig((prev) => ({ ...prev, ...updates }));
-    addAuditLog('FRONTEND_CONFIG_UPDATE', 'ConfiguraÃ§Ãµes de visual do frontend atualizadas pelo Master');
-    triggerToast('Visual e configuraÃ§Ãµes do frontend atualizados com sucesso!');
+    setFrontendConfig((prev) => {
+      const updatedConfig = { ...prev, ...updates };
+
+      localStorage.setItem(
+        STORAGE_KEYS.FRONTEND_CONFIG,
+        JSON.stringify(updatedConfig)
+      );
+
+      return updatedConfig;
+    });
+
+    addAuditLog(
+      'FRONTEND_CONFIG_UPDATE',
+      'Configurações de visual do frontend atualizadas pelo Master'
+    );
+
+    triggerToast(
+      'Visual e configurações do frontend atualizados com sucesso!'
+    );
   };
 
   const addNavMenuItem = (item: Omit<NavMenuItem, 'id'>) => {
@@ -4551,11 +4666,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       ...item,
       id: `menu-${Date.now()}`
     };
+
     setFrontendConfig((prev) => ({
       ...prev,
       navMenuItems: [...prev.navMenuItems, newItem]
     }));
-    triggerToast('Item adicionado ao menu de navegaÃ§Ã£o!');
+
+    triggerToast('Item adicionado ao menu de navegação!');
   };
 
   const updateNavMenuItem = (id: string, updates: Partial<NavMenuItem>) => {
@@ -4567,6 +4684,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }));
     triggerToast('Item do menu atualizado!');
   };
+
 
   const deleteNavMenuItem = (id: string) => {
     setFrontendConfig((prev) => ({
@@ -7155,5 +7273,12 @@ export const useApp = () => {
   }
   return context;
 };
+
+
+
+
+
+
+
 
 

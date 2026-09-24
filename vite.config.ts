@@ -1,4 +1,4 @@
-﻿import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
@@ -56,7 +56,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
             );
           } catch (e: any) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ status: 'ERROR', message: 'Payload JSON invÃ¡lido para o webhook do Asaas.' }));
+            res.end(JSON.stringify({ status: 'ERROR', message: 'Payload JSON inválido para o webhook do Asaas.' }));
           }
         });
       } else {
@@ -69,7 +69,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
             service: 'Achei Aqui - Endpoint de Webhooks do Asaas',
             endpoint: '/api/webhooks/asaas',
             description:
-              'Recebe notificaÃ§Ãµes automÃ¡ticas do Asaas e atualiza o banco de dados de pedidos quando confirmado ou expirado.',
+              'Recebe notificações automáticas do Asaas e atualiza o banco de dados de pedidos quando confirmado ou expirado.',
             supportedEvents: [
               'PAYMENT_CONFIRMED (atualiza status para Confirmado e paymentStatus para PAGO)',
               'PAYMENT_RECEIVED (atualiza status para Confirmado e paymentStatus para PAGO)',
@@ -89,7 +89,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
     server.middlewares.use('/api/asaas/webhook', handleAsaasWebhook);
 
     // ----------------------------------------------------------------------
-    // ENDPOINT DE SINCRONIZAÃ‡ÃƒO DE PEDIDOS COM O BANCO DE DADOS (/api/orders)
+    // ENDPOINT DE SINCRONIZAÇÃO DE PEDIDOS COM O BANCO DE DADOS (/api/orders)
     // ----------------------------------------------------------------------
     server.middlewares.use('/api/orders', (req: any, res: any) => {
       if (req.method === 'GET') {
@@ -114,12 +114,12 @@ const webhookMiddlewarePlugin = (): Plugin => ({
         });
       } else {
         res.writeHead(405, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'MÃ©todo nÃ£o permitido' }));
+        res.end(JSON.stringify({ error: 'Método não permitido' }));
       }
     });
 
     // ----------------------------------------------------------------------
-    // ENDPOINT DE SIMULAÃ‡ÃƒO DE EVENTOS DO ASAAS PARA TESTES (/api/webhooks/asaas/simulate)
+    // ENDPOINT DE SIMULAÇÃO DE EVENTOS DO ASAAS PARA TESTES (/api/webhooks/asaas/simulate)
     // ----------------------------------------------------------------------
     server.middlewares.use('/api/webhooks/asaas/simulate', (req: any, res: any) => {
       if (req.method === 'POST') {
@@ -164,7 +164,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
       }
     });
 
-    // Middleware existente de webhooks de boletos bancÃ¡rios
+    // Middleware existente de webhooks de boletos bancários
     server.middlewares.use('/api/webhooks/boleto', (req, res) => {
       if (req.method === 'POST') {
         let body = '';
@@ -178,7 +178,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
             res.end(
               JSON.stringify({
                 status: 'OK',
-                message: 'Webhook de liquidaÃ§Ã£o de boleto recebido com sucesso pela plataforma Achei Aqui.',
+                message: 'Webhook de liquidação de boleto recebido com sucesso pela plataforma Achei Aqui.',
                 receivedAt: new Date().toISOString(),
                 payloadSummary: {
                   event: parsed.event || parsed.action || parsed.situacao || 'PAYMENT_RECEIVED',
@@ -197,7 +197,7 @@ const webhookMiddlewarePlugin = (): Plugin => ({
           JSON.stringify({
             status: 'ACTIVE',
             service: 'Achei Aqui Macacu - Boleto & Pix Webhook Gateway Listener',
-            documentation: 'Envie requisiÃ§Ãµes POST com payloads do Asaas, Mercado Pago, Banco Inter, Iugu ou EfÃ­.',
+            documentation: 'Envie requisições POST com payloads do Asaas, Mercado Pago, Banco Inter, Iugu ou Efí.',
             timestamp: new Date().toISOString()
           })
         );
@@ -215,8 +215,8 @@ export default defineConfig(() => {
       VitePWA({
         registerType: 'autoUpdate',
     devOptions: {
-      enabled: true
-    },
+        enabled: false
+      },
         workbox: {
           maximumFileSizeToCacheInBytes: 10 * 1024 * 1024
         },
@@ -264,6 +264,7 @@ export default defineConfig(() => {
     },
   };
 });
+
 
 
 

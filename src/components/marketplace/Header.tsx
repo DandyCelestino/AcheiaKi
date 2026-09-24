@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import {
   Search,
   MapPin,
@@ -35,6 +35,7 @@ import { useApp } from '../../context/AppContext';
 import { CATEGORIES_TAXONOMY, CategoryTaxonomy } from '../../data/categoryTaxonomy';
 import { Product, StoreMerchant, ServiceItem } from '../../types';
 import { NotificationBellDropdown } from '../notifications/NotificationBellDropdown';
+import { PwaInstallButton } from '../common/PwaInstallButton';
 
 interface HeaderProps {
   onOpenAuth: (initialTab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
@@ -90,7 +91,7 @@ export const Header: React.FC<HeaderProps> = ({
   const CITIES = [
     'Cachoeiras de Macacu, RJ',
     'Papucaia - Cachoeiras, RJ',
-    'Japuiíba - Cachoeiras, RJ',
+    'Japuíba - Cachoeiras, RJ',
     'Faraó - Cachoeiras, RJ',
     'Guapiaçu - Cachoeiras, RJ'
   ];
@@ -198,13 +199,13 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="relative z-10 max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2 truncate">
             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-emerald-700/60 text-emerald-200 text-[10px] font-bold">
-              🌿 Parque da Serra & Florestas
+              Parque da Serra & Florestas
             </span>
             <span className="truncate">O shopping online das matas de Cachoeiras de Macacu - RJ</span>
           </div>
 
           <div className="flex items-center space-x-3 shrink-0 text-emerald-200 text-xs">
-            <span className="hidden md:inline font-medium">Acesso seguro SSL • Cachoeiras de Macacu</span>
+            <span className="hidden md:inline font-medium">Acesso seguro SSL - Cachoeiras de Macacu</span>
           </div>
         </div>
       </div>
@@ -234,15 +235,25 @@ export const Header: React.FC<HeaderProps> = ({
               }}
               className="flex items-center space-x-2 text-left focus:outline-none group"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-800 to-green-600 text-white font-black text-base sm:text-xl flex items-center justify-center shadow-md shadow-emerald-800/20 group-hover:scale-105 transition-transform shrink-0">
-                {frontendConfig?.logoLetter || 'A'}
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-emerald-100 flex items-center justify-center shadow-md shadow-emerald-800/10 group-hover:scale-105 transition-transform shrink-0 overflow-hidden">
+                {frontendConfig?.logoImageUrl ? (
+                  <img
+                    src={frontendConfig.logoImageUrl}
+                    alt={frontendConfig?.siteTitle || 'Achei Aqui'}
+                    className="w-full h-full object-contain p-0.5"
+                  />
+                ) : (
+                  <span className="w-full h-full rounded-xl bg-gradient-to-tr from-emerald-800 to-green-600 text-white font-black text-base sm:text-xl flex items-center justify-center">
+                    {frontendConfig?.logoLetter || 'A'}
+                  </span>
+                )}
               </div>
               <div>
                 <h1 className="text-lg sm:text-2xl font-black tracking-tight text-emerald-950 leading-none group-hover:text-emerald-800 transition-colors">
                   {frontendConfig?.siteTitle || 'Achei Aqui'}
                 </h1>
                 <span className="text-[9px] sm:text-[10px] text-emerald-700 font-extrabold tracking-wider uppercase flex items-center gap-1">
-                  <span>🍃 Cachoeiras de Macacu</span>
+                  <span>Cachoeiras de Macacu</span>
                 </span>
               </div>
             </button>
@@ -328,7 +339,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {searchResults.stores.length > 0 && (
                   <div className="mb-3">
                     <span className="text-[9px] font-black uppercase text-emerald-700 block px-1 mb-1">
-                      🏪 Lojas & Estabelecimentos:
+                      Lojas & Estabelecimentos:
                     </span>
                     <div className="space-y-1">
                       {searchResults.stores.map((store) => (
@@ -349,12 +360,12 @@ export const Header: React.FC<HeaderProps> = ({
                                 {store.name}
                               </p>
                               <p className="text-[10px] text-slate-500">
-                                {store.neighborhood} • {store.category}
+                                {store.neighborhood} - {store.category}
                               </p>
                             </div>
                           </div>
                           <span className="text-[10px] font-bold text-amber-500">
-                            ★ {store.rating}
+                            {store.rating}
                           </span>
                         </button>
                       ))}
@@ -366,7 +377,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {searchResults.products.length > 0 && (
                   <div className="mb-3">
                     <span className="text-[9px] font-black uppercase text-emerald-700 block px-1 mb-1">
-                      📦 Produtos:
+                      Produtos:
                     </span>
                     <div className="space-y-1">
                       {searchResults.products.map((prod) => (
@@ -407,7 +418,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {searchResults.services.length > 0 && (
                   <div>
                     <span className="text-[9px] font-black uppercase text-emerald-700 block px-1 mb-1">
-                      🛠️ Serviços & Consultórios:
+                      Servicos & Consultorios:
                     </span>
                     <div className="space-y-1">
                       {searchResults.services.map((serv) => (
@@ -424,7 +435,7 @@ export const Header: React.FC<HeaderProps> = ({
                               {serv.title}
                             </p>
                             <p className="text-[10px] text-slate-500">
-                              {serv.merchantName} • {serv.category}
+                              {serv.merchantName} - {serv.category}
                             </p>
                           </div>
                           <span className="text-xs font-black text-emerald-950">
@@ -475,6 +486,8 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Notifications Bell Dropdown (In-App) */}
+            <PwaInstallButton />
+
             <NotificationBellDropdown onNavigateTab={(tab) => setCurrentTab(tab as any)} />
 
             {/* Cart Icon (Desktop) */}
@@ -673,7 +686,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* 📱 MOBILE QUICK ACTION STRIP (FORMATADO PARA TODOS OS SMARTPHONES, SEMPRE VISÍVEL ABAIXO DE CADASTRE-SE) */}
+        {/* ðŸ“± MOBILE QUICK ACTION STRIP (FORMATADO PARA TODOS OS SMARTPHONES, SEMPRE VISÍVEL ABAIXO DE CADASTRE-SE) */}
         <div className="sm:hidden pt-1 pb-2 border-t border-emerald-100/70">
           <div className="grid grid-cols-4 gap-1.5 items-center">
             {/* 1. Gostei / Favoritos */}
@@ -758,7 +771,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="mt-2 bg-white rounded-2xl shadow-xl border border-emerald-200 p-2.5 animate-in fade-in duration-150">
               <div className="flex items-center justify-between px-2 pb-1.5 border-b border-emerald-100 mb-1">
                 <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
-                  📍 Região em Cachoeiras de Macacu
+                  Regiao em Cachoeiras de Macacu
                 </span>
                 <button
                   onClick={() => setShowCityDropdown(false)}
@@ -789,7 +802,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* 🌿 DESKTOP SUPERIOR CATEGORIES & STORES DROPDOWN MENU */}
+        {/* ðŸŒ¿ DESKTOP SUPERIOR CATEGORIES & STORES DROPDOWN MENU */}
         <div ref={dropdownRef} className="hidden md:block relative border-t border-emerald-100/80 py-1 max-w-full overflow-visible">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1 text-xs">
             {/* Todos os Itens */}
@@ -867,10 +880,10 @@ export const Header: React.FC<HeaderProps> = ({
                             {store.name}
                           </h4>
                           <p className="text-[10px] text-slate-500 truncate">
-                            {store.neighborhood} • {store.category}
+                            {store.neighborhood} - {store.category}
                           </p>
                           <div className="flex items-center space-x-2 mt-0.5 text-[10px]">
-                            <span className="font-bold text-amber-500">★ {store.rating}</span>
+                            <span className="font-bold text-amber-500">{store.rating}</span>
                             <span className="text-emerald-600 font-medium">Entrega e Retirada</span>
                           </div>
                         </div>
@@ -991,3 +1004,9 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+
+
+
+
+
+

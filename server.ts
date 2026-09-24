@@ -3,6 +3,7 @@ import axios from 'axios';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import {
   getStoredOrders,
   getWebhookLogs,
@@ -18,7 +19,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// CONFIGURAÇÕES INICIAIS (Asaas API & Marketplace Split)
+// CONFIGURAÃ‡Ã•ES INICIAIS (Asaas API & Marketplace Split)
 const ASAAS_API_KEY = process.env.ASAAS_API_KEY || '$aapi_seu_token_aqui';
 const MINHA_CARTEIRA_MEI = process.env.ASAAS_WALLET_ID_MASTER || 'wallet_master_acheiaqui_mei';
 const ASAAS_URL_BASE = (process.env.ASAAS_URL || 'https://sandbox.asaas.com/api/v3').trim().replace(/\/+$/, '');
@@ -34,12 +35,224 @@ function getAsaasUrl(endpointPath: string): string {
   return `${base}${clean}`;
 }
 
-// Verifica se a chave do Asaas é real ou se está em modo de homologação/simulação
+// Verifica se a chave do Asaas Ã© real ou se estÃ¡ em modo de homologaÃ§Ã£o/simulaÃ§Ã£o
 function isLiveKey(key: string): boolean {
   return Boolean(key && key.trim() !== '' && !key.includes('seu_token_aqui') && key.startsWith('$aapi'));
 }
 
 // ========================================================================
+
+// ========================================================================
+// MASTER DE CONTINGÊNCIA
+// Autenticação exclusivamente no backend.
+// Não utiliza Firebase Authentication.
+// ========================================================================
+
+const MASTER_CONTINGENCY_EMAIL =
+  (process.env.MASTER_CONTINGENCY_EMAIL || 'telecom.david@gmail.com')
+    .trim()
+    .toLowerCase();
+
+const MASTER_CONTINGENCY_PASSWORD_HASH =
+  (process.env.MASTER_CONTINGENCY_PASSWORD_HASH || '')
+    .trim()
+    .toLowerCase();
+
+const MASTER_CONTINGENCY_TOKEN_SECRET =
+  (process.env.MASTER_CONTINGENCY_TOKEN_SECRET || '').trim();
+
+const masterContingencyAttempts = new Map<
+  string,
+  { count: number; blockedUntil: number }
+>();
+
+function encodeMasterToken(value: string): string {
+  return Buffer.from(value)
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
+}
+
+function createMasterContingencyToken(email: string): string {
+  const now = Math.floor(Date.now() / 1000);
+
+  const payload = {
+    sub: 'master-contingency-backend',
+    email,
+    role: 'MASTER',
+    iat: now,
+    exp: now + 1800
+  };
+
+  const encoded = encodeMasterToken(
+    JSON.stringify(payload)
+  );
+
+  const signature = createHmac(
+    'sha256',
+    MASTER_CONTINGENCY_TOKEN_SECRET
+  )
+    .update(encoded)
+    .digest('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
+
+  return `${encoded}.${signature}`;
+}
+
+app.post('/api/master-contingency/login', (req: Request, res: Response) => {
+  try {
+    const email = String(req.body?.email || '')
+      .trim()
+      .toLowerCase();
+
+    const password = String(req.body?.password || '');
+
+    if (
+      !MASTER_CONTINGENCY_PASSWORD_HASH ||
+      !MASTER_CONTINGENCY_TOKEN_SECRET
+    ) {
+      console.error(
+        '[MASTER CONTINGENCY] Configuração ausente no .env'
+      );
+
+      return res.status(503).json({
+        success: false,
+        message: 'Contingência MASTER não configurada no servidor.'
+      });
+    }
+
+    const clientIp = String(
+      req.headers['x-forwarded-for'] ||
+      req.socket.remoteAddress ||
+      'unknown'
+    )
+      .split(',')[0]
+      .trim();
+
+    const attemptKey = `${clientIp}:${email}`;
+    const now = Date.now();
+
+    const previous =
+      masterContingencyAttempts.get(attemptKey);
+
+    if (
+      previous &&
+      previous.blockedUntil > now
+    ) {
+      const seconds = Math.ceil(
+        (previous.blockedUntil - now) / 1000
+      );
+
+      return res.status(429).json({
+        success: false,
+        message:
+          `Acesso temporariamente bloqueado. ` +
+          `Tente novamente em ${seconds} segundos.`
+      });
+    }
+
+    const receivedHash = createHash('sha256')
+      .update(password, 'utf8')
+      .digest('hex')
+      .toLowerCase();
+
+    const expectedBuffer = Buffer.from(
+      MASTER_CONTINGENCY_PASSWORD_HASH,
+      'hex'
+    );
+
+    const receivedBuffer = Buffer.from(
+      receivedHash,
+      'hex'
+    );
+
+    const passwordValid =
+      expectedBuffer.length === receivedBuffer.length &&
+      timingSafeEqual(
+        expectedBuffer,
+        receivedBuffer
+      );
+
+    if (
+      email !== MASTER_CONTINGENCY_EMAIL ||
+      !passwordValid
+    ) {
+      const current =
+        masterContingencyAttempts.get(attemptKey) || {
+          count: 0,
+          blockedUntil: 0
+        };
+
+      current.count++;
+
+      if (current.count >= 5) {
+        current.count = 0;
+        current.blockedUntil =
+          now + 15 * 60 * 1000;
+      }
+
+      masterContingencyAttempts.set(
+        attemptKey,
+        current
+      );
+
+      return res.status(401).json({
+        success: false,
+        message:
+          'Credenciais MASTER de contingência inválidas.'
+      });
+    }
+
+    masterContingencyAttempts.delete(attemptKey);
+
+    const user = {
+      id: 'master-contingency-backend',
+      name: 'David Telecom (Master)',
+      email: MASTER_CONTINGENCY_EMAIL,
+      phone: '(21) 99999-8877',
+      role: 'MASTER',
+      password: '',
+      city: 'Cachoeiras de Macacu, RJ',
+      isEmailVerified: true,
+      needsPasswordChange: false,
+      twoFactorEnabled: false,
+      createdAt: new Date().toISOString()
+    };
+
+    const token = createMasterContingencyToken(
+      MASTER_CONTINGENCY_EMAIL
+    );
+
+    console.log(
+      `[MASTER CONTINGENCY] Acesso autorizado: ${MASTER_CONTINGENCY_EMAIL} | IP: ${clientIp}`
+    );
+
+    return res.status(200).json({
+      success: true,
+      user,
+      token,
+      expiresIn: 1800,
+      message:
+        'Acesso MASTER de contingência autorizado pelo backend.'
+    });
+
+  } catch (error: any) {
+    console.error(
+      '[MASTER CONTINGENCY] Erro:',
+      error?.message || error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        'Falha interna na autenticação MASTER de contingência.'
+    });
+  }
+});
+
 // ENDPOINT 1: CADASTRAR LOJISTA (Criar Subconta no Asaas)
 // Suporta /cadastrar-lojista e /api/cadastrar-lojista
 // ========================================================================
@@ -50,7 +263,7 @@ const handleCadastrarLojista = async (req: Request, res: Response) => {
     if (!nome || !documento) {
       return res.status(400).json({
         erro: 'Dados incompletos',
-        detalhes: 'O nome do lojista e documento (CPF/CNPJ) são obrigatórios.'
+        detalhes: 'O nome do lojista e documento (CPF/CNPJ) sÃ£o obrigatÃ³rios.'
       });
     }
 
@@ -82,15 +295,15 @@ const handleCadastrarLojista = async (req: Request, res: Response) => {
       });
     }
 
-    // Fallback amigável de Homologação / Simulação para desenvolvimento
+    // Fallback amigÃ¡vel de HomologaÃ§Ã£o / SimulaÃ§Ã£o para desenvolvimento
     const simulatedLojistaId = `sub_${documento.replace(/\D/g, '').slice(-8) || Math.floor(Math.random() * 90000000 + 10000000)}`;
     const simulatedWalletId = `wallet_${nome.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 12)}_${Math.floor(Math.random() * 9000 + 1000)}`;
 
     return res.status(200).json({
-      mensagem: 'Lojista cadastrado com sucesso! (Modo Sandbox / Homologação)',
+      mensagem: 'Lojista cadastrado com sucesso! (Modo Sandbox / HomologaÃ§Ã£o)',
       lojistaId: simulatedLojistaId,
       walletIdDoLojista: simulatedWalletId,
-      aviso: 'Para produção, configure ASAAS_API_KEY no arquivo de ambiente.'
+      aviso: 'Para produÃ§Ã£o, configure ASAAS_API_KEY no arquivo de ambiente.'
     });
   } catch (error: any) {
     console.error('Erro ao cadastrar lojista no Asaas:', error.response?.data || error.message);
@@ -105,8 +318,8 @@ app.post('/cadastrar-lojista', handleCadastrarLojista);
 app.post('/api/cadastrar-lojista', handleCadastrarLojista);
 
 // ========================================================================
-// ENDPOINT 2: CRIAR CHECKOUT COM SPLIT AUTOMÁTICO
-// Separa comissão de 10% para o MEI e valor líquido para o lojista
+// ENDPOINT 2: CRIAR CHECKOUT COM SPLIT AUTOMÃTICO
+// Separa comissÃ£o de 10% para o MEI e valor lÃ­quido para o lojista
 // Suporta /criar-cobranca e /api/criar-cobranca
 // ========================================================================
 const handleCriarCobranca = async (req: Request, res: Response) => {
@@ -125,17 +338,17 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
     const parsedTotal = parseFloat(valorTotal);
     if (isNaN(parsedTotal) || parsedTotal <= 0) {
       return res.status(400).json({
-        erro: 'Valor inválido',
-        detalhes: 'O valor total deve ser um número positivo.'
+        erro: 'Valor invÃ¡lido',
+        detalhes: 'O valor total deve ser um nÃºmero positivo.'
       });
     }
 
-    // Valida se a forma de pagamento é PIX ou CREDIT_CARD
+    // Valida se a forma de pagamento Ã© PIX ou CREDIT_CARD
     const tipoPagamento = formaPagamento === 'cartao' ? 'CREDIT_CARD' : 'PIX';
 
-    // Construção da Matriz de Split:
+    // ConstruÃ§Ã£o da Matriz de Split:
     // 1. Sempre reserva 10% para a carteira MEI da plataforma
-    // 2. Se houver múltiplos lojistas no carrinho (itensPorLojista), distribui os 90% restantes proporcionalmente
+    // 2. Se houver mÃºltiplos lojistas no carrinho (itensPorLojista), distribui os 90% restantes proporcionalmente
     let splitArray: Array<{
       walletId: string;
       percentualValue?: number;
@@ -149,7 +362,7 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
       splitArray.push({
         walletId: MINHA_CARTEIRA_MEI,
         percentualValue: DEFAULT_COMMISSION_PERCENT,
-        description: 'Comissão Plataforma Achei Aqui (10%)'
+        description: 'ComissÃ£o Plataforma Achei Aqui (10%)'
       });
 
       // Lojistas individuais do carrinho (subtraindo 10% de cada)
@@ -165,21 +378,21 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
         }
       });
     } else {
-      // Split padrão para um único lojista: 10% para o MEI da plataforma
+      // Split padrÃ£o para um Ãºnico lojista: 10% para o MEI da plataforma
       splitArray = [
         {
           walletId: MINHA_CARTEIRA_MEI,
           percentualValue: DEFAULT_COMMISSION_PERCENT,
-          description: 'Comissão Plataforma Achei Aqui (10%)'
+          description: 'ComissÃ£o Plataforma Achei Aqui (10%)'
         }
       ];
 
-      // Se foi passado o wallet do lojista específico, registra o percentual remanescente
+      // Se foi passado o wallet do lojista especÃ­fico, registra o percentual remanescente
       if (walletIdDoLojista && walletIdDoLojista !== MINHA_CARTEIRA_MEI) {
         splitArray.push({
           walletId: walletIdDoLojista,
           percentualValue: 100.0 - DEFAULT_COMMISSION_PERCENT,
-          description: 'Repasse Líquido Lojista (90%)'
+          description: 'Repasse LÃ­quido Lojista (90%)'
         });
       }
     }
@@ -201,7 +414,7 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
 
       const idClienteAsaas = clienteResponse.data.id;
 
-      // Passo 2: Criar a cobrança na conta com o split da comissão
+      // Passo 2: Criar a cobranÃ§a na conta com o split da comissÃ£o
       const cobrancaResponse = await axios.post(
         getAsaasUrl('/payments'),
         {
@@ -233,13 +446,13 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
       }
 
       return res.status(200).json({
-        mensagem: 'Cobrança gerada com sucesso!',
+        mensagem: 'CobranÃ§a gerada com sucesso!',
         idTransacao: cobrancaResponse.data.id,
         urlCheckoutAsaas: cobrancaResponse.data.invoiceUrl,
         pixCopiaECola:
           pixQrCodeData?.payload ||
           cobrancaResponse.data.pixQrCode ||
-          'Disponível no link de checkout Asaas',
+          'DisponÃ­vel no link de checkout Asaas',
         qrCodeBase64: pixQrCodeData?.encodedImage || null,
         split: splitArray,
         valorTotal: parsedTotal,
@@ -248,14 +461,14 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
       });
     }
 
-    // Modo de Simulação / Homologação (sem chave de produção):
+    // Modo de SimulaÃ§Ã£o / HomologaÃ§Ã£o (sem chave de produÃ§Ã£o):
     // Fornece QR Code e split perfeito para o fluxo funcionar na interface
     const idTransacaoSimulado = `pay_asaas_${Math.floor(Math.random() * 90000000 + 10000000)}`;
     const urlCheckoutSimulado = `https://sandbox.asaas.com/i/${idTransacaoSimulado}`;
     const pixCopiaEColaSimulado = `00020126580014BR.GOV.BCB.PIX0136${idTransacaoSimulado}520400005303986540${parsedTotal.toFixed(2)}5802BR5920ACHEI AQUI CACHOEIRAS6014CACHOEIRAS DE M62070503***6304`;
 
     return res.status(200).json({
-      mensagem: 'Cobrança gerada com sucesso! (Modo Sandbox / Homologação)',
+      mensagem: 'CobranÃ§a gerada com sucesso! (Modo Sandbox / HomologaÃ§Ã£o)',
       idTransacao: idTransacaoSimulado,
       urlCheckoutAsaas: urlCheckoutSimulado,
       pixCopiaECola: pixCopiaEColaSimulado,
@@ -266,9 +479,9 @@ const handleCriarCobranca = async (req: Request, res: Response) => {
       isSimulated: true
     });
   } catch (error: any) {
-    console.error('Erro ao gerar cobrança no Asaas:', error.response?.data || error.message);
+    console.error('Erro ao gerar cobranÃ§a no Asaas:', error.response?.data || error.message);
     return res.status(500).json({
-      erro: 'Falha ao gerar cobrança',
+      erro: 'Falha ao gerar cobranÃ§a',
       detalhes: error.response ? error.response.data : error.message
     });
   }
@@ -278,12 +491,12 @@ app.post('/criar-cobranca', handleCriarCobranca);
 app.post('/api/criar-cobranca', handleCriarCobranca);
 
 // ========================================================================
-// ENDPOINT 3: STATUS DA INTEGRAÇÃO COM O ASAAS
+// ENDPOINT 3: STATUS DA INTEGRAÃ‡ÃƒO COM O ASAAS
 // ========================================================================
 const handleStatusAsaas = (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    provedor: 'Asaas Pagamentos & Split Automático',
+    provedor: 'Asaas Pagamentos & Split AutomÃ¡tico',
     isLiveConfigured: isLiveKey(ASAAS_API_KEY),
     asaasUrl: ASAAS_URL_BASE,
     carteiraMeiMaster: MINHA_CARTEIRA_MEI,
@@ -297,7 +510,7 @@ app.get('/status-asaas', handleStatusAsaas);
 app.get('/api/asaas/status', handleStatusAsaas);
 
 // ========================================================================
-// ENDPOINT 4: WEBHOOK DO ASAAS (Confirmação e Expiração Automática de Pedidos)
+// ENDPOINT 4: WEBHOOK DO ASAAS (ConfirmaÃ§Ã£o e ExpiraÃ§Ã£o AutomÃ¡tica de Pedidos)
 // Suporta /api/asaas/webhook e /api/webhooks/asaas
 // Atualiza automaticamente o status dos pedidos no banco de dados
 // ========================================================================
@@ -340,7 +553,7 @@ const handleGetAsaasWebhook = (req: Request, res: Response) => {
     status: 'ACTIVE',
     service: 'Achei Aqui - Endpoint de Webhooks do Asaas',
     endpoint: '/api/webhooks/asaas',
-    description: 'Recebe notificações automáticas do Asaas e atualiza o banco de dados de pedidos quando confirmado ou expirado.',
+    description: 'Recebe notificaÃ§Ãµes automÃ¡ticas do Asaas e atualiza o banco de dados de pedidos quando confirmado ou expirado.',
     supportedEvents: [
       'PAYMENT_CONFIRMED (atualiza status para Confirmado e paymentStatus para PAGO)',
       'PAYMENT_RECEIVED (atualiza status para Confirmado e paymentStatus para PAGO)',
@@ -360,7 +573,7 @@ app.get('/api/asaas/webhook', handleGetAsaasWebhook);
 app.get('/api/webhooks/asaas', handleGetAsaasWebhook);
 
 // ========================================================================
-// ENDPOINT 5: BANCO DE DADOS DE PEDIDOS & SINCRONIZAÇÃO
+// ENDPOINT 5: BANCO DE DADOS DE PEDIDOS & SINCRONIZAÃ‡ÃƒO
 // ========================================================================
 app.get('/api/orders', (req: Request, res: Response) => {
   const orders = getStoredOrders();
@@ -409,14 +622,14 @@ app.get('/api/webhooks/asaas/logs', (req: Request, res: Response) => {
 });
 
 // ========================================================================
-// ENDPOINT 7: GO-LIVE & INICIALIZAÇÃO DE PRODUÇÃO (Purga e Sanitização)
+// ENDPOINT 7: GO-LIVE & INICIALIZAÃ‡ÃƒO DE PRODUÃ‡ÃƒO (Purga e SanitizaÃ§Ã£o)
 // ========================================================================
 app.post('/api/admin/init-production', (req: Request, res: Response) => {
   try {
     const purgeResult = purgeProductionDatabase();
     return res.status(200).json({
       success: true,
-      mensagem: 'Ambiente de produção inicializado com sucesso!',
+      mensagem: 'Ambiente de produÃ§Ã£o inicializado com sucesso!',
       resultado: purgeResult,
       configuracoes: {
         asaasUrl: ASAAS_URL_BASE,
@@ -428,7 +641,7 @@ app.post('/api/admin/init-production', (req: Request, res: Response) => {
   } catch (error: any) {
     return res.status(500).json({
       success: false,
-      erro: 'Falha ao executar inicialização de produção',
+      erro: 'Falha ao executar inicializaÃ§Ã£o de produÃ§Ã£o',
       detalhes: error.message
     });
   }
@@ -465,7 +678,7 @@ app.get('/api/admin/system-status', (req: Request, res: Response) => {
 });
 
 // ========================================================================
-// INICIALIZAÇÃO DO SERVIDOR COM VITE MIDDLEWARE
+// INICIALIZAÃ‡ÃƒO DO SERVIDOR COM VITE MIDDLEWARE
 // ========================================================================
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
