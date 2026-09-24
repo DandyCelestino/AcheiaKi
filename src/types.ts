@@ -1,4 +1,4 @@
-export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'REPRESENTANTE_COMERCIAL' | 'LOJISTA' | 'PRESTADOR_SERVICO' | 'ENTREGADOR';
+﻿export type UserRole = 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'REPRESENTANTE_COMERCIAL' | 'LOJISTA' | 'PRESTADOR_SERVICO' | 'ENTREGADOR';
 
 export type MembershipTier = 'GRATIS' | 'BRONZE' | 'PRATA' | 'OURO' | 'PREMIUM' | 'MASTER';
 
@@ -20,9 +20,9 @@ export interface PlanBenefitRule {
   badgeTextColor: string;
 }
 
-export type ModalityType = 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO' | 'AGENDAMENTO';
+export type ModalityType = 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO' | 'AGENDAMENTO';
 
-export type OrderStatus = 'Aguardando' | 'Confirmado' | 'Em Preparo' | 'Em Rota' | 'Pronto para Retirada' | 'Concluído' | 'Cancelado' | 'Sem Estoque';
+export type OrderStatus = 'Aguardando' | 'Confirmado' | 'Em Preparo' | 'Em Rota' | 'Pronto para Retirada' | 'ConcluÃ­do' | 'Cancelado' | 'Sem Estoque';
 
 export type ItemType = 'PRODUTO_FISICO' | 'SERVICO' | 'INSTALACAO' | 'MANUTENCAO';
 
@@ -30,7 +30,7 @@ export interface ProfessionalReference {
   id?: string;
   name: string;
   phone: string;
-  relationshipOrRole: string; // Ex: "Cliente Residencial", "Síndico Condomínio", "Comércio Parceiro"
+  relationshipOrRole: string; // Ex: "Cliente Residencial", "SÃ­ndico CondomÃ­nio", "ComÃ©rcio Parceiro"
   notes?: string;
 }
 
@@ -89,7 +89,7 @@ export interface AuditStats {
 
 export interface CustomerAddress {
   id: string;
-  label: string; // Ex: "Casa", "Trabalho", "Sítio / Papucaia"
+  label: string; // Ex: "Casa", "Trabalho", "SÃ­tio / Papucaia"
   street: string;
   number: string;
   complement?: string;
@@ -132,7 +132,7 @@ export interface CustomerPreferences {
   receiveEmail: boolean;
   receiveSms: boolean;
   receivePromoAlerts: boolean;
-  preferredModality?: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO';
+  preferredModality?: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO';
   dietaryRestrictions?: string;
   favoriteCategories?: string[];
   notificationChannels?: NotificationPreferences;
@@ -161,7 +161,7 @@ export interface User {
   cpf?: string;
   idDocument?: string; // RG / Identidade Oficial
   birthDate?: string;
-  gender?: 'Feminino' | 'Masculino' | 'Não-binário' | 'Outro' | 'Prefiro não informar';
+  gender?: 'Feminino' | 'Masculino' | 'NÃ£o-binÃ¡rio' | 'Outro' | 'Prefiro nÃ£o informar';
   addresses?: CustomerAddress[];
   references?: ProfessionalReference[];
   measurements?: VipMeasurements;
@@ -215,7 +215,7 @@ export interface Product {
   serviceEstimateTime?: string;
   estimatedDuration?: string;
   isQuoteBased?: boolean;
-  availableModalities: ('DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO' | 'AGENDAMENTO')[];
+  availableModalities: ('DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO' | 'AGENDAMENTO')[];
   featured?: boolean;
   isNewArrival?: boolean;
   isDeal?: boolean;
@@ -225,16 +225,16 @@ export interface Product {
   variations?: ProductVariation[];
   specs?: { [key: string]: string };
   allowDirectChat?: boolean; // Habilitar ou desativar chat interno direto para este produto
-  // Novas configurações de Taxa, PIX e Ações por Categoria
+  // Novas configuraÃ§Ãµes de Taxa, PIX e AÃ§Ãµes por Categoria
   advanceFeeRequired?: boolean;
   advanceFeeAmount?: number; // Valor da taxa de adiantamento em R$
   pixKey?: string; // Chave PIX do lojista
   pixKeyType?: 'CPF' | 'CNPJ' | 'CELULAR' | 'TELEFONE' | 'EMAIL' | 'ALEATORIA';
   pixBeneficiaryName?: string;
-  furnitureActionType?: 'COMPRAR_APENAS' | 'ALUGAR_APENAS' | 'COMPRAR_E_ALUGAR' | 'BUY' | 'RENT' | 'BOTH'; // Móveis e locações
+  furnitureActionType?: 'COMPRAR_APENAS' | 'ALUGAR_APENAS' | 'COMPRAR_E_ALUGAR' | 'BUY' | 'RENT' | 'BOTH'; // MÃ³veis e locaÃ§Ãµes
   rentPrice?: number;
   rentPeriod?: 'DIARIA' | 'MENSAL' | 'EVENTO' | 'DIA' | 'SEMANA' | 'MES';
-  vehicleActionType?: 'RESERVAR_E_VISITAR' | 'RESERVAR_APENAS' | 'VISITAR_APENAS' | 'BOTH' | 'RESERVE' | 'VISIT'; // Veículos
+  vehicleActionType?: 'RESERVAR_E_VISITAR' | 'RESERVAR_APENAS' | 'VISITAR_APENAS' | 'BOTH' | 'RESERVE' | 'VISIT'; // VeÃ­culos
   vehicleYear?: string;
   vehicleKm?: string;
   status: 'active' | 'paused' | 'draft' | 'archived';
@@ -244,24 +244,24 @@ export interface Product {
 export interface ProfessionalCredentials {
   registrationNumber?: string; // Ex: "CRM-RJ 98.421", "CRO-RJ 48920", "CREA-RJ 2021190", "CRP 05/12345"
   registrationEntity?: string; // Ex: "Conselho Regional de Odontologia", "CREA", "OAB", "MEI"
-  experienceYears?: number; // Ex: 12 anos de atuação em Cachoeiras de Macacu
-  specializations?: string[]; // Ex: ["Implantodontia", "Ortodontia", "Elétrica de Alta Tensão"]
-  certifications?: string[]; // Ex: ["Certificação Apple", "NR10 Segurança Elétrica", "Pós-Graduação UFF"]
-  warrantyInfo?: string; // Ex: "90 dias de garantia legal com emissão de nota fiscal de serviços"
+  experienceYears?: number; // Ex: 12 anos de atuaÃ§Ã£o em Cachoeiras de Macacu
+  specializations?: string[]; // Ex: ["Implantodontia", "Ortodontia", "ElÃ©trica de Alta TensÃ£o"]
+  certifications?: string[]; // Ex: ["CertificaÃ§Ã£o Apple", "NR10 SeguranÃ§a ElÃ©trica", "PÃ³s-GraduaÃ§Ã£o UFF"]
+  warrantyInfo?: string; // Ex: "90 dias de garantia legal com emissÃ£o de nota fiscal de serviÃ§os"
   guaranteeDays?: number;
 }
 
 export interface ServicePricingTable {
   hourlyRate?: number; // R$ / hora (avulso, consultas, pequenos reparos)
-  dailyRate?: number; // R$ / diária (dia de trabalho de 8h, plantão, evento)
-  monthlyRate?: number; // R$ / mensalidade (reforço escolar mensal, planos de estética recorrente, manutenção predial)
-  customQuoteDescription?: string; // Informações para orçamentos sob medida
-  pricingNotes?: string; // Ex: "Materiais e peças orçados separadamente. Deslocamento incluso para toda Cachoeiras de Macacu."
+  dailyRate?: number; // R$ / diÃ¡ria (dia de trabalho de 8h, plantÃ£o, evento)
+  monthlyRate?: number; // R$ / mensalidade (reforÃ§o escolar mensal, planos de estÃ©tica recorrente, manutenÃ§Ã£o predial)
+  customQuoteDescription?: string; // InformaÃ§Ãµes para orÃ§amentos sob medida
+  pricingNotes?: string; // Ex: "Materiais e peÃ§as orÃ§ados separadamente. Deslocamento incluso para toda Cachoeiras de Macacu."
 }
 
 export interface MerchantAvailableSlot {
   id: string;
-  dayOfWeek: string; // "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"
+  dayOfWeek: string; // "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado", "Domingo"
   time: string; // "09:00", "10:30", etc.
   isAvailable: boolean; // true = vaga livre, false = ocupado/bloqueado
   period: 'MANHA' | 'TARDE' | 'NOITE';
@@ -279,13 +279,13 @@ export interface MerchantScheduleConfig {
   }[];
   slotDurationMinutes: number; // 30, 45, 60, 90 min
   serviceExecutionModalities: ('ESTABELECIMENTO' | 'DOMICILIO' | 'ONLINE')[];
-  advanceNoticeHours: number; // Ex: 2 horas de antecedência
+  advanceNoticeHours: number; // Ex: 2 horas de antecedÃªncia
   customSlots?: MerchantAvailableSlot[];
 }
 
 export interface MerchantServiceResponse {
   status: 'PENDENTE' | 'CONFIRMADO' | 'REAGENDADO' | 'RECUSADO' | 'CONCLUIDO';
-  responseMessage: string; // Resposta oficial escrita pelo lojista/médico/professor
+  responseMessage: string; // Resposta oficial escrita pelo lojista/mÃ©dico/professor
   merchantAuthorName: string; // Nome do profissional que respondeu
   respondedAt: string; // Data/Hora da resposta
   instructionsForCustomer?: string; // Ex: "Chegar 10 minutos antes com documento e exames anteriores"
@@ -319,7 +319,7 @@ export interface ServiceItem {
   pricingTable?: ServicePricingTable;
   credentials?: ProfessionalCredentials;
   executionLocation?: 'ESTABELECIMENTO' | 'DOMICILIO' | 'ONLINE' | 'AMBOS';
-  allowDirectChat?: boolean; // Habilitar ou desativar chat interno direto para este serviço
+  allowDirectChat?: boolean; // Habilitar ou desativar chat interno direto para este serviÃ§o
   status?: 'active' | 'paused' | 'archived';
 }
 
@@ -330,7 +330,7 @@ export interface StoreMerchant {
   email: string;
   phone: string;
   cnpjOrCpf: string;
-  idDocument?: string; // RG / Documento de Identidade Obrigatório
+  idDocument?: string; // RG / Documento de Identidade ObrigatÃ³rio
   category: string;
   subcategory?: string;
   description: string;
@@ -343,9 +343,9 @@ export interface StoreMerchant {
   zipCode?: string;
   latitude?: number;
   longitude?: number;
-  references?: ProfessionalReference[]; // Referências Obrigatórias
+  references?: ProfessionalReference[]; // ReferÃªncias ObrigatÃ³rias
   credentials?: ProfessionalCredentials; // Registro profissional (CRM, CRO, CREA etc.)
-  pricingTable?: ServicePricingTable; // Preço por hora, dia e mês
+  pricingTable?: ServicePricingTable; // PreÃ§o por hora, dia e mÃªs
   scheduleConfig?: MerchantScheduleConfig; // Agenda com dias e horas vagas
   isServiceProvider?: boolean;
   offeredItemTypes?: ItemType[];
@@ -362,12 +362,12 @@ export interface StoreMerchant {
   supportsPickup: boolean;
   supportsTrial: boolean;
   supportsAppointments: boolean;
-  allowDirectChat?: boolean; // Lojistas e Prestadores de Serviços podem ativar ou desativar chat em suas configurações
+  allowDirectChat?: boolean; // Lojistas e Prestadores de ServiÃ§os podem ativar ou desativar chat em suas configuraÃ§Ãµes
   serviceButtonsConfig?: {
-    showSchedule?: boolean;     // Botão Agendar
-    showHomeService?: boolean;  // Atendimento a domicílio
+    showSchedule?: boolean;     // BotÃ£o Agendar
+    showHomeService?: boolean;  // Atendimento a domicÃ­lio
     showStoreService?: boolean; // Atendimento na loja
-    showQuote?: boolean;        // Solicitar orçamento / contato
+    showQuote?: boolean;        // Solicitar orÃ§amento / contato
     showChat?: boolean;         // Chat interno
   };
   membershipTier?: MembershipTier;
@@ -387,9 +387,9 @@ export interface Order {
   id: string;
   code: string; // e.g. "RET-8X42K9" or "DEL-9912A"
   orderNumber?: string; // e.g. "#58291"
-  securityCode?: string; // Código único de segurança / negociação (ex: "K7P4X9")
+  securityCode?: string; // CÃ³digo Ãºnico de seguranÃ§a / negociaÃ§Ã£o (ex: "K7P4X9")
   clientVerified?: boolean; // Se o cliente validou via SMS/WhatsApp
-  verificationPhoneCode?: string; // Código enviado no SMS/WhatsApp (ex: "482913")
+  verificationPhoneCode?: string; // CÃ³digo enviado no SMS/WhatsApp (ex: "482913")
   verificationChannel?: 'WHATSAPP' | 'SMS';
   customerEmail?: string;
   customerCpf?: string;
@@ -397,7 +397,7 @@ export interface Order {
   stockConfirmationStatus?: 'PENDING_STORE_CONFIRMATION' | 'STOCK_CONFIRMED' | 'OUT_OF_STOCK' | 'EXPIRED' | 'STAND_BY';
   stockConfirmationExpiresAt?: string; // 15 minutos para a loja confirmar
   reservationExpiresAt?: string; // 30 minutos de reserva garantida
-  paymentNegotiationNote?: string; // Negociação direta cliente + loja
+  paymentNegotiationNote?: string; // NegociaÃ§Ã£o direta cliente + loja
   userId: string;
   customerName: string;
   customerPhone: string;
@@ -439,7 +439,7 @@ export interface Order {
   cancellationReason?: string;
   assignedDriver?: string;
   commissionRateApplied?: number; // e.g. 12, 8, 5, 3, 1
-  commissionAmount?: number; // Valor da taxa/comissão da plataforma
+  commissionAmount?: number; // Valor da taxa/comissÃ£o da plataforma
   commissionPaidToPlatform?: boolean; // Lojista realizou o pagamento
   commissionConfirmedByMaster?: boolean; // Administrador Master confirmou o pagamento
   buyerDataUnlocked?: boolean; // Dados do comprador liberados para o lojista
@@ -519,8 +519,12 @@ export interface SystemSettings {
   defaultDeliveryFeeMacacu: number;
   vipTrialMaxDays: number;
   vipTrialSecurityDepositRequired: boolean;
-  deliveryRatePerKm?: number; // VALOR_POR_KM (padrão R$ 1,00/km)
-  deliveryPlatformFee?: number; // TAXA_PLATAFORMA (padrão R$ 2,00/solicitação)
+  deliveryRatePerKm?: number; // VALOR_POR_KM (padrÃ£o R$ 1,00/km)
+  deliveryPlatformFee?: number; // Taxa app até 10 km
+  deliveryMinimumFare?: number; // Mínimo de partida do entregador
+  deliveryPlatformFeeUpTo10Km?: number; // Taxa app até 10 km
+  deliveryPlatformFeeUpTo20Km?: number; // Taxa app acima de 10 até 20 km
+  deliveryPlatformFeeAbove20Km?: number; // Taxa app acima de 20 km
   deliveryMaxActiveRidesPerDriver?: number;
   enableFloatingNotificationBall?: boolean;
   defaultCommissionRate?: number;
@@ -560,7 +564,7 @@ export interface InAppNotification {
   recipientName?: string; // display name
   recipientPhone?: string;
   recipientEmail?: string;
-  senderName: string; // e.g. "Administração Master Achei Aqui"
+  senderName: string; // e.g. "AdministraÃ§Ã£o Master Achei Aqui"
   senderRole?: 'MASTER' | 'SISTEMA' | 'LOJISTA' | 'CLIENTE';
   priority: NotificationPriority;
   actionUrl?: string; // e.g. 'account', 'orders', 'plans'
@@ -621,7 +625,7 @@ export interface CartItem {
   product: Product;
   quantity: number;
   selectedVariations: { [key: string]: string };
-  selectedModality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO';
+  selectedModality: 'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO';
 }
 
 export interface CarouselSlide {
@@ -744,14 +748,14 @@ export interface FrontendCustomization {
 }
 
 // ==========================================
-// AVALIAÇÕES MÚTUAS & POLÍTICA DE REPUTAÇÃO
+// AVALIAÃ‡Ã•ES MÃšTUAS & POLÃTICA DE REPUTAÃ‡ÃƒO
 // ==========================================
 
 export interface CustomerReviewCriteria {
-  quality: number; // 1-5 Qualidade do produto ou serviço prestado
+  quality: number; // 1-5 Qualidade do produto ou serviÃ§o prestado
   punctuality: number; // 1-5 Pontualidade na entrega / agendamento / prazo
-  service: number; // 1-5 Atendimento, educação e esclarecimento de dúvidas
-  costBenefit: number; // 1-5 Relação custo-benefício
+  service: number; // 1-5 Atendimento, educaÃ§Ã£o e esclarecimento de dÃºvidas
+  costBenefit: number; // 1-5 RelaÃ§Ã£o custo-benefÃ­cio
 }
 
 export interface CustomerToMerchantReview {
@@ -764,10 +768,10 @@ export interface CustomerToMerchantReview {
   merchantId: string;
   merchantName: string;
   targetType: 'LOJA' | 'PRESTADOR_SERVICO';
-  rating: number; // Média 1 a 5 estrelas
+  rating: number; // MÃ©dia 1 a 5 estrelas
   criteria: CustomerReviewCriteria;
   comment: string;
-  tags?: string[]; // Ex: ["Entrega Rápida", "Produto Impecável", "Atendimento Nota 10", "Preço Justo", "Profissional Experiente"]
+  tags?: string[]; // Ex: ["Entrega RÃ¡pida", "Produto ImpecÃ¡vel", "Atendimento Nota 10", "PreÃ§o Justo", "Profissional Experiente"]
   recommend: boolean;
   photos?: string[];
   merchantReply?: {
@@ -782,7 +786,7 @@ export interface CustomerToMerchantReview {
 
 export interface MerchantReviewBehaviorCriteria {
   punctuality: number; // 1-5 Pontualidade no recebimento/retirada/atendimento
-  communication: number; // 1-5 Cordialidade e clareza na comunicação
+  communication: number; // 1-5 Cordialidade e clareza na comunicaÃ§Ã£o
   paymentAndAgreements: number; // 1-5 Cumprimento dos combinados de pagamento e retirada
   careAndRespect: number; // 1-5 Cuidado com produtos no provador / respeito ao profissional
 }
@@ -799,9 +803,9 @@ export interface MerchantToCustomerReview {
   rating: number; // 1 a 5 estrelas
   behaviorCriteria: MerchantReviewBehaviorCriteria;
   comment: string;
-  behaviorTags: string[]; // Ex: ["Cliente Pontual", "Excelente Comunicação", "Retirou no Prazo", "Pagamento Imediato", "Cuidado no Provador VIP", "Recomendo para outros Lojistas"]
+  behaviorTags: string[]; // Ex: ["Cliente Pontual", "Excelente ComunicaÃ§Ã£o", "Retirou no Prazo", "Pagamento Imediato", "Cuidado no Provador VIP", "Recomendo para outros Lojistas"]
   recommendForOtherMerchants: boolean;
-  incidentReported?: boolean; // Caso tenha havido descumprimento grave de política (no-show, avaria)
+  incidentReported?: boolean; // Caso tenha havido descumprimento grave de polÃ­tica (no-show, avaria)
   incidentDetails?: string;
   createdAt: string;
 }
@@ -821,13 +825,13 @@ export interface CustomerReputationSummary {
 }
 
 // ============================================================================
-// ARQUITETURA MULTILOJA: BANCO, RELACIONAMENTOS, STATUS E SEGURANÇA
+// ARQUITETURA MULTILOJA: BANCO, RELACIONAMENTOS, STATUS E SEGURANÃ‡A
 // ============================================================================
 
 export const COMPRA_VALIDADA_AVISO =
-  'COMPRA VALIDADA — O PAGAMENTO DAS MERCADORIAS SERÁ REALIZADO DIRETAMENTE A CADA LOJISTA.';
+  'COMPRA VALIDADA â€” O PAGAMENTO DAS MERCADORIAS SERÃ REALIZADO DIRETAMENTE A CADA LOJISTA.';
 
-export const PLATFORM_FEE_RATE = 0.10; // 10% da transação para a plataforma Achei Aqui
+export const PLATFORM_FEE_RATE = 0.10; // 10% da transaÃ§Ã£o para a plataforma Achei Aqui
 
 export type PedidoPrincipalStatus =
   | 'CRIADO'
@@ -913,7 +917,7 @@ export interface ItemPedido {
   atualizadoEm: string;
 }
 
-// Entidade: PAGAMENTOS_TAXAS (Cobrança única de taxas da plataforma)
+// Entidade: PAGAMENTOS_TAXAS (CobranÃ§a Ãºnica de taxas da plataforma)
 export interface PagamentoTaxa {
   id: string;
   pedidoPrincipalId: string;
@@ -926,7 +930,7 @@ export interface PagamentoTaxa {
   taxaPercentualGeral: number; // 0.10 (10%)
   metodo: 'PIX_ESTATICO' | 'PIX_DINAMICO_API' | 'LINK_PAGAMENTO' | 'WEBHOOK_GATEWAY';
   chavePixOficial: string; // CNPJ 30.810.800/0001-39
-  beneficiario: string; // Bex Serviços e Comércios, CNPJ 30.810.800/0001-39
+  beneficiario: string; // Bex ServiÃ§os e ComÃ©rcios, CNPJ 30.810.800/0001-39
   linkPagamento?: string;
   qrCodePixUrl?: string;
   copiaEColaPix?: string;
@@ -947,8 +951,8 @@ export interface RegistroEntrega {
   pedidoPrincipalId: string;
   lojaId: string;
   modalidade: ModalityType;
-  regiaoAproximada: string; // Bairro/Região visível antes da validação da taxa
-  enderecoEntregaCompleto?: string; // Liberado APENAS após COMPRA_VALIDADA e LIBERAR_DADOS_DO_CLIENTE
+  regiaoAproximada: string; // Bairro/RegiÃ£o visÃ­vel antes da validaÃ§Ã£o da taxa
+  enderecoEntregaCompleto?: string; // Liberado APENAS apÃ³s COMPRA_VALIDADA e LIBERAR_DADOS_DO_CLIENTE
   codigoRastreioOuRetirada: string;
   statusEntrega: EntregaStatus;
   dataHoraDespacho?: string;
@@ -973,7 +977,7 @@ export interface RegistroConfirmacoes {
   confirmacaoTaxaPlataformaAt?: string;
   confirmacaoPagamentoMercadoriaLoja: boolean; // Lojista confirma que cliente pagou as mercadorias diretamente a ele
   confirmacaoPagamentoMercadoriaLojaAt?: string;
-  confirmacaoRecebimentoCliente: boolean; // Cliente confirma que recebeu as mercadorias/serviço
+  confirmacaoRecebimentoCliente: boolean; // Cliente confirma que recebeu as mercadorias/serviÃ§o
   confirmacaoRecebimentoClienteAt?: string;
   observacoes?: string;
 }
@@ -991,7 +995,7 @@ export interface RegistroHistoricoStatus {
   timestamp: string;
 }
 
-// Entidade: AUDITORIA (Registro imutável de acessos e transições)
+// Entidade: AUDITORIA (Registro imutÃ¡vel de acessos e transiÃ§Ãµes)
 export interface RegistroAuditoria {
   id: string;
   subpedidoId?: string;
@@ -1006,7 +1010,7 @@ export interface RegistroAuditoria {
   timestamp: string;
 }
 
-// Dados Protegidos do Cliente (Visíveis ao Lojista APENAS após validação da taxa)
+// Dados Protegidos do Cliente (VisÃ­veis ao Lojista APENAS apÃ³s validaÃ§Ã£o da taxa)
 export interface DadosClienteProtegidos {
   nomeCompleto: string;
   telefoneContato: string;
@@ -1018,7 +1022,7 @@ export interface DadosClienteProtegidos {
   instrucoesEntrega?: string;
 }
 
-// Visualização Restrita do Lojista (Antes de COMPRA_VALIDADA e LIBERAR_DADOS_DO_CLIENTE)
+// VisualizaÃ§Ã£o Restrita do Lojista (Antes de COMPRA_VALIDADA e LIBERAR_DADOS_DO_CLIENTE)
 export interface VisaoRestritaLojistaSubpedido {
   subpedidoId: string;
   codigoSubpedido: string;
@@ -1054,18 +1058,18 @@ export interface Subpedido {
   status: SubpedidoStatus;
   modalidade: ModalityType;
   
-  // Financeiro do Subpedido: Mercadorias (direto ao lojista) vs Taxa (10% à plataforma)
+  // Financeiro do Subpedido: Mercadorias (direto ao lojista) vs Taxa (10% Ã  plataforma)
   valorMercadorias: number; // R$ pago diretamente pelo cliente ao lojista
   taxaPlataformaRate: number; // 0.10 (10%)
   taxaPlataformaValor: number; // R$ 10% calculado sobre o valorMercadorias
   taxaPaga: boolean;
   taxaConfirmadaAt?: string;
 
-  // Segurança e Liberação de Dados Privados
+  // SeguranÃ§a e LiberaÃ§Ã£o de Dados Privados
   dadosClienteLiberados: boolean;
   dadosClienteLiberadosAt?: string;
   
-  // Confirmação direta de pagamento de mercadorias entre Cliente e Lojista
+  // ConfirmaÃ§Ã£o direta de pagamento de mercadorias entre Cliente e Lojista
   pagamentoMercadoriaDiretoStatus: 'PENDENTE_PAGAMENTO_DIRETO' | 'PAGO_DIRETAMENTE_AO_LOJISTA';
   pagamentoMercadoriaConfirmadoAt?: string;
 
@@ -1078,7 +1082,7 @@ export interface Subpedido {
   atualizadoEm: string;
 }
 
-// Entidade: PEDIDOS_PRINCIPAIS (Um pedido principal pode possuir vários subpedidos)
+// Entidade: PEDIDOS_PRINCIPAIS (Um pedido principal pode possuir vÃ¡rios subpedidos)
 export interface PedidoPrincipal {
   id: string;
   code: string; // Ex: "#10001"
@@ -1138,17 +1142,17 @@ export interface SubOrderMessage {
   id: string;
   subpedidoId: string; // ID do subpedido vinculado (ex: "sub-10001-a")
   pedidoPrincipalId?: string; // ID do pedido consolidado (ex: "ord-principal-10001")
-  codigoSubpedido?: string; // Código amigável (ex: "#10001-A")
-  senderId: string; // ID do usuário remetente
+  codigoSubpedido?: string; // CÃ³digo amigÃ¡vel (ex: "#10001-A")
+  senderId: string; // ID do usuÃ¡rio remetente
   senderName: string; // Nome do remetente
   senderRole: 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'SISTEMA'; // Papel do remetente
-  recipientId?: string; // Destinatário específico (opcional)
+  recipientId?: string; // DestinatÃ¡rio especÃ­fico (opcional)
   recipientName?: string;
   recipientRole?: 'CLIENTE' | 'VENDEDOR' | 'MASTER' | 'ALL';
   message: string; // Texto da mensagem
   attachmentUrl?: string; // URL de foto/comprovante/anexo
-  readBy: string[]; // Lista de IDs de usuários que já visualizaram
-  isInternalNote?: boolean; // Nota interna visível apenas para Lojista e Master
+  readBy: string[]; // Lista de IDs de usuÃ¡rios que jÃ¡ visualizaram
+  isInternalNote?: boolean; // Nota interna visÃ­vel apenas para Lojista e Master
   systemEventType?: 'ORDER_CREATED' | 'STOCK_CONFIRMED' | 'STOCK_REJECTED' | 'STATUS_CHANGED' | 'COMMISSION_PAID' | 'COMMISSION_CONFIRMED' | 'PICKUP_VALIDATED' | string;
   statusBadge?: string;
   createdAt: string; // ISO 8601
@@ -1172,9 +1176,9 @@ export interface SalesAgent {
   roleTitle: string; // Ex: "Consultor de Vendas Regional"
   supervisorId?: string; // ID do supervisor / coordenador no organograma (ou undefined se reporta ao Master)
   supervisorName?: string;
-  assignedRegion: string; // Ex: "Centro & Japuíba", "Papucaia / Agrobrasil", "Guapiaçu"
+  assignedRegion: string; // Ex: "Centro & JapuÃ­ba", "Papucaia / Agrobrasil", "GuapiaÃ§u"
   commissionRatePercent: number; // Decidido pelo Master (Ex: 15% do valor da assinatura ou venda)
-  commissionBonusPerActivation: number; // Bônus fixo por novo cliente/loja ativada (Ex: R$ 30,00)
+  commissionBonusPerActivation: number; // BÃ´nus fixo por novo cliente/loja ativada (Ex: R$ 30,00)
   pixKey: string;
   pixKeyType: 'CPF' | 'EMAIL' | 'TELEFONE' | 'ALEATORIA';
   status: SalesAgentStatus;
@@ -1187,14 +1191,14 @@ export interface SalesAgent {
 
 export interface CommercialArea {
   id: string;
-  name: string; // Ex: "Centro & Japuíba"
+  name: string; // Ex: "Centro & JapuÃ­ba"
   code: string; // Ex: "AREA-CENTRO"
-  neighborhoods: string[]; // Ex: ["Centro", "Japuíba", "Castália", "Campo do Prado"]
-  supervisorId?: string; // ID do Coordenador ou Supervisor responsável
+  neighborhoods: string[]; // Ex: ["Centro", "JapuÃ­ba", "CastÃ¡lia", "Campo do Prado"]
+  supervisorId?: string; // ID do Coordenador ou Supervisor responsÃ¡vel
   supervisorName?: string;
   targetMonthlyActivations: number;
   notes?: string;
-  color?: string; // Cor de identificação
+  color?: string; // Cor de identificaÃ§Ã£o
 }
 
 export interface SalesOrganogramNode {
@@ -1217,8 +1221,8 @@ export interface SalesOrganogramNode {
 export type BoletoRequestStatus = 
   | 'PENDENTE_EMISSAO'      // Vendedor enviou, aguardando Master emitir boleto
   | 'BOLETO_ENVIADO'        // Master emitiu e enviou boleto ao cliente
-  | 'PAGAMENTO_CONFIRMADO'  // Boleto pago e confirmado pelo Master (Comissão Liberada)
-  | 'CANCELADO';            // Cancelado por recusa ou desistência
+  | 'PAGAMENTO_CONFIRMADO'  // Boleto pago e confirmado pelo Master (ComissÃ£o Liberada)
+  | 'CANCELADO';            // Cancelado por recusa ou desistÃªncia
 
 export interface BoletoBillingRequest {
   id: string;
@@ -1229,7 +1233,7 @@ export interface BoletoBillingRequest {
   
   // Dados do cliente/lojista cadastrado
   clientType: 'LOJISTA' | 'PRESTADOR' | 'USUARIO_VIP';
-  clientName: string; // Razão Social ou Nome Completo
+  clientName: string; // RazÃ£o Social ou Nome Completo
   tradeName?: string; // Nome Fantasia
   documentNumber: string; // CNPJ ou CPF
   clientEmail: string;
@@ -1237,23 +1241,23 @@ export interface BoletoBillingRequest {
   clientAddress: string;
   neighborhood: string;
   
-  // Detalhes do Plano ou Serviço Vendido
+  // Detalhes do Plano ou ServiÃ§o Vendido
   chosenPlan: MembershipTier;
   planTitle: string;
   billingFrequency: 'MENSAL' | 'TRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
-  amount: number; // Valor da cobrança (R$)
+  amount: number; // Valor da cobranÃ§a (R$)
   
-  // Comissão calculada para o Vendedor
+  // ComissÃ£o calculada para o Vendedor
   commissionRatePercent: number; // Ex: 20%
   commissionAmount: number; // Ex: R$ 39,98
-  commissionStatus: 'PENDENTE' | 'LIBERADA' | 'PAGA'; // Liberada APÓS confirmação de pagamento do boleto
+  commissionStatus: 'PENDENTE' | 'LIBERADA' | 'PAGA'; // Liberada APÃ“S confirmaÃ§Ã£o de pagamento do boleto
   commissionPaidAt?: string;
   commissionPaymentReceipt?: string;
   
-  // Dados do Boleto Bancário
+  // Dados do Boleto BancÃ¡rio
   dueDate: string; // Data de vencimento
-  barcodeDigits?: string; // Linha digitável do boleto
-  boletoPdfUrl?: string; // Link para PDF ou visualização do boleto
+  barcodeDigits?: string; // Linha digitÃ¡vel do boleto
+  boletoPdfUrl?: string; // Link para PDF ou visualizaÃ§Ã£o do boleto
   pixCopiaECola?: string; // Linha Pix Copia e Cola alternativa
   
   status: BoletoRequestStatus;
@@ -1263,7 +1267,7 @@ export interface BoletoBillingRequest {
   confirmedByMasterAt?: string;
   masterNotes?: string;
 
-  // Rastreamento e Liquidação Automática via Webhooks
+  // Rastreamento e LiquidaÃ§Ã£o AutomÃ¡tica via Webhooks
   webhookConfirmed?: boolean;
   webhookGateway?: WebhookGateway;
   webhookEventId?: string;
@@ -1272,7 +1276,7 @@ export interface BoletoBillingRequest {
 }
 
 // =========================================================================
-// CAMADA DE PROCESSAMENTO DE WEBHOOKS & LIQUIDAÇÃO DE BOLETOS
+// CAMADA DE PROCESSAMENTO DE WEBHOOKS & LIQUIDAÃ‡ÃƒO DE BOLETOS
 // =========================================================================
 
 export type WebhookGateway = 'ASAAS' | 'MERCADO_PAGO' | 'BANCO_INTER' | 'IUGU' | 'GERENCIANET_EFI' | 'GENERIC';
@@ -1306,9 +1310,9 @@ export interface WebhookConfig {
   endpointPath: string;
   secretKey: string;
   enabledGateways: WebhookGateway[];
-  autoReleaseCommission: boolean; // Se true, transiciona comissão para LIBERADA automaticamente
+  autoReleaseCommission: boolean; // Se true, transiciona comissÃ£o para LIBERADA automaticamente
   autoActivateClient: boolean;    // Se true, marca cliente como ATIVO_PAGO
-  autoApproveMerchant: boolean;   // Se true, aprova o lojista/prestador no catálogo
+  autoApproveMerchant: boolean;   // Se true, aprova o lojista/prestador no catÃ¡logo
   requireSignatureValidation: boolean;
   notifySalesAgentInApp: boolean;
   simulateDelayMs?: number;
@@ -1336,13 +1340,13 @@ export interface AgentRegisteredClient {
 
 export interface CommercialGoal {
   id: string;
-  title: string; // Ex: "Expansão de Comércios - Centro & Japuíba"
+  title: string; // Ex: "ExpansÃ£o de ComÃ©rcios - Centro & JapuÃ­ba"
   targetMonth: string; // Ex: "Setembro / 2026"
   description: string;
   targetCount: number; // Meta de novos lojistas/prestadores (Ex: 15 cadastros)
   targetRevenue: number; // Meta de faturamento em R$ (Ex: R$ 3.000,00)
-  rewardDescription: string; // Premiação (Ex: "Bônus de R$ 350,00 no Pix + Certificado Destaque Comercial")
-  assignedToAgentId?: string; // 'ALL' ou ID de vendedor específico
+  rewardDescription: string; // PremiaÃ§Ã£o (Ex: "BÃ´nus de R$ 350,00 no Pix + Certificado Destaque Comercial")
+  assignedToAgentId?: string; // 'ALL' ou ID de vendedor especÃ­fico
   assignedToAgentName?: string; // "Toda a Equipe Comercial" ou Nome do Vendedor
   status: 'EM_ANDAMENTO' | 'CONCLUIDA' | 'EXPIRADA';
   startDate: string;
@@ -1351,7 +1355,7 @@ export interface CommercialGoal {
 }
 
 // ==========================================
-// MÓDULO DE DELIVERY (V1 - CICLO OPERACIONAL)
+// MÃ“DULO DE DELIVERY (V1 - CICLO OPERACIONAL)
 // ==========================================
 
 export type DeliveryDriverStatus =
@@ -1407,7 +1411,7 @@ export interface DeliveryDriver {
 }
 
 export type DeliveryRideStatus =
-  // Nova Máquina de Estados da Entrega (AcheiAqui Delivery Core V2)
+  // Nova MÃ¡quina de Estados da Entrega (AcheiAqui Delivery Core V2)
   | 'AGUARDANDO_ANALISE'
   | 'CORRECAO_SOLICITADA'
   | 'APROVADA'
@@ -1473,8 +1477,8 @@ export interface DeliveryRide {
   tipo_veiculo?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
   vehicleType?: 'MOTO' | 'CARRO' | 'BICICLETA' | 'VAN';
   observacoes?: string;
-  ratePerKmApplied: number; // VALOR_POR_KM na época da criação
-  platformFeeApplied: number; // TAXA_PLATAFORMA na época da criação
+  ratePerKmApplied: number; // VALOR_POR_KM na Ã©poca da criaÃ§Ã£o
+  platformFeeApplied: number; // TAXA_PLATAFORMA na Ã©poca da criaÃ§Ã£o
   driverEarnings: number; // distanceKm * ratePerKmApplied
   valor_entregador?: number;
   totalDeliveryFee: number; // driverEarnings + platformFeeApplied
@@ -1487,7 +1491,7 @@ export interface DeliveryRide {
   driverPlate?: string;
   driverPhoto?: string;
   status: DeliveryRideStatus;
-  confirmationCode: string; // Código de 4 dígitos para confirmação na entrega
+  confirmationCode: string; // CÃ³digo de 4 dÃ­gitos para confirmaÃ§Ã£o na entrega
   calculationTimestamp: string;
   data_solicitacao?: string;
   hora_solicitacao?: string;
@@ -1531,6 +1535,7 @@ export interface DeliveryPricingCalculation {
   origin: string;
   destination: string;
 }
+
 
 
 

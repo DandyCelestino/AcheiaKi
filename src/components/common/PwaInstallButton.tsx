@@ -34,7 +34,7 @@ export function PwaInstallButton() {
 
   const handleInstall = async () => {
     if (!installPrompt) {
-      alert('Para instalar o AcheiaKi, use o menu do Chrome e escolha "Instalar AcheiaKi".');
+      alert('Para instalar o AcheiaKi, use o menu do Chrome e escolha "Baixa App".');
       return;
     }
 
@@ -46,7 +46,7 @@ export function PwaInstallButton() {
       try {
         localStorage.setItem('acheiaki_pwa_installed', 'true');
       } catch {
-        // Mantém o funcionamento mesmo se o armazenamento local estiver indisponível.
+        // MantÃ©m o funcionamento mesmo se o armazenamento local estiver indisponÃ­vel.
       }
       setInstalled(true);
     }
@@ -67,7 +67,7 @@ export function PwaInstallButton() {
         className="flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-800 whitespace-nowrap"
       >
         <Download size={18} />
-        Instalar AcheiaKi
+        Baixa App
       </button>
 
       <button

@@ -515,7 +515,13 @@ export interface AppContextType {
   deliverRide: (rideId: string, confirmationCode: string) => Promise<{ success: boolean; message: string }>;
   cancelDeliveryRide: (rideId: string, reason: string) => Promise<{ success: boolean; message: string }>;
   reportRideIncident: (rideId: string, notes: string) => Promise<{ success: boolean; message: string }>;
-  updateDeliveryTariffs: (ratePerKm: number, platformFee: number) => Promise<{ success: boolean; message: string }>;
+  updateDeliveryTariffs: (
+    ratePerKm: number,
+    minimumFare: number,
+    platformFeeUpTo10Km: number,
+    platformFeeUpTo20Km: number,
+    platformFeeAbove20Km: number
+  ) => Promise<{ success: boolean; message: string }>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -5993,8 +5999,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const ratePerKm = systemSettings.deliveryRatePerKm ?? 1.00;
-    const platformFee = systemSettings.deliveryPlatformFee ?? 2.00;
-    const pricing = calculateDeliveryPricing(distanceKm, ratePerKm, platformFee);
+    const minimumFare = systemSettings.deliveryMinimumFare ?? 5.00;
+    const platformFeeUpTo10Km = systemSettings.deliveryPlatformFeeUpTo10Km ?? systemSettings.deliveryPlatformFee ?? 5.00;
+    const platformFeeUpTo20Km = systemSettings.deliveryPlatformFeeUpTo20Km ?? 4.00;
+    const platformFeeAbove20Km = systemSettings.deliveryPlatformFeeAbove20Km ?? 3.50;
+    const pricing = calculateDeliveryPricing(distanceKm, ratePerKm, platformFeeUpTo10Km, 'Centro', 'Centro', minimumFare, platformFeeUpTo10Km, platformFeeUpTo20Km, platformFeeAbove20Km);
 
     const confirmationCode = Math.floor(1000 + Math.random() * 9000).toString();
     const rideCode = `DEL-${Math.floor(10000 + Math.random() * 90000)}`;
@@ -6112,8 +6121,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // 2. Recalcular a tarifa no backend
     const currentRatePerKm = systemSettings?.deliveryRatePerKm ?? 1.0;
-    const currentPlatformFee = systemSettings?.deliveryPlatformFee ?? 2.0;
-    const recalculated = calculateDeliveryPricing(distance, currentRatePerKm, currentPlatformFee);
+    const currentMinimumFare = systemSettings?.deliveryMinimumFare ?? 5.00;
+    const currentPlatformFeeUpTo10Km = systemSettings?.deliveryPlatformFeeUpTo10Km ?? systemSettings?.deliveryPlatformFee ?? 5.00;
+    const currentPlatformFeeUpTo20Km = systemSettings?.deliveryPlatformFeeUpTo20Km ?? 4.00;
+    const currentPlatformFeeAbove20Km = systemSettings?.deliveryPlatformFeeAbove20Km ?? 3.50;
+    const recalculated = calculateDeliveryPricing(distance, currentRatePerKm, currentPlatformFeeUpTo10Km, 'Centro', 'Centro', currentMinimumFare, currentPlatformFeeUpTo10Km, currentPlatformFeeUpTo20Km, currentPlatformFeeAbove20Km);
 
     // 4. Validar valor
     if (recalculated.totalDeliveryFee <= 0 || recalculated.driverEarnings <= 0) {
@@ -6927,24 +6939,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: 'OcorrÃªncia registrada com sucesso.' };
   };
 
-  const updateDeliveryTariffs = async (ratePerKm: number, platformFee: number): Promise<{ success: boolean; message: string }> => {
-    if (ratePerKm < 0 || platformFee < 0) {
-      return { success: false, message: 'Os valores de tarifas nÃ£o podem ser negativos.' };
+  const updateDeliveryTariffs = async (
+    ratePerKm: number,
+    minimumFare: number,
+    platformFeeUpTo10Km: number,
+    platformFeeUpTo20Km: number,
+    platformFeeAbove20Km: number
+  ): Promise<{ success: boolean; message: string }> => {
+    if (
+      ratePerKm < 0 ||
+      minimumFare < 0 ||
+      platformFeeUpTo10Km < 0 ||
+      platformFeeUpTo20Km < 0 ||
+      platformFeeAbove20Km < 0
+    ) {
+      return { success: false, message: 'Os valores de tarifas não podem ser negativos.' };
     }
 
     const newSettings = {
       ...systemSettings,
       deliveryRatePerKm: Math.round(ratePerKm * 100) / 100,
-      deliveryPlatformFee: Math.round(platformFee * 100) / 100
+      deliveryMinimumFare: Math.round(minimumFare * 100) / 100,
+      deliveryPlatformFee: Math.round(platformFeeUpTo10Km * 100) / 100,
+      deliveryPlatformFeeUpTo10Km: Math.round(platformFeeUpTo10Km * 100) / 100,
+      deliveryPlatformFeeUpTo20Km: Math.round(platformFeeUpTo20Km * 100) / 100,
+      deliveryPlatformFeeAbove20Km: Math.round(platformFeeAbove20Km * 100) / 100
     };
 
     setSystemSettings(newSettings);
+
     addAuditLog(
       'DELIVERY_TARIFFS_UPDATED',
-      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km (Entregador), R$ ${newSettings.deliveryPlatformFee.toFixed(2)} (Taxa Plataforma).`
+      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryMinimumFare.toFixed(2)} mínimo, R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km, R$ ${newSettings.deliveryPlatformFeeUpTo10Km.toFixed(2)} até 10 km, R$ ${newSettings.deliveryPlatformFeeUpTo20Km.toFixed(2)} até 20 km e R$ ${newSettings.deliveryPlatformFeeAbove20Km.toFixed(2)} acima de 20 km.`
     );
 
-    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas jÃ¡ abertas mantÃªm seus valores.');
+    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas já abertas mantêm seus valores.');
     return { success: true, message: 'Tarifas atualizadas com sucesso!' };
   };
 
@@ -7273,6 +7302,12 @@ export const useApp = () => {
   }
   return context;
 };
+
+
+
+
+
+
 
 
 

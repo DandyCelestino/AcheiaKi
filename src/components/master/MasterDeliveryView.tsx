@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DeliveryRide, DeliveryDriver, DeliveryDriverStatus } from '../../types';
 import {
@@ -51,7 +51,7 @@ export const MasterDeliveryView: React.FC = () => {
   const [driverStatusFilter, setDriverStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Modal para rejeição ou bloqueio de entregador com motivo
+  // Modal para rejeiÃ§Ã£o ou bloqueio de entregador com motivo
   const [actionDriverModal, setActionDriverModal] = useState<{
     driver: DeliveryDriver;
     action: 'REJECT' | 'BLOCK' | 'SUSPEND';
@@ -61,15 +61,23 @@ export const MasterDeliveryView: React.FC = () => {
   // Modal de auditoria detalhada de uma corrida
   const [selectedRideDetails, setSelectedRideDetails] = useState<DeliveryRide | null>(null);
 
-  // Edição de tarifas
+  // EdiÃ§Ã£o de tarifas
   const [ratePerKmInput, setRatePerKmInput] = useState(
     (systemSettings?.deliveryRatePerKm ?? 1.0).toFixed(2)
   );
-  const [platformFeeInput, setPlatformFeeInput] = useState(
-    (systemSettings?.deliveryPlatformFee ?? 2.0).toFixed(2)
+  const [minimumFareInput, setMinimumFareInput] = useState(
+    (systemSettings?.deliveryMinimumFare ?? 5.0).toFixed(2)
   );
-
-  // Estatísticas do Radar Master
+  const [platformFeeUpTo10KmInput, setPlatformFeeUpTo10KmInput] = useState(
+    (systemSettings?.deliveryPlatformFeeUpTo10Km ?? systemSettings?.deliveryPlatformFee ?? 5.0).toFixed(2)
+  );
+  const [platformFeeUpTo20KmInput, setPlatformFeeUpTo20KmInput] = useState(
+    (systemSettings?.deliveryPlatformFeeUpTo20Km ?? 4.0).toFixed(2)
+  );
+  const [platformFeeAbove20KmInput, setPlatformFeeAbove20KmInput] = useState(
+    (systemSettings?.deliveryPlatformFeeAbove20Km ?? 3.5).toFixed(2)
+  );
+  // EstatÃ­sticas do Radar Master
   const stats = useMemo(() => {
     const totalRides = deliveryRides.length;
     const pendingAnalysisCount = deliveryRides.filter((r) =>
@@ -100,9 +108,9 @@ export const MasterDeliveryView: React.FC = () => {
     };
   }, [deliveryRides, deliveryDrivers]);
 
-  // Dados para Modo Gráfico de Delivery & Logística
+  // Dados para Modo GrÃ¡fico de Delivery & LogÃ­stica
   const deliveryChartsData = useMemo(() => {
-    // Veículos
+    // VeÃ­culos
     const vehicleCounts: Record<string, number> = {
       MOTO: 0,
       CARRO: 0,
@@ -119,7 +127,7 @@ export const MasterDeliveryView: React.FC = () => {
     });
     const vehicleDistribution = [
       { name: 'Motocicleta', value: vehicleCounts.MOTO, color: '#10B981' },
-      { name: 'Carro / Utilitário', value: vehicleCounts.CARRO, color: '#3B82F6' },
+      { name: 'Carro / UtilitÃ¡rio', value: vehicleCounts.CARRO, color: '#3B82F6' },
       { name: 'Bicicleta / E-Bike', value: vehicleCounts.BIKE, color: '#F59E0B' },
       { name: 'Van / Fiorino', value: vehicleCounts.VAN, color: '#8B5CF6' }
     ].filter((i) => i.value > 0);
@@ -131,7 +139,7 @@ export const MasterDeliveryView: React.FC = () => {
     });
     const rideStatusDistribution = [
       { name: 'Finalizada', value: statusCounts['FINALIZADA'] || 0, color: '#10B981' },
-      { name: 'Em Trânsito / Rota', value: (statusCounts['EM_TRANSITO'] || 0) + (statusCounts['EM_COLETA'] || 0), color: '#3B82F6' },
+      { name: 'Em TrÃ¢nsito / Rota', value: (statusCounts['EM_TRANSITO'] || 0) + (statusCounts['EM_COLETA'] || 0), color: '#3B82F6' },
       { name: 'Aguardando', value: (statusCounts['AGUARDANDO_ENTREGADOR'] || 0) + (statusCounts['ACEITA'] || 0), color: '#F59E0B' },
       { name: 'Cancelada', value: statusCounts['CANCELADA'] || 0, color: '#EF4444' }
     ].filter((i) => i.value > 0);
@@ -175,16 +183,16 @@ export const MasterDeliveryView: React.FC = () => {
     });
   }, [deliveryDrivers, driverStatusFilter, searchQuery]);
 
-  // Handler de aprovação direta de entregador
+  // Handler de aprovaÃ§Ã£o direta de entregador
   const handleApproveDriver = async (driverId: string) => {
     await approveDeliveryDriver(driverId);
   };
 
-  // Handler de envio de ação com motivo (rejeitar, suspender, bloquear)
+  // Handler de envio de aÃ§Ã£o com motivo (rejeitar, suspender, bloquear)
   const handleConfirmDriverAction = async () => {
     if (!actionDriverModal) return;
     const { driver, action } = actionDriverModal;
-    const reason = actionReason.trim() || 'Determinação da equipe Master de segurança operacional.';
+    const reason = actionReason.trim() || 'DeterminaÃ§Ã£o da equipe Master de seguranÃ§a operacional.';
 
     if (action === 'REJECT') {
       await rejectDeliveryDriver(driver.id, reason);
@@ -201,28 +209,44 @@ export const MasterDeliveryView: React.FC = () => {
   // Handler para salvar novas tarifas
   const handleSaveTariffs = async (e: React.FormEvent) => {
     e.preventDefault();
-    const rate = parseFloat(ratePerKmInput);
-    const fee = parseFloat(platformFeeInput);
 
-    if (isNaN(rate) || rate <= 0 || isNaN(fee) || fee <= 0) {
+    const rate = parseFloat(ratePerKmInput);
+    const minimumFare = parseFloat(minimumFareInput);
+    const feeUpTo10Km = parseFloat(platformFeeUpTo10KmInput);
+    const feeUpTo20Km = parseFloat(platformFeeUpTo20KmInput);
+    const feeAbove20Km = parseFloat(platformFeeAbove20KmInput);
+
+    if (
+      isNaN(rate) || rate <= 0 ||
+      isNaN(minimumFare) || minimumFare <= 0 ||
+      isNaN(feeUpTo10Km) || feeUpTo10Km < 0 ||
+      isNaN(feeUpTo20Km) || feeUpTo20Km < 0 ||
+      isNaN(feeAbove20Km) || feeAbove20Km < 0
+    ) {
       triggerToast('Valores de tarifas inválidos.');
       return;
     }
 
-    await updateDeliveryTariffs(rate, fee);
+    await updateDeliveryTariffs(
+      rate,
+      minimumFare,
+      feeUpTo10Km,
+      feeUpTo20Km,
+      feeAbove20Km
+    );
   };
 
   return (
     <div className="space-y-6">
-      {/* 1. CABEÇALHO & KPIS LIVE OPS */}
+      {/* 1. CABEÃ‡ALHO & KPIS LIVE OPS */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-black text-slate-900 flex items-center space-x-2">
             <Bike className="w-6 h-6 text-emerald-600" />
-            <span>Supervisão Master de Delivery & Entregadores</span>
+            <span>SupervisÃ£o Master de Delivery & Entregadores</span>
           </h2>
           <p className="text-xs text-slate-500">
-            Controle operacional de ponta a ponta: corridas em tempo real, credenciamento de motoristas e parametrização financeira.
+            Controle operacional de ponta a ponta: corridas em tempo real, credenciamento de motoristas e parametrizaÃ§Ã£o financeira.
           </p>
         </div>
       </div>
@@ -238,19 +262,19 @@ export const MasterDeliveryView: React.FC = () => {
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
           <span className="text-[10px] font-bold text-slate-400 uppercase block">Finalizadas</span>
           <p className="text-2xl font-black text-emerald-600">{stats.completedRides}</p>
-          <span className="text-[10px] text-emerald-700 font-semibold">Ciclos concluídos</span>
+          <span className="text-[10px] text-emerald-700 font-semibold">Ciclos concluÃ­dos</span>
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
           <span className="text-[10px] font-bold text-slate-400 uppercase block">Entregadores Online</span>
           <p className="text-2xl font-black text-blue-600">{stats.onlineDrivers}</p>
-          <span className="text-[10px] text-blue-700 font-semibold">Disponíveis no radar</span>
+          <span className="text-[10px] text-blue-700 font-semibold">DisponÃ­veis no radar</span>
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
           <span className="text-[10px] font-bold text-slate-400 uppercase block">Total de Corridas</span>
           <p className="text-2xl font-black text-slate-900">{stats.totalRides}</p>
-          <span className="text-[10px] text-slate-500 font-semibold">Histórico completo</span>
+          <span className="text-[10px] text-slate-500 font-semibold">HistÃ³rico completo</span>
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
@@ -266,7 +290,7 @@ export const MasterDeliveryView: React.FC = () => {
           <p className="text-xl font-black text-purple-600">
             R$ {stats.totalPlatformRevenue.toFixed(2).replace('.', ',')}
           </p>
-          <span className="text-[10px] text-purple-700 font-semibold">R$ 2,00 / solicitação</span>
+          <span className="text-[10px] text-purple-700 font-semibold">R$ 2,00 / solicitaÃ§Ã£o</span>
         </div>
       </div>
 
@@ -283,7 +307,7 @@ export const MasterDeliveryView: React.FC = () => {
           }`}
         >
           <ShieldCheck className="w-4 h-4 text-amber-500" />
-          <span>Solicitações aguardando análise</span>
+          <span>SolicitaÃ§Ãµes aguardando anÃ¡lise</span>
           {stats.pendingAnalysisCount > 0 && (
             <span className="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500 text-slate-950">
               {stats.pendingAnalysisCount}
@@ -327,7 +351,7 @@ export const MasterDeliveryView: React.FC = () => {
           }`}
         >
           <Settings className="w-4 h-4" />
-          <span>Parâmetros de Tarifas & Regras V1</span>
+          <span>ParÃ¢metros de Tarifas & Regras V1</span>
         </button>
 
         <button
@@ -341,11 +365,11 @@ export const MasterDeliveryView: React.FC = () => {
           }`}
         >
           <BarChart3 className="w-4 h-4" />
-          <span>Modo Gráfico & Radar Operacional</span>
+          <span>Modo GrÃ¡fico & Radar Operacional</span>
         </button>
       </div>
 
-      {/* SUB-ABA: FILA DE APROVAÇÃO (SEÇÃO 5 E 6) */}
+      {/* SUB-ABA: FILA DE APROVAÃ‡ÃƒO (SEÃ‡ÃƒO 5 E 6) */}
       {activeSubTab === 'approval_queue' && (
         <DeliveryApprovalQueueView
           onNavigateToRide={(rideId) => {
@@ -357,7 +381,7 @@ export const MasterDeliveryView: React.FC = () => {
         />
       )}
 
-      {/* 3. CONTEÚDO DA SUB-ABA: CORRIDAS */}
+      {/* 3. CONTEÃšDO DA SUB-ABA: CORRIDAS */}
       {activeSubTab === 'rides' && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
@@ -372,9 +396,9 @@ export const MasterDeliveryView: React.FC = () => {
                 <option value="AGUARDANDO_ENTREGADOR">Aguardando Entregador</option>
                 <option value="ACEITA">Aceita</option>
                 <option value="EM_COLETA">Em Coleta</option>
-                <option value="EM_TRANSITO">Em Trânsito</option>
+                <option value="EM_TRANSITO">Em TrÃ¢nsito</option>
                 <option value="FINALIZADA">Finalizada</option>
-                <option value="OCORRENCIA">Ocorrência</option>
+                <option value="OCORRENCIA">OcorrÃªncia</option>
                 <option value="CANCELADA">Cancelada</option>
               </select>
             </div>
@@ -385,7 +409,7 @@ export const MasterDeliveryView: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar código, loja, cliente ou entregador..."
+                placeholder="Buscar cÃ³digo, loja, cliente ou entregador..."
                 className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 outline-none focus:border-emerald-500"
               />
             </div>
@@ -403,7 +427,7 @@ export const MasterDeliveryView: React.FC = () => {
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center space-x-2">
                       <span className="font-mono font-black text-sm text-slate-900">{ride.rideCode}</span>
-                      <span className="text-xs text-slate-400">• Pedido: {ride.orderCode}</span>
+                      <span className="text-xs text-slate-400">â€¢ Pedido: {ride.orderCode}</span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                           ride.status === 'FINALIZADA'
@@ -417,7 +441,7 @@ export const MasterDeliveryView: React.FC = () => {
                             : 'bg-blue-50 text-blue-700 border border-blue-200'
                         }`}
                       >
-                        ● {ride.status}
+                        â— {ride.status}
                       </span>
                     </div>
 
@@ -461,7 +485,7 @@ export const MasterDeliveryView: React.FC = () => {
                         <div>
                           <p className="font-bold text-emerald-800">{ride.driverName}</p>
                           <p className="text-slate-500 text-[11px]">
-                            {ride.driverVehicleType} • Placa: {ride.driverVehiclePlate}
+                            {ride.driverVehicleType} â€¢ Placa: {ride.driverVehiclePlate}
                           </p>
                         </div>
                       ) : (
@@ -472,18 +496,18 @@ export const MasterDeliveryView: React.FC = () => {
 
                   <div className="flex flex-wrap items-center justify-between text-xs pt-1 border-t border-slate-100 gap-2">
                     <div className="flex items-center space-x-3 text-slate-500">
-                      <span>Distância: <strong>{ride.distanceKm.toFixed(1)} km</strong></span>
-                      <span>•</span>
+                      <span>DistÃ¢ncia: <strong>{ride.distanceKm.toFixed(1)} km</strong></span>
+                      <span>â€¢</span>
                       <span>Repasse Entregador: <strong className="text-emerald-700">R$ {ride.driverEarnings.toFixed(2).replace('.', ',')}</strong></span>
-                      <span>•</span>
+                      <span>â€¢</span>
                       <span>Taxa Plataforma: <strong className="text-purple-700">R$ {ride.platformFee.toFixed(2).replace('.', ',')}</strong></span>
-                      <span>•</span>
+                      <span>â€¢</span>
                       <span>Total: <strong className="text-slate-900">R$ {ride.totalFare.toFixed(2).replace('.', ',')}</strong></span>
                     </div>
 
                     <div className="flex items-center space-x-2">
                       <span className="text-[10px] text-slate-400 font-semibold">
-                        Cód. Segurança Cliente:
+                        CÃ³d. SeguranÃ§a Cliente:
                       </span>
                       <span className="font-mono font-black text-xs px-2 py-0.5 bg-slate-200 text-slate-800 rounded">
                         {ride.confirmationCode}
@@ -497,7 +521,7 @@ export const MasterDeliveryView: React.FC = () => {
         </div>
       )}
 
-      {/* 4. CONTEÚDO DA SUB-ABA: ENTREGADORES */}
+      {/* 4. CONTEÃšDO DA SUB-ABA: ENTREGADORES */}
       {activeSubTab === 'drivers' && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
@@ -509,7 +533,7 @@ export const MasterDeliveryView: React.FC = () => {
                 className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none"
               >
                 <option value="all">Todos os Entregadores</option>
-                <option value="PENDENTE">Pendentes de Aprovação</option>
+                <option value="PENDENTE">Pendentes de AprovaÃ§Ã£o</option>
                 <option value="APROVADO">Aprovados</option>
                 <option value="REPROVADO">Reprovados</option>
                 <option value="BLOQUEADO">Bloqueados</option>
@@ -566,10 +590,10 @@ export const MasterDeliveryView: React.FC = () => {
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        CPF: {driver.cpf} • CNH: {driver.cnhNumber} ({driver.cnhCategory}) • Tel: {driver.phone}
+                        CPF: {driver.cpf} â€¢ CNH: {driver.cnhNumber} ({driver.cnhCategory}) â€¢ Tel: {driver.phone}
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
-                        Veículo: <strong>{driver.vehicleModel}</strong> ({driver.vehicleType}) • Placa:{' '}
+                        VeÃ­culo: <strong>{driver.vehicleModel}</strong> ({driver.vehicleType}) â€¢ Placa:{' '}
                         <strong className="font-mono text-emerald-800">{driver.vehiclePlate}</strong>
                       </p>
                     </div>
@@ -584,7 +608,7 @@ export const MasterDeliveryView: React.FC = () => {
                       <span className="text-[10px] text-slate-400 block">{driver.totalDeliveries} entregas</span>
                     </div>
 
-                    {/* Ações Master de Autorização */}
+                    {/* AÃ§Ãµes Master de AutorizaÃ§Ã£o */}
                     <div className="flex items-center space-x-1.5">
                       {driver.status === 'PENDENTE' && (
                         <>
@@ -644,13 +668,13 @@ export const MasterDeliveryView: React.FC = () => {
         </div>
       )}
 
-      {/* 5. CONTEÚDO DA SUB-ABA: TARIFAS & PARÂMETROS */}
+      {/* 5. CONTEÃšDO DA SUB-ABA: TARIFAS & PARÃ‚METROS */}
       {activeSubTab === 'tariffs' && (
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs max-w-2xl space-y-6">
           <div>
-            <h3 className="text-base font-black text-slate-900">Parâmetros Oficiais de Precificação V1</h3>
+            <h3 className="text-base font-black text-slate-900">ParÃ¢metros Oficiais de PrecificaÃ§Ã£o V1</h3>
             <p className="text-xs text-slate-500 mt-1">
-              Conforme definido no documento do MVP: Remuneração por KM para o entregador e taxa fixa da plataforma Achei Aqui.
+              Conforme definido no documento do MVP: RemuneraÃ§Ã£o por KM para o entregador e taxa fixa da plataforma Achei Aqui.
             </p>
           </div>
 
@@ -665,41 +689,94 @@ export const MasterDeliveryView: React.FC = () => {
                   <input
                     type="number"
                     step="0.10"
-                    min="0.50"
+                    min="0.01"
                     value={ratePerKmInput}
                     onChange={(e) => setRatePerKmInput(e.target.value)}
                     className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-emerald-600"
                   />
                 </div>
-                <p className="text-[10px] text-slate-400">Padrão V1: R$ 1,00 / km</p>
+                <p className="text-[10px] text-slate-400">Valor configurável por quilômetro.</p>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-700 block">
-                  Taxa da Plataforma por Solicitação (R$)
+                  Valor Mínimo de Partida do Entregador
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 text-xs text-slate-400 font-bold">R$</span>
                   <input
                     type="number"
                     step="0.50"
-                    min="1.00"
-                    value={platformFeeInput}
-                    onChange={(e) => setPlatformFeeInput(e.target.value)}
+                    min="0"
+                    value={minimumFareInput}
+                    onChange={(e) => setMinimumFareInput(e.target.value)}
                     className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-emerald-600"
                   />
                 </div>
-                <p className="text-[10px] text-slate-400">Padrão V1: R$ 2,00 por corrida</p>
+                <p className="text-[10px] text-slate-400">Mínimo aplicado ao cálculo do entregador.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 block">
+                  Taxa do App até 10 km
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 text-xs text-slate-400 font-bold">R$</span>
+                  <input
+                    type="number"
+                    step="0.50"
+                    min="0"
+                    value={platformFeeUpTo10KmInput}
+                    onChange={(e) => setPlatformFeeUpTo10KmInput(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-emerald-600"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-400">Taxa da plataforma para até 10 km.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 block">
+                  Taxa do App acima de 10 até 20 km
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 text-xs text-slate-400 font-bold">R$</span>
+                  <input
+                    type="number"
+                    step="0.50"
+                    min="0"
+                    value={platformFeeUpTo20KmInput}
+                    onChange={(e) => setPlatformFeeUpTo20KmInput(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-emerald-600"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-400">Taxa da plataforma entre 10 e 20 km.</p>
+              </div>
+
+              <div className="space-y-1.5 sm:col-span-2">
+                <label className="text-xs font-bold text-slate-700 block">
+                  Taxa do App acima de 20 km
+                </label>
+                <div className="relative max-w-sm">
+                  <span className="absolute left-3 top-2.5 text-xs text-slate-400 font-bold">R$</span>
+                  <input
+                    type="number"
+                    step="0.50"
+                    min="0"
+                    value={platformFeeAbove20KmInput}
+                    onChange={(e) => setPlatformFeeAbove20KmInput(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-emerald-600"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-400">Taxa da plataforma para distâncias superiores a 20 km.</p>
               </div>
             </div>
-
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
               <p className="font-bold flex items-center space-x-1">
                 <AlertTriangle className="w-4 h-4 text-amber-600" />
                 <span>Impacto Operacional das Tarifas:</span>
               </p>
               <p className="text-[11px] text-amber-800">
-                A alteração das tarifas afeta imediatamente as novas solicitações de delivery criadas pelos lojistas. Corridas já em andamento mantêm os valores acordados no momento do aceite.
+                A alteraÃ§Ã£o das tarifas afeta imediatamente as novas solicitaÃ§Ãµes de delivery criadas pelos lojistas. Corridas jÃ¡ em andamento mantÃªm os valores acordados no momento do aceite.
               </p>
             </div>
 
@@ -713,10 +790,10 @@ export const MasterDeliveryView: React.FC = () => {
         </div>
       )}
 
-      {/* 5. CONTEÚDO DA SUB-ABA: MODO GRÁFICO & RADAR OPERACIONAL */}
+      {/* 5. CONTEÃšDO DA SUB-ABA: MODO GRÃFICO & RADAR OPERACIONAL */}
       {activeSubTab === 'charts' && (
         <div id="master-delivery-modo-grafico" className="space-y-6">
-          {/* Header Gráfico */}
+          {/* Header GrÃ¡fico */}
           <div className="bg-linear-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-5 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-600/30 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
@@ -724,10 +801,10 @@ export const MasterDeliveryView: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
-                  Modo Gráfico: Logística & Frota de Cachoeiras de Macacu
+                  Modo GrÃ¡fico: LogÃ­stica & Frota de Cachoeiras de Macacu
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Visualização da distribuição de modal de transporte, status das corridas e divisão financeira da operação.
+                  VisualizaÃ§Ã£o da distribuiÃ§Ã£o de modal de transporte, status das corridas e divisÃ£o financeira da operaÃ§Ã£o.
                 </p>
               </div>
             </div>
@@ -738,15 +815,15 @@ export const MasterDeliveryView: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Gráfico 1: Veículos da Frota */}
+            {/* GrÃ¡fico 1: VeÃ­culos da Frota */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
               <div>
                 <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
                   <Bike className="w-4 h-4 text-emerald-600" />
-                  <span>Distribuição por Modal de Transporte</span>
+                  <span>DistribuiÃ§Ã£o por Modal de Transporte</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Veículos cadastrados pelos parceiros entregadores.
+                  VeÃ­culos cadastrados pelos parceiros entregadores.
                 </p>
               </div>
 
@@ -765,7 +842,7 @@ export const MasterDeliveryView: React.FC = () => {
               </div>
             </div>
 
-            {/* Gráfico 2: Status Operacional das Corridas */}
+            {/* GrÃ¡fico 2: Status Operacional das Corridas */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
               <div>
                 <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -773,7 +850,7 @@ export const MasterDeliveryView: React.FC = () => {
                   <span>Status das Corridas</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Proporção de corridas finalizadas, em rota e canceladas.
+                  ProporÃ§Ã£o de corridas finalizadas, em rota e canceladas.
                 </p>
               </div>
 
@@ -792,7 +869,7 @@ export const MasterDeliveryView: React.FC = () => {
               </div>
             </div>
 
-            {/* Gráfico 3: Comparativo Financeiro */}
+            {/* GrÃ¡fico 3: Comparativo Financeiro */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
               <div>
                 <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
@@ -800,7 +877,7 @@ export const MasterDeliveryView: React.FC = () => {
                   <span>Repasse vs. Receita Plataforma</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Liquidação aos condutores (R$ 1/km) vs taxa fixa Master (R$ 2).
+                  LiquidaÃ§Ã£o aos condutores (R$ 1/km) vs taxa fixa Master (R$ 2).
                 </p>
               </div>
 
@@ -830,7 +907,7 @@ export const MasterDeliveryView: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL DE AÇÃO COM MOTIVO (REPROVAR, SUSPENDER, BLOQUEAR ENTREGADOR) */}
+      {/* MODAL DE AÃ‡ÃƒO COM MOTIVO (REPROVAR, SUSPENDER, BLOQUEAR ENTREGADOR) */}
       {actionDriverModal && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-200">
@@ -867,7 +944,7 @@ export const MasterDeliveryView: React.FC = () => {
                 onClick={handleConfirmDriverAction}
                 className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black shadow-xs cursor-pointer"
               >
-                Confirmar Ação
+                Confirmar AÃ§Ã£o
               </button>
             </div>
           </div>
@@ -896,7 +973,7 @@ export const MasterDeliveryView: React.FC = () => {
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                 <span className="font-bold text-slate-900 block">Dados Financeiros da Corrida:</span>
                 <p className="text-slate-600">
-                  Distância: {selectedRideDetails.distanceKm.toFixed(1)} km | Repasse Entregador: R$ {selectedRideDetails.driverEarnings.toFixed(2).replace('.', ',')} | Taxa Plataforma: R$ {selectedRideDetails.platformFee.toFixed(2).replace('.', ',')}
+                  DistÃ¢ncia: {selectedRideDetails.distanceKm.toFixed(1)} km | Repasse Entregador: R$ {selectedRideDetails.driverEarnings.toFixed(2).replace('.', ',')} | Taxa Plataforma: R$ {selectedRideDetails.platformFee.toFixed(2).replace('.', ',')}
                 </p>
                 <p className="font-bold text-emerald-800">
                   Total Pago: R$ {selectedRideDetails.totalFare.toFixed(2).replace('.', ',')}
@@ -904,13 +981,13 @@ export const MasterDeliveryView: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <span className="font-bold text-slate-900 block">Histórico de Eventos / Timeline:</span>
+                <span className="font-bold text-slate-900 block">HistÃ³rico de Eventos / Timeline:</span>
                 <div className="space-y-2 border-l-2 border-slate-200 pl-3">
                   {selectedRideDetails.history?.map((evt, idx) => (
                     <div key={idx} className="space-y-0.5">
                       <div className="flex items-center space-x-2">
                         <span className="text-[10px] font-bold text-emerald-700 uppercase">{evt.status}</span>
-                        <span className="text-[10px] text-slate-400">• {new Date(evt.timestamp).toLocaleTimeString('pt-BR')}</span>
+                        <span className="text-[10px] text-slate-400">â€¢ {new Date(evt.timestamp).toLocaleTimeString('pt-BR')}</span>
                       </div>
                       <p className="text-slate-600 text-[11px]">{evt.description}</p>
                     </div>
@@ -924,3 +1001,7 @@ export const MasterDeliveryView: React.FC = () => {
     </div>
   );
 };
+
+
+
+

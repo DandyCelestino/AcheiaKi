@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Search,
   MapPin,
@@ -88,12 +88,14 @@ export const Header: React.FC<HeaderProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
+  const isStandalone = typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches;
+
   const CITIES = [
     'Cachoeiras de Macacu, RJ',
     'Papucaia - Cachoeiras, RJ',
-    'Japuíba - Cachoeiras, RJ',
-    'Faraó - Cachoeiras, RJ',
-    'Guapiaçu - Cachoeiras, RJ'
+    'JapuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­ba - Cachoeiras, RJ',
+    'FaraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ - Cachoeiras, RJ',
+    'GuapiaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§u - Cachoeiras, RJ'
   ];
 
   // Close dropdowns on outside click
@@ -191,7 +193,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="absolute inset-0 opacity-20 mix-blend-luminosity pointer-events-none">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSamDps2myzG8QwRu24BwdyMLSzrZINmJoIxjaciwTCWQ&s=10"
-            alt="Banner Cabeçalho"
+            alt="Banner CabeÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§alho"
             className="w-full h-full object-cover object-center"
             referrerPolicy="no-referrer"
           />
@@ -272,7 +274,7 @@ export const Header: React.FC<HeaderProps> = ({
               {showCityDropdown && (
                 <div className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-emerald-100 p-2 z-50 animate-in fade-in duration-150">
                   <p className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-800/60">
-                    Selecione sua Região
+                    Selecione sua RegiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
                   </p>
                   {CITIES.map((city) => (
                     <button
@@ -306,7 +308,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setSearchQuery(e.target.value);
                   setShowSearchSuggestions(true);
                 }}
-                placeholder="Buscar produtos, serviços, lojas ou ofertas em todo o banco..."
+                placeholder="Buscar produtos, serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os, lojas ou ofertas em todo o banco..."
                 className="w-full pl-10 pr-10 py-2 sm:py-2.5 bg-emerald-50/50 hover:bg-emerald-50 focus:bg-white border border-emerald-200 focus:border-emerald-600 focus:ring-3 focus:ring-emerald-100 rounded-full text-xs sm:text-sm text-slate-900 placeholder-emerald-900/40 transition-all outline-none"
               />
               <Search className="w-4 h-4 text-emerald-700 absolute left-3.5 pointer-events-none" />
@@ -458,12 +460,12 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right Action Buttons & Auth (Desktop and Mobile) */}
           <div className="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0">
-            {/* Botão CADASTRE-SE - Visível APENAS para usuários NÃO cadastrados/logados */}
+            {/* BotÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o CADASTRE-SE - VisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel APENAS para usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rios NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢O cadastrados/logados */}
             {!currentUser && (
               <button
                 id="header-register-btn"
                 onClick={() => onOpenAuth('register-customer')}
-                className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-[11px] sm:text-xs font-black shadow-sm shadow-emerald-700/30 hover:shadow-md transition-all shrink-0 cursor-pointer"
+                className="hidden sm:flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-[11px] sm:text-xs font-black shadow-sm shadow-emerald-700/30 hover:shadow-md transition-all shrink-0 cursor-pointer"
                 title="Cadastre-se na plataforma"
               >
                 <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -486,7 +488,9 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Notifications Bell Dropdown (In-App) */}
-            <PwaInstallButton />
+            <div className="hidden sm:block">
+              <PwaInstallButton />
+            </div>
 
             <NotificationBellDropdown onNavigateTab={(tab) => setCurrentTab(tab as any)} />
 
@@ -616,10 +620,10 @@ export const Header: React.FC<HeaderProps> = ({
                         className="w-full text-left px-3 py-2 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 font-medium flex items-center space-x-2"
                       >
                         <ShieldCheck className="w-4 h-4 text-amber-600" />
-                        <span>Políticas de Avaliação</span>
+                        <span>PolÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­ticas de AvaliaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o</span>
                       </button>
 
-                      {/* Acesso exclusivo do Lojista / Prestador de Serviço */}
+                      {/* Acesso exclusivo do Lojista / Prestador de ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o */}
                       {(currentUser.role === 'LOJISTA' || currentUser.role === 'PRESTADOR_SERVICO') && (
                         <button
                           id="avatar-btn-merchant-portal"
@@ -676,17 +680,35 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
             ) : (
-              <button
-                onClick={() => onOpenAuth('login')}
+              !isStandalone && (
+                <button
+                  onClick={() => onOpenAuth('login')}
                 className="px-2.5 sm:px-3 py-1.5 text-xs font-bold text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50 rounded-full transition-colors shrink-0"
               >
                 Entrar
-              </button>
+                </button>
+              )
             )}
           </div>
         </div>
 
-        {/* ðŸ“± MOBILE QUICK ACTION STRIP (FORMATADO PARA TODOS OS SMARTPHONES, SEMPRE VISÍVEL ABAIXO DE CADASTRE-SE) */}
+        {/* ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â± MOBILE QUICK ACTION STRIP (FORMATADO PARA TODOS OS SMARTPHONES, SEMPRE VISÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂVEL ABAIXO DE CADASTRE-SE) */}
+        {!isStandalone && (
+          <div className="sm:hidden flex items-center justify-center gap-2 pb-2">
+            {!currentUser && (
+              <button
+                id="header-register-btn-mobile"
+                onClick={() => onOpenAuth('register-customer')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black shadow-sm"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>CADASTRE-SE</span>
+              </button>
+            )}
+            <PwaInstallButton />
+          </div>
+        )}
+
         <div className="sm:hidden pt-1 pb-2 border-t border-emerald-100/70">
           <div className="grid grid-cols-4 gap-1.5 items-center">
             {/* 1. Gostei / Favoritos */}
@@ -752,7 +774,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* 4. Seleção Cidade / Região */}
+            {/* 4. SeleÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Cidade / RegiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o */}
             <button
               id="mobile-action-location"
               onClick={() => setShowCityDropdown(!showCityDropdown)}
@@ -802,7 +824,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* ðŸŒ¿ DESKTOP SUPERIOR CATEGORIES & STORES DROPDOWN MENU */}
+        {/* ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ DESKTOP SUPERIOR CATEGORIES & STORES DROPDOWN MENU */}
         <div ref={dropdownRef} className="hidden md:block relative border-t border-emerald-100/80 py-1 max-w-full overflow-visible">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1 text-xs">
             {/* Todos os Itens */}
@@ -850,7 +872,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className="flex items-center gap-1.5">
                       <Store className="w-4 h-4 text-emerald-700" />
                       <span className="font-black text-xs uppercase tracking-wider text-emerald-950">
-                        Lojas & Comércios de Cachoeiras
+                        Lojas & ComÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©rcios de Cachoeiras
                       </span>
                     </div>
                     <button
@@ -986,7 +1008,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar produtos, lojas ou serviços em Cachoeiras..."
+              placeholder="Buscar produtos, lojas ou serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os em Cachoeiras..."
               className="w-full pl-9 pr-9 py-2.5 bg-emerald-50/70 border border-emerald-200 focus:bg-white focus:border-emerald-600 rounded-full text-xs text-slate-900 placeholder-emerald-900/40 outline-none"
             />
             <Search className="w-3.5 h-3.5 text-emerald-700 absolute left-3 pointer-events-none" />
@@ -996,7 +1018,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="absolute right-3 text-slate-400 p-1"
               >
                 <X className="w-3.5 h-3.5" />
-              </button>
+                </button>
             )}
           </div>
         </div>
