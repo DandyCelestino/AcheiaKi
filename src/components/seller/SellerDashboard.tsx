@@ -549,7 +549,7 @@ export const SellerDashboard: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() => setCurrentEnvironment('MARKETPLACE')}
+            onClick={() => { setCurrentEnvironment('MARKETPLACE');  }}
             className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
           >
             ← Voltar às Compras no Marketplace
@@ -597,7 +597,7 @@ export const SellerDashboard: React.FC = () => {
 
             {/* Quick action to preview public store */}
             <button
-              onClick={() => setCurrentEnvironment('MARKETPLACE')}
+              onClick={() => { setCurrentEnvironment('MARKETPLACE');  }}
               className="mt-3 w-full py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold text-slate-300 flex items-center justify-center space-x-1.5 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
@@ -1908,7 +1908,7 @@ export const SellerDashboard: React.FC = () => {
               </div>
 
               <button
-                onClick={() => setCurrentEnvironment('MARKETPLACE')}
+                onClick={() => { setCurrentEnvironment('MARKETPLACE');  }}
                 className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs rounded-xl transition-colors flex items-center space-x-1.5 self-start sm:self-auto"
               >
                 <ExternalLink className="w-4 h-4 text-blue-600" />
@@ -2618,7 +2618,7 @@ export const SellerDashboard: React.FC = () => {
                         : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                     }`}
                   >
-                    <span className="text-base">⚡</span>
+                    <span className="text-base">âš¡</span>
                     <span className="text-[11px] leading-tight">Instalação</span>
                   </button>
 
@@ -3265,3 +3265,7 @@ export const SellerDashboard: React.FC = () => {
     </div>
   );
 };
+
+
+
+

@@ -7,6 +7,8 @@ import {
   sendPasswordResetEmail,
   onAuthStateChanged,
   updateProfile,
+  updatePassword,
+  getAuth,
   User as FirebaseUser,
 } from 'firebase/auth';
 import {
@@ -18,6 +20,8 @@ import {
 } from 'firebase/firestore';
 import { auth, db, handleFirestoreError, OperationType } from '../firebase';
 import { User, StoreMerchant, UserRole, MembershipTier } from '../types';
+import { initializeApp, deleteApp } from 'firebase/app';
+import firebaseConfig from '../../firebase-applet-config.json';
 
 /**
  * Traduz códigos de erro do Firebase Auth para mensagens amigáveis em português
@@ -479,4 +483,207 @@ export function subscribeToFirebaseAuthState(
       callback(null, null);
     }
   });
+}
+
+
+/**
+ * Atualiza a senha real do usuário autenticado no Firebase Authentication.
+ */
+export async function firebaseProvisionSalesAgent(
+  email: string,
+  password: string,
+  userData: Partial<User>
+): Promise<{ success: boolean; user?: User; message: string }> {
+  let secondaryApp;
+
+  try {
+    const cleanEmail = email.trim().toLowerCase();
+
+    secondaryApp = initializeApp(
+      firebaseConfig,
+      `acheiaki-sales-agent-${Date.now()}`
+    );
+
+    const secondaryAuth = getAuth(secondaryApp);
+
+    const credential = await createUserWithEmailAndPassword(
+      secondaryAuth,
+      cleanEmail,
+      password
+    );
+
+    const fbUser = credential.user;
+
+    const provisionedUser: User = {
+      id: fbUser.uid,
+      name: userData.name || cleanEmail.split('@')[0],
+      email: cleanEmail,
+      phone: userData.phone || '',
+      role: 'VENDEDOR',
+      password,
+      needsPasswordChange: true,
+      city: userData.city || 'Cachoeiras de Macacu, RJ',
+      isEmailVerified: false,
+      twoFactorEnabled: false,
+      createdAt: userData.createdAt || new Date().toISOString()
+    };
+
+    await setDoc(
+      doc(db, 'users', fbUser.uid),
+      {
+        ...provisionedUser,
+        updatedAt: serverTimestamp()
+      },
+      { merge: true }
+    );
+
+    return {
+      success: true,
+      user: provisionedUser,
+      message: 'Credencial do vendedor criada no Firebase.'
+    };
+  } catch (error: any) {
+    console.error('[SALES AGENT FIREBASE]', error);
+
+    if (error?.code === 'auth/email-already-in-use') {
+      return {
+        success: false,
+        message: 'Este e-mail já possui uma credencial no Firebase.'
+      };
+    }
+
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error?.code || '')
+    };
+  } finally {
+    if (secondaryApp) {
+      await deleteApp(secondaryApp).catch(() => {});
+    }
+  }
+}
+export async function firebaseUpdateAuthenticatedPassword(
+  newPassword: string
+): Promise<{ success: boolean; message: string }> {
+  try {
+    const password = newPassword.trim();
+
+    if (password.length < 8) {
+      return {
+        success: false,
+        message: 'A nova senha deve possuir no mínimo 8 caracteres.'
+      };
+    }
+
+    if (!auth.currentUser) {
+      return {
+        success: false,
+        message: 'Nenhum usuário autenticado no Firebase.'
+      };
+    }
+
+    await updatePassword(auth.currentUser, password);
+
+    return {
+      success: true,
+      message: 'Senha atualizada com sucesso.'
+    };
+  } catch (error: any) {
+    console.error('Erro ao atualizar senha no Firebase:', error);
+
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error?.code || '')
+    };
+  }
+}
+
+
+
+export async function firebaseProvisionUser(
+  email: string,
+  password: string,
+  userData: Partial<User> & {
+    role: UserRole;
+    merchantId?: string;
+  }
+): Promise<{ success: boolean; user?: User; message: string }> {
+  let secondaryApp;
+
+  try {
+    const cleanEmail = email.trim().toLowerCase();
+
+    secondaryApp = initializeApp(
+      firebaseConfig,
+      `acheiaki-user-${Date.now()}`
+    );
+
+    const secondaryAuth = getAuth(secondaryApp);
+
+    const credential = await createUserWithEmailAndPassword(
+      secondaryAuth,
+      cleanEmail,
+      password
+    );
+
+    const fbUser = credential.user;
+
+    await updateProfile(fbUser, {
+      displayName: userData.name || cleanEmail.split('@')[0]
+    }).catch(() => {});
+
+    const provisionedUser: User = {
+      id: fbUser.uid,
+      name: userData.name || cleanEmail.split('@')[0],
+      email: cleanEmail,
+      phone: userData.phone || '',
+      role: userData.role,
+      password,
+      merchantId: userData.merchantId,
+      membershipTier: userData.membershipTier || 'GRATIS',
+      needsPasswordChange: userData.needsPasswordChange ?? false,
+      city: userData.city || 'Cachoeiras de Macacu, RJ',
+      address: userData.address,
+      neighborhood: userData.neighborhood,
+      cpf: userData.cpf,
+      idDocument: userData.idDocument,
+      references: userData.references,
+      isEmailVerified: false,
+      twoFactorEnabled: userData.twoFactorEnabled ?? false,
+      createdAt: userData.createdAt || new Date().toISOString()
+    };
+
+    await setDoc(
+      doc(db, 'users', fbUser.uid),
+      {
+        ...provisionedUser,
+        updatedAt: serverTimestamp()
+      },
+      { merge: true }
+    );
+
+    return {
+      success: true,
+      user: provisionedUser,
+      message: 'Credencial criada no Firebase.'
+    };
+  } catch (error: any) {
+    console.error('[FIREBASE PROVISION USER]', error);
+
+    if (error?.code === 'auth/email-already-in-use') {
+      return {
+        success: false,
+        message: 'Este e-mail já possui uma credencial no Firebase.'
+      };
+    }
+
+    return {
+      success: false,
+      message: getFirebaseAuthErrorMessage(error?.code || '')
+    };
+  } finally {
+    if (secondaryApp) {
+      await deleteApp(secondaryApp).catch(() => {});
+    }
+  }
 }

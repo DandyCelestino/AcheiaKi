@@ -1480,9 +1480,9 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
             </div>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                addSalesAgent({
+                await addSalesAgent({
                   ...agentForm,
                   status: 'ACTIVE',
                   avatar: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
@@ -2083,7 +2083,7 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
             </div>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 addCommercialGoal({
                   ...goalForm,
@@ -2194,3 +2194,4 @@ export const MasterSalesTeamView: React.FC<MasterSalesTeamViewProps> = ({
     </div>
   );
 };
+

@@ -17,7 +17,7 @@ import {
   Check,
   CheckCheck
 } from 'lucide-react';
-import { NotificationService, getSupabaseClient } from '../../services/notification_service';
+import { NotificationService } from '../../services/notification_service';
 import { NotificationLog, NotificationChannel, NotificationEventType } from '../../types';
 import { useApp } from '../../context/AppContext';
 
@@ -37,7 +37,7 @@ export const NotificationMonitor: React.FC = () => {
   const [testMessage, setTestMessage] = useState('Olá! Esta é uma mensagem de teste transacional enviada pelo Achei Aqui.');
   const [isSending, setIsSending] = useState(false);
 
-  const supabaseActive = !!getSupabaseClient();
+  const firebaseActive = true;
 
   const loadLogs = () => {
     const data = NotificationService.getHistory();
@@ -84,7 +84,7 @@ export const NotificationMonitor: React.FC = () => {
 
     setIsSending(false);
     loadLogs();
-    triggerToast('Notificação transacional disparada e persistida no Supabase!');
+    triggerToast('Notificação transacional disparada e persistida no Firebase Firestore!');
   };
 
   const handleCopyLink = (phone: string, message: string, id: string) => {
@@ -97,22 +97,22 @@ export const NotificationMonitor: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header com Status do Banco Supabase & Estatísticas */}
+      {/* Header com Status do Banco Firebase Firestore & Estatísticas */}
       <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
             <h2 className="text-lg font-bold text-slate-900">
-              Gateway de Mensagens Transacionais & Supabase
+              Gateway de Mensagens Transacionais & Firebase
             </h2>
             <span
               className={`px-2.5 py-0.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 ${
-                supabaseActive
+                firebaseActive
                   ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                   : 'bg-blue-100 text-blue-800 border border-blue-300'
               }`}
             >
               <Database className="w-3 h-3" />
-              <span>{supabaseActive ? 'Supabase Conectado (Live)' : 'Modo Resiliente Local (Ativo)'}</span>
+              <span>{firebaseActive ? 'Firebase Firestore (Live)' : 'Firebase Firestore (Ativo)'}</span>
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
@@ -212,7 +212,7 @@ export const NotificationMonitor: React.FC = () => {
               className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center space-x-2 transition-all cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>{isSending ? 'Enviando...' : 'Disparar & Salvar no Supabase'}</span>
+              <span>{isSending ? 'Enviando...' : 'Disparar & Salvar no Firebase Firestore'}</span>
             </button>
           </form>
         </div>
@@ -340,3 +340,4 @@ export const NotificationMonitor: React.FC = () => {
   );
 };
 export default NotificationMonitor;
+

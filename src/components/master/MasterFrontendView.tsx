@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
   Menu,
@@ -144,7 +144,7 @@ export const MasterFrontendView: React.FC = () => {
   const handleSaveHeader = (e: React.FormEvent) => {
     e.preventDefault();
     updateFrontendConfig(headerForm);
-    triggerToast('CabeÃ§alho atualizado com sucesso no frontend!');
+    triggerToast('Cabeçalho atualizado com sucesso no frontend!');
   };
 
   const handleSaveLayout = (e: React.FormEvent) => {
@@ -156,13 +156,13 @@ export const MasterFrontendView: React.FC = () => {
   const handleSaveRules = (e: React.FormEvent) => {
     e.preventDefault();
     updateFrontendConfig(rulesForm);
-    triggerToast('PolÃ­ticas de postagens de lojistas salvas!');
+    triggerToast('Políticas de postagens de lojistas salvas!');
   };
 
   const handleSaveFooter = (e: React.FormEvent) => {
     e.preventDefault();
     updateFrontendConfig(footerForm);
-    triggerToast('RodapÃ© atualizado no frontend!');
+    triggerToast('Rodapé atualizado no frontend!');
   };
 
   const handleOpenMenuModal = (item?: NavMenuItem) => {
@@ -227,7 +227,7 @@ export const MasterFrontendView: React.FC = () => {
             </h1>
           </div>
           <p className="text-sm text-slate-500 mt-1">
-            Personalize o cabeÃ§alho, rodapÃ©, barra de avisos, regras de postagens e a exibiÃ§Ã£o de produtos (4 em 4 itens, atÃ© 24 amostras por categoria).
+            Personalize o cabeçalho, rodapé, barra de avisos, regras de postagens e a exibição de produtos (4 em 4 itens, até 24 amostras por categoria).
           </p>
         </div>
 
@@ -249,7 +249,7 @@ export const MasterFrontendView: React.FC = () => {
           }`}
         >
           <Type className="w-4 h-4" />
-          CabeÃ§alho & Broadcast
+          Cabeçalho & Broadcast
         </button>
 
         <button
@@ -297,7 +297,7 @@ export const MasterFrontendView: React.FC = () => {
           }`}
         >
           <FileText className="w-4 h-4" />
-          RodapÃ© & Suporte
+          Rodapé & Suporte
         </button>
       </div>
 
@@ -305,13 +305,13 @@ export const MasterFrontendView: React.FC = () => {
       {activeSection === 'header' && (
         <form onSubmit={handleSaveHeader} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <div className="border-b border-slate-200 pb-3">
-            <h2 className="text-base font-bold text-slate-900">Identidade Visual do CabeÃ§alho</h2>
-            <p className="text-xs text-slate-500">Nome da marca, slogan e botÃ£o de aÃ§Ã£o principal do topo.</p>
+            <h2 className="text-base font-bold text-slate-900">Identidade Visual do Cabeçalho</h2>
+            <p className="text-xs text-slate-500">Nome da marca, slogan e botão de ação principal do topo.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">TÃ­tulo do Marketplace</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Título do Marketplace</label>
               <input
                 type="text"
                 value={headerForm.siteTitle}
@@ -321,7 +321,7 @@ export const MasterFrontendView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Slogan / SubtÃ­tulo</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Slogan / Subtítulo</label>
               <input
                 type="text"
                 value={headerForm.siteSubtitle}
@@ -331,7 +331,7 @@ export const MasterFrontendView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Ãcone / Letra do Logo</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Ícone / Letra do Logo</label>
               <input
                 type="text"
                 maxLength={2}
@@ -416,7 +416,7 @@ export const MasterFrontendView: React.FC = () => {
           <div className="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-amber-950 uppercase tracking-wider">
-                Barra de AnÃºncio / Broadcast Superior (Topo da PÃ¡gina)
+                Barra de Anúncio / Broadcast Superior (Topo da Página)
               </span>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -440,7 +440,7 @@ export const MasterFrontendView: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Texto do BotÃ£o CTA do Topo</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Texto do Botão CTA do Topo</label>
               <input
                 type="text"
                 value={headerForm.headerCtaText}
@@ -450,14 +450,14 @@ export const MasterFrontendView: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">AÃ§Ã£o / Destino do BotÃ£o</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Ação / Destino do Botão</label>
               <select
                 value={headerForm.headerCtaLink}
                 onChange={(e) => setHeaderForm({ ...headerForm, headerCtaLink: e.target.value })}
                 className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white"
               >
                 <option value="register-merchant">Cadastro de Novo Lojista</option>
-                <option value="ad-spaces">MÃ­dia & AnÃºncios</option>
+                <option value="ad-spaces">Mídia & Anúncios</option>
                 <option value="categories">Explorar Categorias</option>
               </select>
             </div>
@@ -469,7 +469,7 @@ export const MasterFrontendView: React.FC = () => {
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-600/20 active:scale-95 transition-all"
             >
               <Save className="w-4 h-4" />
-              Salvar CabeÃ§alho
+              Salvar Cabeçalho
             </button>
           </div>
         </form>
@@ -480,7 +480,7 @@ export const MasterFrontendView: React.FC = () => {
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Itens do Menu de NavegaÃ§Ã£o</h2>
+              <h2 className="text-base font-bold text-slate-900">Itens do Menu de Navegação</h2>
               <p className="text-xs text-slate-500">Adicione, edite, oculte ou reordene os links do menu do topo.</p>
             </div>
             <button
@@ -571,7 +571,7 @@ export const MasterFrontendView: React.FC = () => {
               Vitrines por Categoria & Banners Inter-Categorias
             </h2>
             <p className="text-xs text-slate-500">
-              Controle exato da exibiÃ§Ã£o de 4 em 4 imagens de produtos e limite de 24 amostras por categoria.
+              Controle exato da exibição de 4 em 4 imagens de produtos e limite de 24 amostras por categoria.
             </p>
           </div>
 
@@ -590,13 +590,13 @@ export const MasterFrontendView: React.FC = () => {
                 className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold bg-white"
               />
               <span className="text-[11px] text-slate-500 mt-1 block">
-                PadrÃ£o configurado: <strong>24 amostras</strong> de produtos por categoria.
+                Padrão configurado: <strong>24 amostras</strong> de produtos por categoria.
               </span>
             </div>
 
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
               <label className="block text-xs font-bold text-slate-800 mb-1">
-                Tamanho do Bloco / Imagens por VisualizaÃ§Ã£o
+                Tamanho do Bloco / Imagens por Visualização
               </label>
               <input
                 type="number"
@@ -607,7 +607,7 @@ export const MasterFrontendView: React.FC = () => {
                 className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm font-bold bg-white"
               />
               <span className="text-[11px] text-slate-500 mt-1 block">
-                PadrÃ£o configurado: <strong>de 4 em 4 imagens</strong> com paginaÃ§Ã£o suave.
+                Padrão configurado: <strong>de 4 em 4 imagens</strong> com paginação suave.
               </span>
             </div>
           </div>
@@ -618,7 +618,7 @@ export const MasterFrontendView: React.FC = () => {
                 Banners de Largura Total Entre Categorias (Carrossel 3 Imagens)
               </span>
               <span className="text-xs text-blue-700">
-                Intercala carrossÃ©is de 3 imagens automÃ¡ticas com anunciantes entre cada vitrine.
+                Intercala carrosséis de 3 imagens automáticas com anunciantes entre cada vitrine.
               </span>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -659,7 +659,7 @@ export const MasterFrontendView: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                PolÃ­tica de AprovaÃ§Ã£o de Postagens
+                Política de Aprovação de Postagens
               </label>
               <select
                 value={rulesForm.merchantPostingPolicy}
@@ -667,7 +667,7 @@ export const MasterFrontendView: React.FC = () => {
                 className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white"
               >
                 <option value="FREE">Livre (Postagem Imediata na Loja)</option>
-                <option value="MODERATED">Moderada (Aguardar AprovaÃ§Ã£o do Master)</option>
+                <option value="MODERATED">Moderada (Aguardar Aprovação do Master)</option>
                 <option value="PAID_SUBSCRIPTION">Apenas Lojistas com Plano/Assinatura Ativa</option>
               </select>
             </div>
@@ -701,12 +701,12 @@ export const MasterFrontendView: React.FC = () => {
       {activeSection === 'footer' && (
         <form onSubmit={handleSaveFooter} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <div className="border-b border-slate-200 pb-3">
-            <h2 className="text-base font-bold text-slate-900">PersonalizaÃ§Ã£o do RodapÃ© Institucional</h2>
+            <h2 className="text-base font-bold text-slate-900">Personalização do Rodapé Institucional</h2>
             <p className="text-xs text-slate-500">Textos institucionais, telefones, WhatsApp oficial e dados de copyright.</p>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Texto Sobre a Plataforma (Sobre NÃ³s)</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">Texto Sobre a Plataforma (Sobre Nós)</label>
             <textarea
               rows={3}
               value={footerForm.footerAboutText}
@@ -748,7 +748,7 @@ export const MasterFrontendView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">EndereÃ§o da Sede Local</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">Endereço da Sede Local</label>
             <input
               type="text"
               value={footerForm.footerAddress}
@@ -773,7 +773,7 @@ export const MasterFrontendView: React.FC = () => {
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-600/20 active:scale-95 transition-all"
             >
               <Save className="w-4 h-4" />
-              Salvar RodapÃ©
+              Salvar Rodapé
             </button>
           </div>
         </form>
@@ -789,13 +789,13 @@ export const MasterFrontendView: React.FC = () => {
 
             <form onSubmit={handleSaveMenuItem} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">RÃ³tulo / Texto do Link</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Rótulo / Texto do Link</label>
                 <input
                   type="text"
                   required
                   value={menuItemForm.label}
                   onChange={(e) => setMenuItemForm({ ...menuItemForm, label: e.target.value })}
-                  placeholder="Ex: Super PromoÃ§Ãµes"
+                  placeholder="Ex: Super Promoções"
                   className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm"
                 />
               </div>
@@ -807,13 +807,13 @@ export const MasterFrontendView: React.FC = () => {
                   onChange={(e) => setMenuItemForm({ ...menuItemForm, target: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm bg-white"
                 >
-                  <option value="home">InÃ­cio</option>
+                  <option value="home">Início</option>
                   <option value="gastronomia">Gastronomia & Delivery</option>
                   <option value="moda">Moda & Roupas</option>
                   <option value="beleza">Beleza & Barbearia</option>
                   <option value="eletronicos">Celulares & Tech</option>
                   <option value="flores">Flores & Presentes</option>
-                  <option value="ad-spaces">EspaÃ§os PublicitÃ¡rios</option>
+                  <option value="ad-spaces">Espaços Publicitários</option>
                   <option value="vender">Quero Vender</option>
                 </select>
               </div>

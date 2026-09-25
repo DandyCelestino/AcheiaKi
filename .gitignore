@@ -7,3 +7,13 @@ dist-ssr/
 
 .vercel
 .env*
+
+# Backups e arquivos temporários locais
+*.backup
+*.backup-*
+temp-*
+test-*
+reset-master.cjs
+usuarios.json
+
+*.before-encoding-repair

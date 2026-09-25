@@ -1,29 +1,29 @@
-﻿import { DeliveryPricingCalculation } from '../types';
+import { DeliveryPricingCalculation } from '../types';
 
 /**
- * Coordenadas de referÃªncia dos bairros e distritos de Cachoeiras de Macacu - RJ
+ * Coordenadas de referência dos bairros e distritos de Cachoeiras de Macacu - RJ
  */
 export const CACHOEIRAS_NEIGHBORHOOD_COORDS: Record<string, { lat: number; lng: number; label: string }> = {
   centro: { lat: -22.4638, lng: -42.6542, label: 'Centro' },
-  castalia: { lat: -22.4550, lng: -42.6480, label: 'CastÃ¡lia' },
+  castalia: { lat: -22.4550, lng: -42.6480, label: 'Castália' },
   'boca do mato': { lat: -22.4180, lng: -42.5980, label: 'Boca do Mato' },
   bocadomato: { lat: -22.4180, lng: -42.5980, label: 'Boca do Mato' },
-  farao: { lat: -22.4080, lng: -42.6150, label: 'FaraÃ³' },
-  japuiba: { lat: -22.5620, lng: -42.6950, label: 'JapuÃ­ba' },
+  farao: { lat: -22.4080, lng: -42.6150, label: 'Faraó' },
+  japuiba: { lat: -22.5620, lng: -42.6950, label: 'Japuíba' },
   papucaia: { lat: -22.6100, lng: -42.7450, label: 'Papucaia' },
-  guapiacu: { lat: -22.5200, lng: -42.7600, label: 'GuapiaÃ§u' },
-  marapora: { lat: -22.4810, lng: -42.6710, label: 'MaraporÃ£' },
-  valerio: { lat: -22.4490, lng: -42.6390, label: 'ValÃ©rio' },
+  guapiacu: { lat: -22.5200, lng: -42.7600, label: 'Guapiaçu' },
+  marapora: { lat: -22.4810, lng: -42.6710, label: 'Maraporã' },
+  valerio: { lat: -22.4490, lng: -42.6390, label: 'Valério' },
   funchal: { lat: -22.4750, lng: -42.6620, label: 'Funchal' },
   ribeira: { lat: -22.5200, lng: -42.6800, label: 'Ribeira' },
   ganguri: { lat: -22.5400, lng: -42.7100, label: 'Ganguri' },
-  'sao jose da boa morte': { lat: -22.6450, lng: -42.7850, label: 'SÃ£o JosÃ© da Boa Morte' },
+  'sao jose da boa morte': { lat: -22.6450, lng: -42.7850, label: 'São José da Boa Morte' },
   'campo grande': { lat: -22.4700, lng: -42.6600, label: 'Campo Grande' },
   torrinhas: { lat: -22.4350, lng: -42.6180, label: 'Torrinhas' }
 };
 
 /**
- * Normaliza o texto de bairro/endereÃ§o para busca
+ * Normaliza o texto de bairro/endereço para busca
  */
 export function normalizeLocationString(str: string): string {
   if (!str) return '';
@@ -37,7 +37,7 @@ export function normalizeLocationString(str: string): string {
 }
 
 /**
- * Matriz de DistÃ¢ncias ViÃ¡rias Reais (em KM) entre bairros e distritos
+ * Matriz de Distâncias Viárias Reais (em KM) entre bairros e distritos
  * de Cachoeiras de Macacu - RJ (via RJ-116, RJ-122 e acessos municipais)
  */
 const ROAD_DISTANCE_MATRIX: Record<string, number> = {
@@ -57,7 +57,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'centro__papucaia': 24.5,
   'centro__sao jose da boa morte': 30.5,
 
-  // CastÃ¡lia
+  // Castália
   'castalia__valerio': 4.5,
   'castalia__campo grande': 5.0,
   'castalia__funchal': 6.8,
@@ -72,7 +72,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'castalia__papucaia': 26.5,
   'castalia__sao jose da boa morte': 32.5,
 
-  // JapuÃ­ba (2Âº Distrito)
+  // Japuíba (2º Distrito)
   'japuiba__ganguri': 4.2,
   'japuiba__ribeira': 8.5,
   'japuiba__papucaia': 9.8,
@@ -86,7 +86,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'japuiba__boca do mato': 28.5,
   'japuiba__farao': 31.0,
 
-  // Papucaia (3Âº Distrito)
+  // Papucaia (3º Distrito)
   'papucaia__sao jose da boa morte': 8.5,
   'papucaia__ganguri': 12.5,
   'papucaia__guapiacu': 13.8,
@@ -99,7 +99,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'papucaia__boca do mato': 35.5,
   'papucaia__farao': 38.0,
 
-  // Boca do Mato & FaraÃ³ (Serra)
+  // Boca do Mato & Faraó (Serra)
   'boca do mato__farao': 7.5,
   'boca do mato__torrinhas': 5.2,
   'boca do mato__valerio': 14.0,
@@ -111,7 +111,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'boca do mato__guapiacu': 32.5,
   'boca do mato__sao jose da boa morte': 41.0,
 
-  // SÃ£o JosÃ© da Boa Morte
+  // São José da Boa Morte
   'sao jose da boa morte__guapiacu': 15.0,
   'sao jose da boa morte__ganguri': 20.0,
   'sao jose da boa morte__ribeira': 24.0,
@@ -122,7 +122,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'sao jose da boa morte__torrinhas': 37.0,
   'sao jose da boa morte__farao': 43.5,
 
-  // GuapiaÃ§u
+  // Guapiaçu
   'guapiacu__ganguri': 17.5,
   'guapiacu__ribeira': 21.0,
   'guapiacu__marapora': 23.5,
@@ -132,7 +132,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
   'guapiacu__torrinhas': 28.5,
   'guapiacu__farao': 34.0,
 
-  // Bairros intermediÃ¡rios
+  // Bairros intermediários
   'valerio__campo grande': 2.5,
   'valerio__funchal': 3.0,
   'valerio__torrinhas': 5.5,
@@ -164,7 +164,7 @@ const ROAD_DISTANCE_MATRIX: Record<string, number> = {
 };
 
 /**
- * Encontra as coordenadas mais prÃ³ximas com base no endereÃ§o ou bairro fornecido.
+ * Encontra as coordenadas mais próximas com base no endereço ou bairro fornecido.
  * Ordena chaves por comprimento decrescente para priorizar nomes compostos.
  */
 export function findCoordinatesForAddress(addressOrNeighborhood: string): { lat: number; lng: number; matchedLabel: string } {
@@ -180,14 +180,14 @@ export function findCoordinatesForAddress(addressOrNeighborhood: string): { lat:
     const val = CACHOEIRAS_NEIGHBORHOOD_COORDS[key];
     const normKey = normalizeLocationString(key);
     
-    // CorrespondÃªncia exata ou verificaÃ§Ã£o de palavra completa
+    // Correspondência exata ou verificação de palavra completa
     const regex = new RegExp(`(^|\\s)${normKey}(\\s|$)`, 'i');
     if (regex.test(normalized) || normalized === normKey) {
       return { lat: val.lat, lng: val.lng, matchedLabel: val.label };
     }
   }
 
-  // Segunda passada: busca por inclusÃ£o direta se o nome do bairro estiver no texto
+  // Segunda passada: busca por inclusão direta se o nome do bairro estiver no texto
   for (const key of sortedKeys) {
     const val = CACHOEIRAS_NEIGHBORHOOD_COORDS[key];
     const normKey = normalizeLocationString(key);
@@ -196,12 +196,12 @@ export function findCoordinatesForAddress(addressOrNeighborhood: string): { lat:
     }
   }
 
-  // PadrÃ£o: Centro de Cachoeiras de Macacu
+  // Padrão: Centro de Cachoeiras de Macacu
   return { lat: -22.4638, lng: -42.6542, matchedLabel: 'Centro' };
 }
 
 /**
- * FÃ³rmula de Haversine para cÃ¡lculo de distÃ¢ncia geodÃ©sica em KM
+ * Fórmula de Haversine para cálculo de distância geodésica em KM
  */
 function haversineDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371;
@@ -218,10 +218,10 @@ function haversineDistanceKm(lat1: number, lon1: number, lat2: number, lon2: num
 }
 
 /**
- * Calcula a distÃ¢ncia viÃ¡ria real em KM entre dois bairros/endereÃ§os em Cachoeiras de Macacu.
- * 1. Se mesmo bairro: distÃ¢ncia urbana mÃ©dia intra-bairro = 2.0 km.
- * 2. Se pares de bairros mapeados na malha viÃ¡ria oficial: consulta a matriz rodoviÃ¡ria real.
- * 3. Se rota customizada / coordenadas: calcula Haversine com fator de curvatura topogrÃ¡fica (1.35x).
+ * Calcula a distância viária real em KM entre dois bairros/endereços em Cachoeiras de Macacu.
+ * 1. Se mesmo bairro: distância urbana média intra-bairro = 2.0 km.
+ * 2. Se pares de bairros mapeados na malha viária oficial: consulta a matriz rodoviária real.
+ * 3. Se rota customizada / coordenadas: calcula Haversine com fator de curvatura topográfica (1.35x).
  */
 export function calculateDeliveryDistance(
   originAddressOrNeighborhood: string,
@@ -243,7 +243,7 @@ export function calculateDeliveryDistance(
     };
   }
 
-  // 2. Consulta Ã  Matriz de DistÃ¢ncias ViÃ¡rias Reais de Cachoeiras de Macacu
+  // 2. Consulta à Matriz de Distâncias Viárias Reais de Cachoeiras de Macacu
   const key1 = `${normO}__${normD}`;
   const key2 = `${normD}__${normO}`;
   const matrixDist = ROAD_DISTANCE_MATRIX[key1] ?? ROAD_DISTANCE_MATRIX[key2];
@@ -257,7 +257,7 @@ export function calculateDeliveryDistance(
     };
   }
 
-  // 3. Fallback geodÃ©sico Haversine com fator de via montanhosa (1.35x)
+  // 3. Fallback geodésico Haversine com fator de via montanhosa (1.35x)
   const directKm = haversineDistanceKm(origin.lat, origin.lng, dest.lat, dest.lng);
   const estimatedRoadKm = Math.max(1.5, Math.round(directKm * 1.35 * 10) / 10);
 
@@ -272,8 +272,8 @@ export function calculateDeliveryDistance(
 /**
  * Calcula os valores financeiros da corrida de entrega
  * Regra V1 estabelecida:
- * - Entregador: R$ 1,00 por KM (configurÃ¡vel: ratePerKm)
- * - Plataforma: R$ 2,00 por solicitaÃ§Ã£o (configurÃ¡vel: platformFee)
+ * - Entregador: R$ 1,00 por KM (configurável: ratePerKm)
+ * - Plataforma: R$ 2,00 por solicitação (configurável: platformFee)
  * - Cliente Paga: Total = Entregador + Plataforma
  */
 export function calculateDeliveryPricing(
@@ -324,7 +324,7 @@ export function calculateDeliveryPricing(
   };
 }
 /**
- * Helper com formato amigÃ¡vel para modais de cotaÃ§Ã£o rÃ¡pida
+ * Helper com formato amigável para modais de cotação rápida
  */
 export function estimateDeliveryFare(
   distanceKm: number,
@@ -348,23 +348,23 @@ export function estimateDeliveryFare(
 }
 
 /**
- * Lista todos os bairros suportados para seleÃ§Ã£o fÃ¡cil
+ * Lista todos os bairros suportados para seleção fácil
  */
 export function getAllCachoeirasNeighborhoods(): string[] {
   return [
     'Centro',
-    'CastÃ¡lia',
+    'Castália',
     'Boca do Mato',
-    'FaraÃ³',
-    'JapuÃ­ba',
+    'Faraó',
+    'Japuíba',
     'Papucaia',
-    'GuapiaÃ§u',
-    'MaraporÃ£',
-    'ValÃ©rio',
+    'Guapiaçu',
+    'Maraporã',
+    'Valério',
     'Funchal',
     'Ribeira',
     'Ganguri',
-    'SÃ£o JosÃ© da Boa Morte',
+    'São José da Boa Morte',
     'Campo Grande',
     'Torrinhas'
   ];

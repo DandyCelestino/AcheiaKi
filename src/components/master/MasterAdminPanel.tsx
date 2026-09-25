@@ -621,7 +621,7 @@ export const MasterAdminPanel: React.FC = () => {
                 {activeTab === 'delivery' && 'Supervisão de Delivery & Entregadores V1'}
                 {activeTab === 'delivery-queue' && 'Solicitações aguardando análise (Aprovação Master)'}
                 {activeTab === 'audit' && 'Logs de Auditoria & Segurança'}
-                {activeTab === 'notifications' && 'Monitor de Disparos WhatsApp & Supabase'}
+                {activeTab === 'notifications' && 'Monitor de Disparos WhatsApp & Firebase'}
                 {activeTab === 'settings' && 'Parâmetros da Plataforma & Backup'}
               </h1>
             </div>
@@ -976,3 +976,4 @@ export const MasterAdminPanel: React.FC = () => {
     </div>
   );
 };
+

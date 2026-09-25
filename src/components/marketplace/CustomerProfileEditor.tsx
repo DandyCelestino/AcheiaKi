@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   User,
   MapPin,
@@ -154,7 +154,7 @@ export const CustomerProfileEditor: React.FC = () => {
   const [receivePromoAlerts, setReceivePromoAlerts] = useState(
     currentUser?.preferences?.receivePromoAlerts ?? true
   );
-  const [preferredModality, setPreferredModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÇÃO'>(
+  const [preferredModality, setPreferredModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃ‡ÃƒO'>(
     currentUser?.preferences?.preferredModality || 'DELIVERY'
   );
   const [dietaryRestrictions, setDietaryRestrictions] = useState(
@@ -229,11 +229,16 @@ export const CustomerProfileEditor: React.FC = () => {
   const completeness = calculateCompleteness();
 
   // Handlers
-  const handleSavePersonalInfo = (e: React.FormEvent) => {
+  const handleSavePersonalInfo = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name.trim()) {
       alert('Por favor, informe seu nome completo.');
+      return;
+    }
+
+    if (!avatar.trim() || !avatar.trim().startsWith('data:image/')) {
+      alert('A foto de perfil é obrigatória. Envie uma foto real pelo computador ou pela câmera do smartphone.');
       return;
     }
 
@@ -246,7 +251,7 @@ export const CustomerProfileEditor: React.FC = () => {
           }
         : undefined;
 
-    updateUserProfile({
+    const saved = await updateUserProfile({
       name: name.trim(),
       nickname: nickname.trim() || undefined,
       email: email.trim(),
@@ -255,10 +260,14 @@ export const CustomerProfileEditor: React.FC = () => {
       cpf: cpf.trim() || undefined,
       birthDate: birthDate || undefined,
       gender: gender as any,
-      avatar: avatar.trim() || undefined,
+      avatar: avatar.trim(),
       generalNotes: generalNotes.trim() || undefined,
       emergencyContact
     });
+
+    if (saved) {
+      alert('Cadastro salvo com sucesso.');
+    }
   };
 
   const handleOpenNewAddressModal = () => {
@@ -443,11 +452,11 @@ export const CustomerProfileEditor: React.FC = () => {
               )}
             </div>
             <p className="text-xs text-slate-300 mt-0.5">
-              {email} • {phone}
+              {email} â€¢ {phone}
             </p>
             <p className="text-[11px] text-blue-300 mt-1 flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1" />
-              Cachoeiras de Macacu, RJ • Cliente cadastrado desde {currentUser.createdAt?.split('T')[0] || '2026'}
+              Cachoeiras de Macacu, RJ â€¢ Cliente cadastrado desde {currentUser.createdAt?.split('T')[0] || '2026'}
             </p>
           </div>
         </div>
@@ -466,7 +475,7 @@ export const CustomerProfileEditor: React.FC = () => {
           </div>
           <p className="text-[10px] text-slate-300 mt-1.5">
             {completeness === 100
-              ? '✨ Sua ficha cadastral está 100% preenchida!'
+              ? 'âœ¨ Sua ficha cadastral está 100% preenchida!'
               : 'Preencha seus dados de medidas e endereços para pedidos mais rápidos.'}
           </p>
         </div>
@@ -556,29 +565,6 @@ export const CustomerProfileEditor: React.FC = () => {
                 label="Sua Foto de Perfil (Computador ou Câmera do Smartphone)"
                 helperText="Envie uma foto do seu computador ou tire uma selfie com a câmera do celular"
               />
-            </div>
-
-            <div className="pt-3 border-t border-slate-200">
-              <label className="block text-xs font-bold text-slate-700 mb-2">Ou escolha um dos avatares rápidos do guia:</label>
-              <div className="flex flex-wrap items-center gap-2.5">
-                {PREDEFINED_AVATARS.map((imgUrl, i) => (
-                  <button
-                    type="button"
-                    key={i}
-                    onClick={() => setAvatar(imgUrl)}
-                    className={`relative rounded-full overflow-hidden border-2 transition-all ${
-                      avatar === imgUrl ? 'border-blue-600 ring-2 ring-blue-600/30 scale-105' : 'border-transparent hover:opacity-80'
-                    }`}
-                  >
-                    <img src={imgUrl} alt="Avatar" referrerPolicy="no-referrer" className="w-10 h-10 object-cover" />
-                    {avatar === imgUrl && (
-                      <div className="absolute inset-0 bg-blue-600/40 flex items-center justify-center text-white">
-                        <Check className="w-4 h-4" />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -831,16 +817,16 @@ export const CustomerProfileEditor: React.FC = () => {
                       {addr.street}, {addr.number} {addr.complement && `(${addr.complement})`}
                     </p>
                     <p className="text-slate-500">
-                      Bairro: {addr.neighborhood} • {addr.city} - {addr.state} • CEP: {addr.zipCode || '28680-000'}
+                      Bairro: {addr.neighborhood} â€¢ {addr.city} - {addr.state} â€¢ CEP: {addr.zipCode || '28680-000'}
                     </p>
                     {addr.referencePoint && (
                       <p className="text-[11px] text-blue-800 bg-blue-50/80 p-1.5 rounded-lg mt-1">
-                        📍 <strong>Ref:</strong> {addr.referencePoint}
+                        ðŸ“ <strong>Ref:</strong> {addr.referencePoint}
                       </p>
                     )}
                     {addr.deliveryInstructions && (
                       <p className="text-[11px] text-slate-600 italic">
-                        💬 <strong>Instrução:</strong> {addr.deliveryInstructions}
+                        ðŸ’¬ <strong>Instrução:</strong> {addr.deliveryInstructions}
                       </p>
                     )}
                   </div>
@@ -1170,7 +1156,7 @@ export const CustomerProfileEditor: React.FC = () => {
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                     }`}
                   >
-                    {isSelected ? '✓ ' : '+ '} {st}
+                    {isSelected ? 'âœ“ ' : '+ '} {st}
                   </button>
                 );
               })}
@@ -1325,7 +1311,7 @@ export const CustomerProfileEditor: React.FC = () => {
               >
                 <option value="DELIVERY">Delivery / Entrega Rápida em Domicílio</option>
                 <option value="RETIRADA">Retirada Express no Balcão da Loja</option>
-                <option value="EXPERIMENTAÇÃO">Provador VIP em Domicílio (Mala de Roupas)</option>
+                <option value="EXPERIMENTAÃ‡ÃƒO">Provador VIP em Domicílio (Mala de Roupas)</option>
               </select>
             </div>
 
@@ -1433,7 +1419,7 @@ export const CustomerProfileEditor: React.FC = () => {
                   : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
               }`}
             >
-              {currentUser.twoFactorEnabled ? '2FA Ativado ✓' : 'Ativar 2FA'}
+              {currentUser.twoFactorEnabled ? '2FA Ativado âœ“' : 'Ativar 2FA'}
             </button>
           </div>
 
@@ -1462,3 +1448,7 @@ export const CustomerProfileEditor: React.FC = () => {
   );
 };
 export default CustomerProfileEditor;
+
+
+
+

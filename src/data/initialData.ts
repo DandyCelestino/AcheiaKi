@@ -1,4 +1,4 @@
-﻿import {
+import {
   User,
   StoreMerchant,
   Product,
@@ -63,8 +63,8 @@ export const INITIAL_USERS: User[] = [
     role: 'ENTREGADOR',
     password: 'entregador123!',
     city: 'Cachoeiras de Macacu, RJ',
-    address: 'Rua CastÃ¡lia, 140',
-    neighborhood: 'CastÃ¡lia',
+    address: 'Rua Castália, 140',
+    neighborhood: 'Castália',
     isEmailVerified: true,
     twoFactorEnabled: false,
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
@@ -102,7 +102,7 @@ export const INITIAL_AUDIT_LOGS: AuditLog[] = [
     action: 'SYSTEM_PRODUCTION_INIT',
     category: 'SYSTEM',
     severity: 'INFO',
-    details: 'Base de dados oficial inicializada em produÃ§Ã£o limpa sem registros fictÃ­cios.',
+    details: 'Base de dados oficial inicializada em produção limpa sem registros fictícios.',
     ipAddress: '177.18.240.12',
     device: 'Painel Master Supremo',
     timestamp: '2026-09-15 08:00:00',
@@ -112,23 +112,23 @@ export const INITIAL_AUDIT_LOGS: AuditLog[] = [
 
 export const INITIAL_CATEGORIES: Category[] = [
   { id: 'all', name: 'TODAS AS CATEGORIAS', icon: 'Sparkles' },
-  { id: 'lojas', name: 'LOJAS', icon: 'Store', badge: 'Destaque 1Âª OpÃ§Ã£o', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&auto=format&fit=crop&q=80', description: 'ComÃ©rcios locais, boutiques de roupas, calÃ§ados, mÃ³veis, materiais e papelarias em Cachoeiras.' },
-  { id: 'produtos', name: 'PRODUTOS', icon: 'ShoppingBag', badge: 'Ofertas & LanÃ§amentos', image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=200&auto=format&fit=crop&q=80', description: 'CatÃ¡logo geral de produtos locais com entrega expressa, retirada sem filas ou provador VIP.' },
-  { id: 'servicos', name: 'PRESTADORES DE SERVIÃ‡OS', icon: 'Wrench', badge: 'Verificados', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&auto=format&fit=crop&q=80', description: 'Eletricistas, encanadores, tÃ©cnicos e profissionais autÃ´nomos com CPF e referÃªncias checadas.' },
-  { id: 'consultorios', name: 'CONSULTÃ“RIOS', icon: 'Stethoscope', badge: 'SaÃºde & Bem-Estar', image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=200&auto=format&fit=crop&q=80', description: 'ConsultÃ³rios odontolÃ³gicos, dentistas, clÃ­nicas mÃ©dicas, psicÃ³logos, fisioterapia e exames.' },
-  { id: 'gastronomia', name: 'GASTRONOMIA', icon: 'UtensilsCrossed', badge: 'Delivery RÃ¡pido', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&auto=format&fit=crop&q=80', description: 'Pizzas na lenha, hambÃºrgueres artesanais, lanches, marmitex caseiro e doces.' },
-  { id: 'beleza', name: 'BELEZA & ESTÃ‰TICA', icon: 'Scissors', badge: 'Agendamentos', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&auto=format&fit=crop&q=80', description: 'SalÃµes de beleza, barbearias vintage, manicures, cÃ­lios e cuidados com o bem-estar.' },
-  { id: 'veiculos', name: 'VEÃCULOS & AUTO', icon: 'Car', badge: 'Socorro 24h', image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=200&auto=format&fit=crop&q=80', description: 'Oficinas mecÃ¢nicas, autopeÃ§as, baterias, lava-jato, borracharias e guinchos.' },
-  { id: 'pet-agro', name: 'PET SHOP & AGRO', icon: 'PawPrint', badge: 'Mundo Animal', image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200&auto=format&fit=crop&q=80', description: 'RaÃ§Ãµes, banho e tosa, medicamentos veterinÃ¡rios e artigos agropecuÃ¡rios.' },
-  { id: 'educacao', name: 'EDUCAÃ‡ÃƒO & CURSOS', icon: 'GraduationCap', badge: 'Cursos & Aulas', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&auto=format&fit=crop&q=80', description: 'ReforÃ§o escolar, cursos de idiomas, informÃ¡tica, autoescolas e aulas particulares.' },
-  { id: 'imoveis', name: 'IMÃ“VEIS & LOCAÃ‡Ã•ES', icon: 'Home', badge: 'Temporada & Aluguel', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&auto=format&fit=crop&q=80', description: 'Casas, apartamentos para alugar, venda de terrenos, sÃ­tios e pousadas.' }
+  { id: 'lojas', name: 'LOJAS', icon: 'Store', badge: 'Destaque 1ª Opção', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&auto=format&fit=crop&q=80', description: 'Comércios locais, boutiques de roupas, calçados, móveis, materiais e papelarias em Cachoeiras.' },
+  { id: 'produtos', name: 'PRODUTOS', icon: 'ShoppingBag', badge: 'Ofertas & Lançamentos', image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=200&auto=format&fit=crop&q=80', description: 'Catálogo geral de produtos locais com entrega expressa, retirada sem filas ou provador VIP.' },
+  { id: 'servicos', name: 'PRESTADORES DE SERVIÇOS', icon: 'Wrench', badge: 'Verificados', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&auto=format&fit=crop&q=80', description: 'Eletricistas, encanadores, técnicos e profissionais autônomos com CPF e referências checadas.' },
+  { id: 'consultorios', name: 'CONSULTÓRIOS', icon: 'Stethoscope', badge: 'Saúde & Bem-Estar', image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=200&auto=format&fit=crop&q=80', description: 'Consultórios odontológicos, dentistas, clínicas médicas, psicólogos, fisioterapia e exames.' },
+  { id: 'gastronomia', name: 'GASTRONOMIA', icon: 'UtensilsCrossed', badge: 'Delivery Rápido', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&auto=format&fit=crop&q=80', description: 'Pizzas na lenha, hambúrgueres artesanais, lanches, marmitex caseiro e doces.' },
+  { id: 'beleza', name: 'BELEZA & ESTÉTICA', icon: 'Scissors', badge: 'Agendamentos', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&auto=format&fit=crop&q=80', description: 'Salões de beleza, barbearias vintage, manicures, cílios e cuidados com o bem-estar.' },
+  { id: 'veiculos', name: 'VEÍCULOS & AUTO', icon: 'Car', badge: 'Socorro 24h', image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=200&auto=format&fit=crop&q=80', description: 'Oficinas mecânicas, autopeças, baterias, lava-jato, borracharias e guinchos.' },
+  { id: 'pet-agro', name: 'PET SHOP & AGRO', icon: 'PawPrint', badge: 'Mundo Animal', image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200&auto=format&fit=crop&q=80', description: 'Rações, banho e tosa, medicamentos veterinários e artigos agropecuários.' },
+  { id: 'educacao', name: 'EDUCAÇÃO & CURSOS', icon: 'GraduationCap', badge: 'Cursos & Aulas', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&auto=format&fit=crop&q=80', description: 'Reforço escolar, cursos de idiomas, informática, autoescolas e aulas particulares.' },
+  { id: 'imoveis', name: 'IMÓVEIS & LOCAÇÕES', icon: 'Home', badge: 'Temporada & Aluguel', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&auto=format&fit=crop&q=80', description: 'Casas, apartamentos para alugar, venda de terrenos, sítios e pousadas.' }
 ];
 
 export const INITIAL_BANNERS: Banner[] = [
   {
     id: 'banner-1',
-    title: 'Compre no ComÃ©rcio de Cachoeiras',
-    subtitle: 'PeÃ§a delivery com motoboy local ou retire na loja com cÃ³digo instantÃ¢neo sem filas.',
+    title: 'Compre no Comércio de Cachoeiras',
+    subtitle: 'Peça delivery com motoboy local ou retire na loja com código instantâneo sem filas.',
     badge: '100% LOCAL',
     imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSamDps2myzG8QwRu24BwdyMLSzrZINmJoIxjaciwTCWQ&s=10',
     bgColor: 'from-emerald-950 via-emerald-900 to-slate-900',
@@ -138,7 +138,7 @@ export const INITIAL_BANNERS: Banner[] = [
   {
     id: 'banner-2',
     title: 'Experimente na Loja antes de Comprar',
-    subtitle: 'Reserve suas roupas e calÃ§ados favoritos com horÃ¡rio marcado no provador das boutiques.',
+    subtitle: 'Reserve suas roupas e calçados favoritos com horário marcado no provador das boutiques.',
     badge: 'NOVIDADE EXCLUSIVA',
     imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
     bgColor: 'from-purple-950 via-slate-900 to-indigo-950',
@@ -147,12 +147,12 @@ export const INITIAL_BANNERS: Banner[] = [
   },
   {
     id: 'banner-3',
-    title: 'Agende SalÃµes, Barbearias e ServiÃ§os',
-    subtitle: 'Escolha o profissional, o horÃ¡rio ideal e receba confirmaÃ§Ã£o automÃ¡tica em segundos.',
+    title: 'Agende Salões, Barbearias e Serviços',
+    subtitle: 'Escolha o profissional, o horário ideal e receba confirmação automática em segundos.',
     badge: 'SEM ESPERA',
     imageUrl: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&auto=format&fit=crop&q=80',
     bgColor: 'from-blue-950 via-slate-900 to-cyan-950',
-    actionText: 'Agendar HorÃ¡rio',
+    actionText: 'Agendar Horário',
     categoryFilter: 'beleza'
   }
 ];
@@ -173,9 +173,9 @@ export const INITIAL_DELIVERY_DRIVERS: DeliveryDriver[] = [
     cpf: '123.456.789-00',
     phone: '(21) 98877-6655',
     email: 'entregador@acheiaqui.com.br',
-    address: 'Rua CastÃ¡lia, 140',
+    address: 'Rua Castália, 140',
     city: 'Cachoeiras de Macacu, RJ',
-    neighborhood: 'CastÃ¡lia',
+    neighborhood: 'Castália',
     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     idDocument: 'RG 24.891.203-9 DIC-RJ',
     cnhNumber: '05928192841',
@@ -199,7 +199,7 @@ export const INITIAL_DELIVERY_DRIVERS: DeliveryDriver[] = [
     registeredAt: '2026-03-01 09:30:00',
     approvedAt: '2026-03-01 14:00:00',
     lastActiveAt: '2026-09-17 12:45:00',
-    notes: 'Entregador de confianÃ§a verificado com documentaÃ§Ã£o e antecedentes conferidos.'
+    notes: 'Entregador de confiança verificado com documentação e antecedentes conferidos.'
   },
   {
     id: 'driver-lucas-carro',
@@ -232,7 +232,7 @@ export const INITIAL_DELIVERY_DRIVERS: DeliveryDriver[] = [
     totalDeliveries: 0,
     totalEarnings: 0,
     registeredAt: '2026-09-16 16:20:00',
-    notes: 'Documentos enviados. Aguardando conferÃªncia de CNH B e CRLV pela equipe Master.'
+    notes: 'Documentos enviados. Aguardando conferência de CNH B e CRLV pela equipe Master.'
   }
 ];
 
@@ -243,7 +243,7 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     orderId: 'ord-analysis-001',
     orderCode: 'PED-8831',
     merchantId: 'merchant-demo-padaria',
-    merchantName: 'Padaria & Confeitaria PÃ£o de Ouro',
+    merchantName: 'Padaria & Confeitaria Pão de Ouro',
     merchantPhone: '(21) 99887-1122',
     originAddress: 'Av. Governador Roberto Silveira, 250 - Centro',
     originNeighborhood: 'Centro',
@@ -251,9 +251,9 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     customerId: 'cust-demo-juliana',
     customerName: 'Juliana Mendes Silveira',
     customerPhone: '(21) 98744-1290',
-    destinationAddress: 'Rua PlÃ­nio Casado, 180 - CastÃ¡lia',
-    destinationNeighborhood: 'CastÃ¡lia',
-    destino: 'Rua PlÃ­nio Casado, 180 - CastÃ¡lia',
+    destinationAddress: 'Rua Plínio Casado, 180 - Castália',
+    destinationNeighborhood: 'Castália',
+    destino: 'Rua Plínio Casado, 180 - Castália',
     distanceKm: 3.8,
     distancia: 3.8,
     tipo_veiculo: 'MOTO',
@@ -271,13 +271,13 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     data_solicitacao: '2026-09-21',
     hora_solicitacao: '15:20',
     createdAt: '2026-09-21 15:20:00',
-    observacoes: 'Entregar no condomÃ­nio Village das Flores, Bloco B, Apto 204. Manter a caixa na horizontal (bolo confeitado e torta salgada).',
+    observacoes: 'Entregar no condomínio Village das Flores, Bloco B, Apto 204. Manter a caixa na horizontal (bolo confeitado e torta salgada).',
     history: [
       {
         timestamp: '2026-09-21 15:20:00',
         status: 'AGUARDANDO_ANALISE',
-        description: 'SolicitaÃ§Ã£o de entrega criada pelo lojista para o pedido PED-8831. DistÃ¢ncia: 3.8 km. Aguardando anÃ¡lise operacional do Master.',
-        actorName: 'Padaria & Confeitaria PÃ£o de Ouro',
+        description: 'Solicitação de entrega criada pelo lojista para o pedido PED-8831. Distância: 3.8 km. Aguardando análise operacional do Master.',
+        actorName: 'Padaria & Confeitaria Pão de Ouro',
         actorRole: 'LOJISTA'
       }
     ]
@@ -288,11 +288,11 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     orderId: 'ord-analysis-002',
     orderCode: 'PED-9104',
     merchantId: 'merchant-demo-farmacia',
-    merchantName: 'Drogaria Macacu SaÃºde',
+    merchantName: 'Drogaria Macacu Saúde',
     merchantPhone: '(21) 99887-3344',
-    originAddress: 'PraÃ§a Manuel de Portugal, 45 - Centro',
+    originAddress: 'Praça Manuel de Portugal, 45 - Centro',
     originNeighborhood: 'Centro',
-    origem: 'PraÃ§a Manuel de Portugal, 45 - Centro',
+    origem: 'Praça Manuel de Portugal, 45 - Centro',
     customerId: 'cust-demo-ricardo',
     customerName: 'Ricardo Alencar Pinheiro',
     customerPhone: '(21) 98112-9900',
@@ -316,13 +316,13 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     data_solicitacao: '2026-09-21',
     hora_solicitacao: '16:05',
     createdAt: '2026-09-21 16:05:00',
-    observacoes: 'Medicamentos de uso contÃ­nuo e frascos de xarope. Cuidado com impacto. Ligar 5 minutos antes ao aproximar da entrada principal do sÃ­tio.',
+    observacoes: 'Medicamentos de uso contínuo e frascos de xarope. Cuidado com impacto. Ligar 5 minutos antes ao aproximar da entrada principal do sítio.',
     history: [
       {
         timestamp: '2026-09-21 16:05:00',
         status: 'AGUARDANDO_ANALISE',
-        description: 'SolicitaÃ§Ã£o de entrega criada pela Drogaria Macacu SaÃºde para o pedido PED-9104. DistÃ¢ncia calculada: 12.4 km. Tipo: Carro.',
-        actorName: 'Drogaria Macacu SaÃºde',
+        description: 'Solicitação de entrega criada pela Drogaria Macacu Saúde para o pedido PED-9104. Distância calculada: 12.4 km. Tipo: Carro.',
+        actorName: 'Drogaria Macacu Saúde',
         actorRole: 'LOJISTA'
       }
     ]
@@ -341,9 +341,9 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     customerId: 'cust-demo-camila',
     customerName: 'Camila Vasconcelos',
     customerPhone: '(21) 99341-7788',
-    destinationAddress: 'Rua da Matriz, 78 - JapuÃ­ba',
-    destinationNeighborhood: 'JapuÃ­ba',
-    destino: 'Rua da Matriz, 78 - JapuÃ­ba',
+    destinationAddress: 'Rua da Matriz, 78 - Japuíba',
+    destinationNeighborhood: 'Japuíba',
+    destino: 'Rua da Matriz, 78 - Japuíba',
     distanceKm: 6.5,
     distancia: 6.5,
     tipo_veiculo: 'MOTO',
@@ -361,12 +361,12 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     data_solicitacao: '2026-09-21',
     hora_solicitacao: '16:40',
     createdAt: '2026-09-21 16:40:00',
-    observacoes: 'Pacote de provador VIP com 3 peÃ§as de vestuÃ¡rio em cabide e capa protetora. Entregar diretamente Ã  cliente.',
+    observacoes: 'Pacote de provador VIP com 3 peças de vestuário em cabide e capa protetora. Entregar diretamente à cliente.',
     history: [
       {
         timestamp: '2026-09-21 16:40:00',
         status: 'AGUARDANDO_ANALISE',
-        description: 'SolicitaÃ§Ã£o de entrega criada pela Boutique Carioca para o pedido PED-9482. DistÃ¢ncia: 6.5 km.',
+        description: 'Solicitação de entrega criada pela Boutique Carioca para o pedido PED-9482. Distância: 6.5 km.',
         actorName: 'Boutique Carioca',
         actorRole: 'LOJISTA'
       }
@@ -378,15 +378,15 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     orderId: 'ord-demo-001',
     orderCode: 'DEL-8X42K9',
     merchantId: 'merchant-demo-padaria',
-    merchantName: 'Padaria & Confeitaria PÃ£o de Ouro',
+    merchantName: 'Padaria & Confeitaria Pão de Ouro',
     merchantPhone: '(21) 99887-1122',
     originAddress: 'Av. Governador Roberto Silveira, 250 - Centro',
     originNeighborhood: 'Centro',
     customerId: 'cust-demo-marina',
     customerName: 'Marina Ferreira',
     customerPhone: '(21) 98765-4321',
-    destinationAddress: 'Rua CastÃ¡lia, 450 - CastÃ¡lia',
-    destinationNeighborhood: 'CastÃ¡lia',
+    destinationAddress: 'Rua Castália, 450 - Castália',
+    destinationNeighborhood: 'Castália',
     distanceKm: 4.2,
     ratePerKmApplied: 1.00,
     platformFeeApplied: 2.00,
@@ -401,14 +401,14 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
       {
         timestamp: '2026-09-17 12:30:00',
         status: 'CRIADA',
-        description: 'Venda finalizada pela Padaria PÃ£o de Ouro. SolicitaÃ§Ã£o de delivery gerada.',
-        actorName: 'Padaria PÃ£o de Ouro',
+        description: 'Venda finalizada pela Padaria Pão de Ouro. Solicitação de delivery gerada.',
+        actorName: 'Padaria Pão de Ouro',
         actorRole: 'LOJISTA'
       },
       {
         timestamp: '2026-09-17 12:30:05',
         status: 'AGUARDANDO_ENTREGADOR',
-        description: 'Corrida disponÃ­vel no radar para entregadores online em Cachoeiras de Macacu.',
+        description: 'Corrida disponível no radar para entregadores online em Cachoeiras de Macacu.',
         actorName: 'Sistema Achei Aqui',
         actorRole: 'SISTEMA'
       }
@@ -420,15 +420,15 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
     orderId: 'ord-demo-002',
     orderCode: 'DEL-2A88K1',
     merchantId: 'merchant-demo-farmacia',
-    merchantName: 'Drogaria Macacu SaÃºde',
+    merchantName: 'Drogaria Macacu Saúde',
     merchantPhone: '(21) 99887-3344',
-    originAddress: 'PraÃ§a Manuel de Portugal, 45 - Centro',
+    originAddress: 'Praça Manuel de Portugal, 45 - Centro',
     originNeighborhood: 'Centro',
     customerId: 'cust-demo-carlos',
     customerName: 'Carlos Eduardo Souza',
     customerPhone: '(21) 97654-3210',
-    destinationAddress: 'Estrada do FaraÃ³, 120 - FaraÃ³',
-    destinationNeighborhood: 'FaraÃ³',
+    destinationAddress: 'Estrada do Faraó, 120 - Faraó',
+    destinationNeighborhood: 'Faraó',
     distanceKm: 8.5,
     ratePerKmApplied: 1.00,
     platformFeeApplied: 2.00,
@@ -453,8 +453,8 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
       {
         timestamp: '2026-09-17 10:00:00',
         status: 'CRIADA',
-        description: 'Venda de medicamentos finalizada. SolicitaÃ§Ã£o de delivery criada.',
-        actorName: 'Drogaria Macacu SaÃºde',
+        description: 'Venda de medicamentos finalizada. Solicitação de delivery criada.',
+        actorName: 'Drogaria Macacu Saúde',
         actorRole: 'LOJISTA'
       },
       {
@@ -467,14 +467,14 @@ export const INITIAL_DELIVERY_RIDES: DeliveryRide[] = [
       {
         timestamp: '2026-09-17 10:14:30',
         status: 'COLETADA',
-        description: 'Pacote coletado no balcÃ£o da Drogaria Macacu SaÃºde.',
+        description: 'Pacote coletado no balcão da Drogaria Macacu Saúde.',
         actorName: 'Marcos Vinicius',
         actorRole: 'ENTREGADOR'
       },
       {
         timestamp: '2026-09-17 10:32:45',
         status: 'ENTREGUE',
-        description: 'Pacote entregue ao cliente. CÃ³digo de confirmaÃ§Ã£o 5289 validado com sucesso.',
+        description: 'Pacote entregue ao cliente. Código de confirmação 5289 validado com sucesso.',
         actorName: 'Marcos Vinicius',
         actorRole: 'ENTREGADOR'
       },

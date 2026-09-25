@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ShieldCheck,
   CheckCircle2,
@@ -51,7 +51,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'PENDENTES' | 'AGUARDANDO_ANALISE' | 'CORRECAO_SOLICITADA' | 'DISPONIVEL_ENTREGADORES' | 'TODAS'>('PENDENTES');
 
-  // Modais de aÃ§Ã£o
+  // Modais de ação
   const [approvingRide, setApprovingRide] = useState<DeliveryRide | null>(null);
   const [rejectingRide, setRejectingRide] = useState<DeliveryRide | null>(null);
   const [correctingRide, setCorrectingRide] = useState<DeliveryRide | null>(null);
@@ -65,7 +65,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
   const [isProcessing, setIsProcessing] = useState(false);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
-  // Tarifas vigentes para recÃ¡lculo
+  // Tarifas vigentes para recálculo
   const ratePerKm = systemSettings?.deliveryRatePerKm ?? 1.0;
   const minimumFare = systemSettings?.deliveryMinimumFare ?? 5.0;
   const platformFeeUpTo10Km = systemSettings?.deliveryPlatformFeeUpTo10Km ?? systemSettings?.deliveryPlatformFee ?? 5.0;
@@ -78,7 +78,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       : distanceKm <= 20
         ? platformFeeUpTo20Km
         : platformFeeAbove20Km;
-  // Filtragem de solicitaÃ§Ãµes
+  // Filtragem de solicitações
   const filteredRides = useMemo(() => {
     return deliveryRides.filter((ride) => {
       // Filtro de status
@@ -119,19 +119,19 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
     return { aguardando, correcao, liberadas, total };
   }, [deliveryRides]);
 
-  // Entregadores elegÃ­veis online para opÃ§Ã£o de despacho direto
+  // Entregadores elegíveis online para opção de despacho direto
   const eligibleDrivers = useMemo(() => {
     return deliveryDrivers.filter((d) => d.status === 'APROVADO' && d.operationalStatus === 'ONLINE');
   }, [deliveryDrivers]);
 
-  // Copiar cÃ³digo
+  // Copiar código
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedCode(text);
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
-  // Ãcone do veÃ­culo
+  // Ícone do veículo
   const renderVehicleBadge = (tipo?: string) => {
     const t = tipo?.toUpperCase();
     if (t === 'CARRO') {
@@ -154,19 +154,19 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       return (
         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
           <Truck className="w-3.5 h-3.5" />
-          Van / UtilitÃ¡rio
+          Van / Utilitário
         </span>
       );
     }
     return (
       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
         <Bike className="w-3.5 h-3.5" />
-        Moto (PadrÃ£o)
+        Moto (Padrão)
       </span>
     );
   };
 
-  // Submeter aprovaÃ§Ã£o com recÃ¡lculo backend e auditoria
+  // Submeter aprovação com recálculo backend e auditoria
   const handleConfirmApproval = async () => {
     if (!approvingRide) return;
     setIsProcessing(true);
@@ -186,7 +186,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
     }
   };
 
-  // Submeter rejeiÃ§Ã£o
+  // Submeter rejeição
   const handleConfirmRejection = async () => {
     if (!rejectingRide) return;
     if (!rejectionReason.trim()) return;
@@ -202,7 +202,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
     }
   };
 
-  // Submeter solicitaÃ§Ã£o de correÃ§Ã£o
+  // Submeter solicitação de correção
   const handleConfirmCorrection = async () => {
     if (!correctingRide) return;
     if (!correctionReason.trim()) return;
@@ -220,7 +220,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
 
   // Formatar data/hora
   const formatDateTime = (isoOrStr?: string) => {
-    if (!isoOrStr) return 'NÃ£o registrada';
+    if (!isoOrStr) return 'Não registrada';
     try {
       const d = new Date(isoOrStr);
       if (isNaN(d.getTime())) return isoOrStr;
@@ -249,10 +249,10 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
               Controle Operacional Master AcheiAqui
             </div>
             <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight">
-              SolicitaÃ§Ãµes aguardando anÃ¡lise
+              Solicitações aguardando análise
             </h1>
             <p className="text-slate-400 text-sm mt-1 max-w-2xl">
-              Fila oficial de validaÃ§Ã£o de entregas em Cachoeiras de Macacu. Verifique os dados das rotas,
+              Fila oficial de validação de entregas em Cachoeiras de Macacu. Verifique os dados das rotas,
               recalcule tarifas no backend e libere as corridas no radar de entregadores com registro de auditoria completo.
             </p>
           </div>
@@ -260,11 +260,11 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="bg-amber-950/30 border border-amber-500/30 rounded-xl p-3 text-center">
               <div className="text-amber-400 text-2xl font-bold">{stats.aguardando}</div>
-              <div className="text-amber-200/70 text-xs font-medium mt-0.5">Aguardando AnÃ¡lise</div>
+              <div className="text-amber-200/70 text-xs font-medium mt-0.5">Aguardando Análise</div>
             </div>
             <div className="bg-orange-950/30 border border-orange-500/30 rounded-xl p-3 text-center">
               <div className="text-orange-400 text-2xl font-bold">{stats.correcao}</div>
-              <div className="text-orange-200/70 text-xs font-medium mt-0.5">CorreÃ§Ã£o Pedida</div>
+              <div className="text-orange-200/70 text-xs font-medium mt-0.5">Correção Pedida</div>
             </div>
             <div className="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-3 text-center">
               <div className="text-emerald-400 text-2xl font-bold">{stats.liberadas}</div>
@@ -288,7 +288,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Buscar por nÂº da entrega, pedido, lojista, cliente, bairro..."
+            placeholder="Buscar por nº da entrega, pedido, lojista, cliente, bairro..."
             className="w-full pl-10 pr-4 py-2 bg-slate-950/60 border border-slate-700/80 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
           />
           {searchTerm && (
@@ -323,7 +323,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
-            Aguardando AnÃ¡lise ({stats.aguardando})
+            Aguardando Análise ({stats.aguardando})
           </button>
           <button
             id="tab-filter-correcao"
@@ -334,7 +334,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
-            CorreÃ§Ã£o Solicitada ({stats.correcao})
+            Correção Solicitada ({stats.correcao})
           </button>
           <button
             id="tab-filter-disponivel"
@@ -361,16 +361,16 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
         </div>
       </div>
 
-      {/* Lista de SolicitaÃ§Ãµes */}
+      {/* Lista de Solicitações */}
       {filteredRides.length === 0 ? (
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center mx-auto mb-4 text-slate-500">
             <CheckCircle2 className="w-8 h-8" />
           </div>
-          <h3 className="text-lg font-semibold text-white">Nenhuma solicitaÃ§Ã£o encontrada</h3>
+          <h3 className="text-lg font-semibold text-white">Nenhuma solicitação encontrada</h3>
           <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
             {statusFilter === 'PENDENTES'
-              ? 'NÃ£o hÃ¡ solicitaÃ§Ãµes de entrega pendentes de anÃ¡lise neste momento. Bom trabalho!'
+              ? 'Não há solicitações de entrega pendentes de análise neste momento. Bom trabalho!'
               : 'Nenhum resultado corresponde aos filtros ou ao termo de busca aplicado.'}
           </p>
         </div>
@@ -403,7 +403,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                     : 'border-slate-800'
                 }`}
               >
-                {/* Header do Card com NÃºmero da Entrega, Pedido, Status e Data/Hora */}
+                {/* Header do Card com Número da Entrega, Pedido, Status e Data/Hora */}
                 <div className="p-4 sm:p-5 border-b border-slate-800/80 bg-slate-950/40 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center gap-1.5">
@@ -413,7 +413,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                       </span>
                       <button
                         onClick={() => handleCopy(rideNumber)}
-                        title="Copiar nÃºmero da entrega"
+                        title="Copiar número da entrega"
                         className="text-slate-400 hover:text-white p-1 rounded transition-colors"
                       >
                         {copiedCode === rideNumber ? (
@@ -448,7 +448,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   </div>
                 </div>
 
-                {/* Corpo do Card com todas as especificaÃ§Ãµes obrigatÃ³rias */}
+                {/* Corpo do Card com todas as especificações obrigatórias */}
                 <div className="p-4 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
                   {/* Coluna 1: Lojista & Ponto de Coleta (Origem) */}
                   <div className="lg:col-span-4 space-y-3">
@@ -471,7 +471,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                         )}
                         <div className="flex items-start gap-1.5 text-xs text-slate-300 mt-2 bg-slate-950/40 p-2 rounded-lg border border-slate-800">
                           <MapPin className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
-                          <span>{ride.originAddress || ride.origem || 'EndereÃ§o da loja'}</span>
+                          <span>{ride.originAddress || ride.origem || 'Endereço da loja'}</span>
                         </div>
                       </div>
                     </div>
@@ -498,17 +498,17 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                         )}
                         <div className="flex items-start gap-1.5 text-xs text-slate-300 mt-2 bg-slate-950/40 p-2 rounded-lg border border-slate-800">
                           <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                          <span>{ride.destinationAddress || ride.destino || 'EndereÃ§o do cliente'}</span>
+                          <span>{ride.destinationAddress || ride.destino || 'Endereço do cliente'}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Coluna 3: MÃ©tricas (DistÃ¢ncia, Valor da Entrega, RemuneraÃ§Ã£o Entregador) */}
+                  {/* Coluna 3: Métricas (Distância, Valor da Entrega, Remuneração Entregador) */}
                   <div className="lg:col-span-4 bg-slate-950/50 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between">
                     <div>
                       <div className="text-xs font-semibold text-slate-400 mb-2 flex items-center justify-between">
-                        <span>Detalhamento TarifÃ¡rio</span>
+                        <span>Detalhamento Tarifário</span>
                         <span className="text-indigo-400 font-mono font-bold">
                           {distance.toFixed(1)} km
                         </span>
@@ -516,7 +516,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
 
                       <div className="space-y-1.5 text-xs">
                         <div className="flex items-center justify-between text-slate-300">
-                          <span>RemuneraÃ§Ã£o Entregador:</span>
+                          <span>Remuneração Entregador:</span>
                           <span className="font-semibold text-emerald-400 font-mono">
                             R$ {driverEarnings.toFixed(2)}
                           </span>
@@ -542,13 +542,13 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   </div>
                 </div>
 
-                {/* ObservaÃ§Ãµes e Motivos de CorreÃ§Ã£o/RejeiÃ§Ã£o */}
+                {/* Observações e Motivos de Correção/Rejeição */}
                 <div className="px-4 sm:px-5 pb-4 space-y-2">
                   {ride.observacoes && (
                     <div className="bg-slate-950/40 p-3 rounded-lg border border-slate-800/80 flex items-start gap-2 text-xs text-slate-300">
                       <FileText className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-amber-300 font-medium">ObservaÃ§Ãµes da Entrega: </strong>
+                        <strong className="text-amber-300 font-medium">Observações da Entrega: </strong>
                         <span>{ride.observacoes}</span>
                       </div>
                     </div>
@@ -558,7 +558,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                     <div className="bg-orange-950/30 p-3 rounded-lg border border-orange-500/30 flex items-start gap-2 text-xs text-orange-200">
                       <AlertTriangle className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-orange-400 font-semibold">CorreÃ§Ã£o Solicitada pelo Master: </strong>
+                        <strong className="text-orange-400 font-semibold">Correção Solicitada pelo Master: </strong>
                         <span>{ride.correctionRequestedReason}</span>
                         {ride.correctionRequestedAt && (
                           <div className="text-[11px] text-orange-400/70 mt-0.5">
@@ -573,14 +573,14 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                     <div className="bg-red-950/30 p-3 rounded-lg border border-red-500/30 flex items-start gap-2 text-xs text-red-200">
                       <XCircle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-red-400 font-semibold">Motivo da RejeiÃ§Ã£o: </strong>
+                        <strong className="text-red-400 font-semibold">Motivo da Rejeição: </strong>
                         <span>{ride.rejectionReason}</span>
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Barra de AÃ§Ãµes Operacionais */}
+                {/* Barra de Ações Operacionais */}
                 <div className="p-4 sm:p-5 bg-slate-950/80 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <button
@@ -603,9 +603,9 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                     )}
                   </div>
 
-                  {/* AÃ§Ãµes principais solicitadas: APROVAR | REJEITAR | SOLICITAR CORREÃ‡ÃƒO */}
+                  {/* Ações principais solicitadas: APROVAR | REJEITAR | SOLICITAR CORREÇÃO */}
                   <div className="flex flex-wrap items-center gap-2">
-                    {/* SOLICITAR CORREÃ‡ÃƒO */}
+                    {/* SOLICITAR CORREÇÃO */}
                     <button
                       id={`btn-correct-${ride.id}`}
                       onClick={() => {
@@ -615,7 +615,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 hover:text-orange-300 border border-orange-500/30 text-xs font-semibold transition-all"
                     >
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      SOLICITAR CORREÃ‡ÃƒO
+                      SOLICITAR CORREÇÃO
                     </button>
 
                     {/* REJEITAR */}
@@ -653,7 +653,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       )}
 
       {/* ========================================================================= */}
-      {/* MODAL 1: APROVAÃ‡ÃƒO DO MASTER COM RECÃLCULO E VALIDAÃ‡Ã•ES (SEÃ‡ÃƒO 6)         */}
+      {/* MODAL 1: APROVAÇÃO DO MASTER COM RECÁLCULO E VALIDAÇÕES (SEÇÃO 6)         */}
       {/* ========================================================================= */}
       {approvingRide && (() => {
         const distance = approvingRide.distanceKm || approvingRide.distancia || 0;
@@ -680,10 +680,10 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-white">
-                      AprovaÃ§Ã£o Operacional do Master
+                      Aprovação Operacional do Master
                     </h3>
                     <p className="text-xs text-slate-400">
-                      ValidaÃ§Ã£o de dados, recÃ¡lculo de tarifa backend e liberaÃ§Ã£o de entrega
+                      Validação de dados, recálculo de tarifa backend e liberação de entrega
                     </p>
                   </div>
                 </div>
@@ -695,12 +695,12 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 </button>
               </div>
 
-              {/* ConteÃºdo com os 8 requisitos detalhados */}
+              {/* Conteúdo com os 8 requisitos detalhados */}
               <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
-                {/* 1. Checklist de ValidaÃ§Ã£o de Dados */}
+                {/* 1. Checklist de Validação de Dados */}
                 <div className="space-y-2">
                   <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    1. ValidaÃ§Ã£o de Dados Cadastrais da Entrega
+                    1. Validação de Dados Cadastrais da Entrega
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
@@ -724,18 +724,18 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                     <div className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
                       <CheckCircle2 className={`w-4 h-4 ${isValidDistance ? 'text-emerald-400' : 'text-red-400'}`} />
                       <span className="text-slate-300">
-                        DistÃ¢ncia da Rota: <strong>{distance.toFixed(1)} km</strong>
+                        Distância da Rota: <strong>{distance.toFixed(1)} km</strong>
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* 2, 3 e 4. RecÃ¡lculo TarifÃ¡rio no Backend & ValidaÃ§Ã£o de DistÃ¢ncia e Valores */}
+                {/* 2, 3 e 4. Recálculo Tarifário no Backend & Validação de Distância e Valores */}
                 <div className="bg-slate-950/80 p-4 rounded-xl border border-indigo-500/20 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="text-xs font-semibold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
                       <DollarSign className="w-4 h-4 text-indigo-400" />
-                      2. RecÃ¡lculo de Tarifa no Backend & ValidaÃ§Ã£o
+                      2. Recálculo de Tarifa no Backend & Validação
                     </div>
                     <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       Tarifa Validada
@@ -744,7 +744,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
 
                   <div className="grid grid-cols-3 gap-3 text-center">
                     <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-                      <div className="text-[11px] text-slate-400">DistÃ¢ncia Validada</div>
+                      <div className="text-[11px] text-slate-400">Distância Validada</div>
                       <div className="text-base font-bold text-white font-mono mt-0.5">
                         {distance.toFixed(1)} km
                       </div>
@@ -771,25 +771,25 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   </div>
                 </div>
 
-                {/* 5. Identificador Ãšnico da Entrega & Status Alvo */}
+                {/* 5. Identificador Único da Entrega & Status Alvo */}
                 <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-slate-400">5. Identificador Ãšnico da Entrega:</div>
+                    <div className="text-xs text-slate-400">5. Identificador Único da Entrega:</div>
                     <div className="text-sm font-mono font-bold text-white">{nextUniqueCode}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-slate-400">6. PrÃ³ximo Status:</div>
+                    <div className="text-xs text-slate-400">6. Próximo Status:</div>
                     <div className="text-xs font-semibold text-emerald-400 font-mono">
                       DISPONIVEL_ENTREGADORES
                     </div>
                   </div>
                 </div>
 
-                {/* 8. Modo de DisponibilizaÃ§Ã£o no Portal de Entregadores */}
+                {/* 8. Modo de Disponibilização no Portal de Entregadores */}
                 <div className="space-y-2">
                   <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                     <Radio className="w-4 h-4 text-emerald-400" />
-                    8. DisponibilizaÃ§Ã£o aos Entregadores Credenciados
+                    8. Disponibilização aos Entregadores Credenciados
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -809,9 +809,9 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                         className="mt-0.5 text-emerald-500 focus:ring-emerald-500"
                       />
                       <div>
-                        <div className="text-xs font-bold">Abrir no Radar (PadrÃ£o)</div>
+                        <div className="text-xs font-bold">Abrir no Radar (Padrão)</div>
                         <div className="text-[11px] text-slate-400 mt-0.5">
-                          Disponibiliza no portal para todos os entregadores elegÃ­veis online em Cachoeiras.
+                          Disponibiliza no portal para todos os entregadores elegíveis online em Cachoeiras.
                         </div>
                       </div>
                     </label>
@@ -834,7 +834,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                       <div>
                         <div className="text-xs font-bold">Direcionar a Entregador</div>
                         <div className="text-[11px] text-slate-400 mt-0.5">
-                          Atribuir exclusivamente para um profissional especÃ­fico online.
+                          Atribuir exclusivamente para um profissional específico online.
                         </div>
                       </div>
                     </label>
@@ -856,7 +856,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                       </select>
                       {eligibleDrivers.length === 0 && (
                         <p className="text-[11px] text-amber-400 mt-1">
-                          Nenhum entregador estÃ¡ com status ONLINE no momento. Recomenda-se abrir no Radar.
+                          Nenhum entregador está com status ONLINE no momento. Recomenda-se abrir no Radar.
                         </p>
                       )}
                     </div>
@@ -868,8 +868,8 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   <ShieldAlert className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
                   <div>
                     <strong>7. Registro de Auditoria: </strong>
-                    SerÃ¡ gravado registro imutÃ¡vel com ator (
-                    {currentUser?.name || 'Master AcheiAqui'}), horÃ¡rio exato, valores recalculados e status
+                    Será gravado registro imutável com ator (
+                    {currentUser?.name || 'Master AcheiAqui'}), horário exato, valores recalculados e status
                     atualizado.
                   </div>
                 </div>
@@ -895,7 +895,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   ) : (
                     <CheckCircle2 className="w-4 h-4 text-slate-950" />
                   )}
-                  CONFIRMAR APROVAÃ‡ÃƒO & LIBERAR
+                  CONFIRMAR APROVAÇÃO & LIBERAR
                 </button>
               </div>
             </div>
@@ -904,7 +904,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       })()}
 
       {/* ========================================================================= */}
-      {/* MODAL 2: REJEITAR SOLICITAÃ‡ÃƒO (EXIGE MOTIVO OBRIGATÃ“RIO)                  */}
+      {/* MODAL 2: REJEITAR SOLICITAÇÃO (EXIGE MOTIVO OBRIGATÓRIO)                  */}
       {/* ========================================================================= */}
       {rejectingRide && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -915,7 +915,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   <XCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Rejeitar SolicitaÃ§Ã£o de Entrega</h3>
+                  <h3 className="text-base font-bold text-white">Rejeitar Solicitação de Entrega</h3>
                   <p className="text-xs text-red-300/80">
                     Entrega {rejectingRide.rideCode} | Pedido {rejectingRide.orderCode || rejectingRide.orderId}
                   </p>
@@ -931,25 +931,25 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
 
             <div className="p-6 space-y-4">
               <div className="bg-red-950/20 border border-red-500/20 p-3 rounded-lg text-xs text-red-200">
-                <strong>AtenÃ§Ã£o:</strong> Ao rejeitar a solicitaÃ§Ã£o, ela nÃ£o serÃ¡ disponibilizada aos entregadores.
-                O motivo informado ficarÃ¡ gravado no log de auditoria e visÃ­vel ao lojista.
+                <strong>Atenção:</strong> Ao rejeitar a solicitação, ela não será disponibilizada aos entregadores.
+                O motivo informado ficará gravado no log de auditoria e visível ao lojista.
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Motivo da RejeiÃ§Ã£o (ObrigatÃ³rio) *
+                  Motivo da Rejeição (Obrigatório) *
                 </label>
                 <textarea
                   id="rejection-reason-textarea"
                   rows={4}
                   value={rejectionReason}
                   onChange={(e) => setRejectionReason(e.target.value)}
-                  placeholder="Ex: EndereÃ§o de destino fora do municÃ­pio de Cachoeiras de Macacu, carga nÃ£o condizente com veÃ­culos disponÃ­veis, pedido cancelado pelo lojista..."
+                  placeholder="Ex: Endereço de destino fora do município de Cachoeiras de Macacu, carga não condizente com veículos disponíveis, pedido cancelado pelo lojista..."
                   className="w-full p-3 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                 />
                 {!rejectionReason.trim() && (
                   <p className="text-[11px] text-red-400 mt-1">
-                    * Ã‰ obrigatÃ³rio descrever o motivo da rejeiÃ§Ã£o para registrar na auditoria.
+                    * É obrigatório descrever o motivo da rejeição para registrar na auditoria.
                   </p>
                 )}
               </div>
@@ -974,7 +974,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 ) : (
                   <XCircle className="w-4 h-4 text-white" />
                 )}
-                CONFIRMAR REJEIÃ‡ÃƒO
+                CONFIRMAR REJEIÇÃO
               </button>
             </div>
           </div>
@@ -982,7 +982,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       )}
 
       {/* ========================================================================= */}
-      {/* MODAL 3: SOLICITAR CORREÃ‡ÃƒO (EXIGE MOTIVO OBRIGATÃ“RIO)                    */}
+      {/* MODAL 3: SOLICITAR CORREÇÃO (EXIGE MOTIVO OBRIGATÓRIO)                    */}
       {/* ========================================================================= */}
       {correctingRide && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -993,7 +993,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                   <AlertTriangle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Solicitar CorreÃ§Ã£o de Dados</h3>
+                  <h3 className="text-base font-bold text-white">Solicitar Correção de Dados</h3>
                   <p className="text-xs text-orange-300/80">
                     Entrega {correctingRide.rideCode} | Lojista: {correctingRide.merchantName}
                   </p>
@@ -1009,26 +1009,26 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
 
             <div className="p-6 space-y-4">
               <div className="bg-orange-950/20 border border-orange-500/20 p-3 rounded-lg text-xs text-orange-200">
-                <strong>Como funciona:</strong> A solicitaÃ§Ã£o voltarÃ¡ para o lojista com o status{' '}
-                <span className="font-mono font-semibold">CORRECAO_SOLICITADA</span>. O lojista farÃ¡ os ajustes
-                necessÃ¡rios e poderÃ¡ reenviar a entrega para anÃ¡lise.
+                <strong>Como funciona:</strong> A solicitação voltará para o lojista com o status{' '}
+                <span className="font-mono font-semibold">CORRECAO_SOLICITADA</span>. O lojista fará os ajustes
+                necessários e poderá reenviar a entrega para análise.
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  OrientaÃ§Ãµes de CorreÃ§Ã£o para o Lojista (ObrigatÃ³rio) *
+                  Orientações de Correção para o Lojista (Obrigatório) *
                 </label>
                 <textarea
                   id="correction-reason-textarea"
                   rows={4}
                   value={correctionReason}
                   onChange={(e) => setCorrectionReason(e.target.value)}
-                  placeholder="Ex: Favor informar o nÃºmero do endereÃ§o do cliente e ponto de referÃªncia. O peso estimado ultrapassa o baÃº de motocicleta, favor alterar para Carro/UtilitÃ¡rio..."
+                  placeholder="Ex: Favor informar o número do endereço do cliente e ponto de referência. O peso estimado ultrapassa o baú de motocicleta, favor alterar para Carro/Utilitário..."
                   className="w-full p-3 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 {!correctionReason.trim() && (
                   <p className="text-[11px] text-orange-400 mt-1">
-                    * Descreva as correÃ§Ãµes necessÃ¡rias para que o lojista possa corrigir e reenviar.
+                    * Descreva as correções necessárias para que o lojista possa corrigir e reenviar.
                   </p>
                 )}
               </div>
@@ -1053,7 +1053,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 ) : (
                   <AlertTriangle className="w-4 h-4 text-slate-950" />
                 )}
-                ENVIAR SOLICITAÃ‡ÃƒO DE CORREÃ‡ÃƒO
+                ENVIAR SOLICITAÇÃO DE CORREÇÃO
               </button>
             </div>
           </div>
@@ -1061,7 +1061,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
       )}
 
       {/* ========================================================================= */}
-      {/* MODAL 4: DETALHES COMPLETOS & HISTÃ“RICO DE AUDITORIA                      */}
+      {/* MODAL 4: DETALHES COMPLETOS & HISTÓRICO DE AUDITORIA                      */}
       {/* ========================================================================= */}
       {viewingDetailRide && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1073,7 +1073,7 @@ export const DeliveryApprovalQueueView: React.FC<DeliveryApprovalQueueViewProps>
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white">
-                    Auditoria & HistÃ³rico da Entrega #{viewingDetailRide.rideCode}
+                    Auditoria & Histórico da Entrega #{viewingDetailRide.rideCode}
                   </h3>
                   <p className="text-xs text-slate-400">
                     Pedido: {viewingDetailRide.orderCode || viewingDetailRide.orderId}

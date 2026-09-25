@@ -46,7 +46,7 @@ export function PwaInstallButton() {
       try {
         localStorage.setItem('acheiaki_pwa_installed', 'true');
       } catch {
-        // MantÃ©m o funcionamento mesmo se o armazenamento local estiver indisponÃ­vel.
+        // Mantém o funcionamento mesmo se o armazenamento local estiver indisponível.
       }
       setInstalled(true);
     }

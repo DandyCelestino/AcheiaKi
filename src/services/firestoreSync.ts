@@ -64,7 +64,7 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
 /**
  * Salva ou atualiza um Usuário (Cliente, Vendedor, Master, Prestador) no Firestore
  */
-export async function persistUserToFirestore(user: User): Promise<void> {
+export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
     const docRef = doc(db, 'users', user.id);
     await setDoc(
@@ -75,8 +75,10 @@ export async function persistUserToFirestore(user: User): Promise<void> {
       },
       { merge: true }
     );
+    return true;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `users/${user.id}`);
+    return false;
   }
 }
 
@@ -174,6 +176,15 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
   } = {};
 
   try {
+    const usersSnap = await getDocs(collection(db, 'users'));
+    if (!usersSnap.empty) {
+      result.users = usersSnap.docs.map((d) => d.data() as User);
+    }
+  } catch (err) {
+    console.warn('Erro ao carregar users do Firestore:', err);
+  }
+
+  try {
     const merchantsSnap = await getDocs(collection(db, 'merchants'));
     if (!merchantsSnap.empty) {
       result.merchants = merchantsSnap.docs.map((d) => d.data() as StoreMerchant);
@@ -269,3 +280,4 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
     console.warn('Aviso de seed Firestore (não-bloqueante):', err);
   }
 }
+

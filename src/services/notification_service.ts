@@ -1,16 +1,16 @@
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
 /**
  * notification_service.ts
  * 
  * Serviço centralizado para disparo e gerenciamento de mensagens transacionais
  * (WhatsApp, SMS, E-mail, Push Notifications) com integração e persistência
- * no banco de dados Supabase (tabela: notification_deliveries) e suporte a logs
+ * no banco de dados Firebase Firestore (coleção: notification_deliveries) e suporte a logs
  * locais para resiliência total.
  * 
  * Cidade foco: Cachoeiras de Macacu, RJ
  */
 
-// Supabase desabilitado temporariamente
-// Supabase desabilitado temporariamente
 import {
   Order,
   User,
@@ -40,12 +40,6 @@ export const NOTIFICATION_CHANNELS_STATUS = {
   email: { active: true, standby: false, label: 'E-mail Transacional', mode: 'LIVE' }
 };
 
-/**
- * Obtém a instância do cliente Supabase configurado
- */
-export function getSupabaseClient(): SupabaseClient | null {
-  return supabase;
-}
 
 /**
  * Salva localmente a notificação In-App no storage
@@ -224,7 +218,7 @@ export async function sendWhatsAppNotification(
 }
 
 /**
- * Insere um novo registro de auditoria na tabela `notification_deliveries` no Supabase.
+ * Insere um novo registro de auditoria na tabela `notification_deliveries` no Firebase Firestore.
  */
 export async function logNotification(
   data: LogNotificationParams | NotificationLog
@@ -279,7 +273,7 @@ export async function logNotification(
   // Salvar no storage local para histórico imediato no painel
   saveNotificationLocally(normalizedLog);
 
-  // Inserir no Supabase se disponível
+  // Inserir no Firebase Firestore
   try {
     const payload = {
       id,
@@ -300,25 +294,34 @@ export async function logNotification(
       error_message: errorMessage
     };
 
-    const { data: insertResult, error } = await supabase
-      .from('notification_deliveries')
-      .insert([payload])
-      .select();
+    try {
+      const docRef = await addDoc(
+        collection(db, 'notification_deliveries'),
+        payload
+      );
 
-    if (error) {
-      return { success: false, error: error.message };
+      return {
+        success: true,
+        data: {
+          id: docRef.id,
+          ...payload
+        }
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error?.message || 'Erro ao persistir no Firebase Firestore'
+      };
     }
-
-    return { success: true, data: insertResult };
   } catch (err: any) {
     return { success: false, error: err?.message || 'Erro de conexão com o banco' };
   }
 }
 
 /**
- * Registra o log no banco de dados Supabase (tabela: `notification_deliveries`)
+ * Registra o log no banco de dados Firebase Firestore (coleção: `notification_deliveries`)
  */
-async function persistToSupabase(log: NotificationLog): Promise<boolean> {
+async function persistToFirestore(log: NotificationLog): Promise<boolean> {
   const result = await logNotification(log);
   return result.success;
 }
@@ -409,7 +412,7 @@ export class NotificationService {
       readBy: []
     };
 
-    await persistToSupabase(log);
+    await persistToFirestore(log);
 
     // Se WhatsApp foi explicitamente solicitado e não em standby absoluto
     if (params.channel === 'WHATSAPP' && params.recipientPhone) {
@@ -898,4 +901,7 @@ export class NotificationService {
 }
 
 export default NotificationService;
+
+
+
 
