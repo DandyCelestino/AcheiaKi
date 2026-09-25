@@ -14,7 +14,7 @@ import { Product, StoreMerchant, User, DeliveryRide, DeliveryDriver, Order, Audi
 /**
  * Salva ou atualiza um Produto no Firestore
  */
-export async function persistProductToFirestore(product: Product): Promise<void> {
+export async function persistProductToFirestore(product: Product): Promise<boolean> {
   try {
     const docRef = doc(db, 'products', product.id);
     await setDoc(
@@ -25,8 +25,10 @@ export async function persistProductToFirestore(product: Product): Promise<void>
       },
       { merge: true }
     );
+    return true;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `products/${product.id}`);
+    return false;
   }
 }
 
@@ -45,7 +47,7 @@ export async function removeProductFromFirestore(productId: string): Promise<voi
 /**
  * Salva ou atualiza uma Loja / Prestador no Firestore
  */
-export async function persistMerchantToFirestore(merchant: StoreMerchant): Promise<void> {
+export async function persistMerchantToFirestore(merchant: StoreMerchant): Promise<boolean> {
   try {
     const docRef = doc(db, 'merchants', merchant.id);
     await setDoc(
@@ -56,13 +58,15 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
       },
       { merge: true }
     );
+    return true;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `merchants/${merchant.id}`);
+    return false;
   }
 }
 
 /**
- * Salva ou atualiza um Usuário (Cliente, Vendedor, Master, Prestador) no Firestore
+ * Salva ou atualiza um UsuÃƒÆ’ário (Cliente, Vendedor, Master, Prestador) no Firestore
  */
 export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
@@ -156,7 +160,7 @@ export async function persistAuditLogToFirestore(log: AuditLog): Promise<void> {
 }
 
 /**
- * Carrega coleções do Firestore para hidratar a aplicação
+ * Carrega coleÃƒÆ’çÃƒÆ’ões do Firestore para hidratar a aplicaÃƒÆ’çÃƒÆ’ão
  */
 export async function fetchAllCollectionsFromFirestore(): Promise<{
   merchants?: StoreMerchant[];
@@ -233,7 +237,7 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
 }
 
 /**
- * Carga inicial em lote para garantir que todo o catálogo, lojas, prestadores
+ * Carga inicial em lote para garantir que todo o catÃƒÆ’álogo, lojas, prestadores
  * e entregadores sejam persistidos no Firestore caso o banco esteja novo/vazio.
  */
 export async function seedInitialDataToFirestoreIfEmpty(data: {
@@ -277,7 +281,6 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
       console.log('Banco de dados Firestore semeado com sucesso!');
     }
   } catch (err) {
-    console.warn('Aviso de seed Firestore (não-bloqueante):', err);
+    console.warn('Aviso de seed Firestore (nÃƒÆ’ão-bloqueante):', err);
   }
 }
-
