@@ -133,7 +133,7 @@ export const SubOrderChatModal: React.FC = () => {
     const msgSnippet = messageText.length > 80 ? messageText.substring(0, 80) + '...' : messageText;
     if (isUserClient && activeChatSubOrder.merchantId) {
       sendInAppNotification({
-        title: `💬 Nova Mensagem de ${currentSenderName}`,
+        title: ` Nova Mensagem de ${currentSenderName}`,
         message: `Olá, ${merchantName}!\n\nVocê recebeu uma nova mensagem de ${currentSenderName} referente a "${orderTitle || 'atendimento'}":\n"${msgSnippet}"`,
         category: 'COMUNICADO',
         priority: 'HIGH',
@@ -154,7 +154,7 @@ export const SubOrderChatModal: React.FC = () => {
       });
     } else if (isUserSeller && activeChatSubOrder.customerId) {
       sendInAppNotification({
-        title: `💬 Resposta de ${merchantName}`,
+        title: ` Resposta de ${merchantName}`,
         message: `Olá, ${customerName}!\n\nA loja ${merchantName} respondeu sua mensagem referente a "${orderTitle || 'atendimento'}":\n"${msgSnippet}"`,
         category: 'COMUNICADO',
         priority: 'HIGH',
@@ -179,7 +179,7 @@ export const SubOrderChatModal: React.FC = () => {
     setAttachmentUrl('');
     setShowAttachmentInput(false);
     setIsInternalNote(false);
-    triggerToast('💬 Mensagem interna enviada com sucesso!');
+    triggerToast(' Mensagem interna enviada com sucesso!');
   };
 
   const handleQuickChip = (text: string) => {
@@ -188,17 +188,17 @@ export const SubOrderChatModal: React.FC = () => {
 
   const quickChips = isUserSeller
     ? [
-        '✅ Pedido separado e pronto para retirada!',
-        '🛵 Seu pedido saiu para entrega com o motoboy!',
-        '💳 Aguardamos a confirmação do pagamento via PIX.',
-        '📦 Estamos preparando o seu pacote com carinho.',
-        '⏰ Horário confirmado para o seu atendimento!'
+        ' Pedido separado e pronto para retirada!',
+        ' Seu pedido saiu para entrega com o motoboy!',
+        ' Aguardamos a confirmação do pagamento via PIX.',
+        ' Estamos preparando o seu pacote com carinho.',
+        ' Horário confirmado para o seu atendimento!'
       ]
     : [
-        '🛵 Olá! Gostaria de saber a previsão de entrega/retirada.',
-        '📍 Já estou a caminho do balcão para retirar.',
-        '💳 Pagamento realizado via PIX!',
-        '❓ Olá, gostaria de confirmar mais detalhes deste pedido.'
+        ' Olá! Gostaria de saber a previsão de entrega/retirada.',
+        ' Já estou a caminho do balcão para retirar.',
+        ' Pagamento realizado via PIX!',
+        ' Olá, gostaria de confirmar mais detalhes deste pedido.'
       ];
 
   return (
@@ -221,7 +221,7 @@ export const SubOrderChatModal: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-300 font-semibold truncate">
-                {merchantName} <span className="text-slate-500 font-normal">↔</span> {customerName}
+                {merchantName} <span className="text-slate-500 font-normal"></span> {customerName}
               </p>
               {orderTitle && (
                 <p className="text-[11px] text-slate-400 truncate">
