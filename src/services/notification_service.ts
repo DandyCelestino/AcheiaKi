@@ -551,7 +551,7 @@ export class NotificationService {
         audience: 'SPECIFIC_MERCHANT',
         category: 'PEDIDO',
         priority: 'URGENT',
-        senderName: 'Sistema Achei Aqui',
+        senderName: 'Administração Achei Aqui',
         senderRole: 'SISTEMA',
         actionUrl: 'orders',
         actionLabel: 'Gerenciar Pedido',
@@ -802,7 +802,7 @@ export class NotificationService {
     if (eventType === 'PASSWORD_RESET') {
       title = 'Código de Recuperação de Senha';
       message =
-        `🔐 Achei Aqui - Código de Segurança\n\n` +
+        `Achei Aqui - Código de Segurança\n\n` +
         `Olá, ${user.name || 'Usuário'}!\n` +
         `Seu código de verificação para redefinir sua senha é: ${payload?.code || '123456'}\n\n` +
         `Este código expira em 15 minutos. Se você não solicitou, ignore esta mensagem.`;
@@ -810,12 +810,12 @@ export class NotificationService {
       title = 'Bem-vindo ao Achei Aqui!';
       category = 'SISTEMA';
       message =
-        `👋 Olá, ${user.name}! Seja muito bem-vindo(a) ao Achei Aqui — o marketplace oficial do comércio de Cachoeiras de Macacu, RJ.\n\n` +
+        `Olá, ${user.name}! Seja muito bem-vindo(a) ao Achei Aqui - o marketplace oficial do comércio de Cachoeiras de Macacu, RJ.\n\n` +
         `Explore lojas locais, faça pedidos com entrega rápida ou retirada no balcão e apoie nossa cidade!`;
     } else {
       title = 'Alerta de Segurança na Conta';
       message =
-        `🛡️ Aviso de Segurança\n\n` +
+        `Aviso de Segurança\n\n` +
         `Identificamos uma atividade recente na sua conta: ${payload?.details || 'Login efetuado com sucesso.'}`;
     }
 
