@@ -2068,7 +2068,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           icon = 'Ã’Â°ï¿½&Â¸Ã¢ï¿½ï¿½Âºï¿½ÂÃ’Â¯ï¿½Â¸ï¿½Â';
           statusText = `Pedido pronto para retirada no balcÃ’Â£o da loja! CÃ’Â³digo de seguranÃ’Â§a: ${order.securityCode || order.pickupCode || 'N/A'}.`;
           break;
-        case 'ConcluÃ’Â­do':
+        case 'Concluído':
           icon = 'Ã’Â°ï¿½&Â¸ï¿½&Â½Ã¢ï¿½ï¿½Â°';
           statusText = `Pedido/Atendimento concluÃ’Â­do com sucesso! Obrigado pela preferÃ’Âªncia.`;
           break;
@@ -3930,7 +3930,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString(36).toUpperCase();
     let prefix = 'DEL-';
     if (orderData.modality === 'RETIRADA') prefix = 'RET-';
-    if (orderData.modality === 'EXPERIMENTAÃ’â¬¡Ã’ï¿½O') prefix = 'EXP-';
+    if (orderData.modality === 'EXPERIMENTAÇÃO') prefix = 'EXP-';
     if (orderData.modality === 'AGENDAMENTO') prefix = 'AGE-';
 
     const orderCode = `${prefix}${randomSuffix}`;
@@ -4008,7 +4008,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Disparo de notificaÃ’Â§Ã’Â£o transacional via NotificationService (com Firebase Firestore e WhatsApp)
     NotificationService.notifyOrderEvent(newOrder, 'ORDER_PLACED');
 
-    if (orderData.modality === 'EXPERIMENTAÃ’â¬¡Ã’ï¿½O') {
+    if (orderData.modality === 'EXPERIMENTAÇÃO') {
       NotificationService.notifyTrialEvent(newOrder, 'TRIAL_REQUESTED');
     } else if (orderData.modality === 'AGENDAMENTO') {
       NotificationService.notifyServiceBookingEvent(newOrder, 'SERVICE_BOOKED');
@@ -4168,7 +4168,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_DISPATCHED');
       } else if (status === 'Pronto para Retirada') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_READY_PICKUP');
-      } else if (status === 'ConcluÃ’Â­do') {
+      } else if (status === 'Concluído') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_COMPLETED');
       } else if (status === 'Cancelado' || status === 'Sem Estoque') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_CANCELLED');
@@ -4196,12 +4196,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: 'CÃ’Â³digo de seguranÃ’Â§a ou retirada nÃ’Â£o encontrado ou invÃ’Â¡lido.' };
     }
 
-    if (found.status === 'ConcluÃ’Â­do') {
+    if (found.status === 'Concluído') {
       return { success: false, message: 'Este cÃ’Â³digo jÃ’Â¡ foi validado e o pedido concluÃ’Â­do anteriormente.', order: found };
     }
 
-    // Update order to ConcluÃ’Â­do
-    updateOrderStatus(found.id, 'ConcluÃ’Â­do');
+    // Update order to Concluído
+    updateOrderStatus(found.id, 'Concluído');
     logOrderEvent(
       found.id,
       'PICKUP_VALIDATED',
@@ -4216,7 +4216,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return {
       success: true,
       message: `CÃ’Â³digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
-      order: { ...found, status: 'ConcluÃ’Â­do' }
+      order: { ...found, status: 'Concluído' }
     };
   };
 
@@ -4532,7 +4532,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (o.id === orderId) {
           const updated = {
             ...o,
-            status: 'ConcluÃ’Â­do' as OrderStatus,
+            status: 'Concluído' as OrderStatus,
             pickupValidatedAt: new Date().toISOString(),
             updatedAt: 'Agora'
           };
@@ -7044,7 +7044,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setOrders(prev =>
-      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'ConcluÃ’Â­do', deliveryRideStatus: 'FINALIZADA' } : o))
+      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'Concluído', deliveryRideStatus: 'FINALIZADA' } : o))
     );
 
     addAuditLog(
