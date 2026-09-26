@@ -98,7 +98,7 @@ import {
   INITIAL_WEBHOOK_EVENTS
 } from '../data/initialWebhookData';
 import {
-  firebaseLoginWithEmail,
+  firebaseLoginWithEmail, firebaseUpdatePassword,
   firebaseRegisterCustomer,
   firebaseRegisterMerchant,
   firebaseLoginWithGoogle,
@@ -220,12 +220,12 @@ export interface AppContextType {
   
   // Customer Profile & Data Sheet Management
   updateUserProfile: (updates: Partial<User>) => Promise<boolean>;
-  addCustomerAddress: (address: Omit<CustomerAddress, 'id'>) => CustomerAddress;
-  updateCustomerAddress: (id: string, updates: Partial<CustomerAddress>) => void;
+  addCustomerAddress: (address: Omit<CustomerAddress, 'id'>) => Promise<CustomerAddress>;
+  updateCustomerAddress: (id: string, updates: Partial<CustomerAddress>) => Promise<boolean>;
   deleteCustomerAddress: (id: string) => void;
   setDefaultCustomerAddress: (id: string) => void;
-  updateVipMeasurements: (measurements: VipMeasurements) => void;
-  updateCustomerPreferences: (preferences: CustomerPreferences) => void;
+  updateVipMeasurements: (measurements: VipMeasurements) => Promise<boolean>;
+  updateCustomerPreferences: (preferences: CustomerPreferences) => Promise<boolean>;
 
   // Master Supremo: Comprehensive User Management
   createUserByMaster: (userData: Omit<User, 'id' | 'createdAt'>) => User;
@@ -2238,7 +2238,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Auth Operations with Two-Factor Authentication (2FA) & Role Isolation
-  const login = (
+  const login = async (
     email: string,
     password?: string,
     rememberMe: boolean = true
@@ -2250,6 +2250,51 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     user?: User;
     simulated2FACode?: string;
   } => {
+    // Firebase Authentication e a fonte principal para validar o login.
+    if (password) {
+      const firebaseResult = await firebaseLoginWithEmail(email, password);
+
+      if (firebaseResult.requires2FA && firebaseResult.user) {
+        setUsers((prev) => [
+          firebaseResult.user!,
+          ...prev.filter(
+            (u) => u.email.toLowerCase() !== firebaseResult.user!.email.toLowerCase()
+          )
+        ]);
+
+        setCurrentUser(firebaseResult.user);
+
+        return {
+          success: false,
+          user: firebaseResult.user,
+          requires2FA: true,
+          simulated2FACode: firebaseResult.simulated2FACode,
+          message: firebaseResult.message
+        };
+      }
+
+      if (firebaseResult.success && firebaseResult.user) {
+        setUsers((prev) => [
+          firebaseResult.user!,
+          ...prev.filter(
+            (u) => u.email.toLowerCase() !== firebaseResult.user!.email.toLowerCase()
+          )
+        ]);
+
+        setCurrentUser(firebaseResult.user);
+
+        return {
+          success: true,
+          user: firebaseResult.user
+        };
+      }
+
+      return {
+        success: false,
+        message: firebaseResult.message || 'Credenciais invalidas. Verifique seu e-mail e senha.'
+      };
+    }
+
     const rawInput = (email || '').trim();
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
@@ -2385,11 +2430,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     if (!found) {
-      return {
-        success: false,
-        message: 'UsuÃ’Â¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
-      };
-    }
+          const firebaseResult = await firebaseLoginWithEmail(cleanEmail, password);
+
+          if (firebaseResult.success && firebaseResult.user) {
+            const firebaseUser = firebaseResult.user;
+
+            setUsers((prev) => [
+              firebaseUser,
+              ...prev.filter((u) => u.email.toLowerCase() !== cleanEmail)
+            ]);
+            setCurrentUser(firebaseUser);
+
+            return {
+              success: true,
+              user: firebaseUser,
+              requires2FA: firebaseResult.requires2FA,
+              simulated2FACode: firebaseResult.simulated2FACode
+            };
+          }
+
+          return {
+            success: false,
+            message: firebaseResult.message || 'Usuário ou senha incorretos. Verifique suas credenciais de acesso.'
+          };
+        }
 
     // Check if user is blocked or suspended
     if (found.status === 'blocked' || found.status === 'suspended') {
@@ -2409,17 +2473,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           message: 'Senha incorreta do Administrador Master. Verifique suas credenciais.'
         };
       }
-    } else if (found.password && password && found.password !== password) {
-      return {
-        success: false,
-        message: 'UsuÃ’Â¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
-      };
     }
-
-    // Check if user requires Two-Factor Authentication (2FA)
-    // Master Admins have 2FA required for maximum security
-    // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃ’ï¿½ï¿½ ï¿½"O -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
-    const isHighPrivilege = found.role === 'MASTER' || (found.role !== 'VENDEDOR' && found.role !== 'REPRESENTANTE_COMERCIAL' && found.twoFactorEnabled);
 
     if (isHighPrivilege) {
       const simulatedCode = '749210';
@@ -2762,7 +2816,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return await firebaseSendPasswordReset(email);
   };
 
-  const verifyTwoFactorCode = (
+  const verifyTwoFactorCode = async (
     email: string,
     code: string,
     _rememberMe: boolean = true
@@ -2807,8 +2861,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     if (!found) {
-      return { success: false, message: 'UsuÃ’Â¡rio nÃ’Â£o localizado no sistema.' };
-    }
+          const firebaseResult = await firebaseLoginWithEmail(cleanEmail, password);
+
+          if (firebaseResult.success && firebaseResult.user) {
+            const firebaseUser = firebaseResult.user;
+
+            setUsers((prev) => [
+              firebaseUser,
+              ...prev.filter((u) => u.email.toLowerCase() !== cleanEmail)
+            ]);
+            setCurrentUser(firebaseUser);
+
+            return {
+              success: true,
+              user: firebaseUser,
+              requires2FA: firebaseResult.requires2FA,
+              simulated2FACode: firebaseResult.simulated2FACode
+            };
+          }
+
+          return {
+            success: false,
+            message: firebaseResult.message || 'Usuário ou senha incorretos. Verifique suas credenciais de acesso.'
+          };
+        }
 
     const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
     
@@ -3011,6 +3087,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!firebaseProvision.success || !firebaseProvision.user) {
       throw new Error(firebaseProvision.message || 'NÃ’Â£o foi possÃ’Â­vel criar a credencial no Firebase.');
     }
+
+        const firebaseLogin = await firebaseLoginWithEmail(
+          ownerEmail,
+          _password || '123456'
+        );
+
+        if (!firebaseLogin.success) {
+          throw new Error(firebaseLogin.message || 'Não foi possível autenticar a nova conta no Firebase.');
+        }
 
     const newOwnerUser: User = {
       ...firebaseProvision.user,
@@ -3398,81 +3483,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     triggerToast(`VisualizaÃ’Â§Ã’Â£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
   };
 
-  const updateUserPassword = (newPassword: string): { success: boolean; message?: string } => {
-    if (!currentUser) {
-      return { success: false, message: 'Nenhum usuÃ’Â¡rio autenticado.' };
-    }
+  const updateUserPassword = async (newPassword: string): Promise<{ success: boolean; message?: string }> => {
+    const result = await firebaseUpdatePassword(newPassword);
 
-    const trimmed = newPassword.trim();
-
-    if (trimmed.length < 8) {
-      return { success: false, message: 'A nova senha deve possuir no mÃ’Â­nimo 8 caracteres.' };
-    }
-
-    if (trimmed === '12345678') {
-      return { success: false, message: 'VocÃ’Âª precisa cadastrar uma nova senha diferente da senha padrÃ’Â£o.' };
-    }
-
-    const updateFirebasePassword = async () => {
-      const firebaseResult = await firebaseUpdateAuthenticatedPassword(trimmed);
-
-      if (!firebaseResult.success) {
-        triggerToast(firebaseResult.message);
-        return;
-      }
-
-      const updatedUser: User = {
-        ...currentUser,
-        password: trimmed,
-        needsPasswordChange: false
+    if (!result.success) {
+      return {
+        success: false,
+        message: result.message
       };
+    }
 
-      setCurrentUser(updatedUser);
+    setUsers((prev) =>
+      prev.map((u) =>
+        currentUser && u.id === currentUser.id
+          ? { ...u, password: newPassword }
+          : u
+      )
+    );
 
-      setUsers((prev) =>
-        prev.map((u) =>
-          u.id === currentUser.id || u.email.toLowerCase() === currentUser.email.toLowerCase()
-            ? { ...u, password: trimmed, needsPasswordChange: false }
-            : u
-        )
-      );
-
-      persistUserToFirestore(updatedUser);
-
-      try {
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
-
-        const savedUsersRaw = localStorage.getItem(STORAGE_KEYS.USERS);
-        if (savedUsersRaw) {
-          const parsed = JSON.parse(savedUsersRaw);
-
-          if (Array.isArray(parsed)) {
-            const updatedList = parsed.map((u: User) =>
-              u.id === currentUser.id || u.email.toLowerCase() === currentUser.email.toLowerCase()
-                ? { ...u, password: trimmed, needsPasswordChange: false }
-                : u
-            );
-
-            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(updatedList));
-          }
-        }
-      } catch {
-        // PersistÃ’Âªncia local Ã’Â© complementar ao Firebase/Firestore.
-      }
-
-      addAuditLog(
-        'PASSWORD_UPDATE',
-        `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluÃ’Â­do.`
-      );
-
-      triggerToast('Senha atualizada com sucesso!');
-    };
-
-    void updateFirebasePassword();
+    if (currentUser) {
+      setCurrentUser({
+        ...currentUser,
+        password: newPassword
+      });
+    }
 
     return {
       success: true,
-      message: 'AtualizaÃ’Â§Ã’Â£o da senha iniciada.'
+      message: result.message
     };
   };
   const toggleTwoFactor = (): boolean => {
@@ -3562,9 +3600,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return true;
 
   };
-  const addCustomerAddress = (addressData: Omit<CustomerAddress, 'id'>): CustomerAddress => {
+  const addCustomerAddress = async (addressData: Omit<CustomerAddress, 'id'>): Promise<CustomerAddress> => {
     if (!currentUser) {
-      throw new Error('Nenhum usuÃ’Â¡rio autenticado para adicionar endereÃ’Â§o.');
+      throw new Error('Nenhum usuario autenticado para adicionar endereco.');
     }
 
     const currentAddresses = currentUser.addresses || [];
@@ -3587,6 +3625,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const primaryFormatted = `${newAddress.street}, ${newAddress.number}${
       newAddress.complement ? ` (${newAddress.complement})` : ''
     } - ${newAddress.neighborhood}`;
+
     const updatedUser: User = {
       ...currentUser,
       addresses: updatedAddresses,
@@ -3595,26 +3634,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updatedAt: new Date().toISOString()
     };
 
+    const saved = await persistUserToFirestore(updatedUser);
+
+    if (!saved) {
+      triggerToast('Nao foi possivel salvar o endereco. Verifique sua conexao e tente novamente.');
+      throw new Error('Falha ao salvar endereco no Firestore.');
+    }
+
     setCurrentUser(updatedUser);
-    void persistUserToFirestore(updatedUser).then((saved) => {
-      if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel salvar o endereÃ’Â§o. Verifique sua conexÃ’Â£o e tente novamente.');
-        return;
-      }
-      addAuditLog(
-        'CUSTOMER_ADDRESS_ADD',
-        `Novo endereÃ’Â§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado Ã’Â  ficha do cliente.`
-      );
-      triggerToast(`EndereÃ’Â§o "${newAddress.label}" salvo com sucesso!`);
-    });
+
+    addAuditLog(
+      'CUSTOMER_ADDRESS_ADD',
+      `Novo endereco "${newAddress.label}" (${newAddress.neighborhood}) adicionado a ficha do cliente.`
+    );
+
+    triggerToast(`Endereco "${newAddress.label}" salvo com sucesso!`);
+
     return newAddress;
   };
 
-  const updateCustomerAddress = (id: string, updates: Partial<CustomerAddress>) => {
-    if (!currentUser || !currentUser.addresses) return;
+  const updateCustomerAddress = async (
+    id: string,
+    updates: Partial<CustomerAddress>
+  ): Promise<boolean> => {
+    if (!currentUser || !currentUser.addresses) {
+      triggerToast('Nao foi possivel salvar o endereco: usuario nao autenticado.');
+      return false;
+    }
 
     const targetAddress = currentUser.addresses.find((a) => a.id === id);
-    if (!targetAddress) return;
+
+    if (!targetAddress) {
+      triggerToast('Nao foi possivel salvar o endereco: endereco nao encontrado.');
+      return false;
+    }
 
     const willBeDefault = updates.isDefault ?? targetAddress.isDefault;
 
@@ -3626,35 +3679,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           isDefault: willBeDefault
         };
       }
+
       if (willBeDefault) {
         return { ...addr, isDefault: false };
       }
+
       return addr;
     });
 
-    const defaultAddr = updatedAddresses.find((a) => a.isDefault) || updatedAddresses[0];
+    const defaultAddr =
+      updatedAddresses.find((a) => a.isDefault) || updatedAddresses[0];
+
     const primaryFormatted = defaultAddr
       ? `${defaultAddr.street}, ${defaultAddr.number}${
           defaultAddr.complement ? ` (${defaultAddr.complement})` : ''
         } - ${defaultAddr.neighborhood}`
       : currentUser.address;
+
     const updatedUser: User = {
       ...currentUser,
       addresses: updatedAddresses,
       address: primaryFormatted,
-      neighborhood: defaultAddr ? defaultAddr.neighborhood : currentUser.neighborhood,
+      neighborhood: defaultAddr
+        ? defaultAddr.neighborhood
+        : currentUser.neighborhood,
       updatedAt: new Date().toISOString()
     };
 
+    const saved = await persistUserToFirestore(updatedUser);
+
+    if (!saved) {
+      triggerToast('Nao foi possivel salvar o endereco. Verifique sua conexao e tente novamente.');
+      return false;
+    }
+
     setCurrentUser(updatedUser);
-    void persistUserToFirestore(updatedUser).then((saved) => {
-      if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel salvar o endereÃ’Â§o. Verifique sua conexÃ’Â£o e tente novamente.');
-        return;
-      }
-    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÃ’Â§o "${targetAddress.label}" modificado pelo cliente.`);
-      triggerToast('EndereÃ’Â§o atualizado com sucesso!');
-    });
+
+    addAuditLog(
+      'CUSTOMER_ADDRESS_UPDATE',
+      `Endereco "${targetAddress.label}" modificado pelo cliente.`
+    );
+
+    triggerToast('Endereco atualizado com sucesso!');
+
+    return true;
   };
 
   const deleteCustomerAddress = (id: string) => {
@@ -3667,7 +3735,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       filteredAddresses[0].isDefault = true;
     }
 
-    const defaultAddr = filteredAddresses.find((a) => a.isDefault) || filteredAddresses[0];
+    const defaultAddr =
+      filteredAddresses.find((a) => a.isDefault) || filteredAddresses[0];
+
     const primaryFormatted = defaultAddr
       ? `${defaultAddr.street}, ${defaultAddr.number}${
           defaultAddr.complement ? ` (${defaultAddr.complement})` : ''
@@ -3683,17 +3753,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel excluir o endereÃ’Â§o. Verifique sua conexÃ’Â£o e tente novamente.');
+        triggerToast('Nao foi possivel excluir o endereco. Verifique sua conexao e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_DELETE',
-        `EndereÃ’Â§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
+        `Endereco "${addressToDelete?.label || id}" removido da ficha cadastral.`
       );
-      triggerToast('EndereÃ’Â§o removido com sucesso.');
+
+      triggerToast('Endereco removido com sucesso.');
     });
   };
 
@@ -3701,6 +3773,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!currentUser || !currentUser.addresses) return;
 
     const targetAddress = currentUser.addresses.find((a) => a.id === id);
+
     if (!targetAddress) return;
 
     const updatedAddresses = currentUser.addresses.map((addr) => ({
@@ -3721,22 +3794,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setCurrentUser(updatedUser);
+
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel definir o endereÃ’Â§o principal. Verifique sua conexÃ’Â£o e tente novamente.');
+        triggerToast('Nao foi possivel definir o endereco principal. Verifique sua conexao e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_SET_DEFAULT',
-        `EndereÃ’Â§o "${targetAddress.label}" definido como principal pelo cliente.`
+        `Endereco "${targetAddress.label}" definido como principal pelo cliente.`
       );
-      triggerToast('EndereÃ’Â§o definido como principal com sucesso!');
+
+      triggerToast('Endereco definido como principal com sucesso!');
     });
   };
 
-  const updateVipMeasurements = (measurements: VipMeasurements) => {
-    if (!currentUser) return;
+  const updateVipMeasurements = async (
+    measurements: VipMeasurements
+  ): Promise<boolean> => {
+    if (!currentUser) {
+      triggerToast('Nao foi possivel salvar a ficha de medidas: usuario nao autenticado.');
+      return false;
+    }
 
     const updatedUser: User = {
       ...currentUser,
@@ -3744,47 +3824,63 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updatedAt: new Date().toISOString()
     };
 
-    setCurrentUser(updatedUser);
-    void persistUserToFirestore(updatedUser).then((saved) => {
-      if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel salvar a ficha de medidas. Verifique sua conexÃ’Â£o e tente novamente.');
-        return;
-      }
+    const saved = await persistUserToFirestore(updatedUser);
 
-      addAuditLog(
-        'VIP_MEASUREMENTS_UPDATE',
-        'Ficha de medidas e preferÃ’Âªncias para Provador VIP atualizada.'
-      );
-      triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
-    });
+    if (!saved) {
+      triggerToast('Nao foi possivel salvar a ficha de medidas. Verifique sua conexao e tente novamente.');
+      return false;
+    }
+
+    setCurrentUser(updatedUser);
+
+    addAuditLog(
+      'VIP_MEASUREMENTS_UPDATE',
+      'Ficha de medidas e preferencias para Provador VIP atualizada.'
+    );
+
+    triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
+
+    return true;
   };
 
-  const updateCustomerPreferences = (preferences: CustomerPreferences) => {
-    if (!currentUser) return;
+  const updateCustomerPreferences = async (
+    preferences: CustomerPreferences
+  ): Promise<boolean> => {
+    if (!currentUser) {
+      triggerToast('Nao foi possivel salvar as preferencias: usuario nao autenticado.');
+      return false;
+    }
 
     const updatedUser: User = {
       ...currentUser,
       preferences,
-      notificationPreferences: preferences.notificationChannels || currentUser.notificationPreferences,
+      notificationPreferences:
+        preferences.notificationChannels || currentUser.notificationPreferences,
       updatedAt: new Date().toISOString()
     };
 
+    const saved = await persistUserToFirestore(updatedUser);
+
+    if (!saved) {
+      triggerToast('Nao foi possivel salvar as preferencias. Verifique sua conexao e tente novamente.');
+      return false;
+    }
+
     setCurrentUser(updatedUser);
-    void persistUserToFirestore(updatedUser).then((saved) => {
-      if (!saved) {
-        triggerToast('NÃ’Â£o foi possÃ’Â­vel salvar as preferÃ’Âªncias. Verifique sua conexÃ’Â£o e tente novamente.');
-        return;
-      }
 
-      setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
-      addAuditLog(
-        'CUSTOMER_PREFERENCES_UPDATE',
-        'PreferÃ’Âªncias de comunicaÃ’Â§Ã’Â£o e canais atualizadas.'
-      );
-      triggerToast('PreferÃ’Âªncias de notificaÃ’Â§Ã’Â£o salvas com sucesso!');
-    });
+    setUsers((prev) =>
+      prev.map((u) => (u.id === updatedUser.id ? updatedUser : u))
+    );
+
+    addAuditLog(
+      'CUSTOMER_PREFERENCES_UPDATE',
+      'Preferencias de comunicacao e canais atualizadas.'
+    );
+
+    triggerToast('Preferencias de notificacao salvas com sucesso!');
+
+    return true;
   };
-
   // Products
   const addProduct = (productData: Omit<Product, 'id' | 'createdAt'>): Product => {
     const newProduct: Product = {
@@ -7498,6 +7594,18 @@ export const useApp = () => {
   }
   return context;
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
-/**
- * Serviço de Integração Frontend com a API do Asaas e Split Marketplace
+﻿/**
+ * ServiÃ§o de IntegraÃ§Ã£o Frontend com a API do Asaas e Split Marketplace
  */
 
 export interface CadastrarLojistaPayload {
@@ -40,6 +40,8 @@ export interface CriarCobrancaPayload {
   nomeCliente: string;
   emailCliente?: string;
   documentoCliente?: string;
+  telefoneCliente?: string;
+  enderecoCliente?: string;
   formaPagamento: 'pix' | 'cartao';
   itensPorLojista?: LojistaCarrinhoItem[];
   descricao?: string;
@@ -96,7 +98,7 @@ export async function cadastrarLojistaAsaas(payload: CadastrarLojistaPayload): P
     return await res.json();
   } catch (error: any) {
     console.error('Erro no cadastrarLojistaAsaas:', error);
-    // Se a API ainda estiver em inicialização no dev server, gera retorno compatível
+    // Se a API ainda estiver em inicializaÃ§Ã£o no dev server, gera retorno compatÃ­vel
     return {
       mensagem: 'Lojista cadastrado com sucesso! (Modo Local)',
       lojistaId: `sub_${payload.documento.replace(/\D/g, '').slice(-8) || '12345678'}`,
@@ -106,7 +108,7 @@ export async function cadastrarLojistaAsaas(payload: CadastrarLojistaPayload): P
 }
 
 /**
- * Cria cobrança no Asaas com split automático (10% MEI / 90% Lojistas)
+ * Cria cobranÃ§a no Asaas com split automÃ¡tico (10% MEI / 90% Lojistas)
  */
 export async function criarCobrancaAsaas(payload: CriarCobrancaPayload): Promise<CriarCobrancaResponse> {
   try {
@@ -124,21 +126,21 @@ export async function criarCobrancaAsaas(payload: CriarCobrancaPayload): Promise
       });
       if (!altRes.ok) {
         const errData = await altRes.json().catch(() => ({}));
-        throw new Error(errData.erro || errData.detalhes || 'Falha ao criar cobrança no Asaas');
+        throw new Error(errData.erro || errData.detalhes || 'Falha ao criar cobranÃ§a no Asaas');
       }
       return await altRes.json();
     }
 
     return await res.json();
   } catch (error: any) {
-    console.warn('Fallback local para criação de cobrança Asaas:', error);
+    console.warn('Fallback local para criaÃ§Ã£o de cobranÃ§a Asaas:', error);
     const parsedTotal = payload.valorTotal;
     const comissao = Math.round(parsedTotal * 0.10 * 100) / 100;
     const repasse = Math.round(parsedTotal * 0.90 * 100) / 100;
     const simId = `pay_asaas_${Math.floor(Math.random() * 90000000 + 10000000)}`;
 
     return {
-      mensagem: 'Cobrança gerada com sucesso! (Modo Sandbox)',
+      mensagem: 'CobranÃ§a gerada com sucesso! (Modo Sandbox)',
       idTransacao: simId,
       urlCheckoutAsaas: `https://sandbox.asaas.com/i/${simId}`,
       pixCopiaECola: `00020126580014BR.GOV.BCB.PIX0136${simId}520400005303986540${parsedTotal.toFixed(2)}5802BR5920ACHEI AQUI CACHOEIRAS6014CACHOEIRAS DE M62070503***6304`,
@@ -146,12 +148,12 @@ export async function criarCobrancaAsaas(payload: CriarCobrancaPayload): Promise
         {
           walletId: 'wallet_master_acheiaqui_mei',
           percentualValue: 10.0,
-          description: 'Comissão Plataforma Achei Aqui (10%)'
+          description: 'ComissÃ£o Plataforma Achei Aqui (10%)'
         },
         {
           walletId: payload.walletIdDoLojista || 'wallet_lojista_default',
           percentualValue: 90.0,
-          description: 'Repasse Líquido Lojista (90%)'
+          description: 'Repasse LÃ­quido Lojista (90%)'
         }
       ],
       valorTotal: parsedTotal,
@@ -163,7 +165,7 @@ export async function criarCobrancaAsaas(payload: CriarCobrancaPayload): Promise
 }
 
 /**
- * Consulta o status da configuração do gateway Asaas
+ * Consulta o status da configuraÃ§Ã£o do gateway Asaas
  */
 export async function obterStatusAsaas(): Promise<StatusAsaasResponse | null> {
   try {
@@ -229,7 +231,7 @@ export async function buscarPedidosDoServidor(): Promise<any[] | null> {
 }
 
 /**
- * Simula o envio de um webhook do Asaas para testes imediatos (Confirmação ou Expiração)
+ * Simula o envio de um webhook do Asaas para testes imediatos (ConfirmaÃ§Ã£o ou ExpiraÃ§Ã£o)
  */
 export async function simularWebhookAsaas(params: {
   event: 'PAYMENT_CONFIRMED' | 'PAYMENT_RECEIVED' | 'PAYMENT_OVERDUE' | 'PAYMENT_EXPIRED' | 'PAYMENT_REFUNDED';
@@ -249,4 +251,7 @@ export async function simularWebhookAsaas(params: {
     return { success: false, error: err?.message || 'Falha ao chamar simulador de webhook' };
   }
 }
+
+
+
 

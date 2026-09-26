@@ -1,4 +1,4 @@
-import {
+﻿import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -6,7 +6,7 @@ import {
   signOut,
   sendPasswordResetEmail,
   onAuthStateChanged,
-  updateProfile,
+  updateProfile,
   updatePassword,
   getAuth,
   User as FirebaseUser,
@@ -24,12 +24,12 @@ import { initializeApp, deleteApp } from 'firebase/app';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 /**
- * Traduz códigos de erro do Firebase Auth para mensagens amigáveis em português
+ * Traduz cÃ³digos de erro do Firebase Auth para mensagens amigÃ¡veis em portuguÃªs
  */
 export function getFirebaseAuthErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case 'auth/invalid-email':
-      return 'O formato do e-mail informado é inválido.';
+      return 'O formato do e-mail informado Ã© invÃ¡lido.';
     case 'auth/user-not-found':
       return 'Nenhuma conta encontrada com este e-mail. Por favor, cadastre-se.';
     case 'auth/wrong-password':
@@ -37,28 +37,28 @@ export function getFirebaseAuthErrorMessage(errorCode: string): string {
     case 'auth/invalid-credential':
       return 'Credenciais de acesso incorretas. Verifique seu e-mail e senha.';
     case 'auth/email-already-in-use':
-      return 'Este e-mail já está cadastrado. Tente entrar ou recupere sua senha.';
+      return 'Este e-mail jÃ¡ estÃ¡ cadastrado. Tente entrar ou recupere sua senha.';
     case 'auth/weak-password':
-      return 'A senha deve conter no mínimo 6 caracteres.';
+      return 'A senha deve conter no mÃ­nimo 6 caracteres.';
     case 'auth/popup-closed-by-user':
-      return 'A janela de autenticação do Google foi fechada antes da conclusão.';
+      return 'A janela de autenticaÃ§Ã£o do Google foi fechada antes da conclusÃ£o.';
     case 'auth/popup-blocked':
       return 'O navegador bloqueou o pop-up de login. Permita pop-ups para este site.';
     case 'auth/cancelled-popup-request':
-      return 'Operação de autenticação cancelada pelo navegador.';
+      return 'OperaÃ§Ã£o de autenticaÃ§Ã£o cancelada pelo navegador.';
     case 'auth/network-request-failed':
-      return 'Falha de comunicação com os servidores do Firebase. Verifique sua conexão à internet.';
+      return 'Falha de comunicaÃ§Ã£o com os servidores do Firebase. Verifique sua conexÃ£o Ã  internet.';
     case 'auth/too-many-requests':
       return 'Muitas tentativas sem sucesso. Aguarde alguns minutos antes de tentar novamente.';
     case 'auth/operation-not-allowed':
-      return 'Este método de autenticação não está habilitado no Console do Firebase.';
+      return 'Este mÃ©todo de autenticaÃ§Ã£o nÃ£o estÃ¡ habilitado no Console do Firebase.';
     default:
-      return 'Ocorreu um erro na autenticação. Verifique os dados e tente novamente.';
+      return 'Ocorreu um erro na autenticaÃ§Ã£o. Verifique os dados e tente novamente.';
   }
 }
 
 /**
- * Mapeia ou provisiona o usuário no Firestore /users/{uid}
+ * Mapeia ou provisiona o usuÃ¡rio no Firestore /users/{uid}
  */
 export async function syncUserWithFirestore(
   fbUser: FirebaseUser,
@@ -97,12 +97,12 @@ export async function syncUserWithFirestore(
         ...extraData,
       };
 
-      // Atualiza último login
+      // Atualiza Ãºltimo login
       await updateDoc(userDocRef, {
         lastLogin: serverTimestamp(),
         isEmailVerified: fbUser.emailVerified,
       }).catch(() => {
-        // Tolerância para offline
+        // TolerÃ¢ncia para offline
       });
 
       return updatedUser;
@@ -168,26 +168,84 @@ export async function firebaseLoginWithEmail(
   requires2FA?: boolean;
   simulated2FACode?: string;
 }> {
+  const cleanEmail = email.trim().toLowerCase();
+
   try {
-    const cleanEmail = email.trim().toLowerCase();
-    const userCredential = await signInWithEmailAndPassword(auth, cleanEmail, password);
+    // ETAPA 1: autenticação real no Firebase Authentication.
+    // Se esta etapa funcionar, a senha está correta.
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      cleanEmail,
+      password
+    );
+
     const fbUser = userCredential.user;
 
-    const user = await syncUserWithFirestore(fbUser);
+    // Perfil mínimo baseado exclusivamente no Firebase Authentication.
+    // Isso impede que uma falha posterior do Firestore seja apresentada
+    // incorretamente como erro de e-mail ou senha.
+    let user: User = {
+      id: fbUser.uid,
+      name: fbUser.displayName || cleanEmail.split('@')[0],
+      email: cleanEmail,
+      phone: fbUser.phoneNumber || '',
+      role: 'CLIENTE',
+      membershipTier: 'GRATIS',
+      city: 'Cachoeiras de Macacu, RJ',
+      address: '',
+      neighborhood: 'Centro',
+      isEmailVerified: fbUser.emailVerified,
+      twoFactorEnabled: false,
+      status: 'active',
+      createdAt: new Date().toISOString(),
+    };
 
+    // ETAPA 2: recuperar perfil Firestore.
+    // Se houver problema no Firestore, a autenticação continua válida.
+    try {
+      const firestoreUser = await syncUserWithFirestore(fbUser);
+
+      if (firestoreUser) {
+        user = firestoreUser;
+      }
+    } catch (firestoreError: any) {
+      console.error(
+        '[FIREBASE LOGIN] Autenticacao OK; falha ao carregar perfil Firestore:',
+        firestoreError
+      );
+    }
+
+    // A identidade MASTER continua sendo reconhecida diretamente pelo e-mail.
+    if (cleanEmail === 'telecom.david@gmail.com' || cleanEmail === 'admin@acheiaqui.com.br') {
+      user.role = 'MASTER';
+      user.membershipTier = 'MASTER';
+      user.twoFactorEnabled = true;
+    }
+
+    // Bloqueio de conta somente depois da autenticação.
     if (user.status === 'blocked' || user.status === 'suspended') {
       await signOut(auth);
+
       return {
         success: false,
-        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administração Achei Aqui.'}`,
+        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administração AcheiaKi.'}`,
       };
     }
 
-    // Validação 2FA para perfis com permissão elevada
-    const isHighPrivilege = user.role === 'MASTER' || user.role === 'VENDEDOR' || user.twoFactorEnabled;
+    // 2FA somente para usuários realmente configurados para isso.
+    const isHighPrivilege =
+      user.role === 'MASTER' ||
+      user.role === 'VENDEDOR' ||
+      user.twoFactorEnabled;
+
     if (isHighPrivilege) {
       const code = '749210';
-      sessionStorage.setItem(`2fa_code_${cleanEmail}`, code);
+
+      sessionStorage.setItem(
+        `2fa_code_${cleanEmail}`,
+        code
+      );
+
       return {
         success: false,
         requires2FA: true,
@@ -197,22 +255,28 @@ export async function firebaseLoginWithEmail(
       };
     }
 
+    // AUTENTICAÇÃO CONCLUÍDA.
     return {
       success: true,
       user,
     };
+
   } catch (error: any) {
-    const msg = getFirebaseAuthErrorMessage(error.code);
+    console.error('[FIREBASE LOGIN AUTH]', {
+      code: error?.code,
+      message: error?.message,
+      email: cleanEmail,
+    });
+
+    // Somente erros reais do Firebase Authentication chegam aqui.
+    const msg = getFirebaseAuthErrorMessage(error?.code);
+
     return {
       success: false,
       message: msg,
     };
   }
 }
-
-/**
- * Cadastro de Cliente com Firebase Authentication e registro no Firestore
- */
 export async function firebaseRegisterCustomer(params: {
   name: string;
   email: string;
@@ -264,8 +328,24 @@ export async function firebaseRegisterCustomer(params: {
 }
 
 /**
- * Cadastro de Lojista / Prestador de Serviços com Firebase Authentication e Firestore
+ * Cadastro de Lojista / Prestador de ServiÃ§os com Firebase Authentication e Firestore
  */
+export async function firebaseUpdatePassword(newPassword: string): Promise<{ success: boolean; message: string }> {
+  try {
+    const currentFirebaseUser = auth.currentUser;
+    if (!currentFirebaseUser) return { success: false, message: 'Nenhuma sessao ativa no Firebase.' };
+    if (!newPassword || newPassword.length < 6) return { success: false, message: 'A nova senha deve conter no minimo 6 caracteres.' };
+    await updatePassword(currentFirebaseUser, newPassword);
+    return { success: true, message: 'Senha alterada com sucesso no Firebase Authentication.' };
+  } catch (error: any) {
+    console.error('[FIREBASE UPDATE PASSWORD]', error);
+    const code = error?.code || '';
+    if (code === 'auth/requires-recent-login') return { success: false, message: 'Por seguranca, entre novamente na conta e tente alterar a senha.' };
+    if (code === 'auth/weak-password') return { success: false, message: 'A nova senha deve conter no minimo 6 caracteres.' };
+    return { success: false, message: getFirebaseAuthErrorMessage(code) || 'Nao foi possivel alterar a senha no Firebase.' };
+  }
+}
+
 export async function firebaseRegisterMerchant(params: {
   ownerName: string;
   storeName: string;
@@ -310,9 +390,9 @@ export async function firebaseRegisterMerchant(params: {
       email: cleanEmail,
       phone: params.phone,
       cnpjOrCpf: params.cnpjOrCpf || '00.000.000/0001-00',
-      category: params.category || (params.isServiceProvider ? 'PRESTADORES DE SERVIÇOS' : 'GASTRONOMIA'),
+      category: params.category || (params.isServiceProvider ? 'PRESTADORES DE SERVIÃ‡OS' : 'GASTRONOMIA'),
       subcategory: params.subcategory || '',
-      description: params.description || (params.isServiceProvider ? 'Prestador de serviços verificado no Achei Aqui.' : 'Loja credenciada no Achei Aqui.'),
+      description: params.description || (params.isServiceProvider ? 'Prestador de serviÃ§os verificado no Achei Aqui.' : 'Loja credenciada no Achei Aqui.'),
       address: params.address || `${params.street || 'Rua Principal'}, ${params.number || '100'}`,
       street: params.street,
       number: params.number,
@@ -328,7 +408,7 @@ export async function firebaseRegisterMerchant(params: {
       rating: 5.0,
       reviewsCount: 1,
       isOpen: true,
-      openingHours: '08:00 às 18:00',
+      openingHours: '08:00 Ã s 18:00',
       deliveryFee: 0,
       deliveryTimeEstimate: params.isServiceProvider ? 'Sob Agendamento' : '30-45 min',
       supportsPickup: true,
@@ -349,7 +429,7 @@ export async function firebaseRegisterMerchant(params: {
       handleFirestoreError(err, OperationType.CREATE, `merchants/${storeId}`);
     }
 
-    // Salva perfil do usuário no Firestore com role LOJISTA ou PRESTADOR_SERVICO
+    // Salva perfil do usuÃ¡rio no Firestore com role LOJISTA ou PRESTADOR_SERVICO
     const roleToAssign = params.isServiceProvider ? 'PRESTADOR_SERVICO' : 'LOJISTA';
     const user = await syncUserWithFirestore(fbUser, roleToAssign, {
       name: params.ownerName,
@@ -367,7 +447,7 @@ export async function firebaseRegisterMerchant(params: {
       success: true,
       user,
       merchant: newMerchant,
-      message: 'Cadastro de lojista e loja concluídos com sucesso no Firebase!',
+      message: 'Cadastro de lojista e loja concluÃ­dos com sucesso no Firebase!',
     };
   } catch (error: any) {
     const msg = getFirebaseAuthErrorMessage(error.code);
@@ -403,7 +483,7 @@ export async function firebaseLoginWithGoogle(
       await signOut(auth);
       return {
         success: false,
-        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administração.'}`,
+        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administraÃ§Ã£o.'}`,
       };
     }
 
@@ -422,7 +502,7 @@ export async function firebaseLoginWithGoogle(
 }
 
 /**
- * Envio de e-mail oficial de redefinição de senha via Firebase Auth
+ * Envio de e-mail oficial de redefiniÃ§Ã£o de senha via Firebase Auth
  */
 export async function firebaseSendPasswordReset(
   email: string
@@ -432,7 +512,7 @@ export async function firebaseSendPasswordReset(
     await sendPasswordResetEmail(auth, cleanEmail);
     return {
       success: true,
-      message: `Link de redefinição de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
+      message: `Link de redefiniÃ§Ã£o de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
     };
   } catch (error: any) {
     return {
@@ -443,7 +523,7 @@ export async function firebaseSendPasswordReset(
 }
 
 /**
- * Encerra sessão do usuário no Firebase Auth
+ * Encerra sessÃ£o do usuÃ¡rio no Firebase Auth
  */
 export async function firebaseLogout(): Promise<void> {
   try {
@@ -454,7 +534,7 @@ export async function firebaseLogout(): Promise<void> {
 }
 
 /**
- * Observa alterações no estado de autenticação do Firebase
+ * Observa alteraÃ§Ãµes no estado de autenticaÃ§Ã£o do Firebase
  */
 export function subscribeToFirebaseAuthState(
   callback: (user: User | null, fbUser: FirebaseUser | null) => void
@@ -465,11 +545,11 @@ export function subscribeToFirebaseAuthState(
         const appUser = await syncUserWithFirestore(fbUser);
         callback(appUser, fbUser);
       } catch (err) {
-        console.warn('Não foi possível sincronizar perfil do Firestore para usuário logado:', err);
-        // Fallback mínimo a partir dos dados do Firebase Auth
+        console.warn('NÃ£o foi possÃ­vel sincronizar perfil do Firestore para usuÃ¡rio logado:', err);
+        // Fallback mÃ­nimo a partir dos dados do Firebase Auth
         const fallbackUser: User = {
           id: fbUser.uid,
-          name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário',
+          name: fbUser.displayName || fbUser.email?.split('@')[0] || 'UsuÃ¡rio',
           email: fbUser.email || '',
           phone: fbUser.phoneNumber || '(21) 99999-0000',
           role: (fbUser.email === 'telecom.david@gmail.com' || fbUser.email === 'espier.telecom@gmail.com') ? 'MASTER' : 'CLIENTE',
@@ -487,7 +567,7 @@ export function subscribeToFirebaseAuthState(
 
 
 /**
- * Atualiza a senha real do usuário autenticado no Firebase Authentication.
+ * Atualiza a senha real do usuÃ¡rio autenticado no Firebase Authentication.
  */
 export async function firebaseProvisionSalesAgent(
   email: string,
@@ -506,13 +586,19 @@ export async function firebaseProvisionSalesAgent(
 
     const secondaryAuth = getAuth(secondaryApp);
 
-    const credential = await createUserWithEmailAndPassword(
-      secondaryAuth,
+    const credential = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+
+    const fbUser = credential.user;
+
+    const passwordValidation = await signInWithEmailAndPassword(
+      auth,
       cleanEmail,
       password
     );
 
-    const fbUser = credential.user;
+    if (!passwordValidation.user || passwordValidation.user.uid !== fbUser.uid) {
+      throw new Error('O Firebase criou a conta, mas a senha nao foi validada na autenticacao.');
+    }
 
     const provisionedUser: User = {
       id: fbUser.uid,
@@ -548,7 +634,7 @@ export async function firebaseProvisionSalesAgent(
     if (error?.code === 'auth/email-already-in-use') {
       return {
         success: false,
-        message: 'Este e-mail já possui uma credencial no Firebase.'
+        message: 'Este e-mail jÃ¡ possui uma credencial no Firebase.'
       };
     }
 
@@ -571,14 +657,14 @@ export async function firebaseUpdateAuthenticatedPassword(
     if (password.length < 8) {
       return {
         success: false,
-        message: 'A nova senha deve possuir no mínimo 8 caracteres.'
+        message: 'A nova senha deve possuir no mÃ­nimo 8 caracteres.'
       };
     }
 
     if (!auth.currentUser) {
       return {
         success: false,
-        message: 'Nenhum usuário autenticado no Firebase.'
+        message: 'Nenhum usuÃ¡rio autenticado no Firebase.'
       };
     }
 
@@ -620,13 +706,19 @@ export async function firebaseProvisionUser(
 
     const secondaryAuth = getAuth(secondaryApp);
 
-    const credential = await createUserWithEmailAndPassword(
-      secondaryAuth,
+    const credential = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+
+    const fbUser = credential.user;
+
+    const passwordValidation = await signInWithEmailAndPassword(
+      auth,
       cleanEmail,
       password
     );
 
-    const fbUser = credential.user;
+    if (!passwordValidation.user || passwordValidation.user.uid !== fbUser.uid) {
+      throw new Error('O Firebase criou a conta, mas a senha nao foi validada na autenticacao.');
+    }
 
     await updateProfile(fbUser, {
       displayName: userData.name || cleanEmail.split('@')[0]
@@ -653,14 +745,6 @@ export async function firebaseProvisionUser(
       createdAt: userData.createdAt || new Date().toISOString()
     };
 
-    await setDoc(
-      doc(db, 'users', fbUser.uid),
-      {
-        ...provisionedUser,
-        updatedAt: serverTimestamp()
-      },
-      { merge: true }
-    );
 
     return {
       success: true,
@@ -673,7 +757,7 @@ export async function firebaseProvisionUser(
     if (error?.code === 'auth/email-already-in-use') {
       return {
         success: false,
-        message: 'Este e-mail já possui uma credencial no Firebase.'
+        message: 'Este e-mail jÃ¡ possui uma credencial no Firebase.'
       };
     }
 
@@ -687,3 +771,14 @@ export async function firebaseProvisionUser(
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import {
+﻿import {
   collection,
   doc,
   setDoc,
@@ -66,19 +66,45 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
 }
 
 /**
- * Salva ou atualiza um UsuÃƒÆ’ário (Cliente, Vendedor, Master, Prestador) no Firestore
+ * Salva ou atualiza um UsuÃƒÆ’Ã†â€™Ã¡rio (Cliente, Vendedor, Master, Prestador) no Firestore
  */
 export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
     const docRef = doc(db, 'users', user.id);
+
+    const removeUndefinedDeep = (value: any): any => {
+      if (Array.isArray(value)) {
+        return value
+          .filter((item) => item !== undefined)
+          .map((item) => removeUndefinedDeep(item));
+      }
+
+      if (
+        value !== null &&
+        typeof value === 'object' &&
+        Object.getPrototypeOf(value) === Object.prototype
+      ) {
+        return Object.fromEntries(
+          Object.entries(value)
+            .filter(([, item]) => item !== undefined)
+            .map(([key, item]) => [key, removeUndefinedDeep(item)])
+        );
+      }
+
+      return value;
+    };
+
+    const userData = removeUndefinedDeep(user);
+
     await setDoc(
       docRef,
       {
-        ...user,
+        ...userData,
         updatedAt: serverTimestamp(),
       },
       { merge: true }
     );
+
     return true;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `users/${user.id}`);
@@ -160,7 +186,7 @@ export async function persistAuditLogToFirestore(log: AuditLog): Promise<void> {
 }
 
 /**
- * Carrega coleÃƒÆ’çÃƒÆ’ões do Firestore para hidratar a aplicaÃƒÆ’çÃƒÆ’ão
+ * Carrega coleÃƒÆ’Ã†â€™Ã§ÃƒÆ’Ã†â€™Ãµes do Firestore para hidratar a aplicaÃƒÆ’Ã†â€™Ã§ÃƒÆ’Ã†â€™Ã£o
  */
 export async function fetchAllCollectionsFromFirestore(): Promise<{
   merchants?: StoreMerchant[];
@@ -237,7 +263,7 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
 }
 
 /**
- * Carga inicial em lote para garantir que todo o catÃƒÆ’álogo, lojas, prestadores
+ * Carga inicial em lote para garantir que todo o catÃƒÆ’Ã†â€™Ã¡logo, lojas, prestadores
  * e entregadores sejam persistidos no Firestore caso o banco esteja novo/vazio.
  */
 export async function seedInitialDataToFirestoreIfEmpty(data: {
@@ -281,6 +307,7 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
       console.log('Banco de dados Firestore semeado com sucesso!');
     }
   } catch (err) {
-    console.warn('Aviso de seed Firestore (nÃƒÆ’ão-bloqueante):', err);
+    console.warn('Aviso de seed Firestore (nÃƒÆ’Ã†â€™Ã£o-bloqueante):', err);
   }
 }
+
