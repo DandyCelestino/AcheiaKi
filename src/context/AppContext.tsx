@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   User,
   UserRole,
@@ -205,7 +205,7 @@ export interface AppContextType {
   resendEmailConfirmation: (email: string) => { success: boolean; message: string };
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
   completePasswordReset: (email: string, code: string, newPassword: string) => { success: boolean; message: string };
-  // Auditoria, Rastreabilidade & SeguranÒ§a
+  // Auditoria, Rastreabilidade & Seguran├Æ┬ºa
   auditLogs: AuditLog[];
   addAuditLog: (action: string, details: string, options?: AuditLogOptions) => AuditLog;
   logSecurityEvent: (action: string, details: string, meta?: Record<string, any>, severity?: AuditSeverity) => AuditLog;
@@ -309,13 +309,13 @@ export interface AppContextType {
   toastMessage: string | null;
   triggerToast: (msg: string) => void;
 
-  // Modal de AutenticaÒ§Ò£o / Cadastro / Login
+  // Modal de Autentica├Æ┬º├Æ┬úo / Cadastro / Login
   isAuthModalOpen: boolean;
   authModalTab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver';
   openAuthModal: (tab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
   closeAuthModal: () => void;
 
-  // Prompt de AutenticaÒ§Ò£o NecessÒ¡ria (Compras, Agendamentos, etc.)
+  // Prompt de Autentica├Æ┬º├Æ┬úo Necess├Æ┬íria (Compras, Agendamentos, etc.)
   authPromptModal: {
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -327,7 +327,7 @@ export interface AppContextType {
   ) => void;
   closeAuthPromptModal: () => void;
 
-  // AvaliaÒ§Òµes MÒºtuas & ReputaÒ§Ò£o
+  // Avalia├Æ┬º├Æ┬Áes M├Æ┬║tuas & Reputa├Æ┬º├Æ┬úo
   reviews: CustomerToMerchantReview[];
   merchantReviews: MerchantToCustomerReview[];
   isPolicyModalOpen: boolean;
@@ -460,7 +460,7 @@ export interface AppContextType {
     roleTitle?: string
   ) => void;
 
-  // Camada de Processamento de Webhooks de Boletos & ComissÒµes
+  // Camada de Processamento de Webhooks de Boletos & Comiss├Æ┬Áes
   webhookEvents: BoletoWebhookEvent[];
   webhookConfig: WebhookConfig;
   updateWebhookConfig: (updates: Partial<WebhookConfig>) => void;
@@ -479,7 +479,7 @@ export interface AppContextType {
   deleteWebhookEvent: (eventId: string) => void;
   clearWebhookLogs: () => void;
 
-  // MÒ³dulo de Delivery (V1 - Ciclo Operacional Completo)
+  // M├Æ┬│dulo de Delivery (V1 - Ciclo Operacional Completo)
   deliveryDrivers: DeliveryDriver[];
   deliveryRides: DeliveryRide[];
   currentDeliveryDriver: DeliveryDriver | null;
@@ -586,7 +586,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
           // Keep only authentic master/admin accounts, authorized sellers, and production users
-          list = parsed;
+          list = parsed.filter((u: User) =>
+            u.id === 'user-master-david' ||
+            u.id === 'user-master-1' ||
+            u.email?.toLowerCase() === 'telecom.david@gmail.com' ||
+            u.email?.toLowerCase() === 'admin@acheiaqui.com.br' ||
+            u.role === 'VENDEDOR' ||
+            u.role === 'REPRESENTANTE_COMERCIAL' ||
+            (u as any).isProduction === true
+          );
           if (list.length === 0) {
             list = INITIAL_USERS;
           }
@@ -594,7 +602,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch (e) { /* ignore */ }
     }
 
-    // Inicializa vendedores padrÒ£o e consultores de vendas em users com credencial garantida
+    // Inicializa vendedores padr├Æ┬úo e consultores de vendas em users com credencial garantida
     let allAgentsToSync = [...INITIAL_SALES_AGENTS];
     const savedAgents = localStorage.getItem(STORAGE_KEYS.SALES_AGENTS);
     if (savedAgents) {
@@ -629,7 +637,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           createdAt: sa.createdAt || '2026-01-10'
         });
       } else {
-        // Assegura que o vendedor tenha senha vÒ¡lida para primeiro acesso se ainda nÒ£o cadastrada
+        // Assegura que o vendedor tenha senha v├Æ┬ílida para primeiro acesso se ainda n├Æ┬úo cadastrada
         const existing = list[existingUserIndex];
         if (!existing.password || existing.password.trim() === '') {
           list[existingUserIndex] = {
@@ -704,7 +712,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed;
+          return parsed.filter((m: any) => m.isProduction === true);
         }
       } catch (e) { /* ignore */ }
     }
@@ -717,7 +725,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed;
+          return parsed.filter((p: any) => p.isProduction === true);
         }
       } catch (e) { /* ignore */ }
     }
@@ -730,7 +738,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed;
+          return parsed.filter((s: any) => s.isProduction === true);
         }
       } catch (e) { /* ignore */ }
     }
@@ -825,7 +833,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return INITIAL_MERCHANT_REVIEWS;
   });
 
-  // Modal de AutenticaÒ§Ò£o Global
+  // Modal de Autentica├Æ┬º├Æ┬úo Global
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver'>('login');
 
@@ -838,7 +846,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsAuthModalOpen(false);
   };
 
-  // Modal de ExigÒªncia de AutenticaÒ§Ò£o para AÒ§Òµes Restritas (Compra, Agendar, etc.)
+  // Modal de Exig├Æ┬¬ncia de Autentica├Æ┬º├Æ┬úo para A├Æ┬º├Æ┬Áes Restritas (Compra, Agendar, etc.)
   const [authPromptModal, setAuthPromptModal] = useState<{
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -858,11 +866,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       details
     });
     if (actionType === 'COMPRA') {
-      triggerToast('AtenÒ§Ò£o: Cadastre-se ou faÒ§a login para realizar compras.');
+      triggerToast('Aten├Æ┬º├Æ┬úo: Cadastre-se ou fa├Æ┬ºa login para realizar compras.');
     } else if (actionType === 'AGENDAMENTO') {
-      triggerToast('AtenÒ§Ò£o: Cadastre-se ou faÒ§a login para agendar serviÒ§os.');
+      triggerToast('Aten├Æ┬º├Æ┬úo: Cadastre-se ou fa├Æ┬ºa login para agendar servi├Æ┬ºos.');
     } else {
-      triggerToast('AtenÒ§Ò£o: Cadastre-se ou faÒ§a login para continuar.');
+      triggerToast('Aten├Æ┬º├Æ┬úo: Cadastre-se ou fa├Æ┬ºa login para continuar.');
     }
   };
 
@@ -993,7 +1001,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const setCurrentSalesAgent = useCallback((agent: SalesAgent | null) => {
-    // Isolamento estrito de vendedor: se for VENDEDOR, sÒ³ pode estar vinculado ao seu prÒ³prio perfil
+    // Isolamento estrito de vendedor: se for VENDEDOR, s├Æ┬│ pode estar vinculado ao seu pr├Æ┬│prio perfil
     if (currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') {
       const cleanEmail = currentUser.email.toLowerCase().trim();
       if (
@@ -1003,7 +1011,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         `user-${agent.id}` !== currentUser.id &&
         agent.id !== currentUser.id.replace('user-', '')
       ) {
-        console.warn('Isolamento Comercial Ativo: Vendedor nÒ£o possui permissÒ£o para alternar para outro agente.');
+        console.warn('Isolamento Comercial Ativo: Vendedor n├Æ┬úo possui permiss├Æ┬úo para alternar para outro agente.');
         return;
       }
     }
@@ -1027,7 +1035,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return DEFAULT_WEBHOOK_CONFIG;
   });
 
-  // MÒ³dulo de Delivery & Entregadores
+  // M├Æ┬│dulo de Delivery & Entregadores
   const [deliveryDrivers, setDeliveryDrivers] = useState<DeliveryDriver[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.DELIVERY_DRIVERS);
     if (saved) {
@@ -1192,7 +1200,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [currentDeliveryDriver]);
 
-  // HidrataÒ§Ò£o e persistÒªncia do banco de dados real (Firestore)
+  // Hidrata├Æ┬º├Æ┬úo e persist├Æ┬¬ncia do banco de dados real (Firestore)
   useEffect(() => {
     let isMounted = true;
     const initFirestoreSync = async () => {
@@ -1228,7 +1236,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           users
         });
       } catch (err) {
-        console.warn('SincronizaÒ§Ò£o com Firestore:', err);
+        console.warn('Sincroniza├Æ┬º├Æ┬úo com Firestore:', err);
       }
     };
 
@@ -1241,7 +1249,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, [currentUser]);
 
-  // SincronizaÒ§Ò£o periÒ³dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
+  // Sincroniza├Æ┬º├Æ┬úo peri├Æ┬│dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
   useEffect(() => {
     let isMounted = true;
 
@@ -1275,11 +1283,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return hasChange ? merged : prevOrders;
         });
       } catch {
-        // Falha transitÒ³ria ignorada
+        // Falha transit├Æ┬│ria ignorada
       }
     };
 
-    // Executa sincronizaÒ§Ò£o inicial e depois a cada 8 segundos
+    // Executa sincroniza├Æ┬º├Æ┬úo inicial e depois a cada 8 segundos
     syncWithServerDb();
     const interval = setInterval(syncWithServerDb, 8000);
 
@@ -1294,7 +1302,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   // ==========================================
-// AUDITORIA, RASTREABILIDADE & SEGURANÇA
+// AUDITORIA, RASTREABILIDADE & SEGURAN├çA
   // ==========================================
 
   const addAuditLog = useCallback(
@@ -1302,7 +1310,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const now = new Date();
       const timestampFormatted = now.toISOString().replace('T', ' ').substring(0, 19);
 
-      // CategorizaÒ§Ò£o e severidade inteligentes caso nÒ£o informadas
+      // Categoriza├Æ┬º├Æ┬úo e severidade inteligentes caso n├Æ┬úo informadas
       let category: AuditCategory = options?.category || 'GENERAL';
       let severity: AuditSeverity = options?.severity || 'INFO';
 
@@ -1430,7 +1438,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     (orderId: string, targetMerchantId: string, buyerName: string, reason: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'BUYER_DATA_RELEASE',
-        `[LGPD / RASTREABILIDADE] LiberaÒ§Ò£o de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
+        `[LGPD / RASTREABILIDADE] Libera├Æ┬º├Æ┬úo de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'CRITICAL',
@@ -1443,7 +1451,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             reason,
             authorizedBy: currentUser?.email || 'master@acheiaqui.com',
             authorizedRole: currentUser?.role || 'MASTER',
-complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
+complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
             ...meta
           }
         }
@@ -1456,7 +1464,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     (subpedidoId: string, senderRole: string, messageSummary: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'SUBORDER_MESSAGE_SENT',
-      `[COMUNICAÇÃO SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
+      `[COMUNICA├ç├âO SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -1477,7 +1485,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     (orderId: string, action: string, amount: number, details: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         action,
-      `[INTERMEDIAÇÃO FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
+      `[INTERMEDIA├ç├âO FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
         {
           category: 'FINANCIAL',
           severity: 'INFO',
@@ -1589,7 +1597,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         downloadAnchor.remove();
       }
 
-      addAuditLog('AUDIT_REPORT_EXPORTED', `ExportaÒ§Ò£o de relatÒ³rio de auditoria realizada no formato ${format.toUpperCase()}`, {
+      addAuditLog('AUDIT_REPORT_EXPORTED', `Exporta├Æ┬º├Æ┬úo de relat├Æ┬│rio de auditoria realizada no formato ${format.toUpperCase()}`, {
         category: 'SECURITY',
         severity: 'INFO'
       });
@@ -1609,7 +1617,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       setNotifications((prev) => [newNotif, ...prev]);
       addAuditLog(
         'NOTIFICATION_SENT',
-        `NotificaÒ§Ò£o "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
+        `Notifica├Æ┬º├Æ┬úo "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
       );
       return newNotif;
     },
@@ -1641,7 +1649,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           return { ...n, readBy: [...n.readBy, effectiveUserId] };
         })
       );
-      triggerToast('Todas as notificaÒ§Òµes foram marcadas como lidas.');
+      triggerToast('Todas as notifica├Æ┬º├Æ┬Áes foram marcadas como lidas.');
     },
     [currentUser]
   );
@@ -1649,12 +1657,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   const deleteInAppNotification = useCallback(
     (id: string) => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
-      addAuditLog('NOTIFICATION_DELETED', `NotificaÒ§Ò£o ID ${id} removida pelo Master.`);
+      addAuditLog('NOTIFICATION_DELETED', `Notifica├Æ┬º├Æ┬úo ID ${id} removida pelo Master.`);
     },
     []
   );
 
-  // Garante que cada usuÒ¡rio receba uma notificaÒ§Ò£o de boas-vindas personalizada com seu prÒ³prio nome
+  // Garante que cada usu├Æ┬írio receba uma notifica├Æ┬º├Æ┬úo de boas-vindas personalizada com seu pr├Æ┬│prio nome
   const ensureUserWelcomeNotification = useCallback(
     (user: User) => {
       setNotifications((prev) => {
@@ -1668,12 +1676,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
         const welcomeNotif: InAppNotification = {
           id: `welcome-${user.id}-${Date.now()}`,
-    title: `Olá, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
+    title: `Ol├í, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
           message: isSeller
-            ? `OlÒ¡, ${user.name}! Seu acesso como Lojista / Prestador estÒ¡ ativo. VocÒª pode gerenciar seu catÒ¡logo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
+            ? `Ol├Æ┬í, ${user.name}! Seu acesso como Lojista / Prestador est├Æ┬í ativo. Voc├Æ┬¬ pode gerenciar seu cat├Æ┬ílogo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
             : isMaster
-            ? `OlÒ¡, ${user.name}! O painel Master Administrativo estÒ¡ pronto para monitoramento e auditoria com seguranÒ§a jurÒ­dica.`
-            : `OlÒ¡, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu estÒ¡ ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
+            ? `Ol├Æ┬í, ${user.name}! O painel Master Administrativo est├Æ┬í pronto para monitoramento e auditoria com seguran├Æ┬ºa jur├Æ┬¡dica.`
+            : `Ol├Æ┬í, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu est├Æ┬í ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
           category: 'SISTEMA',
           audience: isSeller ? 'SPECIFIC_MERCHANT' : 'SPECIFIC_USER',
           recipientUserId: user.id,
@@ -1681,7 +1689,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           recipientName: user.name,
           recipientPhone: user.phone,
           recipientEmail: user.email,
-          senderName: 'AdministraÒ§Ò£o Achei Aqui',
+          senderName: 'Administra├Æ┬º├Æ┬úo Achei Aqui',
           senderRole: 'SISTEMA',
           priority: 'HIGH',
           actionUrl: isSeller ? 'orders' : 'home',
@@ -1705,17 +1713,17 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   const getUserNotifications = useCallback(
     (user?: User | null): InAppNotification[] => {
       const targetUser = user !== undefined ? user : currentUser;
-      // Visitantes nÒ£o logados nÒ£o possuem acesso a notificaÒ§Òµes particulares
+      // Visitantes n├Æ┬úo logados n├Æ┬úo possuem acesso a notifica├Æ┬º├Æ┬Áes particulares
       if (!targetUser) {
         return [];
       }
 
-      // Master possui visÒ£o administrativa geral
+      // Master possui vis├Æ┬úo administrativa geral
       if (targetUser.role === 'MASTER') {
         return notifications;
       }
 
-      // VENDEDOR: Apenas notificaÒ§Òµes destinadas especificamente a ele ou Ò  sua loja
+      // VENDEDOR: Apenas notifica├Æ┬º├Æ┬Áes destinadas especificamente a ele ou ├Æ┬á sua loja
       if (targetUser.role === 'VENDEDOR') {
         const userMerchantId = targetUser.merchantId;
         return notifications.filter((n) => {
@@ -1725,7 +1733,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         });
       }
 
-      // CLIENTE: Apenas notificaÒ§Òµes estritamente particulares com o seu nome e ID
+      // CLIENTE: Apenas notifica├Æ┬º├Æ┬Áes estritamente particulares com o seu nome e ID
       return notifications.filter((n) => {
         if (n.recipientUserId && n.recipientUserId === targetUser.id) return true;
         if (
@@ -1762,19 +1770,19 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   // CONVERSAS & MENSAGENS INTERNAS POR SUBPEDIDO
   // ==========================================
 
-  // ValidaÒ§Ò£o estrita de permissÒ£o de acesso a mensagens e dados de subpedidos
+  // Valida├Æ┬º├Æ┬úo estrita de permiss├Æ┬úo de acesso a mensagens e dados de subpedidos
   const checkAccessPermission = useCallback(
     (
       userId: string | undefined | null,
       subOrderId: string,
       contextHint?: Partial<ActiveChatSubOrder>
     ): boolean => {
-      // 1. UsuÒ¡rio nÒ£o autenticado ou subpedido invÒ¡lido: acesso terminantemente negado
+      // 1. Usu├Æ┬írio n├Æ┬úo autenticado ou subpedido inv├Æ┬ílido: acesso terminantemente negado
       if (!userId || !subOrderId) {
         return false;
       }
 
-      // 2. Identificar usuÒ¡rio
+      // 2. Identificar usu├Æ┬írio
       const user =
         currentUser && currentUser.id === userId
           ? currentUser
@@ -1784,12 +1792,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return false;
       }
 
-      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e mediaÒ§Ò£o
+      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e media├Æ┬º├Æ┬úo
       if (user.role === 'MASTER') {
         return true;
       }
 
-      // 4. VerificaÒ§Ò£o com base em metadados contextuais explÒ­citos passados na abertura
+      // 4. Verifica├Æ┬º├Æ┬úo com base em metadados contextuais expl├Æ┬¡citos passados na abertura
       if (contextHint) {
         if (user.role === 'CLIENTE') {
           if (contextHint.customerId && contextHint.customerId === user.id) {
@@ -1824,7 +1832,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         }
       }
 
-      // 6. Canal de dÒºvida sobre produto especÒ­fico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
+      // 6. Canal de d├Æ┬║vida sobre produto espec├Æ┬¡fico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
       if (
         subOrderId.startsWith('chat-prod-') ||
         subOrderId.startsWith('product-inquiry-') ||
@@ -1891,7 +1899,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         // Fallback gracioso
       }
 
-      // 9. VerificaÒ§Ò£o por histÒ³rico de mensagens jÒ¡ trocadas no subpedido
+      // 9. Verifica├Æ┬º├Æ┬úo por hist├Æ┬│rico de mensagens j├Æ┬í trocadas no subpedido
       const existingThread = subOrderMessages.filter((m) => m.subpedidoId === subOrderId);
       if (existingThread.length > 0) {
         const userParticipated = existingThread.some(
@@ -1907,14 +1915,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const openSubOrderChat = useCallback(
     (params: ActiveChatSubOrder) => {
-      // ValidaÒ§Ò£o estrita de permissÒ£o antes de abrir o modal do chat
+      // Valida├Æ┬º├Æ┬úo estrita de permiss├Æ┬úo antes de abrir o modal do chat
       const hasPermission = checkAccessPermission(currentUser?.id, params.subpedidoId, params);
 
       if (!hasPermission) {
-        triggerToast('Acesso negado: VocÒª nÒ£o tem permissÒ£o para acessar esta conversa.');
+        triggerToast('Acesso negado: Voc├Æ┬¬ n├Æ┬úo tem permiss├Æ┬úo para acessar esta conversa.');
         logSecurityEvent(
           'UNAUTHORIZED_CHAT_ACCESS_BLOCKED',
-      `Tentativa de acesso não autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usuário ${currentUser?.email || 'Anônimo'} (${currentUser?.role || 'NÃO_AUTENTICADO'}).`,
+      `Tentativa de acesso n├úo autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usu├írio ${currentUser?.email || 'An├┤nimo'} (${currentUser?.role || 'N├âO_AUTENTICADO'}).`,
           {
             subpedidoId: params.subpedidoId,
             codigoSubpedido: params.codigoSubpedido,
@@ -2009,7 +2017,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
       addAuditLog(
         'SUBORDER_SYSTEM_MESSAGE',
-        `[SISTEMA AUTOMÒTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
+        `[SISTEMA AUTOM├Æ┬üTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -2050,19 +2058,19 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           break;
         case 'Em Preparo':
     icon = '';
-          statusText = `Pedido entrou em fase de separaÒ§Ò£o / preparo na loja.`;
+          statusText = `Pedido entrou em fase de separa├Æ┬º├Æ┬úo / preparo na loja.`;
           break;
         case 'Em Rota':
     icon = '';
-          statusText = `Pedido despachado! O entregador estÒ¡ em rota de entrega para o endereÒ§o informado.`;
+          statusText = `Pedido despachado! O entregador est├Æ┬í em rota de entrega para o endere├Æ┬ºo informado.`;
           break;
         case 'Pronto para Retirada':
     icon = '';
-          statusText = `Pedido pronto para retirada no balcÒ£o da loja! CÒ³digo de seguranÒ§a: ${order.securityCode || order.pickupCode || 'N/A'}.`;
+          statusText = `Pedido pronto para retirada no balc├Æ┬úo da loja! C├Æ┬│digo de seguran├Æ┬ºa: ${order.securityCode || order.pickupCode || 'N/A'}.`;
           break;
-        case 'Concluído':
+        case 'Conclu├¡do':
     icon = '';
-          statusText = `Pedido/Atendimento concluÒ­do com sucesso! Obrigado pela preferÒªncia.`;
+          statusText = `Pedido/Atendimento conclu├Æ┬¡do com sucesso! Obrigado pela prefer├Æ┬¬ncia.`;
           break;
         case 'Sem Estoque':
     icon = '';
@@ -2074,11 +2082,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           break;
         case 'Aguardando':
     icon = '';
-          statusText = `SolicitaÒ§Ò£o recebida e aguardando confirmaÒ§Ò£o do estabelecimento.`;
+          statusText = `Solicita├Æ┬º├Æ┬úo recebida e aguardando confirma├Æ┬º├Æ┬úo do estabelecimento.`;
           break;
       }
 
-  const fullMessage = `${icon} [HISTÓRICO OFICIAL] ${statusText}`;
+  const fullMessage = `${icon} [HIST├ôRICO OFICIAL] ${statusText}`;
 
       return sendSubOrderSystemMessage({
         subpedidoId: subId,
@@ -2106,11 +2114,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
       if (eventType === 'MERCHANT_PAID') {
         const commissionFormatted = (order.commissionAmount || 0).toFixed(2).replace('.', ',');
-      message = `[TAXA DA PLATAFORMA] O lojista registrou o pagamento da comissão de R$ ${commissionFormatted}. Aguardando validação do Administrador Master.`;
-        badge = 'ComissÒ£o Enviada';
+      message = `[TAXA DA PLATAFORMA] O lojista registrou o pagamento da comiss├úo de R$ ${commissionFormatted}. Aguardando valida├º├úo do Administrador Master.`;
+        badge = 'Comiss├Æ┬úo Enviada';
       } else {
-      message = `[TRANSAÇÃO AUDITADA] Pagamento da comissão homologado pelo Administrador Master! Dados do comprador liberados e histórico registrado com conformidade fiscal e jurídica.`;
-        badge = 'ComissÒ£o Homologada';
+      message = `[TRANSA├ç├âO AUDITADA] Pagamento da comiss├úo homologado pelo Administrador Master! Dados do comprador liberados e hist├│rico registrado com conformidade fiscal e jur├¡dica.`;
+        badge = 'Comiss├Æ┬úo Homologada';
       }
 
       if (extraNote) {
@@ -2185,7 +2193,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const deleteSubOrderMessage = useCallback((messageId: string) => {
     setSubOrderMessages((prev) => prev.filter((m) => m.id !== messageId));
-    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} excluÒ­da do histÒ³rico do subpedido.`, {
+    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} exclu├Æ┬¡da do hist├Æ┬│rico do subpedido.`, {
       category: 'COMMUNICATION',
       severity: 'WARNING',
       entityId: messageId,
@@ -2256,7 +2264,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       };
     }
     
-    // 1. VerificaÒ§Ò£o prioritÒ¡ria de Consultor / Vendedor Comercial
+    // 1. Verifica├Æ┬º├Æ┬úo priorit├Æ┬íria de Consultor / Vendedor Comercial
     const agentMatch =
       salesAgents.find(
         (a) =>
@@ -2304,9 +2312,9 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         };
       }
 
-      // ValidaÒ§Ò£o de senha para Vendedor:
-      // Primeiro acesso: senha padrÒ£o 12345678
-      // PÒ³s-primeiro acesso: senha pessoal cadastrada pelo vendedor
+      // Valida├Æ┬º├Æ┬úo de senha para Vendedor:
+      // Primeiro acesso: senha padr├Æ┬úo 12345678
+      // P├Æ┬│s-primeiro acesso: senha pessoal cadastrada pelo vendedor
       const isDefaultPassword = password === '12345678';
       const isConfiguredPassword = Boolean(sellerUser.password && sellerUser.password === password);
       const isFirstAccessAllowed = sellerUser.needsPasswordChange === true || sellerUser.password === '12345678' || !sellerUser.password;
@@ -2322,12 +2330,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         if (isFirstAccessAllowed) {
           return {
             success: false,
-            message: 'Senha incorreta. Como este Ò© o primeiro acesso deste vendedor, utilize a senha padrÒ£o 12345678.'
+            message: 'Senha incorreta. Como este ├Æ┬® o primeiro acesso deste vendedor, utilize a senha padr├Æ┬úo 12345678.'
           };
         }
         return {
           success: false,
-          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefiniÒ§Ò£o com a administraÒ§Ò£o.'
+          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefini├Æ┬º├Æ┬úo com a administra├Æ┬º├Æ┬úo.'
         };
       }
     const updatedUser: User = {
@@ -2379,7 +2387,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (!found) {
       return {
         success: false,
-        message: 'UsuÒ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'Usu├Æ┬írio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
@@ -2387,7 +2395,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (found.status === 'blocked' || found.status === 'suspended') {
       return {
         success: false,
-        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÒ§Ò£o.'}`
+        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administra├Æ┬º├Æ┬úo.'}`
       };
     }
 
@@ -2404,40 +2412,40 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     } else if (found.password && password && found.password !== password) {
       return {
         success: false,
-        message: 'UsuÒ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'Usu├Æ┬írio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
     // Check if user requires Two-Factor Authentication (2FA)
     // Master Admins have 2FA required for maximum security
-  // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃO -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
+  // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADR├âO -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
     const isHighPrivilege = found.role === 'MASTER' || (found.role !== 'VENDEDOR' && found.role !== 'REPRESENTANTE_COMERCIAL' && found.twoFactorEnabled);
 
     if (isHighPrivilege) {
       const simulatedCode = '749210';
       sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-    addAuditLog('2FA_REQUESTED', `Código de 2ª etapa gerado para ${found.email} (${found.role})`);
+    addAuditLog('2FA_REQUESTED', `C├│digo de 2┬¬ etapa gerado para ${found.email} (${found.role})`);
       
       return {
         success: false,
         requires2FA: true,
         simulated2FACode: simulatedCode,
         user: found,
-        message: `CÒ³digo de verificaÒ§Ò£o em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
+        message: `C├Æ┬│digo de verifica├Æ┬º├Æ┬úo em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
       };
     }
 
-    // ValidaÒ§Ò£o de Primeiro Acesso e Troca ObrigatÒ³ria de Senha (Ex: Vendedor criado pelo Master)
+    // Valida├Æ┬º├Æ┬úo de Primeiro Acesso e Troca Obrigat├Æ┬│ria de Senha (Ex: Vendedor criado pelo Master)
     if (found.needsPasswordChange) {
       return {
         success: true,
         requiresPasswordChange: true,
         user: found,
-    message: 'Primeiro acesso detectado. É obrigatório alterar sua senha provisória antes de acessar o painel comercial.'
+    message: 'Primeiro acesso detectado. ├ë obrigat├│rio alterar sua senha provis├│ria antes de acessar o painel comercial.'
       };
     }
 
-    // ValidaÒ§Ò£o de Bloqueio para Lojista ou Prestador de ServiÒ§o sem plano pago
+    // Valida├Æ┬º├Æ┬úo de Bloqueio para Lojista ou Prestador de Servi├Æ┬ºo sem plano pago
     if (found.role === 'LOJISTA' || found.role === 'PRESTADOR_SERVICO') {
       const merchant = merchants.find(
         (m) => m.id === found.merchantId || m.cnpjOrCpf === found.cpf || m.email.toLowerCase() === cleanEmail
@@ -2445,18 +2453,18 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       if (merchant && (merchant.status === 'pending_payment' || merchant.status === 'pending')) {
         return {
           success: false,
-          message: 'Seu cadastro estÒ¡ aguardando a confirmaÒ§Ò£o do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
+          message: 'Seu cadastro est├Æ┬í aguardando a confirma├Æ┬º├Æ┬úo do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
         };
       }
       if (merchant && merchant.status === 'blocked') {
         return {
           success: false,
-          message: 'Seu acesso ao painel estÒ¡ temporariamente suspenso pela administraÒ§Ò£o.'
+          message: 'Seu acesso ao painel est├Æ┬í temporariamente suspenso pela administra├Æ┬º├Æ┬úo.'
         };
       }
     }
 
-    // ValidaÒ§Ò£o de Bloqueio para Entregadores NÒ£o Aprovados pelo Master
+    // Valida├Æ┬º├Æ┬úo de Bloqueio para Entregadores N├Æ┬úo Aprovados pelo Master
     if (found.role === 'ENTREGADOR') {
       const driverMatch = deliveryDrivers.find(
         (d) => d.email.toLowerCase() === cleanEmail || d.userId === found.id
@@ -2464,7 +2472,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       if (!driverMatch || driverMatch.status !== 'APROVADO') {
         return {
           success: false,
-          message: 'Cadastro em anÒ¡lise pela moderaÒ§Ò£o. Aguarde a aprovaÒ§Ò£o do Master antes de acessar o Portal de Entregas.'
+          message: 'Cadastro em an├Æ┬ílise pela modera├Æ┬º├Æ┬úo. Aguarde a aprova├Æ┬º├Æ┬úo do Master antes de acessar o Portal de Entregas.'
         };
       }
     }
@@ -2544,8 +2552,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
     // ============================================================
-  // MASTER DE CONTINGÊNCIA - AUTENTICAÇÃO PELO BACKEND
-    // NÒ£o depende do Firebase Authentication nem do Firestore.
+  // MASTER DE CONTING├èNCIA - AUTENTICA├ç├âO PELO BACKEND
+    // N├Æ┬úo depende do Firebase Authentication nem do Firestore.
     // ============================================================
 
     if (cleanEmail === 'telecom.david@gmail.com') {
@@ -2592,37 +2600,37 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
           addAuditLog(
             'MASTER_CONTINGENCY_LOGIN',
-            'Acesso realizado pelo MASTER de contingÒªncia autenticado no backend.'
+            'Acesso realizado pelo MASTER de conting├Æ┬¬ncia autenticado no backend.'
           );
 
-          triggerToast('Acesso MASTER de contingÒªncia autorizado.');
+          triggerToast('Acesso MASTER de conting├Æ┬¬ncia autorizado.');
 
           return {
             success: true,
             user: contingencyMaster,
-            message: 'Acesso MASTER de contingÒªncia autorizado.',
+            message: 'Acesso MASTER de conting├Æ┬¬ncia autorizado.',
           };
         }
 
-        // Se for 401/429, nÒ£o tenta Firebase com o MASTER.
+        // Se for 401/429, n├Æ┬úo tenta Firebase com o MASTER.
         if (masterResponse.status === 401 || masterResponse.status === 429) {
           return {
             success: false,
             message:
               masterResult.message ||
-              'Credenciais MASTER de contingÒªncia invÒ¡lidas.',
+              'Credenciais MASTER de conting├Æ┬¬ncia inv├Æ┬ílidas.',
           };
         }
       } catch (masterError) {
         console.warn(
-          '[MASTER CONTINGENCY] Backend indisponÒ­vel. Continuando fluxo normal.',
+          '[MASTER CONTINGENCY] Backend indispon├Æ┬¡vel. Continuando fluxo normal.',
           masterError
         );
       }
     }
 
     // ============================================================
-  // FIM DO MASTER DE CONTINGÊNCIA
+  // FIM DO MASTER DE CONTING├èNCIA
     // ============================================================
 
 
@@ -2636,7 +2644,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       const u = fbResult.user;
       setUsers((prev) => [u, ...prev.filter((existing) => existing.id !== u.id && existing.email.toLowerCase() !== u.email.toLowerCase())]);
       setCurrentUser(u);
-      addAuditLog('FIREBASE_LOGIN', `Login oficial concluÒ­do via Firebase Auth no perfil ${u.role}`);
+      addAuditLog('FIREBASE_LOGIN', `Login oficial conclu├Æ┬¡do via Firebase Auth no perfil ${u.role}`);
       if (u.role === 'CLIENTE') setCurrentEnvironmentState('MARKETPLACE');
       else if (u.role === 'VENDEDOR' || u.role === 'REPRESENTANTE_COMERCIAL') {
         setCurrentEnvironmentState('COMMERCIAL_PORTAL');
@@ -2658,7 +2666,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       return fbResult;
     }
 
-    // Fallback de contingÒªncia para credenciais locais ou Master
+    // Fallback de conting├Æ┬¬ncia para credenciais locais ou Master
     const localResult = login(rawInput, password, true);
     if (localResult.success || localResult.requires2FA) {
       return localResult;
@@ -2666,7 +2674,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     return {
       success: false,
-      message: localResult.message || fbResult.message || 'Falha na autenticaÒ§Ò£o. Verifique seus dados.',
+      message: localResult.message || fbResult.message || 'Falha na autentica├Æ┬º├Æ┬úo. Verifique seus dados.',
     };
   };
 
@@ -2713,7 +2721,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       setCurrentUser(u);
       setCurrentEnvironmentState('MARKETPLACE');
       addAuditLog('FIREBASE_CUSTOMER_REGISTER', `Novo cliente cadastrado no Firebase Auth: ${u.name} (${u.email})`);
-      triggerToast(`Cadastro concluÒ­do com sucesso via Firebase!`);
+      triggerToast(`Cadastro conclu├Æ┬¡do com sucesso via Firebase!`);
     }
     return res;
   };
@@ -2799,7 +2807,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     }
 
     if (!found) {
-      return { success: false, message: 'UsuÒ¡rio nÒ£o localizado no sistema.' };
+      return { success: false, message: 'Usu├Æ┬írio n├Æ┬úo localizado no sistema.' };
     }
 
     const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
@@ -2816,7 +2824,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       setCurrentUser(updatedUser);
       sessionStorage.removeItem(`2fa_code_${cleanEmail}`);
 
-      addAuditLog('2FA_LOGIN_SUCCESS', `AutenticaÒ§Ò£o 2FA concluÒ­da com sucesso para ${found.name} (${found.role})`);
+      addAuditLog('2FA_LOGIN_SUCCESS', `Autentica├Æ┬º├Æ┬úo 2FA conclu├Æ┬¡da com sucesso para ${found.name} (${found.role})`);
 
       if (found.role === 'MASTER') {
         setCurrentEnvironmentState('MASTER_PANEL');
@@ -2832,13 +2840,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         setCurrentEnvironmentState('MARKETPLACE');
       }
 
-      triggerToast(`AutenticaÒ§Ò£o em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
+      triggerToast(`Autentica├Æ┬º├Æ┬úo em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
       return { success: true, user: updatedUser };
     }
 
     return {
       success: false,
-      message: 'CÒ³digo de confirmaÒ§Ò£o de 2 etapas incorreto. Digite o cÒ³digo de 6 dÒ­gitos vÒ¡lido.'
+      message: 'C├Æ┬│digo de confirma├Æ┬º├Æ┬úo de 2 etapas incorreto. Digite o c├Æ┬│digo de 6 d├Æ┬¡gitos v├Æ┬ílido.'
     };
   };
 
@@ -2846,10 +2854,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const cleanEmail = email.trim().toLowerCase();
     const simulatedCode = '749210';
     sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-    addAuditLog('2FA_RESENT', `Reenvio de cÒ³digo 2FA solicitado para ${cleanEmail}`);
+    addAuditLog('2FA_RESENT', `Reenvio de c├Æ┬│digo 2FA solicitado para ${cleanEmail}`);
     return {
       success: true,
-      message: 'Novo cÒ³digo de seguranÒ§a 2FA enviado com sucesso via SMS/WhatsApp!',
+      message: 'Novo c├Æ┬│digo de seguran├Æ┬ºa 2FA enviado com sucesso via SMS/WhatsApp!',
       simulatedCode
     };
   };
@@ -2918,7 +2926,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       .trim();
 
     const isService = merchantData.isServiceProvider ||
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÒ§os Gerais'].some(cat =>
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Servi├Æ┬ºos Gerais'].some(cat =>
         (merchantData.category || '').toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -2933,17 +2941,17 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     const newMerchant: StoreMerchant = {
       id: newStoreId,
-      name: merchantData.name || (isService ? 'Novo Prestador de ServiÒ§os' : 'Nova Loja Macacu'),
-      ownerName: ownerData.name || 'ProprietÒ¡rio / Profissional',
+      name: merchantData.name || (isService ? 'Novo Prestador de Servi├Æ┬ºos' : 'Nova Loja Macacu'),
+      ownerName: ownerData.name || 'Propriet├Æ┬írio / Profissional',
       email: ownerEmail,
       phone: merchantData.phone || '(21) 99999-7777',
       cnpjOrCpf: merchantData.cnpjOrCpf || '00.000.000/0001-00',
       idDocument: merchantData.idDocument || ownerData.idDocument || 'RJ-12.345.678-9',
-    category: merchantData.category || (isService ? 'PRESTADORES DE SERVIÇOS' : 'GASTRONOMIA'),
+    category: merchantData.category || (isService ? 'PRESTADORES DE SERVI├çOS' : 'GASTRONOMIA'),
       subcategory: merchantData.subcategory,
       description: merchantData.description || (
         isService
-          ? 'Prestador de serviÒ§os com documentaÒ§Ò£o e referÒªncias verificadas.'
+          ? 'Prestador de servi├Æ┬ºos com documenta├Æ┬º├Æ┬úo e refer├Æ┬¬ncias verificadas.'
           : 'Loja parceira oficial no Achei Aqui.'
       ),
       address: merchantData.address || 'Rua Principal, 100',
@@ -2966,7 +2974,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       rating: 5.0,
       reviewsCount: 1,
       isOpen: true,
-      openingHours: merchantData.openingHours || '08:00 Ò s 18:00',
+      openingHours: merchantData.openingHours || '08:00 ├Æ┬ás 18:00',
       deliveryFee: merchantData.deliveryFee ?? 0,
       deliveryTimeEstimate: isService ? 'Sob Agendamento' : '30-45 min',
       supportsPickup: merchantData.supportsPickup ?? true,
@@ -2983,7 +2991,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       ownerEmail,
       _password || '123456',
       {
-        name: ownerData.name || 'ProprietÒ¡rio',
+        name: ownerData.name || 'Propriet├Æ┬írio',
         phone: newMerchant.phone,
         role: isService ? 'PRESTADOR_SERVICO' : 'LOJISTA',
         merchantId: newStoreId,
@@ -3001,7 +3009,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     );
 
     if (!firebaseProvision.success || !firebaseProvision.user) {
-      throw new Error(firebaseProvision.message || 'NÒ£o foi possÒ­vel criar a credencial no Firebase.');
+      throw new Error(firebaseProvision.message || 'N├Æ┬úo foi poss├Æ┬¡vel criar a credencial no Firebase.');
     }
 
     const newOwnerUser: User = {
@@ -3017,7 +3025,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     const merchantSaved = await persistMerchantToFirestore(newMerchant);
     if (!merchantSaved) {
-      triggerToast('Não foi possível salvar o cadastro da loja. Verifique sua conexão e tente novamente.');
+      triggerToast('N├úo foi poss├¡vel salvar o cadastro da loja. Verifique sua conex├úo e tente novamente.');
       return newMerchant;
     }
 
@@ -3028,7 +3036,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     const ownerSaved = await persistUserToFirestore(newOwnerUser);
     if (!ownerSaved) {
-      triggerToast('Loja salva, mas não foi possível salvar o acesso do responsável. Verifique sua conexão e tente novamente.');
+      triggerToast('Loja salva, mas n├úo foi poss├¡vel salvar o acesso do respons├ível. Verifique sua conex├úo e tente novamente.');
       return newMerchant;
     }
 
@@ -3059,7 +3067,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const cleanEmail = email.toLowerCase().trim();
     const user = users.find((u) => u.email.toLowerCase().trim() === cleanEmail);
     if (!user) {
-      return { success: false, message: 'UsuÒ¡rio nÒ£o encontrado.' };
+      return { success: false, message: 'Usu├Æ┬írio n├Æ┬úo encontrado.' };
     }
 
     const updated: User = {
@@ -3089,7 +3097,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'FIRST_LOGIN_PASSWORD_CHANGE',
-      `Senha provisÒ³ria alterada no primeiro acesso com sucesso para o usuÒ¡rio ${user.name} (${user.role}). Acesso ao painel liberado.`
+      `Senha provis├Æ┬│ria alterada no primeiro acesso com sucesso para o usu├Æ┬írio ${user.name} (${user.role}). Acesso ao painel liberado.`
     );
 
     triggerToast('Senha definitiva salva com sucesso! Acesso ao painel liberado.');
@@ -3108,14 +3116,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   }): { success: boolean; message: string; boletoRequest?: BoletoBillingRequest } => {
     const merchant = merchants.find((m) => m.id === params.merchantId);
     if (!merchant) {
-      return { success: false, message: 'Estabelecimento/Prestador nÒ£o encontrado.' };
+      return { success: false, message: 'Estabelecimento/Prestador n├Æ┬úo encontrado.' };
     }
 
     const selectedTier = params.planTier;
     const maxProducts = getMaxProductsForTier(selectedTier);
     const commissionRate = getCommissionRateForTier(selectedTier);
     
-    // Valor padrÒ£o caso amount venha 0
+    // Valor padr├Æ┬úo caso amount venha 0
     let amount = params.amount;
     if (!amount || amount <= 0) {
       if (merchant.isServiceProvider) {
@@ -3174,7 +3182,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       requestedAt: nowIso,
       paidAt: nowIso,
       confirmedByMasterAt: nowIso,
-      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÒ£o: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
+      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | Comiss├Æ┬úo: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
     };
 
     // Registra entrada financeira
@@ -3198,7 +3206,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       })
     );
 
-    // Atualiza metas e mÒ©tricas do vendedor
+    // Atualiza metas e m├Æ┬®tricas do vendedor
     if (matchedAgent) {
       setSalesAgents((prev) =>
         prev.map((a) =>
@@ -3215,7 +3223,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'PLAN_PAYMENT_CONFIRMED',
-      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÒ£o Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
+      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | Comiss├Æ┬úo Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
       { category: 'FINANCIAL', entityId: boletoId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -3261,7 +3269,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     }
 
     addAuditLog('MEMBERSHIP_UPGRADE', `Loja ID ${merchantId} atualizou o plano para "${newTier}" (${maxProducts > 1000 ? 'Produtos Ilimitados' : `${maxProducts} prods`}, Taxa: ${commission}%)`);
-    triggerToast(`ParabÒ©ns! Seu estabelecimento foi atualizado para o ${newTier}!`);
+    triggerToast(`Parab├Æ┬®ns! Seu estabelecimento foi atualizado para o ${newTier}!`);
   };
 
   const payOrderCommissionByMerchant = (orderId: string) => {
@@ -3286,14 +3294,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       orderId,
       'COMMISSION_PAID_BY_MERCHANT',
       updatedOrderRef?.commissionAmount || 0,
-      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando validaÒ§Ò£o do Administrador Master.`,
+      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando valida├Æ┬º├Æ┬úo do Administrador Master.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
         commissionAmount: updatedOrderRef?.commissionAmount
       }
     );
-    triggerToast('Comprovante/Pagamento de comissÒ£o enviado! O Administrador Master irÒ¡ validar e liberar os dados do comprador.');
+    triggerToast('Comprovante/Pagamento de comiss├Æ┬úo enviado! O Administrador Master ir├Æ┬í validar e liberar os dados do comprador.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MERCHANT_PAID');
@@ -3324,7 +3332,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       orderId,
       'COMMISSION_CONFIRMED_BY_MASTER',
       updatedOrderRef?.commissionAmount || 0,
-      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. HomologaÒ§Ò£o e quitaÒ§Ò£o concluÒ­das.`,
+      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Homologa├Æ┬º├Æ┬úo e quita├Æ┬º├Æ┬úo conclu├Æ┬¡das.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
@@ -3337,11 +3345,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'HomologaÒ§Ò£o e liquidaÒ§Ò£o da taxa de intermediaÒ§Ò£o da plataforma pelo Administrador Master'
+        'Homologa├Æ┬º├Æ┬úo e liquida├Æ┬º├Æ┬úo da taxa de intermedia├Æ┬º├Æ┬úo da plataforma pelo Administrador Master'
       );
     }
 
-    triggerToast('ComissÒ£o confirmada pelo Master! Dados do comprador liberados para a loja.');
+    triggerToast('Comiss├Æ┬úo confirmada pelo Master! Dados do comprador liberados para a loja.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MASTER_CONFIRMED');
@@ -3367,12 +3375,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         orderId,
         targetOrder.merchantId,
         targetOrder.customerName,
-        'AutorizaÒ§Ò£o discricionÒ¡ria direta emitida pelo Administrador Master Supremo'
+        'Autoriza├Æ┬º├Æ┬úo discricion├Æ┬íria direta emitida pelo Administrador Master Supremo'
       );
     } else {
       addAuditLog(
         'BUYER_DATA_REVOCATION_MASTER',
-      `[LGPD / SEGURANÇA] Administrador Master BLOQUEOU a visualização de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
+      `[LGPD / SEGURAN├çA] Administrador Master BLOQUEOU a visualiza├º├úo de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'WARNING',
@@ -3387,22 +3395,22 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       );
     }
 
-    triggerToast(`VisualizaÒ§Ò£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
+    triggerToast(`Visualiza├Æ┬º├Æ┬úo de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
   };
 
   const updateUserPassword = (newPassword: string): { success: boolean; message?: string } => {
     if (!currentUser) {
-      return { success: false, message: 'Nenhum usuÒ¡rio autenticado.' };
+      return { success: false, message: 'Nenhum usu├Æ┬írio autenticado.' };
     }
 
     const trimmed = newPassword.trim();
 
     if (trimmed.length < 8) {
-      return { success: false, message: 'A nova senha deve possuir no mÒ­nimo 8 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no m├Æ┬¡nimo 8 caracteres.' };
     }
 
     if (trimmed === '12345678') {
-      return { success: false, message: 'VocÒª precisa cadastrar uma nova senha diferente da senha padrÒ£o.' };
+      return { success: false, message: 'Voc├Æ┬¬ precisa cadastrar uma nova senha diferente da senha padr├Æ┬úo.' };
     }
 
     const updateFirebasePassword = async () => {
@@ -3449,12 +3457,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           }
         }
       } catch {
-        // PersistÒªncia local Ò© complementar ao Firebase/Firestore.
+        // Persist├Æ┬¬ncia local ├Æ┬® complementar ao Firebase/Firestore.
       }
 
       addAuditLog(
         'PASSWORD_UPDATE',
-        `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluÒ­do.`
+        `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso conclu├Æ┬¡do.`
       );
 
       triggerToast('Senha atualizada com sucesso!');
@@ -3464,7 +3472,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     return {
       success: true,
-      message: 'AtualizaÒ§Ò£o da senha iniciada.'
+      message: 'Atualiza├Æ┬º├Æ┬úo da senha iniciada.'
     };
   };
   const toggleTwoFactor = (): boolean => {
@@ -3475,51 +3483,51 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       twoFactorEnabled: newState
     };
     setCurrentUser(updatedUser);
-    addAuditLog('2FA_TOGGLE', `AutenticaÒ§Ò£o em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
-    triggerToast(`AutenticaÒ§Ò£o de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
+    addAuditLog('2FA_TOGGLE', `Autentica├Æ┬º├Æ┬úo em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
+    triggerToast(`Autentica├Æ┬º├Æ┬úo de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
     return newState;
   };
 
   const resendEmailConfirmation = (email: string): { success: boolean; message: string } => {
-    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmaÒ§Ò£o reenviado para ${email}`);
-    triggerToast(`Link de verificaÒ§Ò£o reenviado para ${email}. Verifique sua caixa de entrada.`);
+    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirma├Æ┬º├Æ┬úo reenviado para ${email}`);
+    triggerToast(`Link de verifica├Æ┬º├Æ┬úo reenviado para ${email}. Verifique sua caixa de entrada.`);
     return {
       success: true,
-      message: `E-mail de confirmaÒ§Ò£o enviado para ${email} com sucesso!`
+      message: `E-mail de confirma├Æ┬º├Æ┬úo enviado para ${email} com sucesso!`
     };
   };
 
   const requestPasswordReset = (email: string): { success: boolean; message: string; simulatedCode?: string } => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    addAuditLog('PASSWORD_RESET_REQUEST', `SolicitaÒ§Ò£o de recuperaÒ§Ò£o de senha com cÒ³digo para ${email}`);
+    addAuditLog('PASSWORD_RESET_REQUEST', `Solicita├Æ┬º├Æ┬úo de recupera├Æ┬º├Æ┬úo de senha com c├Æ┬│digo para ${email}`);
     NotificationService.notifySecurityEvent({ email }, 'PASSWORD_RESET', { code });
     return {
       success: true,
-      message: `CÒ³digo de seguranÒ§a de 6 dÒ­gitos gerado e enviado para ${email}.`,
+      message: `C├Æ┬│digo de seguran├Æ┬ºa de 6 d├Æ┬¡gitos gerado e enviado para ${email}.`,
       simulatedCode: code
     };
   };
 
   const completePasswordReset = (email: string, code: string, newPassword: string): { success: boolean; message: string } => {
     if (!code || code.length < 6) {
-      return { success: false, message: 'CÒ³digo de verificaÒ§Ò£o invÒ¡lido.' };
+      return { success: false, message: 'C├Æ┬│digo de verifica├Æ┬º├Æ┬úo inv├Æ┬ílido.' };
     }
     if (!newPassword || newPassword.length < 6) {
-      return { success: false, message: 'A nova senha deve possuir no mÒ­nimo 6 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no m├Æ┬¡nimo 6 caracteres.' };
     }
-    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuÒ¡rio ${email}`);
-    triggerToast('Senha redefinida com sucesso! VocÒª jÒ¡ pode entrar com sua nova senha.');
+    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usu├Æ┬írio ${email}`);
+    triggerToast('Senha redefinida com sucesso! Voc├Æ┬¬ j├Æ┬í pode entrar com sua nova senha.');
     return { success: true, message: 'Senha alterada com sucesso!' };
   };
 
   const logout = () => {
     if (currentUser) {
-      addAuditLog('USER_LOGOUT', `UsuÒ¡rio ${currentUser.name} encerrou a sessÒ£o`);
+      addAuditLog('USER_LOGOUT', `Usu├Æ┬írio ${currentUser.name} encerrou a sess├Æ┬úo`);
     }
     firebaseLogout().catch(() => {});
     setCurrentUser(null);
     setCurrentEnvironment('MARKETPLACE');
-    triggerToast('VocÒª saiu da sua conta.');
+    triggerToast('Voc├Æ┬¬ saiu da sua conta.');
   };
 
   // ==========================================
@@ -3541,14 +3549,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const saved = await persistUserToFirestore(updatedUser);
 
     if (!saved) {
-      triggerToast('NÒ£o foi possÒ­vel salvar a ficha cadastral. Verifique sua conexÒ£o e tente novamente.');
+      triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar a ficha cadastral. Verifique sua conex├Æ┬úo e tente novamente.');
       return false;
     }
 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_PROFILE_UPDATE',
-      'Ficha cadastral de ' + updatedUser.name + ' (' + updatedUser.email + ') modificada pelo prÒ³prio cliente.'
+      'Ficha cadastral de ' + updatedUser.name + ' (' + updatedUser.email + ') modificada pelo pr├Æ┬│prio cliente.'
     );
     triggerToast('Ficha cadastral atualizada com sucesso!');
     return true;
@@ -3556,7 +3564,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   };
   const addCustomerAddress = (addressData: Omit<CustomerAddress, 'id'>): CustomerAddress => {
     if (!currentUser) {
-      throw new Error('Nenhum usuÒ¡rio autenticado para adicionar endereÒ§o.');
+      throw new Error('Nenhum usu├Æ┬írio autenticado para adicionar endere├Æ┬ºo.');
     }
 
     const currentAddresses = currentUser.addresses || [];
@@ -3590,14 +3598,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel salvar o endereÒ§o. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar o endere├Æ┬ºo. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
       addAuditLog(
         'CUSTOMER_ADDRESS_ADD',
-        `Novo endereÒ§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado Ò  ficha do cliente.`
+        `Novo endere├Æ┬ºo "${newAddress.label}" (${newAddress.neighborhood}) adicionado ├Æ┬á ficha do cliente.`
       );
-      triggerToast(`EndereÒ§o "${newAddress.label}" salvo com sucesso!`);
+      triggerToast(`Endere├Æ┬ºo "${newAddress.label}" salvo com sucesso!`);
     });
     return newAddress;
   };
@@ -3641,11 +3649,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel salvar o endereÒ§o. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar o endere├Æ┬ºo. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
-    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÒ§o "${targetAddress.label}" modificado pelo cliente.`);
-      triggerToast('EndereÒ§o atualizado com sucesso!');
+    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `Endere├Æ┬ºo "${targetAddress.label}" modificado pelo cliente.`);
+      triggerToast('Endere├Æ┬ºo atualizado com sucesso!');
     });
   };
 
@@ -3677,15 +3685,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel excluir o endereÒ§o. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel excluir o endere├Æ┬ºo. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_DELETE',
-        `EndereÒ§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
+        `Endere├Æ┬ºo "${addressToDelete?.label || id}" removido da ficha cadastral.`
       );
-      triggerToast('EndereÒ§o removido com sucesso.');
+      triggerToast('Endere├Æ┬ºo removido com sucesso.');
     });
   };
 
@@ -3715,15 +3723,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel definir o endereÒ§o principal. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel definir o endere├Æ┬ºo principal. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_SET_DEFAULT',
-        `EndereÒ§o "${targetAddress.label}" definido como principal pelo cliente.`
+        `Endere├Æ┬ºo "${targetAddress.label}" definido como principal pelo cliente.`
       );
-      triggerToast('EndereÒ§o definido como principal com sucesso!');
+      triggerToast('Endere├Æ┬ºo definido como principal com sucesso!');
     });
   };
 
@@ -3739,13 +3747,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel salvar a ficha de medidas. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar a ficha de medidas. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
       addAuditLog(
         'VIP_MEASUREMENTS_UPDATE',
-        'Ficha de medidas e preferÒªncias para Provador VIP atualizada.'
+        'Ficha de medidas e prefer├Æ┬¬ncias para Provador VIP atualizada.'
       );
       triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
     });
@@ -3764,16 +3772,16 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel salvar as preferÒªncias. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar as prefer├Æ┬¬ncias. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
       setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
       addAuditLog(
         'CUSTOMER_PREFERENCES_UPDATE',
-        'PreferÒªncias de comunicaÒ§Ò£o e canais atualizadas.'
+        'Prefer├Æ┬¬ncias de comunica├Æ┬º├Æ┬úo e canais atualizadas.'
       );
-      triggerToast('PreferÒªncias de notificaÒ§Ò£o salvas com sucesso!');
+      triggerToast('Prefer├Æ┬¬ncias de notifica├Æ┬º├Æ┬úo salvas com sucesso!');
     });
   };
 
@@ -3790,13 +3798,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     void persistProductToFirestore(newProduct).then((saved) => {
       if (!saved) {
         setProducts((prev) => prev.filter((p) => p.id !== newProduct.id));
-        triggerToast(`NÒ£o foi possÒ­vel salvar o produto "${newProduct.name}". Verifique sua conexÒ£o e tente novamente.`);
+        triggerToast(`N├Æ┬úo foi poss├Æ┬¡vel salvar o produto "${newProduct.name}". Verifique sua conex├Æ┬úo e tente novamente.`);
         return;
       }
 
       addAuditLog(
         'PRODUCT_CREATE',
-        `Cadastrou o produto "${newProduct.name}" no catÒ¡logo`
+        `Cadastrou o produto "${newProduct.name}" no cat├Æ┬ílogo`
       );
       triggerToast(`Produto "${newProduct.name}" publicado com sucesso no marketplace!`);
     });
@@ -3818,7 +3826,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     );
 
     if (!updatedProduct) {
-      triggerToast('Produto nÒ£o encontrado para atualizaÒ§Ò£o.');
+      triggerToast('Produto n├Æ┬úo encontrado para atualiza├Æ┬º├Æ┬úo.');
       return;
     }
 
@@ -3826,7 +3834,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     void persistProductToFirestore(productToSave).then((saved) => {
       if (!saved) {
-        triggerToast('NÒ£o foi possÒ­vel salvar o produto. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar o produto. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
@@ -3877,7 +3885,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const previousMerchant = merchants.find((m) => m.id === id);
 
     if (!previousMerchant) {
-      triggerToast('Loja nÒ£o encontrada para atualizaÒ§Ò£o.');
+      triggerToast('Loja n├Æ┬úo encontrada para atualiza├Æ┬º├Æ┬úo.');
       return;
     }
 
@@ -3895,13 +3903,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         setMerchants((prev) =>
           prev.map((m) => (m.id === id ? previousMerchant : m))
         );
-        triggerToast('NÒ£o foi possÒ­vel salvar os dados da loja. Verifique sua conexÒ£o e tente novamente.');
+        triggerToast('N├Æ┬úo foi poss├Æ┬¡vel salvar os dados da loja. Verifique sua conex├Æ┬úo e tente novamente.');
         return;
       }
 
       addAuditLog(
         'STORE_UPDATE',
-        `Atualizou configuraÒ§Òµes da loja ID ${id}`
+        `Atualizou configura├Æ┬º├Æ┬Áes da loja ID ${id}`
       );
       triggerToast('Dados da loja salvos com sucesso!');
     });
@@ -3922,7 +3930,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString(36).toUpperCase();
     let prefix = 'DEL-';
     if (orderData.modality === 'RETIRADA') prefix = 'RET-';
-    if (orderData.modality === 'EXPERIMENTAÇÃO') prefix = 'EXP-';
+    if (orderData.modality === 'EXPERIMENTA├ç├âO') prefix = 'EXP-';
     if (orderData.modality === 'AGENDAMENTO') prefix = 'AGE-';
 
     const orderCode = `${prefix}${randomSuffix}`;
@@ -3964,13 +3972,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setOrders((prev) => [newOrder, ...prev]);
     persistOrderToFirestore(newOrder);
 
-    // Persiste no banco de dados do servidor para sincronizaÒ§Ò£o com Webhooks do Asaas
+    // Persiste no banco de dados do servidor para sincroniza├Æ┬º├Æ┬úo com Webhooks do Asaas
     persistirPedidoNoServidor(newOrder).catch(() => {});
     
     logOrderEvent(
       newOrder.id,
       'ORDER_PLACED',
-      `SolicitaÒ§Ò£o de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
+      `Solicita├Æ┬º├Æ┬úo de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
       {
         orderId: newOrder.id,
         code: newOrder.code,
@@ -3992,15 +4000,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       subpedidoId: initialSubId,
       pedidoPrincipalId: newOrder.id,
       codigoSubpedido: initialSubCode,
-    message: `[HISTÓRICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). Código de segurança: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirmação do estabelecimento.`,
+    message: `[HIST├ôRICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). C├│digo de seguran├ºa: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirma├º├úo do estabelecimento.`,
       systemEventType: 'ORDER_CREATED',
       statusBadge: newOrder.status || 'Pendente'
     });
 
-    // Disparo de notificaÒ§Ò£o transacional via NotificationService (com Firebase Firestore e WhatsApp)
+    // Disparo de notifica├Æ┬º├Æ┬úo transacional via NotificationService (com Firebase Firestore e WhatsApp)
     NotificationService.notifyOrderEvent(newOrder, 'ORDER_PLACED');
 
-    if (orderData.modality === 'EXPERIMENTAÇÃO') {
+    if (orderData.modality === 'EXPERIMENTA├ç├âO') {
       NotificationService.notifyTrialEvent(newOrder, 'TRIAL_REQUESTED');
     } else if (orderData.modality === 'AGENDAMENTO') {
       NotificationService.notifyServiceBookingEvent(newOrder, 'SERVICE_BOOKED');
@@ -4042,7 +4050,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     logOrderEvent(
       orderId,
       'STOCK_CONFIRMED',
-      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (atÒ© ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
+      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (at├Æ┬® ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
       {
         orderId,
         reservationExpiresAt,
@@ -4056,7 +4064,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'Desbloqueio autorizado automaticamente apÒ³s confirmaÒ§Ò£o de estoque e verificaÒ§Ò£o de plano do parceiro'
+        'Desbloqueio autorizado automaticamente ap├Æ┬│s confirma├Æ┬º├Æ┬úo de estoque e verifica├Æ┬º├Æ┬úo de plano do parceiro'
       );
     }
 
@@ -4068,7 +4076,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     }
   };
 
-  const rejectOrderStock = (orderId: string, reason: string = 'Produto indisponÒ­vel no momento') => {
+  const rejectOrderStock = (orderId: string, reason: string = 'Produto indispon├Æ┬¡vel no momento') => {
     let updatedOrderRef: Order | undefined;
 
     setOrders((prev) =>
@@ -4142,7 +4150,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       persistOrderToFirestore(updatedOrderRef);
     }
 
-    // Disparar mensagem de sistema automÒ¡tica no chat do subpedido
+    // Disparar mensagem de sistema autom├Æ┬ítica no chat do subpedido
     if (updatedOrderRef) {
       dispatchOrderStatusSystemMessage(updatedOrderRef, status, prevStatusRef);
 
@@ -4154,7 +4162,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_DISPATCHED');
       } else if (status === 'Pronto para Retirada') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_READY_PICKUP');
-      } else if (status === 'ConcluÒ­do') {
+      } else if (status === 'Conclu├Æ┬¡do') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_COMPLETED');
       } else if (status === 'Cancelado' || status === 'Sem Estoque') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_CANCELLED');
@@ -4175,23 +4183,23 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (!found) {
       logSecurityEvent(
         'PICKUP_VALIDATION_FAILED',
-        `Tentativa de validaÒ§Ò£o com cÒ³digo invÒ¡lido ou nÒ£o encontrado: "${cleanCode}"`,
+        `Tentativa de valida├Æ┬º├Æ┬úo com c├Æ┬│digo inv├Æ┬ílido ou n├Æ┬úo encontrado: "${cleanCode}"`,
         { attemptedCode: cleanCode },
         'WARNING'
       );
-      return { success: false, message: 'CÒ³digo de seguranÒ§a ou retirada nÒ£o encontrado ou invÒ¡lido.' };
+      return { success: false, message: 'C├Æ┬│digo de seguran├Æ┬ºa ou retirada n├Æ┬úo encontrado ou inv├Æ┬ílido.' };
     }
 
-    if (found.status === 'ConcluÒ­do') {
-      return { success: false, message: 'Este cÒ³digo jÒ¡ foi validado e o pedido concluÒ­do anteriormente.', order: found };
+    if (found.status === 'Conclu├Æ┬¡do') {
+      return { success: false, message: 'Este c├Æ┬│digo j├Æ┬í foi validado e o pedido conclu├Æ┬¡do anteriormente.', order: found };
     }
 
-    // Update order to ConcluÒ­do
-    updateOrderStatus(found.id, 'ConcluÒ­do');
+    // Update order to Conclu├Æ┬¡do
+    updateOrderStatus(found.id, 'Conclu├Æ┬¡do');
     logOrderEvent(
       found.id,
       'PICKUP_VALIDATED',
-      `CÒ³digo de seguranÒ§a/retirada ${cleanCode} validado com sucesso no balcÒ£o. Pedido entregue a ${found.customerName}.`,
+      `C├Æ┬│digo de seguran├Æ┬ºa/retirada ${cleanCode} validado com sucesso no balc├Æ┬úo. Pedido entregue a ${found.customerName}.`,
       {
         orderId: found.id,
         validatedCode: cleanCode,
@@ -4201,15 +4209,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     );
     return {
       success: true,
-      message: `CÒ³digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
-      order: { ...found, status: 'ConcluÒ­do' }
+      message: `C├Æ┬│digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
+      order: { ...found, status: 'Conclu├Æ┬¡do' }
     };
   };
 
   // Cart & Favorites
   const addToCart = (item: CartItem) => {
     setCart((prev) => [...prev, item]);
-    triggerToast(`${item.product.name} adicionado Ò  sua sacola!`);
+    triggerToast(`${item.product.name} adicionado ├Æ┬á sua sacola!`);
   };
 
   const removeFromCart = (indexOrProductId: number | string) => {
@@ -4255,8 +4263,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     };
 
     setUsers((prev) => [newUser, ...prev]);
-    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usuÒ¡rio "${newUser.name}" (${newUser.role} - ${newUser.email})`);
-    triggerToast(`UsuÒ¡rio "${newUser.name}" criado com sucesso!`);
+    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usu├Æ┬írio "${newUser.name}" (${newUser.role} - ${newUser.email})`);
+    triggerToast(`Usu├Æ┬írio "${newUser.name}" criado com sucesso!`);
     return newUser;
   };
 
@@ -4274,8 +4282,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       })
     );
 
-    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usuÒ¡rio ID ${userId}`);
-    triggerToast('Cadastro de usuÒ¡rio atualizado com sucesso.');
+    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usu├Æ┬írio ID ${userId}`);
+    triggerToast('Cadastro de usu├Æ┬írio atualizado com sucesso.');
   };
 
   const blockUserByMaster = (userId: string, reason?: string) => {
@@ -4285,7 +4293,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           const updated = {
             ...u,
             status: 'blocked' as const,
-            statusReason: reason || 'Bloqueado por decisÒ£o administrativa Master'
+            statusReason: reason || 'Bloqueado por decis├Æ┬úo administrativa Master'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4293,8 +4301,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return u;
       })
     );
-    addAuditLog('MASTER_USER_BLOCK', `UsuÒ¡rio ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
-    triggerToast('UsuÒ¡rio bloqueado com sucesso.');
+    addAuditLog('MASTER_USER_BLOCK', `Usu├Æ┬írio ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
+    triggerToast('Usu├Æ┬írio bloqueado com sucesso.');
   };
 
   const suspendUserByMaster = (userId: string, reason?: string) => {
@@ -4304,7 +4312,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
           const updated = {
             ...u,
             status: 'suspended' as const,
-            statusReason: reason || 'Suspenso preventivamente para verificaÒ§Ò£o'
+            statusReason: reason || 'Suspenso preventivamente para verifica├Æ┬º├Æ┬úo'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4312,8 +4320,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return u;
       })
     );
-    addAuditLog('MASTER_USER_SUSPEND', `UsuÒ¡rio ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'PrevenÒ§Ò£o'}`);
-    triggerToast('UsuÒ¡rio suspenso temporariamente.');
+    addAuditLog('MASTER_USER_SUSPEND', `Usu├Æ┬írio ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'Preven├Æ┬º├Æ┬úo'}`);
+    triggerToast('Usu├Æ┬írio suspenso temporariamente.');
   };
 
   const reactivateUserByMaster = (userId: string) => {
@@ -4331,14 +4339,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return u;
       })
     );
-    addAuditLog('MASTER_USER_REACTIVATE', `UsuÒ¡rio ID ${userId} REATIVADO com status Ativo pelo Master`);
-    triggerToast('UsuÒ¡rio reativado com sucesso!');
+    addAuditLog('MASTER_USER_REACTIVATE', `Usu├Æ┬írio ID ${userId} REATIVADO com status Ativo pelo Master`);
+    triggerToast('Usu├Æ┬írio reativado com sucesso!');
   };
 
   const deleteUserByMaster = (userId: string) => {
     setUsers((prev) => prev.filter((u) => u.id !== userId));
-    addAuditLog('MASTER_USER_DELETE', `UsuÒ¡rio ID ${userId} EXCLUÒDO definitivamente do sistema pelo Master`);
-    triggerToast('UsuÒ¡rio removido da base de dados.');
+    addAuditLog('MASTER_USER_DELETE', `Usu├Æ┬írio ID ${userId} EXCLU├Æ┬ìDO definitivamente do sistema pelo Master`);
+    triggerToast('Usu├Æ┬írio removido da base de dados.');
   };
 
   const resetUserPasswordByMaster = (userId: string): string => {
@@ -4351,8 +4359,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return u;
       })
     );
-    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuÒ¡rio ID ${userId} resetada pelo Master. Nova provisÒ³ria gerada.`);
-    triggerToast(`Senha resetada! Nova senha provisÒ³ria: ${tempPass}`);
+    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usu├Æ┬írio ID ${userId} resetada pelo Master. Nova provis├Æ┬│ria gerada.`);
+    triggerToast(`Senha resetada! Nova senha provis├Æ┬│ria: ${tempPass}`);
     return tempPass;
   };
 
@@ -4366,13 +4374,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return u;
       })
     );
-    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verificaÒ§Ò£o alterado para o usuÒ¡rio ID ${userId}`);
-    triggerToast('Status de verificaÒ§Ò£o do usuÒ¡rio atualizado.');
+    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verifica├Æ┬º├Æ┬úo alterado para o usu├Æ┬írio ID ${userId}`);
+    triggerToast('Status de verifica├Æ┬º├Æ┬úo do usu├Æ┬írio atualizado.');
   };
 
   const impersonateUser = (user: User) => {
     setCurrentUser(user);
-    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessÒ£o do usuÒ¡rio "${user.name}" (${user.role})`);
+    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sess├Æ┬úo do usu├Æ┬írio "${user.name}" (${user.role})`);
     if (user.role === 'CLIENTE') {
       setCurrentEnvironment('MARKETPLACE');
     } else if (user.role === 'VENDEDOR') {
@@ -4401,7 +4409,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const suspendMerchant = (id: string, reason?: string) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela moderaÒ§Ò£o' } : m))
+      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela modera├Æ┬º├Æ┬úo' } : m))
     );
     addAuditLog('MASTER_MERCHANT_SUSPEND', `Loja ID ${id} SUSPENSA pelo Master. Motivo: ${reason || 'Ajustes contratuais'}`);
     triggerToast('Loja suspensa com sucesso.');
@@ -4417,16 +4425,16 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const deleteMerchant = (id: string) => {
     setMerchants((prev) => prev.filter((m) => m.id !== id));
-    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÒDA do sistema pelo Master`);
-    triggerToast('Loja excluÒ­da do catÒ¡logo.');
+    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLU├Æ┬ìDA do sistema pelo Master`);
+    triggerToast('Loja exclu├Æ┬¡da do cat├Æ┬ílogo.');
   };
 
   const setMerchantCommissionRate = (id: string, rate: number) => {
     setMerchants((prev) =>
       prev.map((m) => (m.id === id ? { ...m, commissionRate: rate } : m))
     );
-    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissÒ£o da loja ID ${id} ajustada para ${rate}%`);
-    triggerToast(`ComissÒ£o ajustada para ${rate}%.`);
+    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comiss├Æ┬úo da loja ID ${id} ajustada para ${rate}%`);
+    triggerToast(`Comiss├Æ┬úo ajustada para ${rate}%.`);
   };
 
   // Products & Services Control Master
@@ -4449,7 +4457,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return p;
       })
     );
-    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'NÃO'}`);
+    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'N├âO'}`);
     triggerToast(nextState ? 'Produto destacado na Home!' : 'Destaque removido.');
   };
 
@@ -4459,8 +4467,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       id: `srv-${Date.now()}`
     };
     setServices((prev) => [newService, ...prev]);
-    addAuditLog('SERVICE_CREATE', `ServiÒ§o "${newService.title}" cadastrado`);
-    triggerToast(`ServiÒ§o "${newService.title}" adicionado!`);
+    addAuditLog('SERVICE_CREATE', `Servi├Æ┬ºo "${newService.title}" cadastrado`);
+    triggerToast(`Servi├Æ┬ºo "${newService.title}" adicionado!`);
     return newService;
   };
 
@@ -4468,14 +4476,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setServices((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('SERVICE_UPDATE', `ServiÒ§o ID ${id} atualizado`);
-    triggerToast('ServiÒ§o atualizado com sucesso.');
+    addAuditLog('SERVICE_UPDATE', `Servi├Æ┬ºo ID ${id} atualizado`);
+    triggerToast('Servi├Æ┬ºo atualizado com sucesso.');
   };
 
   const deleteService = (id: string) => {
     setServices((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('SERVICE_DELETE', `ServiÒ§o ID ${id} removido`);
-    triggerToast('ServiÒ§o removido.');
+    addAuditLog('SERVICE_DELETE', `Servi├Æ┬ºo ID ${id} removido`);
+    triggerToast('Servi├Æ┬ºo removido.');
   };
 
   // Orders Intervention Master
@@ -4518,7 +4526,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         if (o.id === orderId) {
           const updated = {
             ...o,
-            status: 'ConcluÒ­do' as OrderStatus,
+            status: 'Conclu├Æ┬¡do' as OrderStatus,
             pickupValidatedAt: new Date().toISOString(),
             updatedAt: 'Agora'
           };
@@ -4531,21 +4539,21 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (targetOrder) {
       NotificationService.notifyOrderEvent(targetOrder, 'ORDER_COMPLETED');
     }
-    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLUÒDO manualmente com baixa forÒ§ada pelo Master`);
+    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLU├Æ┬ìDO manualmente com baixa for├Æ┬ºada pelo Master`);
     triggerToast('Pedido finalizado com sucesso.');
   };
 
   const deleteOrderByMaster = (orderId: string) => {
     setOrders((prev) => prev.filter((o) => o.id !== orderId));
-    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLUÒDO do sistema`);
-    triggerToast('Pedido excluÒ­do.');
+    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLU├Æ┬ìDO do sistema`);
+    triggerToast('Pedido exclu├Æ┬¡do.');
   };
 
   // System Settings & Database Control
   const updateSystemSettings = (updates: Partial<SystemSettings>) => {
     setSystemSettings((prev) => ({ ...prev, ...updates }));
-    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'ConfiguraÒ§Òµes e parÒ¢metros globais da plataforma atualizados');
-    triggerToast('ParÒ¢metros do sistema salvos com sucesso!');
+    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'Configura├Æ┬º├Æ┬Áes e par├Æ┬ómetros globais da plataforma atualizados');
+    triggerToast('Par├Æ┬ómetros do sistema salvos com sucesso!');
   };
 
   const clearAuditLogs = () => {
@@ -4560,7 +4568,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19)
     };
     setAuditLogs([initialLog]);
-    triggerToast('HistÒ³rico de logs reinicializado.');
+    triggerToast('Hist├Æ┬│rico de logs reinicializado.');
   };
 
   const exportFullDatabaseSnapshot = (): string => {
@@ -4583,7 +4591,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     try {
       const data = JSON.parse(jsonString);
       if (!data.users || !data.merchants || !data.products) {
-        throw new Error('Arquivo de backup invÒ¡lido ou incompatÒ­vel.');
+        throw new Error('Arquivo de backup inv├Æ┬ílido ou incompat├Æ┬¡vel.');
       }
       if (data.users) setUsers(data.users);
       if (data.merchants) setMerchants(data.merchants);
@@ -4599,7 +4607,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       return true;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erro ao importar';
-      triggerToast(`Falha na restauraÒ§Ò£o: ${msg}`);
+      triggerToast(`Falha na restaura├Æ┬º├Æ┬úo: ${msg}`);
       return false;
     }
   };
@@ -4616,8 +4624,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setAdSpaces(INITIAL_AD_SPACES);
     setFrontendConfig(INITIAL_FRONTEND_CONFIG);
     setCurrentCity('Cachoeiras de Macacu, RJ');
-    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrÒ£o inicial de fÒ¡brica');
-    triggerToast('Sistema restaurado para os dados originais padrÒ£o!');
+    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padr├Æ┬úo inicial de f├Æ┬íbrica');
+    triggerToast('Sistema restaurado para os dados originais padr├Æ┬úo!');
   };
 
   // Inter-Category Banners Operations
@@ -4669,8 +4677,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       bids: []
     };
     setAdSpaces((prev) => [newSpace, ...prev]);
-    addAuditLog('AD_SPACE_CREATE', `EspaÒ§o publicitÒ¡rio criado: "${newSpace.name}"`);
-    triggerToast('EspaÒ§o de publicidade disponibilizado!');
+    addAuditLog('AD_SPACE_CREATE', `Espa├Æ┬ºo publicit├Æ┬írio criado: "${newSpace.name}"`);
+    triggerToast('Espa├Æ┬ºo de publicidade disponibilizado!');
     return newSpace;
   };
 
@@ -4678,14 +4686,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setAdSpaces((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('AD_SPACE_UPDATE', `EspaÒ§o publicitÒ¡rio #${id} atualizado`);
-    triggerToast('EspaÒ§o publicitÒ¡rio atualizado!');
+    addAuditLog('AD_SPACE_UPDATE', `Espa├Æ┬ºo publicit├Æ┬írio #${id} atualizado`);
+    triggerToast('Espa├Æ┬ºo publicit├Æ┬írio atualizado!');
   };
 
   const deleteAdSpace = (id: string) => {
     setAdSpaces((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('AD_SPACE_DELETE', `EspaÒ§o publicitÒ¡rio #${id} excluÒ­do`);
-    triggerToast('EspaÒ§o publicitÒ¡rio excluÒ­do!');
+    addAuditLog('AD_SPACE_DELETE', `Espa├Æ┬ºo publicit├Æ┬írio #${id} exclu├Æ┬¡do`);
+    triggerToast('Espa├Æ┬ºo publicit├Æ┬írio exclu├Æ┬¡do!');
   };
 
   const placeAdBid = (
@@ -4696,13 +4704,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     notes?: string
   ): { success: boolean; message: string } => {
     const space = adSpaces.find((s) => s.id === adSpaceId);
-    if (!space) return { success: false, message: 'EspaÒ§o nÒ£o encontrado.' };
+    if (!space) return { success: false, message: 'Espa├Æ┬ºo n├Æ┬úo encontrado.' };
 
     const minAmount = space.currentHighestBid ? space.currentHighestBid + 10 : (space.minimumBid || 50);
     if (bidAmount < minAmount) {
       return {
         success: false,
-        message: `O lance mÒ­nimo para superar a oferta atual Ò© de R$ ${minAmount.toFixed(2)}`
+        message: `O lance m├Æ┬¡nimo para superar a oferta atual ├Æ┬® de R$ ${minAmount.toFixed(2)}`
       };
     }
 
@@ -4736,7 +4744,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       })
     );
 
-    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espaÒ§o #${space.name}`);
+    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espa├Æ┬ºo #${space.name}`);
     triggerToast(`Lance de R$ ${bidAmount.toFixed(2)} registrado com sucesso!`);
     return { success: true, message: 'Lance registrado com sucesso!' };
   };
@@ -4764,8 +4772,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return s;
       })
     );
-    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `LeilÒ£o arrematado para o espaÒ§o #${adSpaceId}`);
-    triggerToast('Vencedor do leilÒ£o confirmado e espaÒ§o ativado!');
+    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `Leil├Æ┬úo arrematado para o espa├Æ┬ºo #${adSpaceId}`);
+    triggerToast('Vencedor do leil├Æ┬úo confirmado e espa├Æ┬ºo ativado!');
   };
 
   const sellAdSpaceDirectly = (
@@ -4790,8 +4798,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return s;
       })
     );
-    addAuditLog('AD_DIRECT_SALE', `EspaÒ§o #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
-    triggerToast(`EspaÒ§o publicitÒ¡rio vendido para ${merchantName}!`);
+    addAuditLog('AD_DIRECT_SALE', `Espa├Æ┬ºo #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
+    triggerToast(`Espa├Æ┬ºo publicit├Æ┬írio vendido para ${merchantName}!`);
   };
 
   const trackAdImpression = useCallback((adSpaceId: string) => {
@@ -4826,11 +4834,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'FRONTEND_CONFIG_UPDATE',
-      'ConfiguraÒ§Òµes de visual do frontend atualizadas pelo Master'
+      'Configura├Æ┬º├Æ┬Áes de visual do frontend atualizadas pelo Master'
     );
 
     triggerToast(
-      'Visual e configuraÒ§Òµes do frontend atualizados com sucesso!'
+      'Visual e configura├Æ┬º├Æ┬Áes do frontend atualizados com sucesso!'
     );
   };
 
@@ -4845,7 +4853,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       navMenuItems: [...prev.navMenuItems, newItem]
     }));
 
-    triggerToast('Item adicionado ao menu de navegaÒ§Ò£o!');
+    triggerToast('Item adicionado ao menu de navega├Æ┬º├Æ┬úo!');
   };
 
   const updateNavMenuItem = (id: string, updates: Partial<NavMenuItem>) => {
@@ -4876,7 +4884,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   };
 
   // ==========================================
-  // AVALIAÇÕES MÚTUAS & REPUTAÇÃO LOCAL
+  // AVALIA├ç├òES M├ÜTUAS & REPUTA├ç├âO LOCAL
   // ==========================================
 
   const addCustomerReview = (
@@ -4911,7 +4919,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       'CUSTOMER_REVIEW_SUBMITTED',
       `Cliente ${reviewData.userName} avaliou o estabelecimento ${reviewData.merchantName} com nota ${reviewData.rating}.0`
     );
-    triggerToast('AvaliaÒ§Ò£o enviada com sucesso! Obrigado pela contribuiÒ§Ò£o.');
+    triggerToast('Avalia├Æ┬º├Æ┬úo enviada com sucesso! Obrigado pela contribui├Æ┬º├Æ┬úo.');
     return newReview;
   };
 
@@ -4930,7 +4938,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       'MERCHANT_REVIEW_SUBMITTED',
       `Lojista ${reviewData.merchantName} avaliou a conduta do cliente ${reviewData.userName} (Pedido #${reviewData.orderCode}) com nota ${reviewData.rating}.0`
     );
-    triggerToast(`AvaliaÒ§Ò£o de conduta de ${reviewData.userName} registrada com sucesso!`);
+    triggerToast(`Avalia├Æ┬º├Æ┬úo de conduta de ${reviewData.userName} registrada com sucesso!`);
     return newReview;
   };
 
@@ -4946,7 +4954,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
             ...r,
             merchantReply: {
               replyText,
-              repliedAt: `${new Date().toISOString().split('T')[0]} Ò s ${new Date()
+              repliedAt: `${new Date().toISOString().split('T')[0]} ├Æ┬ás ${new Date()
                 .toTimeString()
                 .slice(0, 5)}`,
               merchantAuthorName: merchantAuthorName || 'Estabelecimento'
@@ -4956,8 +4964,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         return r;
       })
     );
-    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta pÒºblica adicionada para a avaliaÒ§Ò£o #${reviewId}`);
-    triggerToast('Resposta pÒºblica publicada com sucesso!');
+    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta p├Æ┬║blica adicionada para a avalia├Æ┬º├Æ┬úo #${reviewId}`);
+    triggerToast('Resposta p├Æ┬║blica publicada com sucesso!');
   };
 
   const getCustomerReputationSummary = useCallback(
@@ -5046,7 +5054,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   };
 
   // ==========================================
-  // OPERAÇÕES DA EQUIPE COMERCIAL & VENDEDORES
+  // OPERA├ç├òES DA EQUIPE COMERCIAL & VENDEDORES
   // ==========================================
 
   const addSalesAgent = async (agentData: Omit<SalesAgent, 'id' | 'createdAt'>): Promise<SalesAgent | null> => {
@@ -5056,7 +5064,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       createdAt: new Date().toISOString().split('T')[0]
     };
 
-    // Cria o perfil de usuÒ¡rio VENDEDOR correspondente para autenticaÒ§Ò£o
+    // Cria o perfil de usu├Æ┬írio VENDEDOR correspondente para autentica├Æ┬º├Æ┬úo
     const cleanAgentEmail = newAgent.email.toLowerCase().trim();
     const provisionalPassword = (agentData as any).temporaryPassword || '12345678';
     const firebaseProvision = await firebaseProvisionSalesAgent(
@@ -5071,7 +5079,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     );
 
     if (!firebaseProvision.success) {
-      triggerToast(`NÒ£o foi possÒ­vel criar o vendedor no Firebase: ${firebaseProvision.message}`);
+      triggerToast(`N├Æ┬úo foi poss├Æ┬¡vel criar o vendedor no Firebase: ${firebaseProvision.message}`);
       return null;
     }
     setSalesAgents((prev) => [newAgent, ...prev]);
@@ -5092,10 +5100,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'ADD_SALES_AGENT',
-      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comissÒ£o de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padrÒ£o 12345678 (troca obrigatÒ³ria no primeiro acesso).`,
+      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comiss├Æ┬úo de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padr├Æ┬úo 12345678 (troca obrigat├Æ┬│ria no primeiro acesso).`,
       { category: 'USER_MANAGEMENT', entityId: newAgent.id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padrÒ£o gerada: 12345678`);
+    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padr├Æ┬úo gerada: 12345678`);
     return newAgent;
   };
 
@@ -5140,10 +5148,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     }
     addAuditLog(
       'SET_SALES_AGENT_COMMISSION',
-      `Taxa de comissÒ£o do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (BÒ´nus fixo: R$ ${bonusPerActivation ?? 0}).`,
+      `Taxa de comiss├Æ┬úo do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (B├Æ┬┤nus fixo: R$ ${bonusPerActivation ?? 0}).`,
       { category: 'FINANCIAL', entityId: id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`ComissÒ£o de ${ratePercent}% configurada com sucesso!`);
+    triggerToast(`Comiss├Æ┬úo de ${ratePercent}% configurada com sucesso!`);
   };
 
   const submitBoletoRequest = (
@@ -5181,19 +5189,19 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'SUBMIT_BOLETO_REQUEST',
-      `CobranÒ§a Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - ComissÒ£o 5%: R$ ${commissionAmount.toFixed(2)}).`,
+      `Cobran├Æ┬ºa Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - Comiss├Æ┬úo 5%: R$ ${commissionAmount.toFixed(2)}).`,
       { category: 'FINANCIAL', entityId: newReq.id, entityType: 'BOLETO_REQUEST' }
     );
 
     sendInAppNotification({
-      title: `Nova CobranÒ§a Pix / Cadastro: ${newReq.code}`,
-      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - ComissÒ£o: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
+      title: `Nova Cobran├Æ┬ºa Pix / Cadastro: ${newReq.code}`,
+      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - Comiss├Æ┬úo: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'HIGH'
     });
 
-    triggerToast(`CobranÒ§a Pix ${code} gerada para ${newReq.clientName}!`);
+    triggerToast(`Cobran├Æ┬ºa Pix ${code} gerada para ${newReq.clientName}!`);
     return newReq;
   };
 
@@ -5223,9 +5231,9 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     };
 
     // Regras de Organograma:
-  // 1) Usuário: R$ 0,00 Grátis - Sem mensalidade - Somente compras - Sem permissão comercial
-  // 2) Prestador: R$ 29,90 Fixo - 1 serviço incluso (+R$ 9,90 adicional) - Comissão 5% = R$ 1,50
-  // 3) Lojista: Escolhe o plano - Pix CNPJ 30810800000139 - Comissão 5% do plano
+  // 1) Usu├írio: R$ 0,00 Gr├ítis - Sem mensalidade - Somente compras - Sem permiss├úo comercial
+  // 2) Prestador: R$ 29,90 Fixo - 1 servi├ºo incluso (+R$ 9,90 adicional) - Comiss├úo 5% = R$ 1,50
+  // 3) Lojista: Escolhe o plano - Pix CNPJ 30810800000139 - Comiss├úo 5% do plano
     let finalAmount = 0;
     let chosenPlan: MembershipTier = clientData.chosenPlan;
     const commissionRate = 5; // 5% fixo conforme organograma oficial
@@ -5243,7 +5251,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     const agent = salesAgents.find((a) => a.id === clientData.agentId) || currentSalesAgent;
 
-  // Se NÃO for usuário comum (cliente comprador), gera cobrança Pix/Boleto oficial
+  // Se N├âO for usu├írio comum (cliente comprador), gera cobran├ºa Pix/Boleto oficial
     if (!isUser && options?.shouldRequestBoleto !== false) {
       const defaultDueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       createdBoleto = submitBoletoRequest({
@@ -5260,7 +5268,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         neighborhood: clientData.neighborhood,
         chosenPlan,
         planTitle: isProvider
-          ? 'Assinatura Prestador de ServiÒ§os (1 serviÒ§o incluso)'
+          ? 'Assinatura Prestador de Servi├Æ┬ºos (1 servi├Æ┬ºo incluso)'
           : `Plano ${chosenPlan}`,
         billingFrequency: options?.billingFrequency || 'MENSAL',
         amount: finalAmount,
@@ -5280,8 +5288,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     setRegisteredClientsByAgents((prev) => [newClient, ...prev]);
 
-    // Cadastro comercial no catÒ¡logo APENAS para Prestadores e Lojistas
-    // UsuÒ¡rios comuns nÒ£o possuem perfil comercial nem permissÒ£o para postar produtos/banners
+    // Cadastro comercial no cat├Æ┬ílogo APENAS para Prestadores e Lojistas
+    // Usu├Æ┬írios comuns n├Æ┬úo possuem perfil comercial nem permiss├Æ┬úo para postar produtos/banners
     if (isMerchant || isProvider) {
       const merchantId = `store-${Date.now()}`;
       const newMerchant: StoreMerchant = {
@@ -5291,22 +5299,22 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         cnpjOrCpf: clientData.documentNumber,
         email: clientData.email,
         phone: clientData.phone,
-        category: isProvider ? 'ServiÒ§os' : 'Geral',
+        category: isProvider ? 'Servi├Æ┬ºos' : 'Geral',
         city: clientData.city || 'Cachoeiras de Macacu',
         neighborhood: clientData.neighborhood || 'Centro',
         address: `${clientData.neighborhood}, ${clientData.city}`,
         logo: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=150&auto=format&fit=crop&q=80',
         description: isProvider
-          ? `Prestador de serviÒ§os credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 serviÒ§o incluso.`
+          ? `Prestador de servi├Æ┬ºos credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 servi├Æ┬ºo incluso.`
           : `Estabelecimento comercial credenciado pelo consultor ${clientData.agentName}.`,
         status: 'approved',
         membershipTier: chosenPlan,
         commissionRate: getCommissionRateForTier(chosenPlan),
-        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 serviÒ§o incluso (+R$ 9,90 adicional)
+        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 servi├Æ┬ºo incluso (+R$ 9,90 adicional)
         rating: 5.0,
         reviewsCount: 0,
         isOpen: true,
-        openingHours: 'Segunda a SÒ¡bado: 08h Ò s 19h',
+        openingHours: 'Segunda a S├Æ┬íbado: 08h ├Æ┬ás 19h',
         deliveryFee: 0,
         deliveryTimeEstimate: '30 - 60 min',
         supportsPickup: true,
@@ -5320,13 +5328,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'REGISTER_CLIENT_BY_AGENT',
-      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'GrÒ¡tis - Compras' : `R$ ${finalAmount.toFixed(2)} - ComissÒ£o 5%`}).`,
+      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'Gr├Æ┬ítis - Compras' : `R$ ${finalAmount.toFixed(2)} - Comiss├Æ┬úo 5%`}).`,
       { category: 'USER_MANAGEMENT', entityId: clientId, entityType: 'AGENT_CLIENT' }
     );
 
     triggerToast(
       isUser
-        ? `UsuÒ¡rio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
+        ? `Usu├Æ┬írio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
         : `${clientData.clientType === 'PRESTADOR' ? 'Prestador' : 'Lojista'} "${clientData.name}" cadastrado! Chave Pix gerada.`
     );
     return { client: newClient, boletoRequest: createdBoleto };
@@ -5361,7 +5369,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
             barcodeDigits: barcode,
             pixCopiaECola: pix,
             boletoPdfUrl: pdf,
-            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto bancÒ¡rio registrado e enviado ao cliente.'
+            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto banc├Æ┬írio registrado e enviado ao cliente.'
           };
           return targetReq;
         }
@@ -5380,7 +5388,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'MARK_BOLETO_SENT',
-      `Boleto bancÒ¡rio da solicitaÒ§Ò£o ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
+      `Boleto banc├Æ┬írio da solicita├Æ┬º├Æ┬úo ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -5401,7 +5409,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
             masterNotes:
               notes ||
               req.masterNotes ||
-              'Pagamento confirmado pelo Master. ComissÒ£o liberada para o vendedor.'
+              'Pagamento confirmado pelo Master. Comiss├Æ┬úo liberada para o vendedor.'
           };
           return targetReq;
         }
@@ -5433,20 +5441,20 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
       addAuditLog(
         'CONFIRM_BOLETO_PAYMENT',
-        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! ComissÒ£o de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
+        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! Comiss├Æ┬úo de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
         { category: 'FINANCIAL', entityId: targetReq.id, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `ComissÒ£o Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comissÒ£o estÒ¡ liberada para saque Pix.`,
+        title: `Comiss├Æ┬úo Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comiss├Æ┬úo est├Æ┬í liberada para saque Pix.`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
       triggerToast(
-        `Pagamento do boleto ${targetReq.code} confirmado! ComissÒ£o de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
+        `Pagamento do boleto ${targetReq.code} confirmado! Comiss├Æ┬úo de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
       );
     }
   };
@@ -5467,10 +5475,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     );
     addAuditLog(
       'CANCEL_BOLETO_REQUEST',
-      `SolicitaÒ§Ò£o de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
+      `Solicita├Æ┬º├Æ┬úo de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
-    triggerToast('SolicitaÒ§Ò£o de boleto cancelada.');
+    triggerToast('Solicita├Æ┬º├Æ┬úo de boleto cancelada.');
   };
 
   const markCommissionAsPaidToAgent = (requestId: string, receiptCode?: string) => {
@@ -5494,19 +5502,19 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (targetReq) {
       addAuditLog(
         'PAY_COMMISSION_TO_AGENT',
-        `ComissÒ£o de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
+        `Comiss├Æ┬úo de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
         { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `ComissÒ£o Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O Administrador Master efetuou o pagamento da sua comissÒ£o referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
+        title: `Comiss├Æ┬úo Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O Administrador Master efetuou o pagamento da sua comiss├Æ┬úo referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
-      triggerToast(`ComissÒ£o de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
+      triggerToast(`Comiss├Æ┬úo de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
     }
   };
 
@@ -5521,10 +5529,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCommercialGoals((prev) => [newGoal, ...prev]);
     addAuditLog(
       'ADD_COMMERCIAL_GOAL',
-      `Nova meta comercial lanÒ§ada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
+      `Nova meta comercial lan├Æ┬ºada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
       { category: 'GENERAL', entityId: newGoal.id, entityType: 'COMMERCIAL_GOAL' }
     );
-    triggerToast(`Meta "${newGoal.title}" criada e lanÒ§ada com sucesso!`);
+    triggerToast(`Meta "${newGoal.title}" criada e lan├Æ┬ºada com sucesso!`);
     return newGoal;
   };
 
@@ -5537,7 +5545,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   const deleteCommercialGoal = (id: string) => {
     setCommercialGoals((prev) => prev.filter((g) => g.id !== id));
     addAuditLog('DELETE_COMMERCIAL_GOAL', `Meta comercial ${id} removida pelo Master.`);
-    triggerToast('Meta comercial excluÒ­da.');
+    triggerToast('Meta comercial exclu├Æ┬¡da.');
   };
 
   const addCommercialArea = (areaData: Omit<CommercialArea, 'id'>): CommercialArea => {
@@ -5548,23 +5556,23 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setCommercialAreas((prev) => [...prev, newArea]);
     addAuditLog(
       'ADD_COMMERCIAL_AREA',
-      `Nova Ò¡rea comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
+      `Nova ├Æ┬írea comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
       { category: 'GENERAL', entityId: newArea.id, entityType: 'COMMERCIAL_AREA' }
     );
-    triggerToast(`Òrea comercial "${newArea.name}" criada com sucesso!`);
+    triggerToast(`├Æ┬ürea comercial "${newArea.name}" criada com sucesso!`);
     return newArea;
   };
 
   const updateCommercialArea = (id: string, updates: Partial<CommercialArea>) => {
     setCommercialAreas((prev) => prev.map((a) => (a.id === id ? { ...a, ...updates } : a)));
-    addAuditLog('UPDATE_COMMERCIAL_AREA', `Òrea comercial ${id} atualizada pelo Master.`);
-    triggerToast('Òrea comercial atualizada!');
+    addAuditLog('UPDATE_COMMERCIAL_AREA', `├Æ┬ürea comercial ${id} atualizada pelo Master.`);
+    triggerToast('├Æ┬ürea comercial atualizada!');
   };
 
   const deleteCommercialArea = (id: string) => {
     setCommercialAreas((prev) => prev.filter((a) => a.id !== id));
-    addAuditLog('DELETE_COMMERCIAL_AREA', `Òrea comercial ${id} removida pelo Master.`);
-    triggerToast('Òrea comercial excluÒ­da.');
+    addAuditLog('DELETE_COMMERCIAL_AREA', `├Æ┬ürea comercial ${id} removida pelo Master.`);
+    triggerToast('├Æ┬ürea comercial exclu├Æ┬¡da.');
   };
 
   const assignAgentHierarchyAndArea = (
@@ -5601,11 +5609,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'ASSIGN_AGENT_HIERARCHY',
-      `Vendedor ${agentName} atribuÒ­do pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. Òrea: ${assignedRegion}. NÒ­vel: ${roleLevel || targetAgent?.roleLevel}.`,
+      `Vendedor ${agentName} atribu├Æ┬¡do pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. ├Æ┬ürea: ${assignedRegion}. N├Æ┬¡vel: ${roleLevel || targetAgent?.roleLevel}.`,
       { category: 'USER_MANAGEMENT', entityId: agentId, entityType: 'SALES_AGENT' }
     );
 
-    triggerToast(`Estrutura e Ò¡rea de ${agentName} atualizadas com sucesso!`);
+    triggerToast(`Estrutura e ├Æ┬írea de ${agentName} atualizadas com sucesso!`);
   };
 
   // ==========================================
@@ -5615,20 +5623,20 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setWebhookConfig((prev) => ({ ...prev, ...updates }));
     addAuditLog(
       'UPDATE_WEBHOOK_CONFIG',
-      'ConfiguraÒ§Òµes da camada de webhooks de boletos atualizadas pelo Master.',
+      'Configura├Æ┬º├Æ┬Áes da camada de webhooks de boletos atualizadas pelo Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_CONFIG' }
     );
-    triggerToast('ConfiguraÒ§Òµes de Webhook atualizadas com sucesso!');
+    triggerToast('Configura├Æ┬º├Æ┬Áes de Webhook atualizadas com sucesso!');
   };
 
   const clearWebhookLogs = () => {
     setWebhookEvents([]);
     addAuditLog(
       'CLEAR_WEBHOOK_LOGS',
-      'HistÒ³rico de eventos de webhooks limpo pelo Administrador Master.',
+      'Hist├Æ┬│rico de eventos de webhooks limpo pelo Administrador Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_LOGS' }
     );
-    triggerToast('HistÒ³rico de logs de webhook limpo com sucesso.');
+    triggerToast('Hist├Æ┬│rico de logs de webhook limpo com sucesso.');
   };
 
   const deleteWebhookEvent = (eventId: string) => {
@@ -5651,7 +5659,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const eventId = `wh-evt-${Date.now()}`;
     const { gateway, payload, headers, manualBoletoCode } = input;
 
-    // 1. ExtraÒ§Ò£o da ReferÒªncia / CÒ³digo do Boleto
+    // 1. Extra├Æ┬º├Æ┬úo da Refer├Æ┬¬ncia / C├Æ┬│digo do Boleto
     let extractedCode = manualBoletoCode?.trim() || '';
 
     if (!extractedCode) {
@@ -5677,7 +5685,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       }
     }
 
-    // Busca por regex de padrÒ£o BOL-YYYY-NNN caso o cÒ³digo esteja embutido em texto livre
+    // Busca por regex de padr├Æ┬úo BOL-YYYY-NNN caso o c├Æ┬│digo esteja embutido em texto livre
     if (extractedCode && !extractedCode.startsWith('BOL-') && extractedCode.includes('BOL-')) {
       const match = extractedCode.match(/BOL-\d{4}-\d{3}/i);
       if (match) {
@@ -5685,7 +5693,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       }
     }
 
-    // 2. ExtraÒ§Ò£o do Tipo de Evento
+    // 2. Extra├Æ┬º├Æ┬úo do Tipo de Evento
     let eventType = 'PAYMENT_CONFIRMED';
     if (gateway === 'ASAAS') {
       eventType = payload.event || 'PAYMENT_RECEIVED';
@@ -5701,7 +5709,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       eventType = payload.event || 'BOLETO_PAID';
     }
 
-    // 3. ExtraÒ§Ò£o do ID da TransaÒ§Ò£o Externa
+    // 3. Extra├Æ┬º├Æ┬úo do ID da Transa├Æ┬º├Æ┬úo Externa
     let externalTxId = '';
     if (gateway === 'ASAAS') {
       externalTxId = payload.payment?.id || payload.id || `asaas_tx_${Date.now()}`;
@@ -5717,7 +5725,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       externalTxId = payload.transactionId || payload.id || `tx_gen_${Date.now()}`;
     }
 
-    // 4. ExtraÒ§Ò£o do Valor Pago
+    // 4. Extra├Æ┬º├Æ┬úo do Valor Pago
     let amountPaid = 0;
     if (gateway === 'ASAAS') {
       amountPaid = Number(payload.payment?.value || 0);
@@ -5733,7 +5741,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       amountPaid = Number(payload.amount || payload.valor || 0);
     }
 
-    // 5. LocalizaÒ§Ò£o do Boleto no Banco de Dados da AplicaÒ§Ò£o
+    // 5. Localiza├Æ┬º├Æ┬úo do Boleto no Banco de Dados da Aplica├Æ┬º├Æ┬úo
     const matchedBoleto = boletoRequests.find((req) => {
       if (extractedCode) {
         if (req.code.toUpperCase() === extractedCode.toUpperCase()) return true;
@@ -5757,8 +5765,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         durationMs,
         status: 'UNMATCHED',
         statusMessage: extractedCode
-          ? `Boleto com cÒ³digo ou referÒªncia '${extractedCode}' nÒ£o foi localizado no sistema.`
-          : 'Nenhum cÒ³digo de boleto foi identificado no payload recebido.',
+          ? `Boleto com c├Æ┬│digo ou refer├Æ┬¬ncia '${extractedCode}' n├Æ┬úo foi localizado no sistema.`
+          : 'Nenhum c├Æ┬│digo de boleto foi identificado no payload recebido.',
         payload,
         headers,
         ipAddress: '177.136.204.88'
@@ -5768,11 +5776,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
       addAuditLog(
         'WEBHOOK_UNMATCHED',
-        `Webhook ${gateway} recebido, mas nenhum boleto com a referÒªncia '${extractedCode}' foi localizado.`,
+        `Webhook ${gateway} recebido, mas nenhum boleto com a refer├Æ┬¬ncia '${extractedCode}' foi localizado.`,
         { category: 'FINANCIAL', entityId: eventId, entityType: 'WEBHOOK_EVENT' }
       );
 
-      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' nÒ£o encontrado.`);
+      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' n├Æ┬úo encontrado.`);
 
       return {
         success: false,
@@ -5785,7 +5793,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const effectiveAmount = amountPaid > 0 ? amountPaid : matchedBoleto.amount;
     const isAlreadyPaid = matchedBoleto.status === 'PAGAMENTO_CONFIRMADO';
 
-    // 6. AtualizaÒ§Ò£o AutomÒ¡tica do Boleto e LiberaÒ§Ò£o de ComissÒ£o
+    // 6. Atualiza├Æ┬º├Æ┬úo Autom├Æ┬ítica do Boleto e Libera├Æ┬º├Æ┬úo de Comiss├Æ┬úo
     let updatedBoleto: BoletoBillingRequest = { ...matchedBoleto };
 
     setBoletoRequests((prev) =>
@@ -5802,7 +5810,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
             webhookEventId: eventId,
             webhookReceivedAt: nowIso,
             externalTransactionId: externalTxId,
-            masterNotes: `LiquidaÒ§Ò£o confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). ComissÒ£o liberada para o consultor.`
+            masterNotes: `Liquida├Æ┬º├Æ┬úo confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). Comiss├Æ┬úo liberada para o consultor.`
           };
           return updatedBoleto;
         }
@@ -5810,7 +5818,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       })
     );
 
-    // 7. AtualizaÒ§Ò£o do Cliente Vinculado para 'ATIVO_PAGO'
+    // 7. Atualiza├Æ┬º├Æ┬úo do Cliente Vinculado para 'ATIVO_PAGO'
     if (webhookConfig.autoActivateClient) {
       setRegisteredClientsByAgents((prev) =>
         prev.map((c) => {
@@ -5822,7 +5830,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       );
     }
 
-    // 8. AprovaÒ§Ò£o AutomÒ¡tica do Estabelecimento Lojista / Prestador
+    // 8. Aprova├Æ┬º├Æ┬úo Autom├Æ┬ítica do Estabelecimento Lojista / Prestador
     if (webhookConfig.autoApproveMerchant) {
       setMerchants((prev) =>
         prev.map((m) => {
@@ -5840,15 +5848,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     // 9. Auditoria Completa
     addAuditLog(
       'WEBHOOK_PAYMENT_CONFIRMED',
-      `Webhook ${gateway} (${externalTxId}) confirmou liquidaÒ§Ò£o do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). ComissÒ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
+      `Webhook ${gateway} (${externalTxId}) confirmou liquida├Æ┬º├Æ┬úo do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). Comiss├Æ┬úo de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
       { category: 'FINANCIAL', entityId: matchedBoleto.id, entityType: 'BOLETO_REQUEST' }
     );
 
-    // 10. NotificaÒ§Òµes In-App para Vendedor e Administrador Master
+    // 10. Notifica├Æ┬º├Æ┬Áes In-App para Vendedor e Administrador Master
     if (webhookConfig.notifySalesAgentInApp) {
       sendInAppNotification({
-        title: `ComissÒ£o Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
-        message: `O gateway ${gateway} confirmou a liquidaÒ§Ò£o do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comissÒ£o jÒ¡ estÒ¡ LIBERADA para saque Pix!`,
+        title: `Comiss├Æ┬úo Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
+        message: `O gateway ${gateway} confirmou a liquida├Æ┬º├Æ┬úo do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comiss├Æ┬úo j├Æ┬í est├Æ┬í LIBERADA para saque Pix!`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
@@ -5857,7 +5865,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     sendInAppNotification({
       title: `Boleto Liquidado via Webhook: ${matchedBoleto.code}`,
-      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | ComissÒ£o: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
+      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | Comiss├Æ┬úo: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'MEDIUM'
@@ -5882,8 +5890,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       durationMs,
       status: 'SUCCESS',
       statusMessage: isAlreadyPaid
-        ? `Boleto ${matchedBoleto.code} jÒ¡ havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
-        : `Boleto ${matchedBoleto.code} liquidado com sucesso! ComissÒ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
+        ? `Boleto ${matchedBoleto.code} j├Æ┬í havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
+        : `Boleto ${matchedBoleto.code} liquidado com sucesso! Comiss├Æ┬úo de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
       payload,
       headers,
       ipAddress: '177.136.204.88'
@@ -5892,7 +5900,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     setWebhookEvents((prev) => [successEvent, ...prev]);
 
     triggerToast(
-      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! ComissÒ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
+      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! Comiss├Æ┬úo de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
     );
 
     return {
@@ -5926,13 +5934,13 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     try {
       const cleanEmail = driverData.email.trim().toLowerCase();
       if (!cleanEmail || !driverData.cpf || !driverData.name || !driverData.phone) {
-        return { success: false, message: 'Preencha todos os campos obrigatÒ³rios para o cadastro.' };
+        return { success: false, message: 'Preencha todos os campos obrigat├Æ┬│rios para o cadastro.' };
       }
       if (!driverData.cnhNumber || !driverData.vehiclePlate) {
-        return { success: false, message: 'CNH e dados do veÒ­culo sÒ£o obrigatÒ³rios para entregadores parceiros.' };
+        return { success: false, message: 'CNH e dados do ve├Æ┬¡culo s├Æ┬úo obrigat├Æ┬│rios para entregadores parceiros.' };
       }
       if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
-        return { success: false, message: 'Este e-mail jÒ¡ estÒ¡ cadastrado na plataforma.' };
+        return { success: false, message: 'Este e-mail j├Æ┬í est├Æ┬í cadastrado na plataforma.' };
       }
 
       const newUserId = 'user-driver-' + Date.now();
@@ -5971,11 +5979,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       setDeliveryDrivers(prev => [newDriver, ...prev]);
       persistDeliveryDriverToFirestore(newDriver);
       addAuditLog('DRIVER_REGISTERED', `Novo entregador ${newDriver.name} (${newDriver.vehicleType} - ${newDriver.vehiclePlate}) cadastrado.`);
-      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovaÒ§Ò£o do Master.`);
+      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprova├Æ┬º├Æ┬úo do Master.`);
 
       return {
         success: true,
-        message: 'Cadastro enviado com sucesso! Seus documentos estÒ£o na fila para validaÒ§Ò£o pela administraÒ§Ò£o.',
+        message: 'Cadastro enviado com sucesso! Seus documentos est├Æ┬úo na fila para valida├Æ┬º├Æ┬úo pela administra├Æ┬º├Æ┬úo.',
         driver: newDriver
       };
     } catch (err: any) {
@@ -6115,10 +6123,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   const setDriverOperationalStatus = async (driverId: string, status: DeliveryOperationalStatus): Promise<{ success: boolean; message: string }> => {
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador nÒ£o encontrado.' };
+      return { success: false, message: 'Entregador n├Æ┬úo encontrado.' };
     }
     if (driver.status !== 'APROVADO' && status === 'ONLINE') {
-      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administraÒ§Ò£o podem ficar online.' };
+      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administra├Æ┬º├Æ┬úo podem ficar online.' };
     }
 
     let updatedDriver: DeliveryDriver | null = null;
@@ -6160,18 +6168,18 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   }): Promise<{ success: boolean; message: string; ride?: DeliveryRide }> => {
     const order = orders.find(o => o.id === params.orderId);
     if (!order) {
-      return { success: false, message: 'Pedido nÒ£o localizado.' };
+      return { success: false, message: 'Pedido n├Æ┬úo localizado.' };
     }
 
     const existingRide = deliveryRides.find(r => r.orderId === order.id && r.status !== 'CANCELADA');
     if (existingRide) {
-      return { success: false, message: `JÒ¡ existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
+      return { success: false, message: `J├Æ┬í existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
     }
 
     const merchant = merchants.find(m => m.id === order.merchantId);
     const origin = params.originAddress || merchant?.address || 'Centro, Cachoeiras de Macacu - RJ';
     const originBairro = params.originNeighborhood || merchant?.neighborhood || 'Centro';
-    const dest = params.destinationAddress || order.deliveryAddress || 'CastÒ¡lia, Cachoeiras de Macacu - RJ';
+    const dest = params.destinationAddress || order.deliveryAddress || 'Cast├Æ┬ília, Cachoeiras de Macacu - RJ';
     const destBairro = params.destinationNeighborhood || 'Centro';
 
     let distanceKm = params.customDistanceKm;
@@ -6241,7 +6249,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         {
           timestamp: nowIso,
           status: 'AGUARDANDO_ANALISE',
-          description: `SolicitaÒ§Ò£o de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. DistÒ¢ncia calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. VeÒ­culo: ${params.vehicleType || 'MOTO'}. Encaminhada para anÒ¡lise operacional do Master.`,
+          description: `Solicita├Æ┬º├Æ┬úo de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. Dist├Æ┬óncia calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. Ve├Æ┬¡culo: ${params.vehicleType || 'MOTO'}. Encaminhada para an├Æ┬ílise operacional do Master.`,
           actorName: merchant?.name || currentUser?.name || 'Lojista',
           actorRole: 'LOJISTA'
         }
@@ -6266,11 +6274,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'DELIVERY_RIDE_REQUESTED',
-      `SolicitaÒ§Ò£o de entrega ${rideCode} enviada para anÒ¡lise operacional do Master. Pedido: ${order.id}. DistÒ¢ncia: ${distanceKm}km.`
+      `Solicita├Æ┬º├Æ┬úo de entrega ${rideCode} enviada para an├Æ┬ílise operacional do Master. Pedido: ${order.id}. Dist├Æ┬óncia: ${distanceKm}km.`
     );
 
-    triggerToast(`SolicitaÒ§Ò£o ${rideCode} enviada para a Central Master! Aguardando aprovaÒ§Ò£o.`);
-    return { success: true, message: `SolicitaÒ§Ò£o ${rideCode} aguardando anÒ¡lise do Master.`, ride: newRide };
+    triggerToast(`Solicita├Æ┬º├Æ┬úo ${rideCode} enviada para a Central Master! Aguardando aprova├Æ┬º├Æ┬úo.`);
+    return { success: true, message: `Solicita├Æ┬º├Æ┬úo ${rideCode} aguardando an├Æ┬ílise do Master.`, ride: newRide };
   };
 
   const approveDeliveryRide = async (
@@ -6279,26 +6287,26 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     targetDriverId?: string
   ): Promise<{ success: boolean; message: string; uniqueRideCode?: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     // 1. Validar todos os dados
     if (!ride.merchantName || !ride.originAddress) {
-      return { success: false, message: 'Dados de origem (lojista e endereÒ§o de coleta) incompletos.' };
+      return { success: false, message: 'Dados de origem (lojista e endere├Æ┬ºo de coleta) incompletos.' };
     }
     if (!ride.customerName || !ride.destinationAddress) {
-      return { success: false, message: 'Dados de destino (cliente e endereÒ§o de entrega) incompletos.' };
+      return { success: false, message: 'Dados de destino (cliente e endere├Æ┬ºo de entrega) incompletos.' };
     }
     if (!ride.orderId && !ride.orderCode) {
       return { success: false, message: 'Identificador do pedido vinculado ausente.' };
     }
 
-    // 3. Validar distÒ¢ncia
+    // 3. Validar dist├Æ┬óncia
     const distance = Number(ride.distanceKm || ride.distancia || 0);
     if (isNaN(distance) || distance <= 0) {
-      return { success: false, message: 'DistÒ¢ncia da entrega invÒ¡lida (deve ser maior que zero).' };
+      return { success: false, message: 'Dist├Æ┬óncia da entrega inv├Æ┬ílida (deve ser maior que zero).' };
     }
     if (distance > 60) {
-      return { success: false, message: `DistÒ¢ncia calculada (${distance.toFixed(1)} km) excede o limite do municÒ­pio (mÒ¡x 60 km).` };
+      return { success: false, message: `Dist├Æ┬óncia calculada (${distance.toFixed(1)} km) excede o limite do munic├Æ┬¡pio (m├Æ┬íx 60 km).` };
     }
 
     // 2. Recalcular a tarifa no backend
@@ -6311,10 +6319,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     // 4. Validar valor
     if (recalculated.totalDeliveryFee <= 0 || recalculated.driverEarnings <= 0) {
-      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recÒ¡lculo.' };
+      return { success: false, message: 'Valores financeiros de entrega inconsistentes no rec├Æ┬ílculo.' };
     }
 
-    // 5. Gerar cÒ³digo/identificador Òºnico da entrega
+    // 5. Gerar c├Æ┬│digo/identificador ├Æ┬║nico da entrega
     const generatedUniqueCode =
       ride.rideCode && ride.rideCode.startsWith('DEL-') && ride.rideCode.length >= 8
         ? ride.rideCode
@@ -6330,7 +6338,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     const nextStatus: DeliveryRideStatus = targetDriver ? 'ENTREGADOR_SELECIONADO' : 'DISPONIVEL_ENTREGADORES';
     const description = targetDriver
       ? `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)}. Direcionada ao entregador ${targetDriver.name} (${targetDriver.vehiclePlate}).`
-      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegÒ­veis.`;
+      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores eleg├Æ┬¡veis.`;
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -6380,10 +6388,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     // 7. Criar registro de auditoria
     addAuditLog(
       'DELIVERY_APPROVED',
-    `[APROVAÇÃO MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. Distância: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
+    `[APROVA├ç├âO MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. Dist├óncia: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
     );
 
-    // 8. Disponibilizar a entrega no portal dos entregadores elegÒ­veis
+    // 8. Disponibilizar a entrega no portal dos entregadores eleg├Æ┬¡veis
     triggerToast(
       targetDriver
         ? `Entrega ${generatedUniqueCode} direcionada para ${targetDriver.name}!`
@@ -6399,11 +6407,11 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const rejectDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-    return { success: false, message: 'É obrigatório informar o motivo da rejeição da solicitação.' };
+    return { success: false, message: '├ë obrigat├│rio informar o motivo da rejei├º├úo da solicita├º├úo.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6421,7 +6429,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'REJEITADA',
-                description: `SolicitaÒ§Ò£o de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatÒ³ria: ${trimmedReason}`,
+                description: `Solicita├Æ┬º├Æ┬úo de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigat├Æ┬│ria: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6439,19 +6447,19 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'DELIVERY_REJECTED',
-    `[REJEIÇÃO MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
+    `[REJEI├ç├âO MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
     );
-    triggerToast(`SolicitaÒ§Ò£o ${ride.rideCode} rejeitada.`);
-    return { success: true, message: 'SolicitaÒ§Ò£o rejeitada com sucesso.' };
+    triggerToast(`Solicita├Æ┬º├Æ┬úo ${ride.rideCode} rejeitada.`);
+    return { success: true, message: 'Solicita├Æ┬º├Æ┬úo rejeitada com sucesso.' };
   };
 
   const requestCorrectionDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-    return { success: false, message: 'É obrigatório informar as instruções/motivo da solicitação de correção.' };
+    return { success: false, message: '├ë obrigat├│rio informar as instru├º├Áes/motivo da solicita├º├úo de corre├º├úo.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6470,7 +6478,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'CORRECAO_SOLICITADA',
-                description: `CorreÒ§Ò£o solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
+                description: `Corre├Æ┬º├Æ┬úo solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6488,15 +6496,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'DELIVERY_CORRECTION_REQUESTED',
-    `[SOLICITAÇÃO DE CORREÇÃO] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correção ao lojista. Motivo: ${trimmedReason}`
+    `[SOLICITA├ç├âO DE CORRE├ç├âO] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou corre├º├úo ao lojista. Motivo: ${trimmedReason}`
     );
-    triggerToast(`SolicitaÒ§Ò£o de correÒ§Ò£o enviada ao lojista para ${ride.rideCode}.`);
-    return { success: true, message: 'CorreÒ§Ò£o solicitada com sucesso.' };
+    triggerToast(`Solicita├Æ┬º├Æ┬úo de corre├Æ┬º├Æ┬úo enviada ao lojista para ${ride.rideCode}.`);
+    return { success: true, message: 'Corre├Æ┬º├Æ┬úo solicitada com sucesso.' };
   };
 
   const authorizeDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6538,7 +6546,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const processDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6555,7 +6563,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'PAGAMENTO_PROCESSANDO',
-                description: `TransferÒªncia Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancÒ¡rio.`,
+                description: `Transfer├Æ┬¬ncia Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento banc├Æ┬írio.`,
                 actorName: 'Sistema Financeiro AcheiAqui',
                 actorRole: 'SISTEMA'
               }
@@ -6577,7 +6585,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const markDeliveryRidePaid = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6595,7 +6603,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'PAGA',
-                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÒDO com sucesso via Pix para o entregador.`,
+                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLU├Æ┬ìDO com sucesso via Pix para o entregador.`,
                 actorName: currentUser?.name || 'Master Financeiro',
                 actorRole: 'MASTER'
               }
@@ -6629,12 +6637,12 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog('DELIVERY_PAYMENT_COMPLETED', `Pagamento de R$ ${ride.driverEarnings.toFixed(2)} quitado para a entrega ${ride.rideCode}.`);
     triggerToast(`Pagamento liquidado com sucesso! Entregador remunerado.`);
-    return { success: true, message: 'Pagamento concluÒ­do.' };
+    return { success: true, message: 'Pagamento conclu├Æ┬¡do.' };
   };
 
   const failDeliveryPayment = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6675,7 +6683,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
   const returnDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6693,7 +6701,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'DEVOLVIDA',
-                description: `Mercadoria devolvida Ò  loja de origem. Motivo: ${reason}`,
+                description: `Mercadoria devolvida ├Æ┬á loja de origem. Motivo: ${reason}`,
                 actorName: currentUser?.name || 'Central de Suporte',
                 actorRole: 'MASTER'
               }
@@ -6726,16 +6734,16 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     notes?: string
   ): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     const actor: DeliveryActor = {
       id: currentUser?.id || 'system',
-      name: currentUser?.name || 'AdministraÒ§Ò£o',
+      name: currentUser?.name || 'Administra├Æ┬º├Æ┬úo',
       role: (currentUser?.role === 'MASTER' ? 'MASTER' : currentUser?.role === 'ENTREGADOR' ? 'ENTREGADOR' : 'LOJISTA')
     };
     const validation = validateDeliveryTransition(ride, toStatus, actor);
     if (!validation.allowed) {
-      return { success: false, message: validation.reason || 'TransiÒ§Ò£o de status invÒ¡lida.' };
+      return { success: false, message: validation.reason || 'Transi├Æ┬º├Æ┬úo de status inv├Æ┬ílida.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6775,7 +6783,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
   const acceptDeliveryRide = async (rideId: string, driverId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida nÒ£o encontrada.' };
+      return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
     }
     const isAvailable =
       ride.status === 'DISPONIVEL_ENTREGADORES' ||
@@ -6783,15 +6791,15 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       (ride.status === 'ENTREGADOR_SELECIONADO' && ride.driverId === driverId);
 
     if (!isAvailable) {
-      return { success: false, message: 'Esta corrida nÒ£o estÒ¡ disponÒ­vel para aceite.' };
+      return { success: false, message: 'Esta corrida n├Æ┬úo est├Æ┬í dispon├Æ┬¡vel para aceite.' };
     }
 
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador nÒ£o encontrado.' };
+      return { success: false, message: 'Entregador n├Æ┬úo encontrado.' };
     }
     if (driver.status !== 'APROVADO') {
-      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administraÒ§Ò£o para aceitar corridas.' };
+      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administra├Æ┬º├Æ┬úo para aceitar corridas.' };
     }
     if (driver.operationalStatus !== 'ONLINE') {
       return { success: false, message: 'Fique ONLINE no topo do painel para poder aceitar entregas.' };
@@ -6801,7 +6809,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       r => r.driverId === driverId && ['ACEITA', 'EM_DESLOCAMENTO_COLETA', 'EM_COLETA', 'CHEGOU_COLETA', 'COLETADA', 'EM_DESLOCAMENTO_ENTREGA', 'EM_TRANSITO', 'CHEGOU_DESTINO', 'AGUARDANDO_CODIGO'].includes(r.status)
     );
     if (activeRide) {
-      return { success: false, message: `VocÒª jÒ¡ estÒ¡ atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
+      return { success: false, message: `Voc├Æ┬¬ j├Æ┬í est├Æ┬í atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
     }
 
     const nowIso = new Date().toISOString();
@@ -6863,7 +6871,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     addAuditLog('DELIVERY_RIDE_ACCEPTED', `Corrida ${ride.rideCode} aceita pelo entregador ${driver.name}.`);
     triggerToast(`Corrida ${ride.rideCode} aceita com sucesso! Inicie o trajeto para coleta.`);
 
-    return { success: true, message: `Corrida ${ride.rideCode} aceita! VÒ¡ atÒ© a loja para coletar.` };
+    return { success: true, message: `Corrida ${ride.rideCode} aceita! V├Æ┬í at├Æ┬® a loja para coletar.` };
   };
 
   const startRidePickup = async (rideId: string): Promise<{ success: boolean; message: string }> => {
@@ -6881,7 +6889,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_COLETA',
-                description: 'Entregador em deslocamento atÒ© o estabelecimento para retirar o pedido.',
+                description: 'Entregador em deslocamento at├Æ┬® o estabelecimento para retirar o pedido.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6926,7 +6934,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_ENTREGA',
-                description: 'Entregador em rota de entrega com destino ao endereÒ§o do comprador.',
+                description: 'Entregador em rota de entrega com destino ao endere├Æ┬ºo do comprador.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6950,14 +6958,14 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       );
     }
 
-    triggerToast(`Pacote coletado! Inicie o trajeto atÒ© o endereÒ§o do cliente.`);
+    triggerToast(`Pacote coletado! Inicie o trajeto at├Æ┬® o endere├Æ┬ºo do cliente.`);
     return { success: true, message: 'Pacote coletado. Status atualizado para EM_DESLOCAMENTO_ENTREGA.' };
   };
 
   const deliverRide = async (rideId: string, confirmationCode: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida nÒ£o encontrada.' };
+      return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
     }
 
     const cleanInput = confirmationCode.replace(/\D/g, '').trim();
@@ -6966,7 +6974,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     if (cleanInput !== cleanExpected) {
       return {
         success: false,
-        message: 'CÒ³digo de confirmaÒ§Ò£o incorreto! Solicite o cÒ³digo de 4 dÒ­gitos ao cliente no ato da entrega.'
+        message: 'C├Æ┬│digo de confirma├Æ┬º├Æ┬úo incorreto! Solicite o c├Æ┬│digo de 4 d├Æ┬¡gitos ao cliente no ato da entrega.'
       };
     }
 
@@ -6985,7 +6993,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'ENTREGUE',
-                description: `Entrega fÒ­sica realizada com sucesso. CÒ³digo de seguranÒ§a ${cleanExpected} validado pelo cliente.`,
+                description: `Entrega f├Æ┬¡sica realizada com sucesso. C├Æ┬│digo de seguran├Æ┬ºa ${cleanExpected} validado pelo cliente.`,
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6993,7 +7001,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'AGUARDANDO_LIBERACAO_PAGAMENTO',
-                description: `Corrida finalizada fisicamente. Encaminhada para conferÒªncia e liberaÒ§Ò£o financeira pelo Master.`,
+                description: `Corrida finalizada fisicamente. Encaminhada para confer├Æ┬¬ncia e libera├Æ┬º├Æ┬úo financeira pelo Master.`,
                 actorName: 'Sistema Achei Aqui',
                 actorRole: 'SISTEMA'
               }
@@ -7030,25 +7038,25 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
     }
 
     setOrders(prev =>
-      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'ConcluÒ­do', deliveryRideStatus: 'FINALIZADA' } : o))
+      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'Conclu├Æ┬¡do', deliveryRideStatus: 'FINALIZADA' } : o))
     );
 
     addAuditLog(
       'DELIVERY_RIDE_DELIVERED',
-      `Corrida ${ride.rideCode} entregue com sucesso. CÒ³digo verificado. Aguardando liberaÒ§Ò£o financeira.`
+      `Corrida ${ride.rideCode} entregue com sucesso. C├Æ┬│digo verificado. Aguardando libera├Æ┬º├Æ┬úo financeira.`
     );
 
-    triggerToast(`ParabÒ©ns! Entrega concluÒ­da. Encaminhada para liberaÒ§Ò£o do pagamento pelo Master.`);
+    triggerToast(`Parab├Æ┬®ns! Entrega conclu├Æ┬¡da. Encaminhada para libera├Æ┬º├Æ┬úo do pagamento pelo Master.`);
     return {
       success: true,
-      message: `Entrega confirmada com sucesso! Aguarde a liberaÒ§Ò£o do pagamento pelo Master.`
+      message: `Entrega confirmada com sucesso! Aguarde a libera├Æ┬º├Æ┬úo do pagamento pelo Master.`
     };
   };
 
   const cancelDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const nowIso = new Date().toISOString();
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÒ£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida n├Æ┬úo encontrada.' };
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -7065,7 +7073,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
                 timestamp: nowIso,
                 status: 'CANCELADA',
                 description: `Corrida cancelada. Motivo: ${reason}`,
-                actorName: currentUser?.name || 'AdministraÒ§Ò£o',
+                actorName: currentUser?.name || 'Administra├Æ┬º├Æ┬úo',
                 actorRole: currentUser?.role || 'MASTER'
               }
             ]
@@ -7105,8 +7113,8 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
               {
                 timestamp: nowIso,
                 status: 'OCORRENCIA',
-                description: `OcorrÒªncia registrada: ${notes}`,
-                actorName: currentUser?.name || 'UsuÒ¡rio',
+                description: `Ocorr├Æ┬¬ncia registrada: ${notes}`,
+                actorName: currentUser?.name || 'Usu├Æ┬írio',
                 actorRole: currentUser?.role || 'SISTEMA'
               }
             ]
@@ -7116,9 +7124,9 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       })
     );
 
-    addAuditLog('DELIVERY_RIDE_INCIDENT', `OcorrÒªncia na corrida ${rideId}: ${notes}`);
-    triggerToast('OcorrÒªncia registrada e encaminhada para a administraÒ§Ò£o Master.');
-    return { success: true, message: 'OcorrÒªncia registrada com sucesso.' };
+    addAuditLog('DELIVERY_RIDE_INCIDENT', `Ocorr├Æ┬¬ncia na corrida ${rideId}: ${notes}`);
+    triggerToast('Ocorr├Æ┬¬ncia registrada e encaminhada para a administra├Æ┬º├Æ┬úo Master.');
+    return { success: true, message: 'Ocorr├Æ┬¬ncia registrada com sucesso.' };
   };
 
   const updateDeliveryTariffs = async (
@@ -7135,7 +7143,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
       platformFeeUpTo20Km < 0 ||
       platformFeeAbove20Km < 0
     ) {
-      return { success: false, message: 'Os valores de tarifas nÒ£o podem ser negativos.' };
+      return { success: false, message: 'Os valores de tarifas n├Æ┬úo podem ser negativos.' };
     }
 
     const newSettings = {
@@ -7152,10 +7160,10 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
 
     addAuditLog(
       'DELIVERY_TARIFFS_UPDATED',
-      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryMinimumFare.toFixed(2)} mÒ­nimo, R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km, R$ ${newSettings.deliveryPlatformFeeUpTo10Km.toFixed(2)} atÒ© 10 km, R$ ${newSettings.deliveryPlatformFeeUpTo20Km.toFixed(2)} atÒ© 20 km e R$ ${newSettings.deliveryPlatformFeeAbove20Km.toFixed(2)} acima de 20 km.`
+      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryMinimumFare.toFixed(2)} m├Æ┬¡nimo, R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km, R$ ${newSettings.deliveryPlatformFeeUpTo10Km.toFixed(2)} at├Æ┬® 10 km, R$ ${newSettings.deliveryPlatformFeeUpTo20Km.toFixed(2)} at├Æ┬® 20 km e R$ ${newSettings.deliveryPlatformFeeAbove20Km.toFixed(2)} acima de 20 km.`
     );
 
-    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas jÒ¡ abertas mantÒªm seus valores.');
+    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas j├Æ┬í abertas mant├Æ┬¬m seus valores.');
     return { success: true, message: 'Tarifas atualizadas com sucesso!' };
   };
 
@@ -7376,7 +7384,7 @@ complianceStandard: 'LGPD Art. 7º V / Transação Segura Achei Aqui',
         deleteWebhookEvent,
         clearWebhookLogs,
 
-        // MÒ³dulo de Delivery & Entregadores (V1)
+        // M├Æ┬│dulo de Delivery & Entregadores (V1)
         deliveryDrivers,
         deliveryRides,
         currentDeliveryDriver,
