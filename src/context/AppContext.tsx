@@ -586,15 +586,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
           // Keep only authentic master/admin accounts, authorized sellers, and production users
-          list = parsed.filter((u: User) =>
-            u.id === 'user-master-david' ||
-            u.id === 'user-master-1' ||
-            u.email?.toLowerCase() === 'telecom.david@gmail.com' ||
-            u.email?.toLowerCase() === 'admin@acheiaqui.com.br' ||
-            u.role === 'VENDEDOR' ||
-            u.role === 'REPRESENTANTE_COMERCIAL' ||
-            (u as any).isProduction === true
-          );
+          list = parsed;
           if (list.length === 0) {
             list = INITIAL_USERS;
           }
@@ -712,7 +704,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed.filter((m: any) => m.isProduction === true);
+          return parsed;
         }
       } catch (e) { /* ignore */ }
     }
@@ -725,7 +717,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed.filter((p: any) => p.isProduction === true);
+          return parsed;
         }
       } catch (e) { /* ignore */ }
     }
@@ -738,7 +730,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed.filter((s: any) => s.isProduction === true);
+          return parsed;
         }
       } catch (e) { /* ignore */ }
     }

@@ -1,12 +1,12 @@
-{
-  "projectId": "acheiaki-e25d6",
-  "appId": "1:440715488137:web:2815b1a1bdeb728be7cf58",
-  "apiKey": "AIzaSyDj5bJAwqiHYfrsCeeBHM1E2y4_gW8u6wk",
-  "authDomain": "acheiaki-e25d6.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-acheiaquipainela-05ac8925-b027-4ba4-a150-62e319ac5e09",
-  "storageBucket": "acheiaki-e25d6.firebasestorage.app",
-  "messagingSenderId": "440715488137",
+﻿{
+  "projectId": "acheiaki-producao-2026",
+  "appId": "1:521214429136:web:703cb56a13cc7cc19bdbd5",
+  "apiKey": "AIzaSyAcWtCSnTz2vGlzgar0rnVTnG43Wmw4Oms",
+  "authDomain": "acheiaki-producao-2026.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "acheiaki-producao-2026.firebasestorage.app",
+  "messagingSenderId": "521214429136",
   "measurementId": "",
-  "oAuthClientId": "440715488137-kl2h04899gelhs4tidpse0ek7ito3uod.apps.googleusercontent.com",
+  "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }
