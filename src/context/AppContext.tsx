@@ -2068,7 +2068,7 @@ complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
     icon = '';
           statusText = `Pedido pronto para retirada no balc├Æ┬úo da loja! C├Æ┬│digo de seguran├Æ┬ºa: ${order.securityCode || order.pickupCode || 'N/A'}.`;
           break;
-        case 'Conclu├¡do':
+        case 'Concluído':
     icon = '';
           statusText = `Pedido/Atendimento conclu├Æ┬¡do com sucesso! Obrigado pela prefer├Æ┬¬ncia.`;
           break;
@@ -3930,7 +3930,7 @@ complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
     const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString(36).toUpperCase();
     let prefix = 'DEL-';
     if (orderData.modality === 'RETIRADA') prefix = 'RET-';
-    if (orderData.modality === 'EXPERIMENTA├ç├âO') prefix = 'EXP-';
+    if (orderData.modality === 'EXPERIMENTAÇÃO') prefix = 'EXP-';
     if (orderData.modality === 'AGENDAMENTO') prefix = 'AGE-';
 
     const orderCode = `${prefix}${randomSuffix}`;
@@ -4008,7 +4008,7 @@ complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
     // Disparo de notifica├Æ┬º├Æ┬úo transacional via NotificationService (com Firebase Firestore e WhatsApp)
     NotificationService.notifyOrderEvent(newOrder, 'ORDER_PLACED');
 
-    if (orderData.modality === 'EXPERIMENTA├ç├âO') {
+    if (orderData.modality === 'EXPERIMENTAÇÃO') {
       NotificationService.notifyTrialEvent(newOrder, 'TRIAL_REQUESTED');
     } else if (orderData.modality === 'AGENDAMENTO') {
       NotificationService.notifyServiceBookingEvent(newOrder, 'SERVICE_BOOKED');
@@ -4162,7 +4162,7 @@ complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_DISPATCHED');
       } else if (status === 'Pronto para Retirada') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_READY_PICKUP');
-      } else if (status === 'Conclu├Æ┬¡do') {
+      } else if (status === 'Concluído') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_COMPLETED');
       } else if (status === 'Cancelado' || status === 'Sem Estoque') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_CANCELLED');
@@ -4195,7 +4195,7 @@ complianceStandard: 'LGPD Art. 7┬║ V / Transa├º├úo Segura Achei Aqui',
     }
 
     // Update order to Conclu├Æ┬¡do
-    updateOrderStatus(found.id, 'Conclu├Æ┬¡do');
+    updateOrderStatus(found.id, 'Concluído');
     logOrderEvent(
       found.id,
       'PICKUP_VALIDATED',
