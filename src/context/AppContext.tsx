@@ -205,7 +205,7 @@ export interface AppContextType {
   resendEmailConfirmation: (email: string) => { success: boolean; message: string };
   requestPasswordReset: (email: string) => { success: boolean; message: string; simulatedCode?: string };
   completePasswordReset: (email: string, code: string, newPassword: string) => { success: boolean; message: string };
-  // Auditoria, Rastreabilidade & SeguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a
+  // Auditoria, Rastreabilidade & SeguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a
   auditLogs: AuditLog[];
   addAuditLog: (action: string, details: string, options?: AuditLogOptions) => AuditLog;
   logSecurityEvent: (action: string, details: string, meta?: Record<string, any>, severity?: AuditSeverity) => AuditLog;
@@ -309,13 +309,13 @@ export interface AppContextType {
   toastMessage: string | null;
   triggerToast: (msg: string) => void;
 
-  // Modal de AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o / Cadastro / Login
+  // Modal de AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o / Cadastro / Login
   isAuthModalOpen: boolean;
   authModalTab: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver';
   openAuthModal: (tab?: 'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver') => void;
   closeAuthModal: () => void;
 
-  // Prompt de AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o NecessÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ria (Compras, Agendamentos, etc.)
+  // Prompt de AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o NecessÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ria (Compras, Agendamentos, etc.)
   authPromptModal: {
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -327,7 +327,7 @@ export interface AppContextType {
   ) => void;
   closeAuthPromptModal: () => void;
 
-  // AvaliaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºtuas & ReputaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
+  // AvaliaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes MÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂºtuas & ReputaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o
   reviews: CustomerToMerchantReview[];
   merchantReviews: MerchantToCustomerReview[];
   isPolicyModalOpen: boolean;
@@ -460,7 +460,7 @@ export interface AppContextType {
     roleTitle?: string
   ) => void;
 
-  // Camada de Processamento de Webhooks de Boletos & ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes
+  // Camada de Processamento de Webhooks de Boletos & ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes
   webhookEvents: BoletoWebhookEvent[];
   webhookConfig: WebhookConfig;
   updateWebhookConfig: (updates: Partial<WebhookConfig>) => void;
@@ -479,7 +479,7 @@ export interface AppContextType {
   deleteWebhookEvent: (eventId: string) => void;
   clearWebhookLogs: () => void;
 
-  // MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³dulo de Delivery (V1 - Ciclo Operacional Completo)
+  // MÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³dulo de Delivery (V1 - Ciclo Operacional Completo)
   deliveryDrivers: DeliveryDriver[];
   deliveryRides: DeliveryRide[];
   currentDeliveryDriver: DeliveryDriver | null;
@@ -594,7 +594,7 @@ list = parsed;
       } catch (e) { /* ignore */ }
     }
 
-    // Inicializa vendedores padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e consultores de vendas em users com credencial garantida
+    // Inicializa vendedores padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e consultores de vendas em users com credencial garantida
     let allAgentsToSync = [...INITIAL_SALES_AGENTS];
     const savedAgents = localStorage.getItem(STORAGE_KEYS.SALES_AGENTS);
     if (savedAgents) {
@@ -629,7 +629,7 @@ list = parsed;
           createdAt: sa.createdAt || '2026-01-10'
         });
       } else {
-        // Assegura que o vendedor tenha senha vÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lida para primeiro acesso se ainda nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o cadastrada
+        // Assegura que o vendedor tenha senha vÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lida para primeiro acesso se ainda nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o cadastrada
         const existing = list[existingUserIndex];
         if (!existing.password || existing.password.trim() === '') {
           list[existingUserIndex] = {
@@ -825,7 +825,7 @@ list = parsed;
     return INITIAL_MERCHANT_REVIEWS;
   });
 
-  // Modal de AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Global
+  // Modal de AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Global
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register-customer' | 'register-merchant' | 'register-provider' | 'register-driver'>('login');
 
@@ -838,7 +838,7 @@ list = parsed;
     setIsAuthModalOpen(false);
   };
 
-  // Modal de ExigÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia de AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o para AÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes Restritas (Compra, Agendar, etc.)
+  // Modal de ExigÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia de AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o para AÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes Restritas (Compra, Agendar, etc.)
   const [authPromptModal, setAuthPromptModal] = useState<{
     isOpen: boolean;
     actionType: 'COMPRA' | 'AGENDAMENTO' | 'GERAL';
@@ -858,11 +858,11 @@ list = parsed;
       details
     });
     if (actionType === 'COMPRA') {
-      triggerToast('AtenÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: Cadastre-se ou faÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a login para realizar compras.');
+      triggerToast('AtenÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: Cadastre-se ou faÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a login para realizar compras.');
     } else if (actionType === 'AGENDAMENTO') {
-      triggerToast('AtenÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: Cadastre-se ou faÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a login para agendar serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os.');
+      triggerToast('AtenÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: Cadastre-se ou faÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a login para agendar serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os.');
     } else {
-      triggerToast('AtenÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: Cadastre-se ou faÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a login para continuar.');
+      triggerToast('AtenÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: Cadastre-se ou faÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a login para continuar.');
     }
   };
 
@@ -993,7 +993,7 @@ list = parsed;
   });
 
   const setCurrentSalesAgent = useCallback((agent: SalesAgent | null) => {
-    // Isolamento estrito de vendedor: se for VENDEDOR, sÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ pode estar vinculado ao seu prÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³prio perfil
+    // Isolamento estrito de vendedor: se for VENDEDOR, sÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ pode estar vinculado ao seu prÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³prio perfil
     if (currentUser?.role === 'VENDEDOR' || currentUser?.role === 'REPRESENTANTE_COMERCIAL') {
       const cleanEmail = currentUser.email.toLowerCase().trim();
       if (
@@ -1003,7 +1003,7 @@ list = parsed;
         `user-${agent.id}` !== currentUser.id &&
         agent.id !== currentUser.id.replace('user-', '')
       ) {
-        console.warn('Isolamento Comercial Ativo: Vendedor nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o possui permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o para alternar para outro agente.');
+        console.warn('Isolamento Comercial Ativo: Vendedor nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o possui permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o para alternar para outro agente.');
         return;
       }
     }
@@ -1027,7 +1027,7 @@ list = parsed;
     return DEFAULT_WEBHOOK_CONFIG;
   });
 
-  // MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³dulo de Delivery & Entregadores
+  // MÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³dulo de Delivery & Entregadores
   const [deliveryDrivers, setDeliveryDrivers] = useState<DeliveryDriver[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.DELIVERY_DRIVERS);
     if (saved) {
@@ -1192,7 +1192,7 @@ list = parsed;
     }
   }, [currentDeliveryDriver]);
 
-  // HidrataÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e persistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia do banco de dados real (Firestore)
+  // HidrataÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e persistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia do banco de dados real (Firestore)
   useEffect(() => {
     let isMounted = true;
     const initFirestoreSync = async () => {
@@ -1234,7 +1234,7 @@ list = parsed;
           users
         });
       } catch (err) {
-        console.warn('SincronizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o com Firestore:', err);
+        console.warn('SincronizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o com Firestore:', err);
       }
     };
 
@@ -1247,7 +1247,7 @@ list = parsed;
     };
   }, [currentUser]);
 
-  // SincronizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o periÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
+  // SincronizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o periÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³dica com o banco de dados de pedidos (atualizados em tempo real pelo Asaas Webhook)
   useEffect(() => {
     let isMounted = true;
 
@@ -1281,11 +1281,11 @@ list = parsed;
           return hasChange ? merged : prevOrders;
         });
       } catch {
-        // Falha transitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria ignorada
+        // Falha transitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria ignorada
       }
     };
 
-    // Executa sincronizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o inicial e depois a cada 8 segundos
+    // Executa sincronizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o inicial e depois a cada 8 segundos
     syncWithServerDb();
     const interval = setInterval(syncWithServerDb, 8000);
 
@@ -1300,7 +1300,7 @@ list = parsed;
   }, []);
 
   // ==========================================
-// AUDITORIA, RASTREABILIDADE & SEGURANÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡A
+// AUDITORIA, RASTREABILIDADE & SEGURANÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡A
   // ==========================================
 
   const addAuditLog = useCallback(
@@ -1308,7 +1308,7 @@ list = parsed;
       const now = new Date();
       const timestampFormatted = now.toISOString().replace('T', ' ').substring(0, 19);
 
-      // CategorizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e severidade inteligentes caso nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o informadas
+      // CategorizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e severidade inteligentes caso nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o informadas
       let category: AuditCategory = options?.category || 'GENERAL';
       let severity: AuditSeverity = options?.severity || 'INFO';
 
@@ -1436,7 +1436,7 @@ list = parsed;
     (orderId: string, targetMerchantId: string, buyerName: string, reason: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'BUYER_DATA_RELEASE',
-        `[LGPD / RASTREABILIDADE] LiberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
+        `[LGPD / RASTREABILIDADE] LiberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de dados do comprador "${buyerName}" (Pedido #${orderId}) para a loja ID ${targetMerchantId}. Motivo: ${reason}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'CRITICAL',
@@ -1449,7 +1449,7 @@ list = parsed;
             reason,
             authorizedBy: currentUser?.email || 'master@acheiaqui.com',
             authorizedRole: currentUser?.role || 'MASTER',
-complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âº V / TransaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Segura Achei Aqui',
+complianceStandard: 'LGPD Art. 7ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂº V / TransaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Segura Achei Aqui',
             ...meta
           }
         }
@@ -1462,7 +1462,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     (subpedidoId: string, senderRole: string, messageSummary: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         'SUBORDER_MESSAGE_SENT',
-      `[COMUNICAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
+      `[COMUNICAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O SUBPEDIDO] Mensagem no Subpedido #${subpedidoId} por ${senderRole}: "${messageSummary.length > 70 ? messageSummary.substring(0, 70) + '...' : messageSummary}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -1483,7 +1483,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     (orderId: string, action: string, amount: number, details: string, meta?: Record<string, any>): AuditLog => {
       return addAuditLog(
         action,
-      `[INTERMEDIAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
+      `[INTERMEDIAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O FINANCEIRA] ${details} (Valor: R$ ${amount.toFixed(2).replace('.', ',')})`,
         {
           category: 'FINANCIAL',
           severity: 'INFO',
@@ -1595,7 +1595,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         downloadAnchor.remove();
       }
 
-      addAuditLog('AUDIT_REPORT_EXPORTED', `ExportaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de relatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rio de auditoria realizada no formato ${format.toUpperCase()}`, {
+      addAuditLog('AUDIT_REPORT_EXPORTED', `ExportaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de relatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rio de auditoria realizada no formato ${format.toUpperCase()}`, {
         category: 'SECURITY',
         severity: 'INFO'
       });
@@ -1615,7 +1615,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       setNotifications((prev) => [newNotif, ...prev]);
       addAuditLog(
         'NOTIFICATION_SENT',
-        `NotificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
+        `NotificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o "${newNotif.title}" enviada para ${newNotif.audience} por ${newNotif.senderName}`
       );
       return newNotif;
     },
@@ -1647,7 +1647,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           return { ...n, readBy: [...n.readBy, effectiveUserId] };
         })
       );
-      triggerToast('Todas as notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes foram marcadas como lidas.');
+      triggerToast('Todas as notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes foram marcadas como lidas.');
     },
     [currentUser]
   );
@@ -1655,12 +1655,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   const deleteInAppNotification = useCallback(
     (id: string) => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
-      addAuditLog('NOTIFICATION_DELETED', `NotificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ID ${id} removida pelo Master.`);
+      addAuditLog('NOTIFICATION_DELETED', `NotificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ID ${id} removida pelo Master.`);
     },
     []
   );
 
-  // Garante que cada usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio receba uma notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de boas-vindas personalizada com seu prÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³prio nome
+  // Garante que cada usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio receba uma notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de boas-vindas personalizada com seu prÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³prio nome
   const ensureUserWelcomeNotification = useCallback(
     (user: User) => {
       setNotifications((prev) => {
@@ -1674,12 +1674,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
         const welcomeNotif: InAppNotification = {
           id: `welcome-${user.id}-${Date.now()}`,
-    title: `OlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
+    title: `OlÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡, ${user.name}! Bem-vindo(a) ao Achei Aqui`,
           message: isSeller
-            ? `OlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡, ${user.name}! Seu acesso como Lojista / Prestador estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ ativo. VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª pode gerenciar seu catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡logo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
+            ? `OlÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡, ${user.name}! Seu acesso como Lojista / Prestador estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ ativo. VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª pode gerenciar seu catÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡logo, ativar ou desativar o chat direto nos produtos e responder aos clientes com total privacidade.`
             : isMaster
-            ? `OlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡, ${user.name}! O painel Master Administrativo estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ pronto para monitoramento e auditoria com seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a jurÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­dica.`
-            : `OlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
+            ? `OlÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡, ${user.name}! O painel Master Administrativo estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ pronto para monitoramento e auditoria com seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a jurÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­dica.`
+            : `OlÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡, ${user.name}! Sua conta pessoal de morador de Cachoeiras de Macacu estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ ativa. Converse diretamente com lojistas pelo chat interno dos produtos e acompanhe seus pedidos em tempo real.`,
           category: 'SISTEMA',
           audience: isSeller ? 'SPECIFIC_MERCHANT' : 'SPECIFIC_USER',
           recipientUserId: user.id,
@@ -1687,7 +1687,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           recipientName: user.name,
           recipientPhone: user.phone,
           recipientEmail: user.email,
-          senderName: 'AdministraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Achei Aqui',
+          senderName: 'AdministraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Achei Aqui',
           senderRole: 'SISTEMA',
           priority: 'HIGH',
           actionUrl: isSeller ? 'orders' : 'home',
@@ -1711,17 +1711,17 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   const getUserNotifications = useCallback(
     (user?: User | null): InAppNotification[] => {
       const targetUser = user !== undefined ? user : currentUser;
-      // Visitantes nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o logados nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o possuem acesso a notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes particulares
+      // Visitantes nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o logados nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o possuem acesso a notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes particulares
       if (!targetUser) {
         return [];
       }
 
-      // Master possui visÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o administrativa geral
+      // Master possui visÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o administrativa geral
       if (targetUser.role === 'MASTER') {
         return notifications;
       }
 
-      // VENDEDOR: Apenas notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes destinadas especificamente a ele ou ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â  sua loja
+      // VENDEDOR: Apenas notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes destinadas especificamente a ele ou ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ  sua loja
       if (targetUser.role === 'VENDEDOR') {
         const userMerchantId = targetUser.merchantId;
         return notifications.filter((n) => {
@@ -1731,7 +1731,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         });
       }
 
-      // CLIENTE: Apenas notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes estritamente particulares com o seu nome e ID
+      // CLIENTE: Apenas notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes estritamente particulares com o seu nome e ID
       return notifications.filter((n) => {
         if (n.recipientUserId && n.recipientUserId === targetUser.id) return true;
         if (
@@ -1768,19 +1768,19 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   // CONVERSAS & MENSAGENS INTERNAS POR SUBPEDIDO
   // ==========================================
 
-  // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o estrita de permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de acesso a mensagens e dados de subpedidos
+  // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o estrita de permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de acesso a mensagens e dados de subpedidos
   const checkAccessPermission = useCallback(
     (
       userId: string | undefined | null,
       subOrderId: string,
       contextHint?: Partial<ActiveChatSubOrder>
     ): boolean => {
-      // 1. UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autenticado ou subpedido invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido: acesso terminantemente negado
+      // 1. UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o autenticado ou subpedido invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido: acesso terminantemente negado
       if (!userId || !subOrderId) {
         return false;
       }
 
-      // 2. Identificar usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio
+      // 2. Identificar usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio
       const user =
         currentUser && currentUser.id === userId
           ? currentUser
@@ -1790,12 +1790,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return false;
       }
 
-      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e mediaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
+      // 3. Administrador Master possui acesso irrestrito para auditoria, suporte e mediaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o
       if (user.role === 'MASTER') {
         return true;
       }
 
-      // 4. VerificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o com base em metadados contextuais explÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­citos passados na abertura
+      // 4. VerificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o com base em metadados contextuais explÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­citos passados na abertura
       if (contextHint) {
         if (user.role === 'CLIENTE') {
           if (contextHint.customerId && contextHint.customerId === user.id) {
@@ -1830,7 +1830,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         }
       }
 
-      // 6. Canal de dÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºvida sobre produto especÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­fico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
+      // 6. Canal de dÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂºvida sobre produto especÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­fico (ex: chat-prod-prod-1-userId, product-inquiry-prod-1-userId, sub-prod-prod-1)
       if (
         subOrderId.startsWith('chat-prod-') ||
         subOrderId.startsWith('product-inquiry-') ||
@@ -1897,7 +1897,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         // Fallback gracioso
       }
 
-      // 9. VerificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o por histÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico de mensagens jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ trocadas no subpedido
+      // 9. VerificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o por histÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico de mensagens jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ trocadas no subpedido
       const existingThread = subOrderMessages.filter((m) => m.subpedidoId === subOrderId);
       if (existingThread.length > 0) {
         const userParticipated = existingThread.some(
@@ -1913,14 +1913,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const openSubOrderChat = useCallback(
     (params: ActiveChatSubOrder) => {
-      // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o estrita de permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o antes de abrir o modal do chat
+      // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o estrita de permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o antes de abrir o modal do chat
       const hasPermission = checkAccessPermission(currentUser?.id, params.subpedidoId, params);
 
       if (!hasPermission) {
-        triggerToast('Acesso negado: VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o tem permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o para acessar esta conversa.');
+        triggerToast('Acesso negado: VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o tem permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o para acessar esta conversa.');
         logSecurityEvent(
           'UNAUTHORIZED_CHAT_ACCESS_BLOCKED',
-      `Tentativa de acesso nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ${currentUser?.email || 'AnÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´nimo'} (${currentUser?.role || 'NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O_AUTENTICADO'}).`,
+      `Tentativa de acesso nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o autorizada ao chat do Subpedido ${params.codigoSubpedido || params.subpedidoId} pelo usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ${currentUser?.email || 'AnÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ´nimo'} (${currentUser?.role || 'NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O_AUTENTICADO'}).`,
           {
             subpedidoId: params.subpedidoId,
             codigoSubpedido: params.codigoSubpedido,
@@ -2015,7 +2015,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
       addAuditLog(
         'SUBORDER_SYSTEM_MESSAGE',
-        `[SISTEMA AUTOMÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
+        `[SISTEMA AUTOMÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂTICO] Registro gerado para Subpedido ${params.codigoSubpedido || params.subpedidoId}: "${params.message}"`,
         {
           category: 'COMMUNICATION',
           severity: 'INFO',
@@ -2056,19 +2056,19 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           break;
         case 'Em Preparo':
     icon = '';
-          statusText = `Pedido entrou em fase de separaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o / preparo na loja.`;
+          statusText = `Pedido entrou em fase de separaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o / preparo na loja.`;
           break;
         case 'Em Rota':
     icon = '';
-          statusText = `Pedido despachado! O entregador estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ em rota de entrega para o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o informado.`;
+          statusText = `Pedido despachado! O entregador estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ em rota de entrega para o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o informado.`;
           break;
         case 'Pronto para Retirada':
     icon = '';
-          statusText = `Pedido pronto para retirada no balcÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da loja! CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a: ${order.securityCode || order.pickupCode || 'N/A'}.`;
+          statusText = `Pedido pronto para retirada no balcÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da loja! CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a: ${order.securityCode || order.pickupCode || 'N/A'}.`;
           break;
-        case 'ConcluÃ­do':
+        case 'Concluído':
     icon = '';
-          statusText = `Pedido/Atendimento concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do com sucesso! Obrigado pela preferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia.`;
+          statusText = `Pedido/Atendimento concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do com sucesso! Obrigado pela preferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia.`;
           break;
         case 'Sem Estoque':
     icon = '';
@@ -2080,11 +2080,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           break;
         case 'Aguardando':
     icon = '';
-          statusText = `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o recebida e aguardando confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do estabelecimento.`;
+          statusText = `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o recebida e aguardando confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do estabelecimento.`;
           break;
       }
 
-  const fullMessage = `${icon} [HISTÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“RICO OFICIAL] ${statusText}`;
+  const fullMessage = `${icon} [HISTÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€¦ââ‚¬Å“RICO OFICIAL] ${statusText}`;
 
       return sendSubOrderSystemMessage({
         subpedidoId: subId,
@@ -2112,11 +2112,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
       if (eventType === 'MERCHANT_PAID') {
         const commissionFormatted = (order.commissionAmount || 0).toFixed(2).replace('.', ',');
-      message = `[TAXA DA PLATAFORMA] O lojista registrou o pagamento da comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${commissionFormatted}. Aguardando validaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Administrador Master.`;
-        badge = 'ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Enviada';
+      message = `[TAXA DA PLATAFORMA] O lojista registrou o pagamento da comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${commissionFormatted}. Aguardando validaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Administrador Master.`;
+        badge = 'ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Enviada';
       } else {
-      message = `[TRANSAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O AUDITADA] Pagamento da comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o homologado pelo Administrador Master! Dados do comprador liberados e histÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico registrado com conformidade fiscal e jurÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­dica.`;
-        badge = 'ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Homologada';
+      message = `[TRANSAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O AUDITADA] Pagamento da comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o homologado pelo Administrador Master! Dados do comprador liberados e histÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico registrado com conformidade fiscal e jurÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­dica.`;
+        badge = 'ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Homologada';
       }
 
       if (extraNote) {
@@ -2191,7 +2191,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const deleteSubOrderMessage = useCallback((messageId: string) => {
     setSubOrderMessages((prev) => prev.filter((m) => m.id !== messageId));
-    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da do histÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico do subpedido.`, {
+    addAuditLog('SUBORDER_MESSAGE_DELETED', `Mensagem ID ${messageId} excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da do histÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico do subpedido.`, {
       category: 'COMMUNICATION',
       severity: 'WARNING',
       entityId: messageId,
@@ -2262,7 +2262,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       };
     }
     
-    // 1. VerificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o prioritÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ria de Consultor / Vendedor Comercial
+    // 1. VerificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o prioritÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ria de Consultor / Vendedor Comercial
     const agentMatch =
       salesAgents.find(
         (a) =>
@@ -2310,9 +2310,9 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         };
       }
 
-      // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de senha para Vendedor:
-      // Primeiro acesso: senha padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 12345678
-      // PÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³s-primeiro acesso: senha pessoal cadastrada pelo vendedor
+      // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de senha para Vendedor:
+      // Primeiro acesso: senha padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 12345678
+      // PÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³s-primeiro acesso: senha pessoal cadastrada pelo vendedor
       const isDefaultPassword = password === '12345678';
       const isConfiguredPassword = Boolean(sellerUser.password && sellerUser.password === password);
       const isFirstAccessAllowed = sellerUser.needsPasswordChange === true || sellerUser.password === '12345678' || !sellerUser.password;
@@ -2328,12 +2328,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         if (isFirstAccessAllowed) {
           return {
             success: false,
-            message: 'Senha incorreta. Como este ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© o primeiro acesso deste vendedor, utilize a senha padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 12345678.'
+            message: 'Senha incorreta. Como este ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© o primeiro acesso deste vendedor, utilize a senha padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 12345678.'
           };
         }
         return {
           success: false,
-          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefiniÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o com a administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.'
+          message: 'Senha de acesso incorreta. Digite sua nova senha pessoal ou solicite redefiniÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o com a administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.'
         };
       }
     const updatedUser: User = {
@@ -2385,7 +2385,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (!found) {
       return {
         success: false,
-        message: 'UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
@@ -2393,7 +2393,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (found.status === 'blocked' || found.status === 'suspended') {
       return {
         success: false,
-        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.'}`
+        message: `Acesso bloqueado: ${found.statusReason || 'Sua conta foi suspensa pela administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.'}`
       };
     }
 
@@ -2410,40 +2410,40 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     } else if (found.password && password && found.password !== password) {
       return {
         success: false,
-        message: 'UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
+        message: 'UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ou senha incorretos. Verifique suas credenciais de acesso.'
       };
     }
 
     // Check if user requires Two-Factor Authentication (2FA)
     // Master Admins have 2FA required for maximum security
-  // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
+  // VENDEDOR segue o fluxo estrito: CADASTRO -> SENHA PADRÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O -> LOGIN -> PRIMEIRO ACESSO (sem 2FA bloqueando troca)
     const isHighPrivilege = found.role === 'MASTER' || (found.role !== 'VENDEDOR' && found.role !== 'REPRESENTANTE_COMERCIAL' && found.twoFactorEnabled);
 
     if (isHighPrivilege) {
       const simulatedCode = '749210';
       sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-    addAuditLog('2FA_REQUESTED', `CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de 2ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª etapa gerado para ${found.email} (${found.role})`);
+    addAuditLog('2FA_REQUESTED', `CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de 2ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª etapa gerado para ${found.email} (${found.role})`);
       
       return {
         success: false,
         requires2FA: true,
         simulated2FACode: simulatedCode,
         user: found,
-        message: `CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
+        message: `CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o em 2 etapas (2FA) enviado para ${found.phone || found.email}.`
       };
     }
 
-    // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de Primeiro Acesso e Troca ObrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria de Senha (Ex: Vendedor criado pelo Master)
+    // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de Primeiro Acesso e Troca ObrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria de Senha (Ex: Vendedor criado pelo Master)
     if (found.needsPasswordChange) {
       return {
         success: true,
         requiresPasswordChange: true,
         user: found,
-    message: 'Primeiro acesso detectado. ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â° obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rio alterar sua senha provisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria antes de acessar o painel comercial.'
+    message: 'Primeiro acesso detectado. ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ° obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rio alterar sua senha provisÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria antes de acessar o painel comercial.'
       };
     }
 
-    // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de Bloqueio para Lojista ou Prestador de ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o sem plano pago
+    // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de Bloqueio para Lojista ou Prestador de ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o sem plano pago
     if (found.role === 'LOJISTA' || found.role === 'PRESTADOR_SERVICO') {
       const merchant = merchants.find(
         (m) => m.id === found.merchantId || m.cnpjOrCpf === found.cpf || m.email.toLowerCase() === cleanEmail
@@ -2451,18 +2451,18 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       if (merchant && (merchant.status === 'pending_payment' || merchant.status === 'pending')) {
         return {
           success: false,
-          message: 'Seu cadastro estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ aguardando a confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
+          message: 'Seu cadastro estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ aguardando a confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do pagamento do plano. Conclua o pagamento para liberar seu acesso ao painel.'
         };
       }
       if (merchant && merchant.status === 'blocked') {
         return {
           success: false,
-          message: 'Seu acesso ao painel estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ temporariamente suspenso pela administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.'
+          message: 'Seu acesso ao painel estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ temporariamente suspenso pela administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.'
         };
       }
     }
 
-    // ValidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de Bloqueio para Entregadores NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Aprovados pelo Master
+    // ValidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de Bloqueio para Entregadores NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Aprovados pelo Master
     if (found.role === 'ENTREGADOR') {
       const driverMatch = deliveryDrivers.find(
         (d) => d.email.toLowerCase() === cleanEmail || d.userId === found.id
@@ -2470,7 +2470,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       if (!driverMatch || driverMatch.status !== 'APROVADO') {
         return {
           success: false,
-          message: 'Cadastro em anÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lise pela moderaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o. Aguarde a aprovaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Master antes de acessar o Portal de Entregas.'
+          message: 'Cadastro em anÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lise pela moderaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o. Aguarde a aprovaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Master antes de acessar o Portal de Entregas.'
         };
       }
     }
@@ -2552,8 +2552,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const cleanEmail = rawInput.toLowerCase();
     const cleanDigits = rawInput.replace(/\D/g, '');
     // ============================================================
-  // MASTER DE CONTINGÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â NCIA - AUTENTICAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O PELO BACKEND
-    // NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o depende do Firebase Authentication nem do Firestore.
+  // MASTER DE CONTINGÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â¦Ãâ€šÂÂ NCIA - AUTENTICAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O PELO BACKEND
+    // NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o depende do Firebase Authentication nem do Firestore.
     // ============================================================
 
     if (cleanEmail === 'telecom.david@gmail.com') {
@@ -2600,37 +2600,37 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
           addAuditLog(
             'MASTER_CONTINGENCY_LOGIN',
-            'Acesso realizado pelo MASTER de contingÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia autenticado no backend.'
+            'Acesso realizado pelo MASTER de contingÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia autenticado no backend.'
           );
 
-          triggerToast('Acesso MASTER de contingÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia autorizado.');
+          triggerToast('Acesso MASTER de contingÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia autorizado.');
 
           return {
             success: true,
             user: contingencyMaster,
-            message: 'Acesso MASTER de contingÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia autorizado.',
+            message: 'Acesso MASTER de contingÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia autorizado.',
           };
         }
 
-        // Se for 401/429, nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o tenta Firebase com o MASTER.
+        // Se for 401/429, nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o tenta Firebase com o MASTER.
         if (masterResponse.status === 401 || masterResponse.status === 429) {
           return {
             success: false,
             message:
               masterResult.message ||
-              'Credenciais MASTER de contingÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lidas.',
+              'Credenciais MASTER de contingÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lidas.',
           };
         }
       } catch (masterError) {
         console.warn(
-          '[MASTER CONTINGENCY] Backend indisponÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel. Continuando fluxo normal.',
+          '[MASTER CONTINGENCY] Backend indisponÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel. Continuando fluxo normal.',
           masterError
         );
       }
     }
 
     // ============================================================
-  // FIM DO MASTER DE CONTINGÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â NCIA
+  // FIM DO MASTER DE CONTINGÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â¦Ãâ€šÂÂ NCIA
     // ============================================================
 
 
@@ -2644,7 +2644,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       const u = fbResult.user;
       setUsers((prev) => [u, ...prev.filter((existing) => existing.id !== u.id && existing.email.toLowerCase() !== u.email.toLowerCase())]);
       setCurrentUser(u);
-      addAuditLog('FIREBASE_LOGIN', `Login oficial concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do via Firebase Auth no perfil ${u.role}`);
+      addAuditLog('FIREBASE_LOGIN', `Login oficial concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do via Firebase Auth no perfil ${u.role}`);
       if (u.role === 'CLIENTE') setCurrentEnvironmentState('MARKETPLACE');
       else if (u.role === 'VENDEDOR' || u.role === 'REPRESENTANTE_COMERCIAL') {
         setCurrentEnvironmentState('COMMERCIAL_PORTAL');
@@ -2666,7 +2666,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       return fbResult;
     }
 
-    // Fallback de contingÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia para credenciais locais ou Master
+    // Fallback de contingÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia para credenciais locais ou Master
     const localResult = login(rawInput, password, true);
     if (localResult.success || localResult.requires2FA) {
       return localResult;
@@ -2674,7 +2674,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     return {
       success: false,
-      message: localResult.message || fbResult.message || 'Falha na autenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o. Verifique seus dados.',
+      message: localResult.message || fbResult.message || 'Falha na autenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o. Verifique seus dados.',
     };
   };
 
@@ -2721,7 +2721,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       setCurrentUser(u);
       setCurrentEnvironmentState('MARKETPLACE');
       addAuditLog('FIREBASE_CUSTOMER_REGISTER', `Novo cliente cadastrado no Firebase Auth: ${u.name} (${u.email})`);
-      triggerToast(`Cadastro concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do com sucesso via Firebase!`);
+      triggerToast(`Cadastro concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do com sucesso via Firebase!`);
     }
     return res;
   };
@@ -2807,7 +2807,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     }
 
     if (!found) {
-      return { success: false, message: 'UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o localizado no sistema.' };
+      return { success: false, message: 'UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o localizado no sistema.' };
     }
 
     const storedCode = sessionStorage.getItem(`2fa_code_${cleanEmail}`) || '749210';
@@ -2824,7 +2824,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       setCurrentUser(updatedUser);
       sessionStorage.removeItem(`2fa_code_${cleanEmail}`);
 
-      addAuditLog('2FA_LOGIN_SUCCESS', `AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 2FA concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da com sucesso para ${found.name} (${found.role})`);
+      addAuditLog('2FA_LOGIN_SUCCESS', `AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 2FA concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da com sucesso para ${found.name} (${found.role})`);
 
       if (found.role === 'MASTER') {
         setCurrentEnvironmentState('MASTER_PANEL');
@@ -2840,13 +2840,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         setCurrentEnvironmentState('MARKETPLACE');
       }
 
-      triggerToast(`AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
+      triggerToast(`AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o em 2 etapas confirmada. Bem-vindo(a), ${found.name}!`);
       return { success: true, user: updatedUser };
     }
 
     return {
       success: false,
-      message: 'CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de 2 etapas incorreto. Digite o cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de 6 dÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­gitos vÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido.'
+      message: 'CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de 2 etapas incorreto. Digite o cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de 6 dÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­gitos vÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido.'
     };
   };
 
@@ -2854,10 +2854,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const cleanEmail = email.trim().toLowerCase();
     const simulatedCode = '749210';
     sessionStorage.setItem(`2fa_code_${cleanEmail}`, simulatedCode);
-    addAuditLog('2FA_RESENT', `Reenvio de cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo 2FA solicitado para ${cleanEmail}`);
+    addAuditLog('2FA_RESENT', `Reenvio de cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo 2FA solicitado para ${cleanEmail}`);
     return {
       success: true,
-      message: 'Novo cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a 2FA enviado com sucesso via SMS/WhatsApp!',
+      message: 'Novo cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a 2FA enviado com sucesso via SMS/WhatsApp!',
       simulatedCode
     };
   };
@@ -2926,7 +2926,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       .trim();
 
     const isService = merchantData.isServiceProvider ||
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os Gerais'].some(cat =>
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os Gerais'].some(cat =>
         (merchantData.category || '').toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -2941,17 +2941,17 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     const newMerchant: StoreMerchant = {
       id: newStoreId,
-      name: merchantData.name || (isService ? 'Novo Prestador de ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os' : 'Nova Loja Macacu'),
-      ownerName: ownerData.name || 'ProprietÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio / Profissional',
+      name: merchantData.name || (isService ? 'Novo Prestador de ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os' : 'Nova Loja Macacu'),
+      ownerName: ownerData.name || 'ProprietÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio / Profissional',
       email: ownerEmail,
       phone: merchantData.phone || '(21) 99999-7777',
       cnpjOrCpf: merchantData.cnpjOrCpf || '00.000.000/0001-00',
       idDocument: merchantData.idDocument || ownerData.idDocument || 'RJ-12.345.678-9',
-    category: merchantData.category || (isService ? 'PRESTADORES DE SERVIÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡OS' : 'GASTRONOMIA'),
+    category: merchantData.category || (isService ? 'PRESTADORES DE SERVIÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡OS' : 'GASTRONOMIA'),
       subcategory: merchantData.subcategory,
       description: merchantData.description || (
         isService
-          ? 'Prestador de serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os com documentaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e referÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncias verificadas.'
+          ? 'Prestador de serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os com documentaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e referÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncias verificadas.'
           : 'Loja parceira oficial no Achei Aqui.'
       ),
       address: merchantData.address || 'Rua Principal, 100',
@@ -2974,7 +2974,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       rating: 5.0,
       reviewsCount: 1,
       isOpen: true,
-      openingHours: merchantData.openingHours || '08:00 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â s 18:00',
+      openingHours: merchantData.openingHours || '08:00 ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ s 18:00',
       deliveryFee: merchantData.deliveryFee ?? 0,
       deliveryTimeEstimate: isService ? 'Sob Agendamento' : '30-45 min',
       supportsPickup: merchantData.supportsPickup ?? true,
@@ -2991,7 +2991,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       ownerEmail,
       _password || '123456',
       {
-        name: ownerData.name || 'ProprietÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio',
+        name: ownerData.name || 'ProprietÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio',
         phone: newMerchant.phone,
         role: isService ? 'PRESTADOR_SERVICO' : 'LOJISTA',
         merchantId: newStoreId,
@@ -3009,7 +3009,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     );
 
     if (!firebaseProvision.success || !firebaseProvision.user) {
-      throw new Error(firebaseProvision.message || 'NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel criar a credencial no Firebase.');
+      throw new Error(firebaseProvision.message || 'NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel criar a credencial no Firebase.');
     }
 
     const newOwnerUser: User = {
@@ -3025,7 +3025,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     const merchantSaved = await persistMerchantToFirestore(newMerchant);
     if (!merchantSaved) {
-      triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o cadastro da loja. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+      triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o cadastro da loja. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
       return newMerchant;
     }
 
@@ -3036,7 +3036,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     const ownerSaved = await persistUserToFirestore(newOwnerUser);
     if (!ownerSaved) {
-      triggerToast('Loja salva, mas nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o acesso do responsÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡vel. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+      triggerToast('Loja salva, mas nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o acesso do responsÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡vel. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
       return newMerchant;
     }
 
@@ -3067,7 +3067,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const cleanEmail = email.toLowerCase().trim();
     const user = users.find((u) => u.email.toLowerCase().trim() === cleanEmail);
     if (!user) {
-      return { success: false, message: 'UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.' };
+      return { success: false, message: 'UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.' };
     }
 
     const updated: User = {
@@ -3097,7 +3097,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'FIRST_LOGIN_PASSWORD_CHANGE',
-      `Senha provisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria alterada no primeiro acesso com sucesso para o usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ${user.name} (${user.role}). Acesso ao painel liberado.`
+      `Senha provisÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria alterada no primeiro acesso com sucesso para o usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ${user.name} (${user.role}). Acesso ao painel liberado.`
     );
 
     triggerToast('Senha definitiva salva com sucesso! Acesso ao painel liberado.');
@@ -3116,14 +3116,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   }): { success: boolean; message: string; boletoRequest?: BoletoBillingRequest } => {
     const merchant = merchants.find((m) => m.id === params.merchantId);
     if (!merchant) {
-      return { success: false, message: 'Estabelecimento/Prestador nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.' };
+      return { success: false, message: 'Estabelecimento/Prestador nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.' };
     }
 
     const selectedTier = params.planTier;
     const maxProducts = getMaxProductsForTier(selectedTier);
     const commissionRate = getCommissionRateForTier(selectedTier);
     
-    // Valor padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o caso amount venha 0
+    // Valor padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o caso amount venha 0
     let amount = params.amount;
     if (!amount || amount <= 0) {
       if (merchant.isServiceProvider) {
@@ -3182,7 +3182,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       requestedAt: nowIso,
       paidAt: nowIso,
       confirmedByMasterAt: nowIso,
-      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
+      masterNotes: `Pagamento do plano ${selectedTier} aprovado via ${params.paymentMethod}. Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Direta'}). Acesso liberado.`
     };
 
     // Registra entrada financeira
@@ -3206,7 +3206,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       })
     );
 
-    // Atualiza metas e mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©tricas do vendedor
+    // Atualiza metas e mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ©tricas do vendedor
     if (matchedAgent) {
       setSalesAgents((prev) =>
         prev.map((a) =>
@@ -3223,7 +3223,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'PLAN_PAYMENT_CONFIRMED',
-      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
+      `Pagamento do plano ${selectedTier} confirmado para ${merchant.name} (${isService ? 'Prestador' : 'Lojista'}) via ${params.paymentMethod}. Total: R$ ${amount.toFixed(2)} | Plataforma: R$ ${platformNetFee.toFixed(2)} | ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Vendedor: R$ ${commissionAmount.toFixed(2)} (${matchedAgent?.name || 'Plataforma'}). Acesso liberado ao painel.`,
       { category: 'FINANCIAL', entityId: boletoId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -3269,7 +3269,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     }
 
     addAuditLog('MEMBERSHIP_UPGRADE', `Loja ID ${merchantId} atualizou o plano para "${newTier}" (${maxProducts > 1000 ? 'Produtos Ilimitados' : `${maxProducts} prods`}, Taxa: ${commission}%)`);
-    triggerToast(`ParabÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ns! Seu estabelecimento foi atualizado para o ${newTier}!`);
+    triggerToast(`ParabÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ©ns! Seu estabelecimento foi atualizado para o ${newTier}!`);
   };
 
   const payOrderCommissionByMerchant = (orderId: string) => {
@@ -3294,14 +3294,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       orderId,
       'COMMISSION_PAID_BY_MERCHANT',
       updatedOrderRef?.commissionAmount || 0,
-      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando validaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Administrador Master.`,
+      `Lojista informou pagamento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Aguardando validaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Administrador Master.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
         commissionAmount: updatedOrderRef?.commissionAmount
       }
     );
-    triggerToast('Comprovante/Pagamento de comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o enviado! O Administrador Master irÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ validar e liberar os dados do comprador.');
+    triggerToast('Comprovante/Pagamento de comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o enviado! O Administrador Master irÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ validar e liberar os dados do comprador.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MERCHANT_PAID');
@@ -3332,7 +3332,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       orderId,
       'COMMISSION_CONFIRMED_BY_MASTER',
       updatedOrderRef?.commissionAmount || 0,
-      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. HomologaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e quitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­das.`,
+      `Administrador Master confirmou o recebimento da taxa do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. HomologaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e quitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­das.`,
       {
         orderId,
         storeId: updatedOrderRef?.merchantId,
@@ -3345,11 +3345,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'HomologaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e liquidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da taxa de intermediaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da plataforma pelo Administrador Master'
+        'HomologaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e liquidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da taxa de intermediaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da plataforma pelo Administrador Master'
       );
     }
 
-    triggerToast('ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o confirmada pelo Master! Dados do comprador liberados para a loja.');
+    triggerToast('ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o confirmada pelo Master! Dados do comprador liberados para a loja.');
 
     if (updatedOrderRef) {
       dispatchCommissionSystemMessage(updatedOrderRef, 'MASTER_CONFIRMED');
@@ -3375,12 +3375,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         orderId,
         targetOrder.merchantId,
         targetOrder.customerName,
-        'AutorizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o discricionÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ria direta emitida pelo Administrador Master Supremo'
+        'AutorizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o discricionÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ria direta emitida pelo Administrador Master Supremo'
       );
     } else {
       addAuditLog(
         'BUYER_DATA_REVOCATION_MASTER',
-      `[LGPD / SEGURANÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡A] Administrador Master BLOQUEOU a visualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
+      `[LGPD / SEGURANÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡A] Administrador Master BLOQUEOU a visualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de dados do comprador para o pedido #${targetOrder?.orderNumber || targetOrder?.code || orderId}`,
         {
           category: 'DATA_PRIVACY',
           severity: 'WARNING',
@@ -3395,22 +3395,22 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       );
     }
 
-    triggerToast(`VisualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
+    triggerToast(`VisualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de dados do comprador ${unlocked ? 'liberada' : 'bloqueada'} com sucesso.`);
   };
 
   const updateUserPassword = (newPassword: string): { success: boolean; message?: string } => {
     if (!currentUser) {
-      return { success: false, message: 'Nenhum usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio autenticado.' };
+      return { success: false, message: 'Nenhum usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio autenticado.' };
     }
 
     const trimmed = newPassword.trim();
 
     if (trimmed.length < 8) {
-      return { success: false, message: 'A nova senha deve possuir no mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nimo 8 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­nimo 8 caracteres.' };
     }
 
     if (trimmed === '12345678') {
-      return { success: false, message: 'VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª precisa cadastrar uma nova senha diferente da senha padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.' };
+      return { success: false, message: 'VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª precisa cadastrar uma nova senha diferente da senha padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.' };
     }
 
     const updateFirebasePassword = async () => {
@@ -3457,12 +3457,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           }
         }
       } catch {
-        // PersistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia local ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© complementar ao Firebase/Firestore.
+        // PersistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia local ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© complementar ao Firebase/Firestore.
       }
 
       addAuditLog(
         'PASSWORD_UPDATE',
-        `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do.`
+        `Senha de acesso alterada com sucesso para ${currentUser.email}. Primeiro acesso concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do.`
       );
 
       triggerToast('Senha atualizada com sucesso!');
@@ -3472,7 +3472,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     return {
       success: true,
-      message: 'AtualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da senha iniciada.'
+      message: 'AtualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da senha iniciada.'
     };
   };
   const toggleTwoFactor = (): boolean => {
@@ -3483,51 +3483,51 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       twoFactorEnabled: newState
     };
     setCurrentUser(updatedUser);
-    addAuditLog('2FA_TOGGLE', `AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
-    triggerToast(`AutenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
+    addAuditLog('2FA_TOGGLE', `AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o em 2 etapas ${newState ? 'ativada' : 'desativada'}.`);
+    triggerToast(`AutenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de 2 Fatores (2FA) ${newState ? 'ATIVADA' : 'DESATIVADA'}.`);
     return newState;
   };
 
   const resendEmailConfirmation = (email: string): { success: boolean; message: string } => {
-    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o reenviado para ${email}`);
-    triggerToast(`Link de verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o reenviado para ${email}. Verifique sua caixa de entrada.`);
+    addAuditLog('EMAIL_VERIFY_REQUEST', `Link de confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o reenviado para ${email}`);
+    triggerToast(`Link de verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o reenviado para ${email}. Verifique sua caixa de entrada.`);
     return {
       success: true,
-      message: `E-mail de confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o enviado para ${email} com sucesso!`
+      message: `E-mail de confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o enviado para ${email} com sucesso!`
     };
   };
 
   const requestPasswordReset = (email: string): { success: boolean; message: string; simulatedCode?: string } => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    addAuditLog('PASSWORD_RESET_REQUEST', `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de recuperaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de senha com cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo para ${email}`);
+    addAuditLog('PASSWORD_RESET_REQUEST', `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de recuperaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de senha com cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo para ${email}`);
     NotificationService.notifySecurityEvent({ email }, 'PASSWORD_RESET', { code });
     return {
       success: true,
-      message: `CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a de 6 dÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­gitos gerado e enviado para ${email}.`,
+      message: `CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a de 6 dÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­gitos gerado e enviado para ${email}.`,
       simulatedCode: code
     };
   };
 
   const completePasswordReset = (email: string, code: string, newPassword: string): { success: boolean; message: string } => {
     if (!code || code.length < 6) {
-      return { success: false, message: 'CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido.' };
+      return { success: false, message: 'CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido.' };
     }
     if (!newPassword || newPassword.length < 6) {
-      return { success: false, message: 'A nova senha deve possuir no mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nimo 6 caracteres.' };
+      return { success: false, message: 'A nova senha deve possuir no mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­nimo 6 caracteres.' };
     }
-    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ${email}`);
-    triggerToast('Senha redefinida com sucesso! VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ pode entrar com sua nova senha.');
+    addAuditLog('PASSWORD_RESET_COMPLETE', `Senha redefinida com sucesso para o usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ${email}`);
+    triggerToast('Senha redefinida com sucesso! VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ pode entrar com sua nova senha.');
     return { success: true, message: 'Senha alterada com sucesso!' };
   };
 
   const logout = () => {
     if (currentUser) {
-      addAuditLog('USER_LOGOUT', `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ${currentUser.name} encerrou a sessÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o`);
+      addAuditLog('USER_LOGOUT', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ${currentUser.name} encerrou a sessÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o`);
     }
     firebaseLogout().catch(() => {});
     setCurrentUser(null);
     setCurrentEnvironment('MARKETPLACE');
-    triggerToast('VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª saiu da sua conta.');
+    triggerToast('VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª saiu da sua conta.');
   };
 
   // ==========================================
@@ -3549,14 +3549,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const saved = await persistUserToFirestore(updatedUser);
 
     if (!saved) {
-      triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar a ficha cadastral. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+      triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar a ficha cadastral. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
       return false;
     }
 
     setCurrentUser(updatedUser);
     addAuditLog(
       'CUSTOMER_PROFILE_UPDATE',
-      'Ficha cadastral de ' + updatedUser.name + ' (' + updatedUser.email + ') modificada pelo prÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³prio cliente.'
+      'Ficha cadastral de ' + updatedUser.name + ' (' + updatedUser.email + ') modificada pelo prÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³prio cliente.'
     );
     triggerToast('Ficha cadastral atualizada com sucesso!');
     return true;
@@ -3564,7 +3564,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   };
   const addCustomerAddress = (addressData: Omit<CustomerAddress, 'id'>): CustomerAddress => {
     if (!currentUser) {
-      throw new Error('Nenhum usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio autenticado para adicionar endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o.');
+      throw new Error('Nenhum usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio autenticado para adicionar endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o.');
     }
 
     const currentAddresses = currentUser.addresses || [];
@@ -3598,14 +3598,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
       addAuditLog(
         'CUSTOMER_ADDRESS_ADD',
-        `Novo endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â  ficha do cliente.`
+        `Novo endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${newAddress.label}" (${newAddress.neighborhood}) adicionado ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ  ficha do cliente.`
       );
-      triggerToast(`EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${newAddress.label}" salvo com sucesso!`);
+      triggerToast(`EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${newAddress.label}" salvo com sucesso!`);
     });
     return newAddress;
   };
@@ -3649,11 +3649,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
-    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${targetAddress.label}" modificado pelo cliente.`);
-      triggerToast('EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o atualizado com sucesso!');
+    addAuditLog('CUSTOMER_ADDRESS_UPDATE', `EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${targetAddress.label}" modificado pelo cliente.`);
+      triggerToast('EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o atualizado com sucesso!');
     });
   };
 
@@ -3685,15 +3685,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel excluir o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel excluir o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_DELETE',
-        `EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
+        `EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${addressToDelete?.label || id}" removido da ficha cadastral.`
       );
-      triggerToast('EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o removido com sucesso.');
+      triggerToast('EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o removido com sucesso.');
     });
   };
 
@@ -3723,15 +3723,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel definir o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o principal. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel definir o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o principal. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
       addAuditLog(
         'CUSTOMER_ADDRESS_SET_DEFAULT',
-        `EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${targetAddress.label}" definido como principal pelo cliente.`
+        `EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${targetAddress.label}" definido como principal pelo cliente.`
       );
-      triggerToast('EndereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o definido como principal com sucesso!');
+      triggerToast('EndereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o definido como principal com sucesso!');
     });
   };
 
@@ -3747,13 +3747,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar a ficha de medidas. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar a ficha de medidas. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
       addAuditLog(
         'VIP_MEASUREMENTS_UPDATE',
-        'Ficha de medidas e preferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncias para Provador VIP atualizada.'
+        'Ficha de medidas e preferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncias para Provador VIP atualizada.'
       );
       triggerToast('Ficha de medidas do Provador VIP salva com sucesso!');
     });
@@ -3772,16 +3772,16 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCurrentUser(updatedUser);
     void persistUserToFirestore(updatedUser).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar as preferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncias. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar as preferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncias. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
       setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
       addAuditLog(
         'CUSTOMER_PREFERENCES_UPDATE',
-        'PreferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncias de comunicaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e canais atualizadas.'
+        'PreferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncias de comunicaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e canais atualizadas.'
       );
-      triggerToast('PreferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncias de notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o salvas com sucesso!');
+      triggerToast('PreferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncias de notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o salvas com sucesso!');
     });
   };
 
@@ -3798,13 +3798,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     void persistProductToFirestore(newProduct).then((saved) => {
       if (!saved) {
         setProducts((prev) => prev.filter((p) => p.id !== newProduct.id));
-        triggerToast(`NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o produto "${newProduct.name}". Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.`);
+        triggerToast(`NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o produto "${newProduct.name}". Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.`);
         return;
       }
 
       addAuditLog(
         'PRODUCT_CREATE',
-        `Cadastrou o produto "${newProduct.name}" no catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡logo`
+        `Cadastrou o produto "${newProduct.name}" no catÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡logo`
       );
       triggerToast(`Produto "${newProduct.name}" publicado com sucesso no marketplace!`);
     });
@@ -3826,7 +3826,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     );
 
     if (!updatedProduct) {
-      triggerToast('Produto nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado para atualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.');
+      triggerToast('Produto nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado para atualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.');
       return;
     }
 
@@ -3834,7 +3834,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     void persistProductToFirestore(productToSave).then((saved) => {
       if (!saved) {
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar o produto. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar o produto. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
@@ -3885,7 +3885,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const previousMerchant = merchants.find((m) => m.id === id);
 
     if (!previousMerchant) {
-      triggerToast('Loja nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada para atualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.');
+      triggerToast('Loja nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada para atualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.');
       return;
     }
 
@@ -3903,13 +3903,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         setMerchants((prev) =>
           prev.map((m) => (m.id === id ? previousMerchant : m))
         );
-        triggerToast('NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel salvar os dados da loja. Verifique sua conexÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o e tente novamente.');
+        triggerToast('NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel salvar os dados da loja. Verifique sua conexÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o e tente novamente.');
         return;
       }
 
       addAuditLog(
         'STORE_UPDATE',
-        `Atualizou configuraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes da loja ID ${id}`
+        `Atualizou configuraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes da loja ID ${id}`
       );
       triggerToast('Dados da loja salvos com sucesso!');
     });
@@ -3930,7 +3930,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString(36).toUpperCase();
     let prefix = 'DEL-';
     if (orderData.modality === 'RETIRADA') prefix = 'RET-';
-    if (orderData.modality === 'EXPERIMENTAÃ‡ÃƒO') prefix = 'EXP-';
+    if (orderData.modality === 'EXPERIMENTAÇÃO') prefix = 'EXP-';
     if (orderData.modality === 'AGENDAMENTO') prefix = 'AGE-';
 
     const orderCode = `${prefix}${randomSuffix}`;
@@ -3972,13 +3972,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setOrders((prev) => [newOrder, ...prev]);
     persistOrderToFirestore(newOrder);
 
-    // Persiste no banco de dados do servidor para sincronizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o com Webhooks do Asaas
+    // Persiste no banco de dados do servidor para sincronizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o com Webhooks do Asaas
     persistirPedidoNoServidor(newOrder).catch(() => {});
     
     logOrderEvent(
       newOrder.id,
       'ORDER_PLACED',
-      `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
+      `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de compra ${orderNumberStr} (${orderCode}) criada. Modalidade: ${orderData.modality}. Loja: ${targetStore?.name || 'Desconhecida'} (${storeTier}, Taxa: ${appliedCommissionRate}%, R$ ${computedCommission.toFixed(2)})`,
       {
         orderId: newOrder.id,
         code: newOrder.code,
@@ -4000,15 +4000,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       subpedidoId: initialSubId,
       pedidoPrincipalId: newOrder.id,
       codigoSubpedido: initialSubCode,
-    message: `[HISTÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“RICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do estabelecimento.`,
+    message: `[HISTÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€¦ââ‚¬Å“RICO OFICIAL] Pedido ${newOrder.orderNumber || newOrder.code} gerado (${newOrder.modality}). CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a: ${newOrder.securityCode || newOrder.pickupCode || 'N/A'}. Aguardando confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do estabelecimento.`,
       systemEventType: 'ORDER_CREATED',
       statusBadge: newOrder.status || 'Pendente'
     });
 
-    // Disparo de notificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o transacional via NotificationService (com Firebase Firestore e WhatsApp)
+    // Disparo de notificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o transacional via NotificationService (com Firebase Firestore e WhatsApp)
     NotificationService.notifyOrderEvent(newOrder, 'ORDER_PLACED');
 
-    if (orderData.modality === 'EXPERIMENTAÃ‡ÃƒO') {
+    if (orderData.modality === 'EXPERIMENTAÇÃO') {
       NotificationService.notifyTrialEvent(newOrder, 'TRIAL_REQUESTED');
     } else if (orderData.modality === 'AGENDAMENTO') {
       NotificationService.notifyServiceBookingEvent(newOrder, 'SERVICE_BOOKED');
@@ -4050,7 +4050,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     logOrderEvent(
       orderId,
       'STOCK_CONFIRMED',
-      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
+      `Loja confirmou estoque do pedido #${updatedOrderRef?.orderNumber || updatedOrderRef?.code || orderId}. Produto reservado por 30 minutos (atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© ${new Date(reservationExpiresAt).toLocaleTimeString()}).`,
       {
         orderId,
         reservationExpiresAt,
@@ -4064,7 +4064,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         orderId,
         updatedOrderRef.merchantId,
         updatedOrderRef.customerName,
-        'Desbloqueio autorizado automaticamente apÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³s confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de estoque e verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de plano do parceiro'
+        'Desbloqueio autorizado automaticamente apÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³s confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de estoque e verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de plano do parceiro'
       );
     }
 
@@ -4076,7 +4076,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     }
   };
 
-  const rejectOrderStock = (orderId: string, reason: string = 'Produto indisponÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel no momento') => {
+  const rejectOrderStock = (orderId: string, reason: string = 'Produto indisponÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel no momento') => {
     let updatedOrderRef: Order | undefined;
 
     setOrders((prev) =>
@@ -4150,7 +4150,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       persistOrderToFirestore(updatedOrderRef);
     }
 
-    // Disparar mensagem de sistema automÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡tica no chat do subpedido
+    // Disparar mensagem de sistema automÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡tica no chat do subpedido
     if (updatedOrderRef) {
       dispatchOrderStatusSystemMessage(updatedOrderRef, status, prevStatusRef);
 
@@ -4162,7 +4162,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_DISPATCHED');
       } else if (status === 'Pronto para Retirada') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_READY_PICKUP');
-      } else if (status === 'ConcluÃ­do') {
+      } else if (status === 'Concluído') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_COMPLETED');
       } else if (status === 'Cancelado' || status === 'Sem Estoque') {
         NotificationService.notifyOrderEvent(updatedOrderRef, 'ORDER_CANCELLED');
@@ -4183,23 +4183,23 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (!found) {
       logSecurityEvent(
         'PICKUP_VALIDATION_FAILED',
-        `Tentativa de validaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o com cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido ou nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado: "${cleanCode}"`,
+        `Tentativa de validaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o com cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido ou nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado: "${cleanCode}"`,
         { attemptedCode: cleanCode },
         'WARNING'
       );
-      return { success: false, message: 'CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a ou retirada nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado ou invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido.' };
+      return { success: false, message: 'CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a ou retirada nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado ou invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido.' };
     }
 
-    if (found.status === 'ConcluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do') {
-      return { success: false, message: 'Este cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ foi validado e o pedido concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do anteriormente.', order: found };
+    if (found.status === 'ConcluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do') {
+      return { success: false, message: 'Este cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ foi validado e o pedido concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do anteriormente.', order: found };
     }
 
-    // Update order to ConcluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do
-    updateOrderStatus(found.id, 'ConcluÃ­do');
+    // Update order to ConcluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do
+    updateOrderStatus(found.id, 'Concluído');
     logOrderEvent(
       found.id,
       'PICKUP_VALIDATED',
-      `CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a/retirada ${cleanCode} validado com sucesso no balcÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o. Pedido entregue a ${found.customerName}.`,
+      `CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a/retirada ${cleanCode} validado com sucesso no balcÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o. Pedido entregue a ${found.customerName}.`,
       {
         orderId: found.id,
         validatedCode: cleanCode,
@@ -4209,15 +4209,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     );
     return {
       success: true,
-      message: `CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
-      order: { ...found, status: 'ConcluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do' }
+      message: `CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo ${cleanCode} validado com sucesso! Pedido ${found.orderNumber || found.code} entregue ao cliente ${found.customerName}.`,
+      order: { ...found, status: 'ConcluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do' }
     };
   };
 
   // Cart & Favorites
   const addToCart = (item: CartItem) => {
     setCart((prev) => [...prev, item]);
-    triggerToast(`${item.product.name} adicionado ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â  sua sacola!`);
+    triggerToast(`${item.product.name} adicionado ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ  sua sacola!`);
   };
 
   const removeFromCart = (indexOrProductId: number | string) => {
@@ -4263,8 +4263,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     };
 
     setUsers((prev) => [newUser, ...prev]);
-    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio "${newUser.name}" (${newUser.role} - ${newUser.email})`);
-    triggerToast(`UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio "${newUser.name}" criado com sucesso!`);
+    addAuditLog('MASTER_USER_CREATE', `Administrador Master criou o usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio "${newUser.name}" (${newUser.role} - ${newUser.email})`);
+    triggerToast(`UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio "${newUser.name}" criado com sucesso!`);
     return newUser;
   };
 
@@ -4282,8 +4282,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       })
     );
 
-    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId}`);
-    triggerToast('Cadastro de usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio atualizado com sucesso.');
+    addAuditLog('MASTER_USER_UPDATE', `Administrador Master editou os dados do usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId}`);
+    triggerToast('Cadastro de usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio atualizado com sucesso.');
   };
 
   const blockUserByMaster = (userId: string, reason?: string) => {
@@ -4293,7 +4293,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           const updated = {
             ...u,
             status: 'blocked' as const,
-            statusReason: reason || 'Bloqueado por decisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o administrativa Master'
+            statusReason: reason || 'Bloqueado por decisÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o administrativa Master'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4301,8 +4301,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return u;
       })
     );
-    addAuditLog('MASTER_USER_BLOCK', `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
-    triggerToast('UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio bloqueado com sucesso.');
+    addAuditLog('MASTER_USER_BLOCK', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId} BLOQUEADO pelo Master. Motivo: ${reason || 'Sem motivo informado'}`);
+    triggerToast('UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio bloqueado com sucesso.');
   };
 
   const suspendUserByMaster = (userId: string, reason?: string) => {
@@ -4312,7 +4312,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
           const updated = {
             ...u,
             status: 'suspended' as const,
-            statusReason: reason || 'Suspenso preventivamente para verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o'
+            statusReason: reason || 'Suspenso preventivamente para verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o'
           };
           if (currentUser?.id === userId) setCurrentUser(updated);
           return updated;
@@ -4320,8 +4320,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return u;
       })
     );
-    addAuditLog('MASTER_USER_SUSPEND', `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'PrevenÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o'}`);
-    triggerToast('UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio suspenso temporariamente.');
+    addAuditLog('MASTER_USER_SUSPEND', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId} SUSPENSO pelo Master. Motivo: ${reason || 'PrevenÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o'}`);
+    triggerToast('UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio suspenso temporariamente.');
   };
 
   const reactivateUserByMaster = (userId: string) => {
@@ -4339,14 +4339,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return u;
       })
     );
-    addAuditLog('MASTER_USER_REACTIVATE', `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId} REATIVADO com status Ativo pelo Master`);
-    triggerToast('UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio reativado com sucesso!');
+    addAuditLog('MASTER_USER_REACTIVATE', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId} REATIVADO com status Ativo pelo Master`);
+    triggerToast('UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio reativado com sucesso!');
   };
 
   const deleteUserByMaster = (userId: string) => {
     setUsers((prev) => prev.filter((u) => u.id !== userId));
-    addAuditLog('MASTER_USER_DELETE', `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId} EXCLUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂDO definitivamente do sistema pelo Master`);
-    triggerToast('UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio removido da base de dados.');
+    addAuditLog('MASTER_USER_DELETE', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId} EXCLUÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂDO definitivamente do sistema pelo Master`);
+    triggerToast('UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio removido da base de dados.');
   };
 
   const resetUserPasswordByMaster = (userId: string): string => {
@@ -4359,8 +4359,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return u;
       })
     );
-    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId} resetada pelo Master. Nova provisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria gerada.`);
-    triggerToast(`Senha resetada! Nova senha provisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria: ${tempPass}`);
+    addAuditLog('MASTER_PASSWORD_RESET', `Senha do usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId} resetada pelo Master. Nova provisÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria gerada.`);
+    triggerToast(`Senha resetada! Nova senha provisÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria: ${tempPass}`);
     return tempPass;
   };
 
@@ -4374,13 +4374,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return u;
       })
     );
-    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o alterado para o usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio ID ${userId}`);
-    triggerToast('Status de verificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio atualizado.');
+    addAuditLog('MASTER_USER_VERIFY_TOGGLE', `Status de verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o alterado para o usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ID ${userId}`);
+    triggerToast('Status de verificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio atualizado.');
   };
 
   const impersonateUser = (user: User) => {
     setCurrentUser(user);
-    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio "${user.name}" (${user.role})`);
+    addAuditLog('MASTER_IMPERSONATE', `Master assumiu a sessÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio "${user.name}" (${user.role})`);
     if (user.role === 'CLIENTE') {
       setCurrentEnvironment('MARKETPLACE');
     } else if (user.role === 'VENDEDOR') {
@@ -4409,7 +4409,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const suspendMerchant = (id: string, reason?: string) => {
     setMerchants((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela moderaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o' } : m))
+      prev.map((m) => (m.id === id ? { ...m, status: 'suspended', statusReason: reason || 'Suspenso pela moderaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o' } : m))
     );
     addAuditLog('MASTER_MERCHANT_SUSPEND', `Loja ID ${id} SUSPENSA pelo Master. Motivo: ${reason || 'Ajustes contratuais'}`);
     triggerToast('Loja suspensa com sucesso.');
@@ -4425,16 +4425,16 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const deleteMerchant = (id: string) => {
     setMerchants((prev) => prev.filter((m) => m.id !== id));
-    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂDA do sistema pelo Master`);
-    triggerToast('Loja excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da do catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡logo.');
+    addAuditLog('MASTER_MERCHANT_DELETE', `Loja ID ${id} EXCLUÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂDA do sistema pelo Master`);
+    triggerToast('Loja excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da do catÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡logo.');
   };
 
   const setMerchantCommissionRate = (id: string, rate: number) => {
     setMerchants((prev) =>
       prev.map((m) => (m.id === id ? { ...m, commissionRate: rate } : m))
     );
-    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da loja ID ${id} ajustada para ${rate}%`);
-    triggerToast(`ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ajustada para ${rate}%.`);
+    addAuditLog('MASTER_COMMISSION_UPDATE', `Taxa de comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da loja ID ${id} ajustada para ${rate}%`);
+    triggerToast(`ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ajustada para ${rate}%.`);
   };
 
   // Products & Services Control Master
@@ -4457,7 +4457,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return p;
       })
     );
-    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O'}`);
+    addAuditLog('MASTER_PRODUCT_FEATURED', `Destaque do produto ID ${id} alterado para ${nextState ? 'SIM' : 'NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O'}`);
     triggerToast(nextState ? 'Produto destacado na Home!' : 'Destaque removido.');
   };
 
@@ -4467,8 +4467,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       id: `srv-${Date.now()}`
     };
     setServices((prev) => [newService, ...prev]);
-    addAuditLog('SERVICE_CREATE', `ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${newService.title}" cadastrado`);
-    triggerToast(`ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o "${newService.title}" adicionado!`);
+    addAuditLog('SERVICE_CREATE', `ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${newService.title}" cadastrado`);
+    triggerToast(`ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o "${newService.title}" adicionado!`);
     return newService;
   };
 
@@ -4476,14 +4476,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setServices((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('SERVICE_UPDATE', `ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o ID ${id} atualizado`);
-    triggerToast('ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o atualizado com sucesso.');
+    addAuditLog('SERVICE_UPDATE', `ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o ID ${id} atualizado`);
+    triggerToast('ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o atualizado com sucesso.');
   };
 
   const deleteService = (id: string) => {
     setServices((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('SERVICE_DELETE', `ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o ID ${id} removido`);
-    triggerToast('ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o removido.');
+    addAuditLog('SERVICE_DELETE', `ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o ID ${id} removido`);
+    triggerToast('ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o removido.');
   };
 
   // Orders Intervention Master
@@ -4526,7 +4526,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         if (o.id === orderId) {
           const updated = {
             ...o,
-            status: 'ConcluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do' as OrderStatus,
+            status: 'ConcluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do' as OrderStatus,
             pickupValidatedAt: new Date().toISOString(),
             updatedAt: 'Agora'
           };
@@ -4539,21 +4539,21 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (targetOrder) {
       NotificationService.notifyOrderEvent(targetOrder, 'ORDER_COMPLETED');
     }
-    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂDO manualmente com baixa forÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ada pelo Master`);
+    addAuditLog('MASTER_ORDER_FORCE_COMPLETE', `Pedido ID ${orderId} CONCLUÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂDO manualmente com baixa forÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ada pelo Master`);
     triggerToast('Pedido finalizado com sucesso.');
   };
 
   const deleteOrderByMaster = (orderId: string) => {
     setOrders((prev) => prev.filter((o) => o.id !== orderId));
-    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂDO do sistema`);
-    triggerToast('Pedido excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do.');
+    addAuditLog('MASTER_ORDER_DELETE', `Registro do pedido ID ${orderId} EXCLUÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂDO do sistema`);
+    triggerToast('Pedido excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do.');
   };
 
   // System Settings & Database Control
   const updateSystemSettings = (updates: Partial<SystemSettings>) => {
     setSystemSettings((prev) => ({ ...prev, ...updates }));
-    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'ConfiguraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes e parÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢metros globais da plataforma atualizados');
-    triggerToast('ParÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢metros do sistema salvos com sucesso!');
+    addAuditLog('SYSTEM_SETTINGS_UPDATE', 'ConfiguraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes e parÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢metros globais da plataforma atualizados');
+    triggerToast('ParÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢metros do sistema salvos com sucesso!');
   };
 
   const clearAuditLogs = () => {
@@ -4568,7 +4568,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19)
     };
     setAuditLogs([initialLog]);
-    triggerToast('HistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico de logs reinicializado.');
+    triggerToast('HistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico de logs reinicializado.');
   };
 
   const exportFullDatabaseSnapshot = (): string => {
@@ -4591,7 +4591,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     try {
       const data = JSON.parse(jsonString);
       if (!data.users || !data.merchants || !data.products) {
-        throw new Error('Arquivo de backup invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lido ou incompatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel.');
+        throw new Error('Arquivo de backup invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lido ou incompatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel.');
       }
       if (data.users) setUsers(data.users);
       if (data.merchants) setMerchants(data.merchants);
@@ -4607,7 +4607,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       return true;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erro ao importar';
-      triggerToast(`Falha na restauraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: ${msg}`);
+      triggerToast(`Falha na restauraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: ${msg}`);
       return false;
     }
   };
@@ -4624,8 +4624,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setAdSpaces(INITIAL_AD_SPACES);
     setFrontendConfig(INITIAL_FRONTEND_CONFIG);
     setCurrentCity('Cachoeiras de Macacu, RJ');
-    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o inicial de fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡brica');
-    triggerToast('Sistema restaurado para os dados originais padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o!');
+    addAuditLog('SYSTEM_RESET_DEFAULT', 'Base de dados restaurada para o padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o inicial de fÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡brica');
+    triggerToast('Sistema restaurado para os dados originais padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o!');
   };
 
   // Inter-Category Banners Operations
@@ -4677,8 +4677,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       bids: []
     };
     setAdSpaces((prev) => [newSpace, ...prev]);
-    addAuditLog('AD_SPACE_CREATE', `EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio criado: "${newSpace.name}"`);
-    triggerToast('EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o de publicidade disponibilizado!');
+    addAuditLog('AD_SPACE_CREATE', `EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio criado: "${newSpace.name}"`);
+    triggerToast('EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o de publicidade disponibilizado!');
     return newSpace;
   };
 
@@ -4686,14 +4686,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setAdSpaces((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
     );
-    addAuditLog('AD_SPACE_UPDATE', `EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio #${id} atualizado`);
-    triggerToast('EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio atualizado!');
+    addAuditLog('AD_SPACE_UPDATE', `EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio #${id} atualizado`);
+    triggerToast('EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio atualizado!');
   };
 
   const deleteAdSpace = (id: string) => {
     setAdSpaces((prev) => prev.filter((s) => s.id !== id));
-    addAuditLog('AD_SPACE_DELETE', `EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio #${id} excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do`);
-    triggerToast('EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do!');
+    addAuditLog('AD_SPACE_DELETE', `EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio #${id} excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do`);
+    triggerToast('EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do!');
   };
 
   const placeAdBid = (
@@ -4704,13 +4704,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     notes?: string
   ): { success: boolean; message: string } => {
     const space = adSpaces.find((s) => s.id === adSpaceId);
-    if (!space) return { success: false, message: 'EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.' };
+    if (!space) return { success: false, message: 'EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.' };
 
     const minAmount = space.currentHighestBid ? space.currentHighestBid + 10 : (space.minimumBid || 50);
     if (bidAmount < minAmount) {
       return {
         success: false,
-        message: `O lance mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nimo para superar a oferta atual ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© de R$ ${minAmount.toFixed(2)}`
+        message: `O lance mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­nimo para superar a oferta atual ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© de R$ ${minAmount.toFixed(2)}`
       };
     }
 
@@ -4744,7 +4744,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       })
     );
 
-    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o #${space.name}`);
+    addAuditLog('AD_AUCTION_BID', `Novo lance de R$ ${bidAmount.toFixed(2)} por ${merchantName} no espaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o #${space.name}`);
     triggerToast(`Lance de R$ ${bidAmount.toFixed(2)} registrado com sucesso!`);
     return { success: true, message: 'Lance registrado com sucesso!' };
   };
@@ -4772,8 +4772,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return s;
       })
     );
-    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `LeilÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o arrematado para o espaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o #${adSpaceId}`);
-    triggerToast('Vencedor do leilÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o confirmado e espaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o ativado!');
+    addAuditLog('AD_AUCTION_WINNER_ACCEPTED', `LeilÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o arrematado para o espaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o #${adSpaceId}`);
+    triggerToast('Vencedor do leilÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o confirmado e espaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o ativado!');
   };
 
   const sellAdSpaceDirectly = (
@@ -4798,8 +4798,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return s;
       })
     );
-    addAuditLog('AD_DIRECT_SALE', `EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
-    triggerToast(`EspaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o publicitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio vendido para ${merchantName}!`);
+    addAuditLog('AD_DIRECT_SALE', `EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o #${adSpaceId} vendido diretamente para ${merchantName} (${period}) por R$ ${price.toFixed(2)}`);
+    triggerToast(`EspaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o publicitÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio vendido para ${merchantName}!`);
   };
 
   const trackAdImpression = useCallback((adSpaceId: string) => {
@@ -4834,11 +4834,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'FRONTEND_CONFIG_UPDATE',
-      'ConfiguraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes de visual do frontend atualizadas pelo Master'
+      'ConfiguraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes de visual do frontend atualizadas pelo Master'
     );
 
     triggerToast(
-      'Visual e configuraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes do frontend atualizados com sucesso!'
+      'Visual e configuraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes do frontend atualizados com sucesso!'
     );
   };
 
@@ -4853,7 +4853,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       navMenuItems: [...prev.navMenuItems, newItem]
     }));
 
-    triggerToast('Item adicionado ao menu de navegaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o!');
+    triggerToast('Item adicionado ao menu de navegaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o!');
   };
 
   const updateNavMenuItem = (id: string, updates: Partial<NavMenuItem>) => {
@@ -4884,7 +4884,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   };
 
   // ==========================================
-  // AVALIAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ES MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡TUAS & REPUTAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O LOCAL
+  // AVALIAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ES MÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â¦Ãâ€šÂÂ¡TUAS & REPUTAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O LOCAL
   // ==========================================
 
   const addCustomerReview = (
@@ -4919,7 +4919,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       'CUSTOMER_REVIEW_SUBMITTED',
       `Cliente ${reviewData.userName} avaliou o estabelecimento ${reviewData.merchantName} com nota ${reviewData.rating}.0`
     );
-    triggerToast('AvaliaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o enviada com sucesso! Obrigado pela contribuiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.');
+    triggerToast('AvaliaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o enviada com sucesso! Obrigado pela contribuiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.');
     return newReview;
   };
 
@@ -4938,7 +4938,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       'MERCHANT_REVIEW_SUBMITTED',
       `Lojista ${reviewData.merchantName} avaliou a conduta do cliente ${reviewData.userName} (Pedido #${reviewData.orderCode}) com nota ${reviewData.rating}.0`
     );
-    triggerToast(`AvaliaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de conduta de ${reviewData.userName} registrada com sucesso!`);
+    triggerToast(`AvaliaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de conduta de ${reviewData.userName} registrada com sucesso!`);
     return newReview;
   };
 
@@ -4954,7 +4954,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
             ...r,
             merchantReply: {
               replyText,
-              repliedAt: `${new Date().toISOString().split('T')[0]} ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â s ${new Date()
+              repliedAt: `${new Date().toISOString().split('T')[0]} ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ s ${new Date()
                 .toTimeString()
                 .slice(0, 5)}`,
               merchantAuthorName: merchantAuthorName || 'Estabelecimento'
@@ -4964,8 +4964,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         return r;
       })
     );
-    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta pÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºblica adicionada para a avaliaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o #${reviewId}`);
-    triggerToast('Resposta pÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºblica publicada com sucesso!');
+    addAuditLog('MERCHANT_REVIEW_REPLY', `Resposta pÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂºblica adicionada para a avaliaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o #${reviewId}`);
+    triggerToast('Resposta pÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂºblica publicada com sucesso!');
   };
 
   const getCustomerReputationSummary = useCallback(
@@ -5054,7 +5054,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   };
 
   // ==========================================
-  // OPERAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ES DA EQUIPE COMERCIAL & VENDEDORES
+  // OPERAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¢ES DA EQUIPE COMERCIAL & VENDEDORES
   // ==========================================
 
   const addSalesAgent = async (agentData: Omit<SalesAgent, 'id' | 'createdAt'>): Promise<SalesAgent | null> => {
@@ -5064,7 +5064,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       createdAt: new Date().toISOString().split('T')[0]
     };
 
-    // Cria o perfil de usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio VENDEDOR correspondente para autenticaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
+    // Cria o perfil de usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio VENDEDOR correspondente para autenticaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o
     const cleanAgentEmail = newAgent.email.toLowerCase().trim();
     const provisionalPassword = (agentData as any).temporaryPassword || '12345678';
     const firebaseProvision = await firebaseProvisionSalesAgent(
@@ -5079,7 +5079,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     );
 
     if (!firebaseProvision.success) {
-      triggerToast(`NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel criar o vendedor no Firebase: ${firebaseProvision.message}`);
+      triggerToast(`NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi possÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel criar o vendedor no Firebase: ${firebaseProvision.message}`);
       return null;
     }
     setSalesAgents((prev) => [newAgent, ...prev]);
@@ -5100,10 +5100,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'ADD_SALES_AGENT',
-      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 12345678 (troca obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria no primeiro acesso).`,
+      `Novo consultor comercial cadastrado pelo Master: ${newAgent.name} (${newAgent.roleTitle}) com comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de ${newAgent.commissionRatePercent}%. Credencial inicial gerada com senha padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 12345678 (troca obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria no primeiro acesso).`,
       { category: 'USER_MANAGEMENT', entityId: newAgent.id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o gerada: 12345678`);
+    triggerToast(`Vendedor ${newAgent.name} cadastrado com sucesso! Senha padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o gerada: 12345678`);
     return newAgent;
   };
 
@@ -5148,10 +5148,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     }
     addAuditLog(
       'SET_SALES_AGENT_COMMISSION',
-      `Taxa de comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (BÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´nus fixo: R$ ${bonusPerActivation ?? 0}).`,
+      `Taxa de comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do vendedor ${id} fixada em ${ratePercent}% pelo Master Supremo (BÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ´nus fixo: R$ ${bonusPerActivation ?? 0}).`,
       { category: 'FINANCIAL', entityId: id, entityType: 'SALES_AGENT' }
     );
-    triggerToast(`ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de ${ratePercent}% configurada com sucesso!`);
+    triggerToast(`ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de ${ratePercent}% configurada com sucesso!`);
   };
 
   const submitBoletoRequest = (
@@ -5189,19 +5189,19 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'SUBMIT_BOLETO_REQUEST',
-      `CobranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 5%: R$ ${commissionAmount.toFixed(2)}).`,
+      `CobranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a Pix oficial ${code} gerada pelo vendedor ${newReq.agentName} para ${newReq.clientName} (Plano: ${newReq.chosenPlan}, R$ ${newReq.amount.toFixed(2)} - ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 5%: R$ ${commissionAmount.toFixed(2)}).`,
       { category: 'FINANCIAL', entityId: newReq.id, entityType: 'BOLETO_REQUEST' }
     );
 
     sendInAppNotification({
-      title: `Nova CobranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a Pix / Cadastro: ${newReq.code}`,
-      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
+      title: `Nova CobranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a Pix / Cadastro: ${newReq.code}`,
+      message: `O consultor ${newReq.agentName} cadastrou ${newReq.clientName} (${newReq.chosenPlan} - R$ ${newReq.amount.toFixed(2)} - ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: R$ ${commissionAmount.toFixed(2)}). Chave Pix Oficial CNPJ: ${SALES_ORGANOGRAM_CONFIG.pixKeyFormatted}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'HIGH'
     });
 
-    triggerToast(`CobranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a Pix ${code} gerada para ${newReq.clientName}!`);
+    triggerToast(`CobranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a Pix ${code} gerada para ${newReq.clientName}!`);
     return newReq;
   };
 
@@ -5231,9 +5231,9 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     };
 
     // Regras de Organograma:
-  // 1) UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio: R$ 0,00 GrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡tis - Sem mensalidade - Somente compras - Sem permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o comercial
-  // 2) Prestador: R$ 29,90 Fixo - 1 serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o incluso (+R$ 9,90 adicional) - ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 5% = R$ 1,50
-  // 3) Lojista: Escolhe o plano - Pix CNPJ 30810800000139 - ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 5% do plano
+  // 1) UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio: R$ 0,00 GrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡tis - Sem mensalidade - Somente compras - Sem permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o comercial
+  // 2) Prestador: R$ 29,90 Fixo - 1 serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o incluso (+R$ 9,90 adicional) - ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 5% = R$ 1,50
+  // 3) Lojista: Escolhe o plano - Pix CNPJ 30810800000139 - ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 5% do plano
     let finalAmount = 0;
     let chosenPlan: MembershipTier = clientData.chosenPlan;
     const commissionRate = 5; // 5% fixo conforme organograma oficial
@@ -5251,7 +5251,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     const agent = salesAgents.find((a) => a.id === clientData.agentId) || currentSalesAgent;
 
-  // Se NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O for usuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio comum (cliente comprador), gera cobranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a Pix/Boleto oficial
+  // Se NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O for usuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio comum (cliente comprador), gera cobranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a Pix/Boleto oficial
     if (!isUser && options?.shouldRequestBoleto !== false) {
       const defaultDueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       createdBoleto = submitBoletoRequest({
@@ -5268,7 +5268,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         neighborhood: clientData.neighborhood,
         chosenPlan,
         planTitle: isProvider
-          ? 'Assinatura Prestador de ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os (1 serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o incluso)'
+          ? 'Assinatura Prestador de ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os (1 serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o incluso)'
           : `Plano ${chosenPlan}`,
         billingFrequency: options?.billingFrequency || 'MENSAL',
         amount: finalAmount,
@@ -5288,8 +5288,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     setRegisteredClientsByAgents((prev) => [newClient, ...prev]);
 
-    // Cadastro comercial no catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡logo APENAS para Prestadores e Lojistas
-    // UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rios comuns nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o possuem perfil comercial nem permissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o para postar produtos/banners
+    // Cadastro comercial no catÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡logo APENAS para Prestadores e Lojistas
+    // UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rios comuns nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o possuem perfil comercial nem permissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o para postar produtos/banners
     if (isMerchant || isProvider) {
       const merchantId = `store-${Date.now()}`;
       const newMerchant: StoreMerchant = {
@@ -5299,22 +5299,22 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         cnpjOrCpf: clientData.documentNumber,
         email: clientData.email,
         phone: clientData.phone,
-        category: isProvider ? 'ServiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os' : 'Geral',
+        category: isProvider ? 'ServiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os' : 'Geral',
         city: clientData.city || 'Cachoeiras de Macacu',
         neighborhood: clientData.neighborhood || 'Centro',
         address: `${clientData.neighborhood}, ${clientData.city}`,
         logo: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=150&auto=format&fit=crop&q=80',
         description: isProvider
-          ? `Prestador de serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§os credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o incluso.`
+          ? `Prestador de serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§os credenciado pelo consultor ${clientData.agentName}. Plano Base R$ 29,90 com 1 serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o incluso.`
           : `Estabelecimento comercial credenciado pelo consultor ${clientData.agentName}.`,
         status: 'approved',
         membershipTier: chosenPlan,
         commissionRate: getCommissionRateForTier(chosenPlan),
-        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 serviÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o incluso (+R$ 9,90 adicional)
+        maxProductsLimit: isProvider ? 1 : getMaxProductsForTier(chosenPlan), // Prestador: 1 serviÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o incluso (+R$ 9,90 adicional)
         rating: 5.0,
         reviewsCount: 0,
         isOpen: true,
-        openingHours: 'Segunda a SÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡bado: 08h ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â s 19h',
+        openingHours: 'Segunda a SÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡bado: 08h ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ s 19h',
         deliveryFee: 0,
         deliveryTimeEstimate: '30 - 60 min',
         supportsPickup: true,
@@ -5328,13 +5328,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'REGISTER_CLIENT_BY_AGENT',
-      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'GrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡tis - Compras' : `R$ ${finalAmount.toFixed(2)} - ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o 5%`}).`,
+      `Novo ${clientData.clientType} registrado pelo vendedor ${clientData.agentName}: ${clientData.name} (${isUser ? 'GrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡tis - Compras' : `R$ ${finalAmount.toFixed(2)} - ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o 5%`}).`,
       { category: 'USER_MANAGEMENT', entityId: clientId, entityType: 'AGENT_CLIENT' }
     );
 
     triggerToast(
       isUser
-        ? `UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
+        ? `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio "${clientData.name}" cadastrado gratuitamente (somente compras)!`
         : `${clientData.clientType === 'PRESTADOR' ? 'Prestador' : 'Lojista'} "${clientData.name}" cadastrado! Chave Pix gerada.`
     );
     return { client: newClient, boletoRequest: createdBoleto };
@@ -5369,7 +5369,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
             barcodeDigits: barcode,
             pixCopiaECola: pix,
             boletoPdfUrl: pdf,
-            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto bancÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio registrado e enviado ao cliente.'
+            masterNotes: details?.masterNotes || req.masterNotes || 'Boleto bancÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio registrado e enviado ao cliente.'
           };
           return targetReq;
         }
@@ -5388,7 +5388,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'MARK_BOLETO_SENT',
-      `Boleto bancÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio da solicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
+      `Boleto bancÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio da solicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ${requestId} marcado como ENVIADO ao cliente pelo Administrador Master.`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
 
@@ -5409,7 +5409,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
             masterNotes:
               notes ||
               req.masterNotes ||
-              'Pagamento confirmado pelo Master. ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o liberada para o vendedor.'
+              'Pagamento confirmado pelo Master. ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o liberada para o vendedor.'
           };
           return targetReq;
         }
@@ -5441,20 +5441,20 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
       addAuditLog(
         'CONFIRM_BOLETO_PAYMENT',
-        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
+        `Pagamento do boleto ${targetReq.code} (R$ ${targetReq.amount.toFixed(2)}) confirmado pelo Master! ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${targetReq.commissionAmount.toFixed(2)} LIBERADA para ${targetReq.agentName}.`,
         { category: 'FINANCIAL', entityId: targetReq.id, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ liberada para saque Pix.`,
+        title: `ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Liberada! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O pagamento do boleto ${targetReq.code} (${targetReq.clientName}) foi confirmado pelo Master Supremo! Sua comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ liberada para saque Pix.`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
       triggerToast(
-        `Pagamento do boleto ${targetReq.code} confirmado! ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
+        `Pagamento do boleto ${targetReq.code} confirmado! ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${targetReq.commissionAmount.toFixed(2)} liberada.`
       );
     }
   };
@@ -5475,10 +5475,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     );
     addAuditLog(
       'CANCEL_BOLETO_REQUEST',
-      `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
+      `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de boleto ${requestId} cancelada pelo Master. Motivo: ${reason || 'Sem motivo informado'}`,
       { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
     );
-    triggerToast('SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de boleto cancelada.');
+    triggerToast('SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de boleto cancelada.');
   };
 
   const markCommissionAsPaidToAgent = (requestId: string, receiptCode?: string) => {
@@ -5502,19 +5502,19 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (targetReq) {
       addAuditLog(
         'PAY_COMMISSION_TO_AGENT',
-        `ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
+        `ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${targetReq.commissionAmount.toFixed(2)} PAGA ao vendedor ${targetReq.agentName} via Pix. Comprovante: ${receipt}`,
         { category: 'FINANCIAL', entityId: requestId, entityType: 'BOLETO_REQUEST' }
       );
 
       sendInAppNotification({
-        title: `ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
-        message: `O Administrador Master efetuou o pagamento da sua comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
+        title: `ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Paga via Pix! R$ ${targetReq.commissionAmount.toFixed(2)}`,
+        message: `O Administrador Master efetuou o pagamento da sua comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o referente ao boleto ${targetReq.code}. Comprovante: ${receipt}`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
       });
 
-      triggerToast(`ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
+      triggerToast(`ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${targetReq.commissionAmount.toFixed(2)} marcada como PAGA!`);
     }
   };
 
@@ -5529,10 +5529,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCommercialGoals((prev) => [newGoal, ...prev]);
     addAuditLog(
       'ADD_COMMERCIAL_GOAL',
-      `Nova meta comercial lanÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
+      `Nova meta comercial lanÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ada pelo Master: "${newGoal.title}" (${newGoal.targetCount} cadastros, R$ ${newGoal.targetRevenue.toFixed(2)}).`,
       { category: 'GENERAL', entityId: newGoal.id, entityType: 'COMMERCIAL_GOAL' }
     );
-    triggerToast(`Meta "${newGoal.title}" criada e lanÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ada com sucesso!`);
+    triggerToast(`Meta "${newGoal.title}" criada e lanÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ada com sucesso!`);
     return newGoal;
   };
 
@@ -5545,7 +5545,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   const deleteCommercialGoal = (id: string) => {
     setCommercialGoals((prev) => prev.filter((g) => g.id !== id));
     addAuditLog('DELETE_COMMERCIAL_GOAL', `Meta comercial ${id} removida pelo Master.`);
-    triggerToast('Meta comercial excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da.');
+    triggerToast('Meta comercial excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da.');
   };
 
   const addCommercialArea = (areaData: Omit<CommercialArea, 'id'>): CommercialArea => {
@@ -5556,23 +5556,23 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setCommercialAreas((prev) => [...prev, newArea]);
     addAuditLog(
       'ADD_COMMERCIAL_AREA',
-      `Nova ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rea comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
+      `Nova ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rea comercial delimitada pelo Master: "${newArea.name}" (${newArea.neighborhoods.join(', ')}).`,
       { category: 'GENERAL', entityId: newArea.id, entityType: 'COMMERCIAL_AREA' }
     );
-    triggerToast(`ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea comercial "${newArea.name}" criada com sucesso!`);
+    triggerToast(`ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea comercial "${newArea.name}" criada com sucesso!`);
     return newArea;
   };
 
   const updateCommercialArea = (id: string, updates: Partial<CommercialArea>) => {
     setCommercialAreas((prev) => prev.map((a) => (a.id === id ? { ...a, ...updates } : a)));
-    addAuditLog('UPDATE_COMMERCIAL_AREA', `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea comercial ${id} atualizada pelo Master.`);
-    triggerToast('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea comercial atualizada!');
+    addAuditLog('UPDATE_COMMERCIAL_AREA', `ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea comercial ${id} atualizada pelo Master.`);
+    triggerToast('ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea comercial atualizada!');
   };
 
   const deleteCommercialArea = (id: string) => {
     setCommercialAreas((prev) => prev.filter((a) => a.id !== id));
-    addAuditLog('DELETE_COMMERCIAL_AREA', `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea comercial ${id} removida pelo Master.`);
-    triggerToast('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea comercial excluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da.');
+    addAuditLog('DELETE_COMMERCIAL_AREA', `ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea comercial ${id} removida pelo Master.`);
+    triggerToast('ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea comercial excluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da.');
   };
 
   const assignAgentHierarchyAndArea = (
@@ -5609,11 +5609,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'ASSIGN_AGENT_HIERARCHY',
-      `Vendedor ${agentName} atribuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Ârea: ${assignedRegion}. NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel: ${roleLevel || targetAgent?.roleLevel}.`,
+      `Vendedor ${agentName} atribuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do pelo Master Supremo. Supervisor: ${supervisorName || 'Reporte Direto ao Master'}. ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂrea: ${assignedRegion}. NÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel: ${roleLevel || targetAgent?.roleLevel}.`,
       { category: 'USER_MANAGEMENT', entityId: agentId, entityType: 'SALES_AGENT' }
     );
 
-    triggerToast(`Estrutura e ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rea de ${agentName} atualizadas com sucesso!`);
+    triggerToast(`Estrutura e ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rea de ${agentName} atualizadas com sucesso!`);
   };
 
   // ==========================================
@@ -5623,20 +5623,20 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setWebhookConfig((prev) => ({ ...prev, ...updates }));
     addAuditLog(
       'UPDATE_WEBHOOK_CONFIG',
-      'ConfiguraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes da camada de webhooks de boletos atualizadas pelo Master.',
+      'ConfiguraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes da camada de webhooks de boletos atualizadas pelo Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_CONFIG' }
     );
-    triggerToast('ConfiguraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes de Webhook atualizadas com sucesso!');
+    triggerToast('ConfiguraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes de Webhook atualizadas com sucesso!');
   };
 
   const clearWebhookLogs = () => {
     setWebhookEvents([]);
     addAuditLog(
       'CLEAR_WEBHOOK_LOGS',
-      'HistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico de eventos de webhooks limpo pelo Administrador Master.',
+      'HistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico de eventos de webhooks limpo pelo Administrador Master.',
       { category: 'FINANCIAL', entityType: 'WEBHOOK_LOGS' }
     );
-    triggerToast('HistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rico de logs de webhook limpo com sucesso.');
+    triggerToast('HistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rico de logs de webhook limpo com sucesso.');
   };
 
   const deleteWebhookEvent = (eventId: string) => {
@@ -5659,7 +5659,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const eventId = `wh-evt-${Date.now()}`;
     const { gateway, payload, headers, manualBoletoCode } = input;
 
-    // 1. ExtraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da ReferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia / CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo do Boleto
+    // 1. ExtraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da ReferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia / CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo do Boleto
     let extractedCode = manualBoletoCode?.trim() || '';
 
     if (!extractedCode) {
@@ -5685,7 +5685,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       }
     }
 
-    // Busca por regex de padrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o BOL-YYYY-NNN caso o cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo esteja embutido em texto livre
+    // Busca por regex de padrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o BOL-YYYY-NNN caso o cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo esteja embutido em texto livre
     if (extractedCode && !extractedCode.startsWith('BOL-') && extractedCode.includes('BOL-')) {
       const match = extractedCode.match(/BOL-\d{4}-\d{3}/i);
       if (match) {
@@ -5693,7 +5693,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       }
     }
 
-    // 2. ExtraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Tipo de Evento
+    // 2. ExtraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Tipo de Evento
     let eventType = 'PAYMENT_CONFIRMED';
     if (gateway === 'ASAAS') {
       eventType = payload.event || 'PAYMENT_RECEIVED';
@@ -5709,7 +5709,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       eventType = payload.event || 'BOLETO_PAID';
     }
 
-    // 3. ExtraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do ID da TransaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Externa
+    // 3. ExtraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do ID da TransaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Externa
     let externalTxId = '';
     if (gateway === 'ASAAS') {
       externalTxId = payload.payment?.id || payload.id || `asaas_tx_${Date.now()}`;
@@ -5725,7 +5725,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       externalTxId = payload.transactionId || payload.id || `tx_gen_${Date.now()}`;
     }
 
-    // 4. ExtraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Valor Pago
+    // 4. ExtraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Valor Pago
     let amountPaid = 0;
     if (gateway === 'ASAAS') {
       amountPaid = Number(payload.payment?.value || 0);
@@ -5741,7 +5741,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       amountPaid = Number(payload.amount || payload.valor || 0);
     }
 
-    // 5. LocalizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Boleto no Banco de Dados da AplicaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
+    // 5. LocalizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Boleto no Banco de Dados da AplicaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o
     const matchedBoleto = boletoRequests.find((req) => {
       if (extractedCode) {
         if (req.code.toUpperCase() === extractedCode.toUpperCase()) return true;
@@ -5765,8 +5765,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         durationMs,
         status: 'UNMATCHED',
         statusMessage: extractedCode
-          ? `Boleto com cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo ou referÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia '${extractedCode}' nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o foi localizado no sistema.`
-          : 'Nenhum cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de boleto foi identificado no payload recebido.',
+          ? `Boleto com cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo ou referÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia '${extractedCode}' nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o foi localizado no sistema.`
+          : 'Nenhum cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de boleto foi identificado no payload recebido.',
         payload,
         headers,
         ipAddress: '177.136.204.88'
@@ -5776,11 +5776,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
       addAuditLog(
         'WEBHOOK_UNMATCHED',
-        `Webhook ${gateway} recebido, mas nenhum boleto com a referÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia '${extractedCode}' foi localizado.`,
+        `Webhook ${gateway} recebido, mas nenhum boleto com a referÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia '${extractedCode}' foi localizado.`,
         { category: 'FINANCIAL', entityId: eventId, entityType: 'WEBHOOK_EVENT' }
       );
 
-      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.`);
+      triggerToast(`Webhook ${gateway}: Boleto '${extractedCode || 'desconhecido'}' nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.`);
 
       return {
         success: false,
@@ -5793,7 +5793,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const effectiveAmount = amountPaid > 0 ? amountPaid : matchedBoleto.amount;
     const isAlreadyPaid = matchedBoleto.status === 'PAGAMENTO_CONFIRMADO';
 
-    // 6. AtualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o AutomÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡tica do Boleto e LiberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o
+    // 6. AtualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o AutomÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡tica do Boleto e LiberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o
     let updatedBoleto: BoletoBillingRequest = { ...matchedBoleto };
 
     setBoletoRequests((prev) =>
@@ -5810,7 +5810,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
             webhookEventId: eventId,
             webhookReceivedAt: nowIso,
             externalTransactionId: externalTxId,
-            masterNotes: `LiquidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o liberada para o consultor.`
+            masterNotes: `LiquidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o confirmada automaticamente via Webhook ${gateway} (TxID: ${externalTxId}). ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o liberada para o consultor.`
           };
           return updatedBoleto;
         }
@@ -5818,7 +5818,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       })
     );
 
-    // 7. AtualizaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Cliente Vinculado para 'ATIVO_PAGO'
+    // 7. AtualizaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Cliente Vinculado para 'ATIVO_PAGO'
     if (webhookConfig.autoActivateClient) {
       setRegisteredClientsByAgents((prev) =>
         prev.map((c) => {
@@ -5830,7 +5830,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       );
     }
 
-    // 8. AprovaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o AutomÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡tica do Estabelecimento Lojista / Prestador
+    // 8. AprovaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o AutomÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡tica do Estabelecimento Lojista / Prestador
     if (webhookConfig.autoApproveMerchant) {
       setMerchants((prev) =>
         prev.map((m) => {
@@ -5848,15 +5848,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     // 9. Auditoria Completa
     addAuditLog(
       'WEBHOOK_PAYMENT_CONFIRMED',
-      `Webhook ${gateway} (${externalTxId}) confirmou liquidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
+      `Webhook ${gateway} (${externalTxId}) confirmou liquidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do boleto ${matchedBoleto.code} (R$ ${effectiveAmount.toFixed(2)}). ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} LIBERADA para ${matchedBoleto.agentName}.`,
       { category: 'FINANCIAL', entityId: matchedBoleto.id, entityType: 'BOLETO_REQUEST' }
     );
 
-    // 10. NotificaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes In-App para Vendedor e Administrador Master
+    // 10. NotificaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes In-App para Vendedor e Administrador Master
     if (webhookConfig.notifySalesAgentInApp) {
       sendInAppNotification({
-        title: `ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
-        message: `O gateway ${gateway} confirmou a liquidaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ LIBERADA para saque Pix!`,
+        title: `ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Liberada via Webhook! R$ ${matchedBoleto.commissionAmount.toFixed(2)}`,
+        message: `O gateway ${gateway} confirmou a liquidaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do boleto ${matchedBoleto.code} de ${matchedBoleto.clientName}. Sua comissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ LIBERADA para saque Pix!`,
         audience: 'ALL',
         category: 'COMMISSION_UPDATE',
         priority: 'HIGH'
@@ -5865,7 +5865,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     sendInAppNotification({
       title: `Boleto Liquidado via Webhook: ${matchedBoleto.code}`,
-      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
+      message: `Recebimento confirmado via ${gateway} (R$ ${effectiveAmount.toFixed(2)}). Vendedor: ${matchedBoleto.agentName} | ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o: R$ ${matchedBoleto.commissionAmount.toFixed(2)}.`,
       audience: 'MASTER',
       category: 'ADMIN_ALERT',
       priority: 'MEDIUM'
@@ -5890,8 +5890,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       durationMs,
       status: 'SUCCESS',
       statusMessage: isAlreadyPaid
-        ? `Boleto ${matchedBoleto.code} jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
-        : `Boleto ${matchedBoleto.code} liquidado com sucesso! ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
+        ? `Boleto ${matchedBoleto.code} jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ havia sido quitado anteriormente. Evento reconfirmado via ${gateway}.`
+        : `Boleto ${matchedBoleto.code} liquidado com sucesso! ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`,
       payload,
       headers,
       ipAddress: '177.136.204.88'
@@ -5900,7 +5900,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     setWebhookEvents((prev) => [successEvent, ...prev]);
 
     triggerToast(
-      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! ComissÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
+      `Webhook ${gateway}: Boleto ${matchedBoleto.code} liquidado! ComissÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de R$ ${matchedBoleto.commissionAmount.toFixed(2)} liberada para ${matchedBoleto.agentName}.`
     );
 
     return {
@@ -5934,13 +5934,13 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     try {
       const cleanEmail = driverData.email.trim().toLowerCase();
       if (!cleanEmail || !driverData.cpf || !driverData.name || !driverData.phone) {
-        return { success: false, message: 'Preencha todos os campos obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rios para o cadastro.' };
+        return { success: false, message: 'Preencha todos os campos obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rios para o cadastro.' };
       }
       if (!driverData.cnhNumber || !driverData.vehiclePlate) {
-        return { success: false, message: 'CNH e dados do veÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­culo sÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rios para entregadores parceiros.' };
+        return { success: false, message: 'CNH e dados do veÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­culo sÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rios para entregadores parceiros.' };
       }
       if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
-        return { success: false, message: 'Este e-mail jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ cadastrado na plataforma.' };
+        return { success: false, message: 'Este e-mail jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ cadastrado na plataforma.' };
       }
 
       const newUserId = 'user-driver-' + Date.now();
@@ -5986,11 +5986,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
             return { success: false, message: 'Usuário salvo, mas não foi possível salvar os dados do entregador no Firebase.' };
           }
       addAuditLog('DRIVER_REGISTERED', `Novo entregador ${newDriver.name} (${newDriver.vehicleType} - ${newDriver.vehiclePlate}) cadastrado.`);
-      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do Master.`);
+      triggerToast(`Cadastro de ${newDriver.name} recebido com sucesso! Aguarde a aprovaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do Master.`);
 
       return {
         success: true,
-        message: 'Cadastro enviado com sucesso! Seus documentos estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o na fila para validaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o pela administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.',
+        message: 'Cadastro enviado com sucesso! Seus documentos estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o na fila para validaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o pela administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.',
         driver: newDriver
       };
     } catch (err: any) {
@@ -6130,10 +6130,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   const setDriverOperationalStatus = async (driverId: string, status: DeliveryOperationalStatus): Promise<{ success: boolean; message: string }> => {
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.' };
+      return { success: false, message: 'Entregador nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.' };
     }
     if (driver.status !== 'APROVADO' && status === 'ONLINE') {
-      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o podem ficar online.' };
+      return { success: false, message: 'Somente entregadores com cadastro APROVADO pela administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o podem ficar online.' };
     }
 
     let updatedDriver: DeliveryDriver | null = null;
@@ -6175,18 +6175,18 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   }): Promise<{ success: boolean; message: string; ride?: DeliveryRide }> => {
     const order = orders.find(o => o.id === params.orderId);
     if (!order) {
-      return { success: false, message: 'Pedido nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o localizado.' };
+      return { success: false, message: 'Pedido nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o localizado.' };
     }
 
     const existingRide = deliveryRides.find(r => r.orderId === order.id && r.status !== 'CANCELADA');
     if (existingRide) {
-      return { success: false, message: `JÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
+      return { success: false, message: `JÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ existe uma entrega ativa (#${existingRide.rideCode}) para este pedido.` };
     }
 
     const merchant = merchants.find(m => m.id === order.merchantId);
     const origin = params.originAddress || merchant?.address || 'Centro, Cachoeiras de Macacu - RJ';
     const originBairro = params.originNeighborhood || merchant?.neighborhood || 'Centro';
-    const dest = params.destinationAddress || order.deliveryAddress || 'CastÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lia, Cachoeiras de Macacu - RJ';
+    const dest = params.destinationAddress || order.deliveryAddress || 'CastÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lia, Cachoeiras de Macacu - RJ';
     const destBairro = params.destinationNeighborhood || 'Centro';
 
     let distanceKm = params.customDistanceKm;
@@ -6256,7 +6256,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         {
           timestamp: nowIso,
           status: 'AGUARDANDO_ANALISE',
-          description: `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. DistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. VeÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­culo: ${params.vehicleType || 'MOTO'}. Encaminhada para anÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lise operacional do Master.`,
+          description: `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de entrega criada pelo lojista para o pedido ${order.orderCode || order.id}. DistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia calculada: ${distanceKm} km. Tarifa: R$ ${pricing.totalDeliveryFee.toFixed(2)}. VeÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­culo: ${params.vehicleType || 'MOTO'}. Encaminhada para anÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lise operacional do Master.`,
           actorName: merchant?.name || currentUser?.name || 'Lojista',
           actorRole: 'LOJISTA'
         }
@@ -6281,11 +6281,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'DELIVERY_RIDE_REQUESTED',
-      `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de entrega ${rideCode} enviada para anÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lise operacional do Master. Pedido: ${order.id}. DistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia: ${distanceKm}km.`
+      `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de entrega ${rideCode} enviada para anÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lise operacional do Master. Pedido: ${order.id}. DistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia: ${distanceKm}km.`
     );
 
-    triggerToast(`SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ${rideCode} enviada para a Central Master! Aguardando aprovaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.`);
-    return { success: true, message: `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ${rideCode} aguardando anÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lise do Master.`, ride: newRide };
+    triggerToast(`SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ${rideCode} enviada para a Central Master! Aguardando aprovaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.`);
+    return { success: true, message: `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ${rideCode} aguardando anÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lise do Master.`, ride: newRide };
   };
 
   const approveDeliveryRide = async (
@@ -6294,26 +6294,26 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     targetDriverId?: string
   ): Promise<{ success: boolean; message: string; uniqueRideCode?: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     // 1. Validar todos os dados
     if (!ride.merchantName || !ride.originAddress) {
-      return { success: false, message: 'Dados de origem (lojista e endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o de coleta) incompletos.' };
+      return { success: false, message: 'Dados de origem (lojista e endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o de coleta) incompletos.' };
     }
     if (!ride.customerName || !ride.destinationAddress) {
-      return { success: false, message: 'Dados de destino (cliente e endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o de entrega) incompletos.' };
+      return { success: false, message: 'Dados de destino (cliente e endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o de entrega) incompletos.' };
     }
     if (!ride.orderId && !ride.orderCode) {
       return { success: false, message: 'Identificador do pedido vinculado ausente.' };
     }
 
-    // 3. Validar distÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia
+    // 3. Validar distÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia
     const distance = Number(ride.distanceKm || ride.distancia || 0);
     if (isNaN(distance) || distance <= 0) {
-      return { success: false, message: 'DistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia da entrega invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lida (deve ser maior que zero).' };
+      return { success: false, message: 'DistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia da entrega invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lida (deve ser maior que zero).' };
     }
     if (distance > 60) {
-      return { success: false, message: `DistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia calculada (${distance.toFixed(1)} km) excede o limite do municÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­pio (mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡x 60 km).` };
+      return { success: false, message: `DistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia calculada (${distance.toFixed(1)} km) excede o limite do municÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­pio (mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡x 60 km).` };
     }
 
     // 2. Recalcular a tarifa no backend
@@ -6326,10 +6326,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     // 4. Validar valor
     if (recalculated.totalDeliveryFee <= 0 || recalculated.driverEarnings <= 0) {
-      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lculo.' };
+      return { success: false, message: 'Valores financeiros de entrega inconsistentes no recÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lculo.' };
     }
 
-    // 5. Gerar cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo/identificador ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºnico da entrega
+    // 5. Gerar cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo/identificador ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂºnico da entrega
     const generatedUniqueCode =
       ride.rideCode && ride.rideCode.startsWith('DEL-') && ride.rideCode.length >= 8
         ? ride.rideCode
@@ -6345,7 +6345,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     const nextStatus: DeliveryRideStatus = targetDriver ? 'ENTREGADOR_SELECIONADO' : 'DISPONIVEL_ENTREGADORES';
     const description = targetDriver
       ? `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)}. Direcionada ao entregador ${targetDriver.name} (${targetDriver.vehiclePlate}).`
-      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­veis.`;
+      : `Entrega aprovada pelo Master (${currentUser?.name || 'Master AcheiAqui'}). Dados validados. Tarifa recalculada no backend: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}). Status: DISPONIVEL_ENTREGADORES. Disponibilizada no radar para entregadores elegÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­veis.`;
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -6395,10 +6395,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     // 7. Criar registro de auditoria
     addAuditLog(
       'DELIVERY_APPROVED',
-    `[APROVAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. DistÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ncia: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
+    `[APROVAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O MASTER] Entrega ${generatedUniqueCode} (Pedido: ${ride.orderCode || ride.orderId}). Origem: ${ride.originAddress} -> Destino: ${ride.destinationAddress}. DistÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¢ncia: ${distance.toFixed(1)}km validada. Tarifa recalculada: R$ ${recalculated.totalDeliveryFee.toFixed(2)} (Repasse: R$ ${recalculated.driverEarnings.toFixed(2)}, Taxa: R$ ${recalculated.platformFee.toFixed(2)}). Status alterado para: ${nextStatus}.`
     );
 
-    // 8. Disponibilizar a entrega no portal dos entregadores elegÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­veis
+    // 8. Disponibilizar a entrega no portal dos entregadores elegÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­veis
     triggerToast(
       targetDriver
         ? `Entrega ${generatedUniqueCode} direcionada para ${targetDriver.name}!`
@@ -6414,11 +6414,11 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const rejectDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-    return { success: false, message: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â° obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rio informar o motivo da rejeiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o da solicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.' };
+    return { success: false, message: 'ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ° obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rio informar o motivo da rejeiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o da solicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6436,7 +6436,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'REJEITADA',
-                description: `SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ria: ${trimmedReason}`,
+                description: `SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de entrega REJEITADA pelo Master (${currentUser?.name || 'Master Delivery'}). Justificativa obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³ria: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6454,19 +6454,19 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'DELIVERY_REJECTED',
-    `[REJEIÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
+    `[REJEIÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O MASTER] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}) REJEITADA pelo Master. Motivo: ${trimmedReason}`
     );
-    triggerToast(`SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ${ride.rideCode} rejeitada.`);
-    return { success: true, message: 'SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o rejeitada com sucesso.' };
+    triggerToast(`SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ${ride.rideCode} rejeitada.`);
+    return { success: true, message: 'SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o rejeitada com sucesso.' };
   };
 
   const requestCorrectionDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const trimmedReason = reason?.trim();
     if (!trimmedReason) {
-    return { success: false, message: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â° obrigatÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rio informar as instruÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµes/motivo da solicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de correÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o.' };
+    return { success: false, message: 'ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ° obrigatÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³rio informar as instruÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂµes/motivo da solicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de correÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6485,7 +6485,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'CORRECAO_SOLICITADA',
-                description: `CorreÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
+                description: `CorreÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o solicitada pelo Master (${currentUser?.name || 'Master Delivery'}) ao lojista. Motivo: ${trimmedReason}`,
                 actorName: currentUser?.name || 'Master Delivery',
                 actorRole: 'MASTER'
               }
@@ -6503,15 +6503,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'DELIVERY_CORRECTION_REQUESTED',
-    `[SOLICITAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O DE CORREÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o ao lojista. Motivo: ${trimmedReason}`
+    `[SOLICITAÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O DE CORREÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬Ãâ€šÂÂ¡ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Â âââ€šÂ¬ââ€žÂ¢O] Entrega ${ride.rideCode} (Pedido: ${ride.orderCode || ride.orderId}). Master solicitou correÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o ao lojista. Motivo: ${trimmedReason}`
     );
-    triggerToast(`SolicitaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de correÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o enviada ao lojista para ${ride.rideCode}.`);
-    return { success: true, message: 'CorreÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o solicitada com sucesso.' };
+    triggerToast(`SolicitaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de correÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o enviada ao lojista para ${ride.rideCode}.`);
+    return { success: true, message: 'CorreÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o solicitada com sucesso.' };
   };
 
   const authorizeDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6553,7 +6553,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const processDeliveryPayment = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6570,7 +6570,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'PAGAMENTO_PROCESSANDO',
-                description: `TransferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio.`,
+                description: `TransferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia Pix de R$ ${r.driverEarnings.toFixed(2)} em processamento bancÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio.`,
                 actorName: 'Sistema Financeiro AcheiAqui',
                 actorRole: 'SISTEMA'
               }
@@ -6592,7 +6592,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const markDeliveryRidePaid = async (rideId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6610,7 +6610,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'PAGA',
-                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂDO com sucesso via Pix para o entregador.`,
+                description: `Pagamento de R$ ${r.driverEarnings.toFixed(2)} CONCLUÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂDO com sucesso via Pix para o entregador.`,
                 actorName: currentUser?.name || 'Master Financeiro',
                 actorRole: 'MASTER'
               }
@@ -6644,12 +6644,12 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog('DELIVERY_PAYMENT_COMPLETED', `Pagamento de R$ ${ride.driverEarnings.toFixed(2)} quitado para a entrega ${ride.rideCode}.`);
     triggerToast(`Pagamento liquidado com sucesso! Entregador remunerado.`);
-    return { success: true, message: 'Pagamento concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do.' };
+    return { success: true, message: 'Pagamento concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do.' };
   };
 
   const failDeliveryPayment = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6690,7 +6690,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
   const returnDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const nowIso = new Date().toISOString();
     let updatedRide: DeliveryRide | null = null;
@@ -6708,7 +6708,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'DEVOLVIDA',
-                description: `Mercadoria devolvida ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â  loja de origem. Motivo: ${reason}`,
+                description: `Mercadoria devolvida ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ  loja de origem. Motivo: ${reason}`,
                 actorName: currentUser?.name || 'Central de Suporte',
                 actorRole: 'MASTER'
               }
@@ -6741,16 +6741,16 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     notes?: string
   ): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     const actor: DeliveryActor = {
       id: currentUser?.id || 'system',
-      name: currentUser?.name || 'AdministraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o',
+      name: currentUser?.name || 'AdministraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o',
       role: (currentUser?.role === 'MASTER' ? 'MASTER' : currentUser?.role === 'ENTREGADOR' ? 'ENTREGADOR' : 'LOJISTA')
     };
     const validation = validateDeliveryTransition(ride, toStatus, actor);
     if (!validation.allowed) {
-      return { success: false, message: validation.reason || 'TransiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o de status invÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lida.' };
+      return { success: false, message: validation.reason || 'TransiÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o de status invÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡lida.' };
     }
 
     const nowIso = new Date().toISOString();
@@ -6790,7 +6790,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
   const acceptDeliveryRide = async (rideId: string, driverId: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+      return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
     }
     const isAvailable =
       ride.status === 'DISPONIVEL_ENTREGADORES' ||
@@ -6798,15 +6798,15 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       (ride.status === 'ENTREGADOR_SELECIONADO' && ride.driverId === driverId);
 
     if (!isAvailable) {
-      return { success: false, message: 'Esta corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ disponÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­vel para aceite.' };
+      return { success: false, message: 'Esta corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ disponÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­vel para aceite.' };
     }
 
     const driver = deliveryDrivers.find(d => d.id === driverId);
     if (!driver) {
-      return { success: false, message: 'Entregador nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrado.' };
+      return { success: false, message: 'Entregador nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrado.' };
     }
     if (driver.status !== 'APROVADO') {
-      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o para aceitar corridas.' };
+      return { success: false, message: 'Seu cadastro precisa estar APROVADO pela administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o para aceitar corridas.' };
     }
     if (driver.operationalStatus !== 'ONLINE') {
       return { success: false, message: 'Fique ONLINE no topo do painel para poder aceitar entregas.' };
@@ -6816,7 +6816,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       r => r.driverId === driverId && ['ACEITA', 'EM_DESLOCAMENTO_COLETA', 'EM_COLETA', 'CHEGOU_COLETA', 'COLETADA', 'EM_DESLOCAMENTO_ENTREGA', 'EM_TRANSITO', 'CHEGOU_DESTINO', 'AGUARDANDO_CODIGO'].includes(r.status)
     );
     if (activeRide) {
-      return { success: false, message: `VocÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âª jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ estÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
+      return { success: false, message: `VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ estÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ atendendo a corrida #${activeRide.rideCode}. Conclua-a antes de aceitar outra.` };
     }
 
     const nowIso = new Date().toISOString();
@@ -6878,7 +6878,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     addAuditLog('DELIVERY_RIDE_ACCEPTED', `Corrida ${ride.rideCode} aceita pelo entregador ${driver.name}.`);
     triggerToast(`Corrida ${ride.rideCode} aceita com sucesso! Inicie o trajeto para coleta.`);
 
-    return { success: true, message: `Corrida ${ride.rideCode} aceita! VÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© a loja para coletar.` };
+    return { success: true, message: `Corrida ${ride.rideCode} aceita! VÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© a loja para coletar.` };
   };
 
   const startRidePickup = async (rideId: string): Promise<{ success: boolean; message: string }> => {
@@ -6896,7 +6896,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_COLETA',
-                description: 'Entregador em deslocamento atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© o estabelecimento para retirar o pedido.',
+                description: 'Entregador em deslocamento atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© o estabelecimento para retirar o pedido.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6941,7 +6941,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'EM_DESLOCAMENTO_ENTREGA',
-                description: 'Entregador em rota de entrega com destino ao endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o do comprador.',
+                description: 'Entregador em rota de entrega com destino ao endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o do comprador.',
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -6965,14 +6965,14 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       );
     }
 
-    triggerToast(`Pacote coletado! Inicie o trajeto atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© o endereÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§o do cliente.`);
+    triggerToast(`Pacote coletado! Inicie o trajeto atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© o endereÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§o do cliente.`);
     return { success: true, message: 'Pacote coletado. Status atualizado para EM_DESLOCAMENTO_ENTREGA.' };
   };
 
   const deliverRide = async (rideId: string, confirmationCode: string): Promise<{ success: boolean; message: string }> => {
     const ride = deliveryRides.find(r => r.id === rideId);
     if (!ride) {
-      return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+      return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
     }
 
     const cleanInput = confirmationCode.replace(/\D/g, '').trim();
@@ -6981,7 +6981,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     if (cleanInput !== cleanExpected) {
       return {
         success: false,
-        message: 'CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de confirmaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o incorreto! Solicite o cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de 4 dÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­gitos ao cliente no ato da entrega.'
+        message: 'CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de confirmaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o incorreto! Solicite o cÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de 4 dÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­gitos ao cliente no ato da entrega.'
       };
     }
 
@@ -7000,7 +7000,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'ENTREGUE',
-                description: `Entrega fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­sica realizada com sucesso. CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo de seguranÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§a ${cleanExpected} validado pelo cliente.`,
+                description: `Entrega fÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­sica realizada com sucesso. CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo de seguranÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§a ${cleanExpected} validado pelo cliente.`,
                 actorId: r.driverId,
                 actorName: r.driverName,
                 actorRole: 'ENTREGADOR'
@@ -7008,7 +7008,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'AGUARDANDO_LIBERACAO_PAGAMENTO',
-                description: `Corrida finalizada fisicamente. Encaminhada para conferÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia e liberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o financeira pelo Master.`,
+                description: `Corrida finalizada fisicamente. Encaminhada para conferÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia e liberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o financeira pelo Master.`,
                 actorName: 'Sistema Achei Aqui',
                 actorRole: 'SISTEMA'
               }
@@ -7045,25 +7045,25 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
     }
 
     setOrders(prev =>
-      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'ConcluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­do', deliveryRideStatus: 'FINALIZADA' } : o))
+      prev.map(o => (o.id === ride.orderId ? { ...o, status: 'ConcluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­do', deliveryRideStatus: 'FINALIZADA' } : o))
     );
 
     addAuditLog(
       'DELIVERY_RIDE_DELIVERED',
-      `Corrida ${ride.rideCode} entregue com sucesso. CÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³digo verificado. Aguardando liberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o financeira.`
+      `Corrida ${ride.rideCode} entregue com sucesso. CÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³digo verificado. Aguardando liberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o financeira.`
     );
 
-    triggerToast(`ParabÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ns! Entrega concluÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­da. Encaminhada para liberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do pagamento pelo Master.`);
+    triggerToast(`ParabÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ©ns! Entrega concluÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­da. Encaminhada para liberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do pagamento pelo Master.`);
     return {
       success: true,
-      message: `Entrega confirmada com sucesso! Aguarde a liberaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o do pagamento pelo Master.`
+      message: `Entrega confirmada com sucesso! Aguarde a liberaÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o do pagamento pelo Master.`
     };
   };
 
   const cancelDeliveryRide = async (rideId: string, reason: string): Promise<{ success: boolean; message: string }> => {
     const nowIso = new Date().toISOString();
     const ride = deliveryRides.find(r => r.id === rideId);
-    if (!ride) return { success: false, message: 'Corrida nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada.' };
+    if (!ride) return { success: false, message: 'Corrida nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o encontrada.' };
 
     let updatedRide: DeliveryRide | null = null;
 
@@ -7080,7 +7080,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
                 timestamp: nowIso,
                 status: 'CANCELADA',
                 description: `Corrida cancelada. Motivo: ${reason}`,
-                actorName: currentUser?.name || 'AdministraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o',
+                actorName: currentUser?.name || 'AdministraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o',
                 actorRole: currentUser?.role || 'MASTER'
               }
             ]
@@ -7120,8 +7120,8 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
               {
                 timestamp: nowIso,
                 status: 'OCORRENCIA',
-                description: `OcorrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia registrada: ${notes}`,
-                actorName: currentUser?.name || 'UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡rio',
+                description: `OcorrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia registrada: ${notes}`,
+                actorName: currentUser?.name || 'UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio',
                 actorRole: currentUser?.role || 'SISTEMA'
               }
             ]
@@ -7131,9 +7131,9 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       })
     );
 
-    addAuditLog('DELIVERY_RIDE_INCIDENT', `OcorrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia na corrida ${rideId}: ${notes}`);
-    triggerToast('OcorrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia registrada e encaminhada para a administraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o Master.');
-    return { success: true, message: 'OcorrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia registrada com sucesso.' };
+    addAuditLog('DELIVERY_RIDE_INCIDENT', `OcorrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia na corrida ${rideId}: ${notes}`);
+    triggerToast('OcorrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia registrada e encaminhada para a administraÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ§ÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o Master.');
+    return { success: true, message: 'OcorrÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªncia registrada com sucesso.' };
   };
 
   const updateDeliveryTariffs = async (
@@ -7150,7 +7150,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
       platformFeeUpTo20Km < 0 ||
       platformFeeAbove20Km < 0
     ) {
-      return { success: false, message: 'Os valores de tarifas nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o podem ser negativos.' };
+      return { success: false, message: 'Os valores de tarifas nÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o podem ser negativos.' };
     }
 
     const newSettings = {
@@ -7167,10 +7167,10 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
 
     addAuditLog(
       'DELIVERY_TARIFFS_UPDATED',
-      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryMinimumFare.toFixed(2)} mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nimo, R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km, R$ ${newSettings.deliveryPlatformFeeUpTo10Km.toFixed(2)} atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 10 km, R$ ${newSettings.deliveryPlatformFeeUpTo20Km.toFixed(2)} atÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 20 km e R$ ${newSettings.deliveryPlatformFeeAbove20Km.toFixed(2)} acima de 20 km.`
+      `Tarifas de delivery atualizadas pelo Master: R$ ${newSettings.deliveryMinimumFare.toFixed(2)} mÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ­nimo, R$ ${newSettings.deliveryRatePerKm.toFixed(2)}/km, R$ ${newSettings.deliveryPlatformFeeUpTo10Km.toFixed(2)} atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© 10 km, R$ ${newSettings.deliveryPlatformFeeUpTo20Km.toFixed(2)} atÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ© 20 km e R$ ${newSettings.deliveryPlatformFeeAbove20Km.toFixed(2)} acima de 20 km.`
     );
 
-    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas jÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ abertas mantÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªm seus valores.');
+    triggerToast('Novas tarifas de delivery salvas com sucesso! Corridas jÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡ abertas mantÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂªm seus valores.');
     return { success: true, message: 'Tarifas atualizadas com sucesso!' };
   };
 
@@ -7391,7 +7391,7 @@ complianceStandard: 'LGPD Art. 7ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã�
         deleteWebhookEvent,
         clearWebhookLogs,
 
-        // MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³dulo de Delivery & Entregadores (V1)
+        // MÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ³dulo de Delivery & Entregadores (V1)
         deliveryDrivers,
         deliveryRides,
         currentDeliveryDriver,

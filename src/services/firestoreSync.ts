@@ -66,7 +66,7 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
 }
 
 /**
- * Salva ou atualiza um UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ¡rio (Cliente, Vendedor, Master, Prestador) no Firestore
+ * Salva ou atualiza um Usuário (Cliente, Vendedor, Master, Prestador) no Firestore
  */
 export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
@@ -104,7 +104,7 @@ export async function persistUserToFirestore(user: User): Promise<boolean> {
 
       if (!token) {
         console.error(
-          '[MASTER CONTINGENCY] Token nÃ£o encontrado na sessÃ£o.'
+          '[MASTER CONTINGENCY] Token não encontrado na sessão.'
         );
         return false;
       }
@@ -228,7 +228,7 @@ export async function persistAuditLogToFirestore(log: AuditLog): Promise<void> {
 }
 
 /**
- * Carrega coleÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂµes do Firestore para hidratar a aplicaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ£o
+ * Carrega coleções do Firestore para hidratar a aplicação
  */
 export async function fetchAllCollectionsFromFirestore(): Promise<{
   merchants?: StoreMerchant[];
@@ -305,7 +305,7 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
 }
 
 /**
- * Carga inicial em lote para garantir que todo o catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ¡logo, lojas, prestadores
+ * Carga inicial em lote para garantir que todo o catálogo, lojas, prestadores
  * e entregadores sejam persistidos no Firestore caso o banco esteja novo/vazio.
  */
 export async function seedInitialDataToFirestoreIfEmpty(data: {
@@ -349,7 +349,7 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
       console.log('Banco de dados Firestore semeado com sucesso!');
     }
   } catch (err) {
-    console.warn('Aviso de seed Firestore (nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ£o-bloqueante):', err);
+    console.warn('Aviso de seed Firestore (não-bloqueante):', err);
   }
 }
 

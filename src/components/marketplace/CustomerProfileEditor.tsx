@@ -36,22 +36,22 @@ import { ImageUploadDropzone } from '../common/ImageUploadDropzone';
 // Bairros reconhecidos de Cachoeiras de Macacu - RJ
 export const MACACU_NEIGHBORHOODS = [
   'Centro',
-  'CastÃƒÂ¡lia',
+  'Castália',
   'Papucaia',
-  'JapuÃƒÂ­ba',
-  'GuapiaÃƒÂ§u',
+  'Japuíba',
+  'Guapiaçu',
   'Funchal',
   'Boa Vista',
   'Gangazes',
   'Ribeira',
-  'ValÃƒÂ©rio',
+  'Valério',
   'Boca do Mato',
   'Agulhas',
   'Vila Macuco',
-  'Parque Santo AntÃƒÂ´nio',
+  'Parque Santo Antônio',
   'Campo do Prado',
   'Santa Dalila',
-  'SÃƒÂ£o Francisco de Assis',
+  'São Francisco de Assis',
   'Outro Bairro'
 ];
 
@@ -71,7 +71,7 @@ const STYLE_OPTIONS = [
   'Esportivo / Fitness',
   'Moda Praia',
   'Streetwear',
-  'RomÃƒÂ¢ntico / Boho',
+  'Romântico / Boho',
   'Minimalista'
 ];
 
@@ -101,7 +101,7 @@ export const CustomerProfileEditor: React.FC = () => {
   const [secondaryPhone, setSecondaryPhone] = useState(currentUser?.secondaryPhone || '');
   const [cpf, setCpf] = useState(currentUser?.cpf || '');
   const [birthDate, setBirthDate] = useState(currentUser?.birthDate || '');
-  const [gender, setGender] = useState(currentUser?.gender || 'Prefiro nÃƒÂ£o informar');
+  const [gender, setGender] = useState(currentUser?.gender || 'Prefiro não informar');
   const [avatar, setAvatar] = useState(currentUser?.avatar || '');
   const [generalNotes, setGeneralNotes] = useState(currentUser?.generalNotes || '');
   const [emergencyName, setEmergencyName] = useState(currentUser?.emergencyContact?.name || '');
@@ -154,7 +154,7 @@ export const CustomerProfileEditor: React.FC = () => {
   const [receivePromoAlerts, setReceivePromoAlerts] = useState(
     currentUser?.preferences?.receivePromoAlerts ?? true
   );
-  const [preferredModality, setPreferredModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃƒÆ’Ã¢â‚¬Â¡ÃƒÆ’Ã†â€™O'>(
+  const [preferredModality, setPreferredModality] = useState<'DELIVERY' | 'RETIRADA' | 'EXPERIMENTAÃÆ’ââ‚¬Â¡ÃÆ’Ã†â€™O'>(
     currentUser?.preferences?.preferredModality || 'DELIVERY'
   );
   const [dietaryRestrictions, setDietaryRestrictions] = useState(
@@ -176,7 +176,7 @@ export const CustomerProfileEditor: React.FC = () => {
       setSecondaryPhone(currentUser.secondaryPhone || '');
       setCpf(currentUser.cpf || '');
       setBirthDate(currentUser.birthDate || '');
-      setGender(currentUser.gender || 'Prefiro nÃƒÂ£o informar');
+      setGender(currentUser.gender || 'Prefiro não informar');
       setAvatar(currentUser.avatar || '');
       setGeneralNotes(currentUser.generalNotes || '');
       setEmergencyName(currentUser.emergencyContact?.name || '');
@@ -382,13 +382,13 @@ export const CustomerProfileEditor: React.FC = () => {
     }
 
         if (!addressStreet.trim() || !addressNumber.trim() || !addressNeighborhood.trim()) {
-      alert('Por favor, preencha a rua, o nÃƒÂºmero e o bairro.');
+      alert('Por favor, preencha a rua, o número e o bairro.');
       return;
     }
 
     if (editingAddressId) {
       const saved = await updateCustomerAddress(editingAddressId, {
-        label: addressLabel.trim() || 'EndereÃƒÂ§o',
+        label: addressLabel.trim() || 'Endereço',
         street: addressStreet.trim(),
         number: addressNumber.trim(),
         complement: addressComplement.trim() || undefined,
@@ -401,13 +401,13 @@ export const CustomerProfileEditor: React.FC = () => {
         isDefault: addressIsDefault
       });
       if (!saved) {
-        alert('Dados nÃ£o salvos. NÃ£o foi possÃ­vel atualizar o endereÃ§o.');
+        alert('Dados não salvos. Não foi possível atualizar o endereço.');
         return;
       }
       alert('Dados salvos com sucesso.');
     } else {
       await addCustomerAddress({
-        label: addressLabel.trim() || 'EndereÃƒÂ§o',
+        label: addressLabel.trim() || 'Endereço',
         street: addressStreet.trim(),
         number: addressNumber.trim(),
         complement: addressComplement.trim() || undefined,
@@ -467,7 +467,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
     const saved = await updateVipMeasurements(measurements);
     if (!saved) {
-      alert('Dados nÃ£o salvos. NÃ£o foi possÃ­vel salvar a ficha de medidas.');
+      alert('Dados não salvos. Não foi possível salvar a ficha de medidas.');
       return;
     }
     alert('Dados salvos com sucesso.');
@@ -500,7 +500,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
     const saved = await updateCustomerPreferences(prefs);
     if (!saved) {
-      alert('Dados nÃ£o salvos. NÃ£o foi possÃ­vel salvar as preferÃªncias.');
+      alert('Dados não salvos. Não foi possível salvar as preferências.');
       return;
     }
     alert('Dados salvos com sucesso.');
@@ -509,11 +509,11 @@ export const CustomerProfileEditor: React.FC = () => {
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword.length < 6) {
-      alert('A nova senha deve ter no mÃƒÂ­nimo 6 caracteres.');
+      alert('A nova senha deve ter no mínimo 6 caracteres.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      alert('As senhas digitadas nÃƒÂ£o coincidem.');
+      alert('As senhas digitadas não coincidem.');
       return;
     }
 
@@ -536,7 +536,7 @@ export const CustomerProfileEditor: React.FC = () => {
     a.download = `ficha-cadastral-${currentUser.name.toLowerCase().replace(/\s+/g, '-')}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    triggerToast('Download da sua ficha cadastral concluÃƒÂ­do!');
+    triggerToast('Download da sua ficha cadastral concluído!');
   };
 
   return (
@@ -572,11 +572,11 @@ export const CustomerProfileEditor: React.FC = () => {
               )}
             </div>
             <p className="text-xs text-slate-300 mt-0.5">
-              {email} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ {phone}
+              {email} âââ€šÂ¬ÂÂ¢ {phone}
             </p>
             <p className="text-[11px] text-blue-300 mt-1 flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1" />
-              Cachoeiras de Macacu, RJ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Cliente cadastrado desde {(typeof currentUser.createdAt === 'string' ? currentUser.createdAt.split('T')[0] : currentUser.createdAt?.toDate ? currentUser.createdAt.toDate().toISOString().split('T')[0] : '') || '2026'}
+              Cachoeiras de Macacu, RJ âââ€šÂ¬ÂÂ¢ Cliente cadastrado desde {(typeof currentUser.createdAt === 'string' ? currentUser.createdAt.split('T')[0] : currentUser.createdAt?.toDate ? currentUser.createdAt.toDate().toISOString().split('T')[0] : '') || '2026'}
             </p>
           </div>
         </div>
@@ -595,8 +595,8 @@ export const CustomerProfileEditor: React.FC = () => {
           </div>
           <p className="text-[10px] text-slate-300 mt-1.5">
             {completeness === 100
-              ? 'ÃƒÂ¢Ã…â€œÃ‚Â¨ Sua ficha cadastral estÃƒÂ¡ 100% preenchida!'
-              : 'Preencha seus dados de medidas e endereÃƒÂ§os para pedidos mais rÃƒÂ¡pidos.'}
+              ? 'âÃ…â€œÂÂ¨ Sua ficha cadastral está 100% preenchida!'
+              : 'Preencha seus dados de medidas e endereços para pedidos mais rápidos.'}
           </p>
         </div>
       </div>
@@ -624,7 +624,7 @@ export const CustomerProfileEditor: React.FC = () => {
           }`}
         >
           <MapPin className="w-4 h-4" />
-          <span>Meus EndereÃƒÂ§os ({currentUser.addresses?.length || 0})</span>
+          <span>Meus Endereços ({currentUser.addresses?.length || 0})</span>
         </button>
 
         <button type="button"
@@ -648,7 +648,7 @@ export const CustomerProfileEditor: React.FC = () => {
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>PreferÃƒÂªncias & NotificaÃƒÂ§ÃƒÂµes</span>
+          <span>Preferências & Notificações</span>
         </button>
 
         <button type="button"
@@ -660,7 +660,7 @@ export const CustomerProfileEditor: React.FC = () => {
           }`}
         >
           <Shield className="w-4 h-4" />
-          <span>SeguranÃƒÂ§a & LGPD</span>
+          <span>Segurança & LGPD</span>
         </button>
       </div>
 
@@ -670,7 +670,7 @@ export const CustomerProfileEditor: React.FC = () => {
           <div>
             <h3 className="text-base font-black text-slate-900">Dados Principais do Cliente</h3>
             <p className="text-xs text-slate-500">
-              Modifique seus dados cadastrais. Essas informaÃƒÂ§ÃƒÂµes garantem a entrega precisa e comunicaÃƒÂ§ÃƒÂ£o rÃƒÂ¡pida com os lojistas de Cachoeiras de Macacu.
+              Modifique seus dados cadastrais. Essas informações garantem a entrega precisa e comunicação rápida com os lojistas de Cachoeiras de Macacu.
             </p>
           </div>
 
@@ -682,8 +682,8 @@ export const CustomerProfileEditor: React.FC = () => {
                 aspectRatio="circle"
                 value={avatar}
                 onChange={(img) => setAvatar(img as string)}
-                label="Sua Foto de Perfil (Computador ou CÃƒÂ¢mera do Smartphone)"
-                helperText="Envie uma foto do seu computador ou tire uma selfie com a cÃƒÂ¢mera do celular"
+                label="Sua Foto de Perfil (Computador ou Câmera do Smartphone)"
+                helperText="Envie uma foto do seu computador ou tire uma selfie com a câmera do celular"
               />
             </div>
           </div>
@@ -748,7 +748,7 @@ export const CustomerProfileEditor: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Telefone SecundÃƒÂ¡rio / Recados</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Telefone Secundário / Recados</label>
               <input
                 type="tel"
                 value={secondaryPhone}
@@ -769,7 +769,7 @@ export const CustomerProfileEditor: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">GÃƒÂªnero / IdentificaÃƒÂ§ÃƒÂ£o</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Gênero / Identificação</label>
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value as any)}
@@ -777,9 +777,9 @@ export const CustomerProfileEditor: React.FC = () => {
               >
                 <option value="Feminino">Feminino</option>
                 <option value="Masculino">Masculino</option>
-                <option value="NÃƒÂ£o-binÃƒÂ¡rio">NÃƒÂ£o-binÃƒÂ¡rio</option>
+                <option value="Não-binário">Não-binário</option>
                 <option value="Outro">Outro</option>
-                <option value="Prefiro nÃƒÂ£o informar">Prefiro nÃƒÂ£o informar</option>
+                <option value="Prefiro não informar">Prefiro não informar</option>
               </select>
             </div>
 
@@ -798,7 +798,7 @@ export const CustomerProfileEditor: React.FC = () => {
           <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 space-y-3">
             <h4 className="text-xs font-black text-blue-950 flex items-center">
               <Shield className="w-4 h-4 mr-1.5 text-blue-600" />
-              Contato de EmergÃƒÂªncia / Autorizado para Retirada de Pedidos
+              Contato de Emergência / Autorizado para Retirada de Pedidos
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
@@ -812,12 +812,12 @@ export const CustomerProfileEditor: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">Parentesco / RelaÃƒÂ§ÃƒÂ£o</label>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">Parentesco / Relação</label>
                 <input
                   type="text"
                   value={emergencyRel}
                   onChange={(e) => setEmergencyRel(e.target.value)}
-                  placeholder="Ex: IrmÃƒÂ£o, CÃƒÂ´njuge, Vizinho"
+                  placeholder="Ex: Irmão, Cônjuge, Vizinho"
                   className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white"
                 />
               </div>
@@ -835,13 +835,13 @@ export const CustomerProfileEditor: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">ObservaÃƒÂ§ÃƒÂµes Gerais da Conta</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">Observações Gerais da Conta</label>
             <textarea
               value={generalNotes}
               onChange={(e) => setGeneralNotes(e.target.value)}
               rows={2}
               className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-              placeholder="Ex: HorÃƒÂ¡rios preferenciais para contato, instruÃƒÂ§ÃƒÂµes fixas..."
+              placeholder="Ex: Horários preferenciais para contato, instruções fixas..."
             />
           </div>
 
@@ -862,9 +862,9 @@ export const CustomerProfileEditor: React.FC = () => {
         <div className="p-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h3 className="text-base font-black text-slate-900">Meus EndereÃƒÂ§os em Cachoeiras de Macacu</h3>
+              <h3 className="text-base font-black text-slate-900">Meus Endereços em Cachoeiras de Macacu</h3>
               <p className="text-xs text-slate-500">
-                Acrescente, edite ou modifique mÃƒÂºltiplos endereÃƒÂ§os para entregas rÃƒÂ¡pidas ou recolhimento de malas do Provador VIP.
+                Acrescente, edite ou modifique múltiplos endereços para entregas rápidas ou recolhimento de malas do Provador VIP.
               </p>
             </div>
             <button type="button"
@@ -872,7 +872,7 @@ export const CustomerProfileEditor: React.FC = () => {
               className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center space-x-1.5 self-start"
             >
               <Plus className="w-4 h-4" />
-              <span>Acrescentar Novo EndereÃƒÂ§o</span>
+              <span>Acrescentar Novo Endereço</span>
             </button>
           </div>
 
@@ -880,15 +880,15 @@ export const CustomerProfileEditor: React.FC = () => {
           {(!currentUser.addresses || currentUser.addresses.length === 0) ? (
             <div className="p-8 text-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 space-y-3">
               <MapPin className="w-12 h-12 text-slate-300 mx-auto" />
-              <h4 className="text-sm font-bold text-slate-700">Nenhum endereÃƒÂ§o cadastrado ainda</h4>
+              <h4 className="text-sm font-bold text-slate-700">Nenhum endereço cadastrado ainda</h4>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Cadastre seu primeiro endereÃƒÂ§o para receber compras via Delivery com rapidez.
+                Cadastre seu primeiro endereço para receber compras via Delivery com rapidez.
               </p>
               <button type="button"
                 onClick={handleOpenNewAddressModal}
                 className="px-4 py-2 bg-blue-600 text-white font-bold text-xs rounded-xl"
               >
-                Cadastrar EndereÃƒÂ§o
+                Cadastrar Endereço
               </button>
             </div>
           ) : (
@@ -927,7 +927,7 @@ export const CustomerProfileEditor: React.FC = () => {
                         onClick={() => setDefaultCustomerAddress(addr.id)}
                         className="text-[10px] font-bold text-slate-500 hover:text-blue-600 transition-colors"
                       >
-                        Tornar PadrÃƒÂ£o
+                        Tornar Padrão
                       </button>
                     )}
                   </div>
@@ -937,16 +937,16 @@ export const CustomerProfileEditor: React.FC = () => {
                       {addr.street}, {addr.number} {addr.complement && `(${addr.complement})`}
                     </p>
                     <p className="text-slate-500">
-                      Bairro: {addr.neighborhood} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ {addr.city} - {addr.state} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ CEP: {addr.zipCode || '28680-000'}
+                      Bairro: {addr.neighborhood} âââ€šÂ¬ÂÂ¢ {addr.city} - {addr.state} âââ€šÂ¬ÂÂ¢ CEP: {addr.zipCode || '28680-000'}
                     </p>
                     {addr.referencePoint && (
                       <p className="text-[11px] text-blue-800 bg-blue-50/80 p-1.5 rounded-lg mt-1">
-                        ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â <strong>Ref:</strong> {addr.referencePoint}
+                        à°Ã…Â¸ââ‚¬Å“ÂÂ <strong>Ref:</strong> {addr.referencePoint}
                       </p>
                     )}
                     {addr.deliveryInstructions && (
                       <p className="text-[11px] text-slate-600 italic">
-                        ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ <strong>InstruÃƒÂ§ÃƒÂ£o:</strong> {addr.deliveryInstructions}
+                        à°Ã…Â¸ââ‚¬â„¢ÂÂ¬ <strong>Instrução:</strong> {addr.deliveryInstructions}
                       </p>
                     )}
                   </div>
@@ -961,7 +961,7 @@ export const CustomerProfileEditor: React.FC = () => {
                     </button>
                     <button type="button"
                       onClick={() => {
-                        if (confirm(`Deseja realmente excluir o endereÃƒÂ§o "${addr.label}"?`)) {
+                        if (confirm(`Deseja realmente excluir o endereço "${addr.label}"?`)) {
                           deleteCustomerAddress(addr.id);
                         }
                       }}
@@ -976,14 +976,14 @@ export const CustomerProfileEditor: React.FC = () => {
             </div>
           )}
 
-          {/* Modal / Form para Adicionar ou Modificar EndereÃƒÂ§o */}
+          {/* Modal / Form para Adicionar ou Modificar Endereço */}
           {isAddressModalOpen && (
             <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
               <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
                 <div className="p-5 bg-slate-900 text-white flex justify-between items-center">
                   <h3 className="text-sm font-black flex items-center">
                     <MapPin className="w-4 h-4 mr-2 text-blue-400" />
-                    {editingAddressId ? 'Modificar EndereÃƒÂ§o' : 'Acrescentar Novo EndereÃƒÂ§o'}
+                    {editingAddressId ? 'Modificar Endereço' : 'Acrescentar Novo Endereço'}
                   </h3>
                   <button type="button"
                     onClick={() => setIsAddressModalOpen(false)}
@@ -997,14 +997,14 @@ export const CustomerProfileEditor: React.FC = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="col-span-2 sm:col-span-1">
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Apelido do EndereÃƒÂ§o *
+                        Apelido do Endereço *
                       </label>
                       <input
                         type="text"
                         required
                         value={addressLabel}
                         onChange={(e) => setAddressLabel(e.target.value)}
-                        placeholder="Ex: Casa, Trabalho, SÃƒÂ­tio"
+                        placeholder="Ex: Casa, Trabalho, Sítio"
                         className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
                       />
                     </div>
@@ -1041,7 +1041,7 @@ export const CustomerProfileEditor: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">NÃƒÂºmero *</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Número *</label>
                       <input
                         type="text"
                         required
@@ -1086,26 +1086,26 @@ export const CustomerProfileEditor: React.FC = () => {
 
                     <div className="col-span-2">
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Ponto de ReferÃƒÂªncia
+                        Ponto de Referência
                       </label>
                       <input
                         type="text"
                         value={addressRef}
                         onChange={(e) => setAddressRef(e.target.value)}
-                        placeholder="Ex: Ao lado da padaria, em frente ÃƒÂ  pracinha..."
+                        placeholder="Ex: Ao lado da padaria, em frente à  pracinha..."
                         className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
                       />
                     </div>
 
                     <div className="col-span-2">
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        InstruÃƒÂ§ÃƒÂµes para o Entregador
+                        Instruções para o Entregador
                       </label>
                       <input
                         type="text"
                         value={addressInstructions}
                         onChange={(e) => setAddressInstructions(e.target.value)}
-                        placeholder="Ex: Tocar o interfone 102, portÃƒÂ£o azul..."
+                        placeholder="Ex: Tocar o interfone 102, portão azul..."
                         className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
                       />
                     </div>
@@ -1118,7 +1118,7 @@ export const CustomerProfileEditor: React.FC = () => {
                           onChange={(e) => setAddressIsDefault(e.target.checked)}
                           className="w-4 h-4 text-blue-600 rounded-sm focus:ring-blue-500"
                         />
-                        <span>Definir este endereÃƒÂ§o como meu endereÃƒÂ§o padrÃƒÂ£o de entrega</span>
+                        <span>Definir este endereço como meu endereço padrão de entrega</span>
                       </label>
                     </div>
                   </div>
@@ -1135,7 +1135,7 @@ export const CustomerProfileEditor: React.FC = () => {
                       type="submit"
                       className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs"
                     >
-                      {editingAddressId ? 'Salvar ModificaÃƒÂ§ÃƒÂµes' : 'Salvar Novo EndereÃƒÂ§o'}
+                      {editingAddressId ? 'Salvar Modificações' : 'Salvar Novo Endereço'}
                     </button>
                   </div>
                 </form>
@@ -1154,11 +1154,11 @@ export const CustomerProfileEditor: React.FC = () => {
                 <Shirt className="w-5 h-5" />
               </span>
               <h3 className="text-base font-black text-slate-900">
-                Ficha de Medidas & Provador VIP em DomicÃƒÂ­lio
+                Ficha de Medidas & Provador VIP em Domicílio
               </h3>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Configure suas numeraÃƒÂ§ÃƒÂµes e preferÃƒÂªncias de caimento. Quando vocÃƒÂª solicitar uma mala de Provador VIP ou comprar roupas e calÃƒÂ§ados no comÃƒÂ©rcio de Cachoeiras de Macacu, as lojas jÃƒÂ¡ saberÃƒÂ£o o seu tamanho ideal.
+              Configure suas numerações e preferências de caimento. Quando você solicitar uma mala de Provador VIP ou comprar roupas e calçados no comércio de Cachoeiras de Macacu, as lojas já saberão o seu tamanho ideal.
             </p>
           </div>
 
@@ -1182,7 +1182,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                NumeraÃƒÂ§ÃƒÂ£o de CalÃƒÂ§a / Bermuda / Saia
+                Numeração de Calça / Bermuda / Saia
               </label>
               <select
                 value={bottomSize}
@@ -1201,7 +1201,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                NumeraÃƒÂ§ÃƒÂ£o de CalÃƒÂ§ados
+                Numeração de Calçados
               </label>
               <select
                 value={shoeSize}
@@ -1211,7 +1211,7 @@ export const CustomerProfileEditor: React.FC = () => {
                 {['33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'].map(
                   (num) => (
                     <option key={num} value={num}>
-                      NÃ‚Âº {num}
+                      NÂÂº {num}
                     </option>
                   )
                 )}
@@ -1242,7 +1242,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                PreferÃƒÂªncia de Modelagem / Caimento
+                Preferência de Modelagem / Caimento
               </label>
               <select
                 value={preferredFit}
@@ -1250,8 +1250,8 @@ export const CustomerProfileEditor: React.FC = () => {
                 className="w-full px-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none"
               >
                 <option value="Ajustado">Ajustado ao Corpo (Slim)</option>
-                <option value="Normal">Normal / ConfortÃƒÂ¡vel (Regular)</option>
-                <option value="Solto">Solto / FluÃƒÂ­do</option>
+                <option value="Normal">Normal / Confortável (Regular)</option>
+                <option value="Solto">Solto / Fluído</option>
                 <option value="Oversized">Oversized (Amplo e despojado)</option>
               </select>
             </div>
@@ -1260,7 +1260,7 @@ export const CustomerProfileEditor: React.FC = () => {
           {/* Style Tags */}
           <div className="space-y-2">
             <label className="block text-xs font-bold text-slate-700">
-              Estilos que mais combinam com vocÃƒÂª:
+              Estilos que mais combinam com você:
             </label>
             <div className="flex flex-wrap gap-2">
               {STYLE_OPTIONS.map((st) => {
@@ -1276,7 +1276,7 @@ export const CustomerProfileEditor: React.FC = () => {
                         : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                     }`}
                   >
-                    {isSelected ? 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ ' : '+ '} {st}
+                    {isSelected ? 'âÃ…â€œââ‚¬Å“ ' : '+ '} {st}
                   </button>
                 );
               })}
@@ -1286,7 +1286,7 @@ export const CustomerProfileEditor: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Cores Favoritas (separadas por vÃƒÂ­rgula)
+                Cores Favoritas (separadas por vírgula)
               </label>
               <input
                 type="text"
@@ -1299,7 +1299,7 @@ export const CustomerProfileEditor: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Cores que VocÃƒÂª Evita / NÃƒÂ£o Gosta
+                Cores que Você Evita / Não Gosta
               </label>
               <input
                 type="text"
@@ -1313,13 +1313,13 @@ export const CustomerProfileEditor: React.FC = () => {
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">
-              ObservaÃƒÂ§ÃƒÂµes Especiais para os Consultores de Moda
+              Observações Especiais para os Consultores de Moda
             </label>
             <textarea
               value={fitNotes}
               onChange={(e) => setFitNotes(e.target.value)}
               rows={2}
-              placeholder="Ex: BraÃƒÂ§os compridos, prefiro tecidos naturais como linho e 100% algodÃƒÂ£o, evito estampas muito grandes..."
+              placeholder="Ex: Braços compridos, prefiro tecidos naturais como linho e 100% algodão, evito estampas muito grandes..."
               className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none"
             />
           </div>
@@ -1341,26 +1341,26 @@ export const CustomerProfileEditor: React.FC = () => {
         <form onSubmit={handleSavePreferences} className="p-6 space-y-6">
           <div>
             <h3 className="text-base font-black text-slate-900">
-              PreferÃƒÂªncias de Atendimento & Canais de NotificaÃƒÂ§ÃƒÂ£o
+              Preferências de Atendimento & Canais de Notificação
             </h3>
             <p className="text-xs text-slate-500">
-              Personalize como vocÃƒÂª deseja receber as mensagens do Achei Aqui e as atualizaÃƒÂ§ÃƒÂµes de seus pedidos.
+              Personalize como você deseja receber as mensagens do Achei Aqui e as atualizações de seus pedidos.
             </p>
           </div>
 
           <div className="p-3.5 bg-blue-50/80 rounded-xl border border-blue-200 flex items-start space-x-3">
             <Bell className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
             <div className="text-xs text-blue-900">
-              <span className="font-bold">Nova Matriz de Canais por Tipo de Alerta:</span> VocÃƒÂª tambÃƒÂ©m pode definir canais especÃƒÂ­ficos (Push, E-mail e WhatsApp) separados para <strong>Status de Pedido</strong>, <strong>Mensagens de Lojistas</strong> e <strong>Ofertas</strong> acessando a aba <strong>PreferÃƒÂªncias de NotificaÃƒÂ§ÃƒÂ£o</strong> no menu superior.
+              <span className="font-bold">Nova Matriz de Canais por Tipo de Alerta:</span> Você também pode definir canais específicos (Push, E-mail e WhatsApp) separados para <strong>Status de Pedido</strong>, <strong>Mensagens de Lojistas</strong> e <strong>Ofertas</strong> acessando a aba <strong>Preferências de Notificação</strong> no menu superior.
             </div>
           </div>
 
           <div className="space-y-3">
             <label className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100/70 transition-colors">
               <div>
-                <p className="text-xs font-bold text-slate-900">NotificaÃƒÂ§ÃƒÂµes por WhatsApp</p>
+                <p className="text-xs font-bold text-slate-900">Notificações por WhatsApp</p>
                 <p className="text-[11px] text-slate-500">
-                  Receba o status do pedido, cÃƒÂ³digo de retirada no balcÃƒÂ£o e avisos de rota de entrega diretamente no seu WhatsApp.
+                  Receba o status do pedido, código de retirada no balcão e avisos de rota de entrega diretamente no seu WhatsApp.
                 </p>
               </div>
               <input
@@ -1375,7 +1375,7 @@ export const CustomerProfileEditor: React.FC = () => {
               <div>
                 <p className="text-xs font-bold text-slate-900">E-mails de Recibos & Comprovantes</p>
                 <p className="text-[11px] text-slate-500">
-                  Receba notas fiscais e comprovantes detalhados de cada compra realizada no comÃƒÂ©rcio local.
+                  Receba notas fiscais e comprovantes detalhados de cada compra realizada no comércio local.
                 </p>
               </div>
               <input
@@ -1390,7 +1390,7 @@ export const CustomerProfileEditor: React.FC = () => {
               <div>
                 <p className="text-xs font-bold text-slate-900">Avisos por SMS</p>
                 <p className="text-[11px] text-slate-500">
-                  Alertas rÃƒÂ¡pidos caso vocÃƒÂª esteja sem conexÃƒÂ£o de dados mÃƒÂ³veis no momento da entrega.
+                  Alertas rápidos caso você esteja sem conexão de dados móveis no momento da entrega.
                 </p>
               </div>
               <input
@@ -1404,10 +1404,10 @@ export const CustomerProfileEditor: React.FC = () => {
             <label className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100/70 transition-colors">
               <div>
                 <p className="text-xs font-bold text-slate-900">
-                  PromoÃƒÂ§ÃƒÂµes & Ofertas Exclusivas do ComÃƒÂ©rcio de Macacu
+                  Promoções & Ofertas Exclusivas do Comércio de Macacu
                 </p>
                 <p className="text-[11px] text-slate-500">
-                  Receba em primeira mÃƒÂ£o descontos relÃƒÂ¢mpago e novidades das lojas parceiras.
+                  Receba em primeira mão descontos relâmpago e novidades das lojas parceiras.
                 </p>
               </div>
               <input
@@ -1429,21 +1429,21 @@ export const CustomerProfileEditor: React.FC = () => {
                 onChange={(e) => setPreferredModality(e.target.value as any)}
                 className="w-full px-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
               >
-                <option value="DELIVERY">Delivery / Entrega RÃƒÂ¡pida em DomicÃƒÂ­lio</option>
-                <option value="RETIRADA">Retirada Express no BalcÃƒÂ£o da Loja</option>
-                <option value="EXPERIMENTAÃƒÆ’Ã¢â‚¬Â¡ÃƒÆ’Ã†â€™O">Provador VIP em DomicÃƒÂ­lio (Mala de Roupas)</option>
+                <option value="DELIVERY">Delivery / Entrega Rápida em Domicílio</option>
+                <option value="RETIRADA">Retirada Express no Balcão da Loja</option>
+                <option value="EXPERIMENTAÃÆ’ââ‚¬Â¡ÃÆ’Ã†â€™O">Provador VIP em Domicílio (Mala de Roupas)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                RestriÃƒÂ§ÃƒÂµes Alimentares / ObservaÃƒÂ§ÃƒÂµes GastronÃƒÂ´micas
+                Restrições Alimentares / Observações Gastronômicas
               </label>
               <input
                 type="text"
                 value={dietaryRestrictions}
                 onChange={(e) => setDietaryRestrictions(e.target.value)}
-                placeholder="Ex: Vegetariano, intolerÃƒÂ¢ncia a lactose, sem glÃƒÂºten..."
+                placeholder="Ex: Vegetariano, intolerância a lactose, sem glúten..."
                 className="w-full px-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
               />
             </div>
@@ -1455,7 +1455,7 @@ export const CustomerProfileEditor: React.FC = () => {
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center space-x-2"
             >
               <Save className="w-4 h-4" />
-              <span>Salvar PreferÃƒÂªncias</span>
+              <span>Salvar Preferências</span>
             </button>
           </div>
         </form>
@@ -1465,9 +1465,9 @@ export const CustomerProfileEditor: React.FC = () => {
       {activeSection === 'security' && (
         <div className="p-6 space-y-6">
           <div>
-            <h3 className="text-base font-black text-slate-900">SeguranÃƒÂ§a da Conta & Controle de Dados</h3>
+            <h3 className="text-base font-black text-slate-900">Segurança da Conta & Controle de Dados</h3>
             <p className="text-xs text-slate-500">
-              Gerencie a seguranÃƒÂ§a do seu login e exerÃƒÂ§a seus direitos de privacidade e portabilidade de dados.
+              Gerencie a segurança do seu login e exerça seus direitos de privacidade e portabilidade de dados.
             </p>
           </div>
 
@@ -1486,7 +1486,7 @@ export const CustomerProfileEditor: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="MÃƒÂ­nimo 6 dÃƒÂ­gitos"
+                    placeholder="Mínimo 6 dígitos"
                     className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white pr-9"
                   />
                   <button
@@ -1525,10 +1525,10 @@ export const CustomerProfileEditor: React.FC = () => {
             <div className="space-y-0.5">
               <div className="flex items-center space-x-2">
                 <Shield className="w-4 h-4 text-emerald-600" />
-                <h4 className="text-xs font-black text-slate-900">AutenticaÃƒÂ§ÃƒÂ£o em 2 Etapas (2FA)</h4>
+                <h4 className="text-xs font-black text-slate-900">Autenticação em 2 Etapas (2FA)</h4>
               </div>
               <p className="text-[11px] text-slate-500">
-                Adicione uma camada extra de seguranÃƒÂ§a solicitando cÃƒÂ³digo via WhatsApp ao fazer login em novos navegadores.
+                Adicione uma camada extra de segurança solicitando código via WhatsApp ao fazer login em novos navegadores.
               </p>
             </div>
             <button type="button"
@@ -1539,7 +1539,7 @@ export const CustomerProfileEditor: React.FC = () => {
                   : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
               }`}
             >
-              {currentUser.twoFactorEnabled ? '2FA Ativado ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“' : 'Ativar 2FA'}
+              {currentUser.twoFactorEnabled ? '2FA Ativado âÃ…â€œââ‚¬Å“' : 'Ativar 2FA'}
             </button>
           </div>
 
@@ -1551,7 +1551,7 @@ export const CustomerProfileEditor: React.FC = () => {
                 <h4 className="text-xs font-black text-slate-900">Exportar Ficha Cadastral (LGPD)</h4>
               </div>
               <p className="text-[11px] text-slate-500">
-                Baixe uma cÃƒÂ³pia estruturada de todos os seus dados e endereÃƒÂ§os salvos na plataforma.
+                Baixe uma cópia estruturada de todos os seus dados e endereços salvos na plataforma.
               </p>
             </div>
             <button type="button"

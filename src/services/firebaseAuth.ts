@@ -24,12 +24,12 @@ import { initializeApp, deleteApp } from 'firebase/app';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 /**
- * Traduz cÃ³digos de erro do Firebase Auth para mensagens amigÃ¡veis em portuguÃªs
+ * Traduz códigos de erro do Firebase Auth para mensagens amigáveis em português
  */
 export function getFirebaseAuthErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case 'auth/invalid-email':
-      return 'O formato do e-mail informado Ã© invÃ¡lido.';
+      return 'O formato do e-mail informado é inválido.';
     case 'auth/user-not-found':
       return 'Nenhuma conta encontrada com este e-mail. Por favor, cadastre-se.';
     case 'auth/wrong-password':
@@ -37,28 +37,28 @@ export function getFirebaseAuthErrorMessage(errorCode: string): string {
     case 'auth/invalid-credential':
       return 'Credenciais de acesso incorretas. Verifique seu e-mail e senha.';
     case 'auth/email-already-in-use':
-      return 'Este e-mail jÃ¡ estÃ¡ cadastrado. Tente entrar ou recupere sua senha.';
+      return 'Este e-mail já está cadastrado. Tente entrar ou recupere sua senha.';
     case 'auth/weak-password':
-      return 'A senha deve conter no mÃ­nimo 6 caracteres.';
+      return 'A senha deve conter no mínimo 6 caracteres.';
     case 'auth/popup-closed-by-user':
-      return 'A janela de autenticaÃ§Ã£o do Google foi fechada antes da conclusÃ£o.';
+      return 'A janela de autenticação do Google foi fechada antes da conclusão.';
     case 'auth/popup-blocked':
       return 'O navegador bloqueou o pop-up de login. Permita pop-ups para este site.';
     case 'auth/cancelled-popup-request':
-      return 'OperaÃ§Ã£o de autenticaÃ§Ã£o cancelada pelo navegador.';
+      return 'Operação de autenticação cancelada pelo navegador.';
     case 'auth/network-request-failed':
-      return 'Falha de comunicaÃ§Ã£o com os servidores do Firebase. Verifique sua conexÃ£o Ã  internet.';
+      return 'Falha de comunicação com os servidores do Firebase. Verifique sua conexão Ã  internet.';
     case 'auth/too-many-requests':
       return 'Muitas tentativas sem sucesso. Aguarde alguns minutos antes de tentar novamente.';
     case 'auth/operation-not-allowed':
-      return 'Este mÃ©todo de autenticaÃ§Ã£o nÃ£o estÃ¡ habilitado no Console do Firebase.';
+      return 'Este método de autenticação não está habilitado no Console do Firebase.';
     default:
-      return 'Ocorreu um erro na autenticaÃ§Ã£o. Verifique os dados e tente novamente.';
+      return 'Ocorreu um erro na autenticação. Verifique os dados e tente novamente.';
   }
 }
 
 /**
- * Mapeia ou provisiona o usuÃ¡rio no Firestore /users/{uid}
+ * Mapeia ou provisiona o usuário no Firestore /users/{uid}
  */
 export async function syncUserWithFirestore(
   fbUser: FirebaseUser,
@@ -97,12 +97,12 @@ export async function syncUserWithFirestore(
         ...extraData,
       };
 
-      // Atualiza Ãºltimo login
+      // Atualiza último login
       await updateDoc(userDocRef, {
         lastLogin: serverTimestamp(),
         isEmailVerified: fbUser.emailVerified,
       }).catch(() => {
-        // TolerÃ¢ncia para offline
+        // Tolerância para offline
       });
 
       return updatedUser;
@@ -329,7 +329,7 @@ export async function firebaseRegisterCustomer(params: {
 }
 
 /**
- * Cadastro de Lojista / Prestador de ServiÃ§os com Firebase Authentication e Firestore
+ * Cadastro de Lojista / Prestador de Serviços com Firebase Authentication e Firestore
  */
 export async function firebaseUpdatePassword(newPassword: string): Promise<{ success: boolean; message: string }> {
   try {
@@ -391,9 +391,9 @@ export async function firebaseRegisterMerchant(params: {
       email: cleanEmail,
       phone: params.phone,
       cnpjOrCpf: params.cnpjOrCpf || '00.000.000/0001-00',
-      category: params.category || (params.isServiceProvider ? 'PRESTADORES DE SERVIÃ‡OS' : 'GASTRONOMIA'),
+      category: params.category || (params.isServiceProvider ? 'PRESTADORES DE SERVIÇOS' : 'GASTRONOMIA'),
       subcategory: params.subcategory || '',
-      description: params.description || (params.isServiceProvider ? 'Prestador de serviÃ§os verificado no Achei Aqui.' : 'Loja credenciada no Achei Aqui.'),
+      description: params.description || (params.isServiceProvider ? 'Prestador de serviços verificado no Achei Aqui.' : 'Loja credenciada no Achei Aqui.'),
       address: params.address || `${params.street || 'Rua Principal'}, ${params.number || '100'}`,
       street: params.street,
       number: params.number,
@@ -430,7 +430,7 @@ export async function firebaseRegisterMerchant(params: {
       handleFirestoreError(err, OperationType.CREATE, `merchants/${storeId}`);
     }
 
-    // Salva perfil do usuÃ¡rio no Firestore com role LOJISTA ou PRESTADOR_SERVICO
+    // Salva perfil do usuário no Firestore com role LOJISTA ou PRESTADOR_SERVICO
     const roleToAssign = params.isServiceProvider ? 'PRESTADOR_SERVICO' : 'LOJISTA';
     const user = await syncUserWithFirestore(fbUser, roleToAssign, {
       name: params.ownerName,
@@ -448,7 +448,7 @@ export async function firebaseRegisterMerchant(params: {
       success: true,
       user,
       merchant: newMerchant,
-      message: 'Cadastro de lojista e loja concluÃ­dos com sucesso no Firebase!',
+      message: 'Cadastro de lojista e loja concluídos com sucesso no Firebase!',
     };
   } catch (error: any) {
     const msg = getFirebaseAuthErrorMessage(error.code);
@@ -484,7 +484,7 @@ export async function firebaseLoginWithGoogle(
       await signOut(auth);
       return {
         success: false,
-        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administraÃ§Ã£o.'}`,
+        message: `Acesso suspenso ou bloqueado: ${user.statusReason || 'Entre em contato com a administração.'}`,
       };
     }
 
@@ -503,7 +503,7 @@ export async function firebaseLoginWithGoogle(
 }
 
 /**
- * Envio de e-mail oficial de redefiniÃ§Ã£o de senha via Firebase Auth
+ * Envio de e-mail oficial de redefinição de senha via Firebase Auth
  */
 export async function firebaseSendPasswordReset(
   email: string
@@ -513,7 +513,7 @@ export async function firebaseSendPasswordReset(
     await sendPasswordResetEmail(auth, cleanEmail);
     return {
       success: true,
-      message: `Link de redefiniÃ§Ã£o de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
+      message: `Link de redefinição de senha enviado com sucesso para ${cleanEmail}. Verifique sua caixa de entrada e spam.`,
     };
   } catch (error: any) {
     return {
@@ -524,7 +524,7 @@ export async function firebaseSendPasswordReset(
 }
 
 /**
- * Encerra sessÃ£o do usuÃ¡rio no Firebase Auth
+ * Encerra sessão do usuário no Firebase Auth
  */
 export async function firebaseLogout(): Promise<void> {
   try {
@@ -535,7 +535,7 @@ export async function firebaseLogout(): Promise<void> {
 }
 
 /**
- * Observa alteraÃ§Ãµes no estado de autenticaÃ§Ã£o do Firebase
+ * Observa alterações no estado de autenticação do Firebase
  */
 export function subscribeToFirebaseAuthState(
   callback: (user: User | null, fbUser: FirebaseUser | null) => void
@@ -546,11 +546,11 @@ export function subscribeToFirebaseAuthState(
         const appUser = await syncUserWithFirestore(fbUser);
         callback(appUser, fbUser);
       } catch (err) {
-        console.warn('NÃ£o foi possÃ­vel sincronizar perfil do Firestore para usuÃ¡rio logado:', err);
-        // Fallback mÃ­nimo a partir dos dados do Firebase Auth
+        console.warn('Não foi possível sincronizar perfil do Firestore para usuário logado:', err);
+        // Fallback mínimo a partir dos dados do Firebase Auth
         const fallbackUser: User = {
           id: fbUser.uid,
-          name: fbUser.displayName || fbUser.email?.split('@')[0] || 'UsuÃ¡rio',
+          name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário',
           email: fbUser.email || '',
           phone: fbUser.phoneNumber || '(21) 99999-0000',
           role: (fbUser.email === 'telecom.david@gmail.com' || fbUser.email === 'espier.telecom@gmail.com') ? 'MASTER' : 'CLIENTE',
@@ -568,7 +568,7 @@ export function subscribeToFirebaseAuthState(
 
 
 /**
- * Atualiza a senha real do usuÃ¡rio autenticado no Firebase Authentication.
+ * Atualiza a senha real do usuário autenticado no Firebase Authentication.
  */
 export async function firebaseProvisionSalesAgent(
   email: string,
@@ -635,7 +635,7 @@ export async function firebaseProvisionSalesAgent(
     if (error?.code === 'auth/email-already-in-use') {
       return {
         success: false,
-        message: 'Este e-mail jÃ¡ possui uma credencial no Firebase.'
+        message: 'Este e-mail já possui uma credencial no Firebase.'
       };
     }
 
@@ -658,14 +658,14 @@ export async function firebaseUpdateAuthenticatedPassword(
     if (password.length < 8) {
       return {
         success: false,
-        message: 'A nova senha deve possuir no mÃ­nimo 8 caracteres.'
+        message: 'A nova senha deve possuir no mínimo 8 caracteres.'
       };
     }
 
     if (!auth.currentUser) {
       return {
         success: false,
-        message: 'Nenhum usuÃ¡rio autenticado no Firebase.'
+        message: 'Nenhum usuário autenticado no Firebase.'
       };
     }
 
@@ -758,7 +758,7 @@ export async function firebaseProvisionUser(
     if (error?.code === 'auth/email-already-in-use') {
       return {
         success: false,
-        message: 'Este e-mail jÃ¡ possui uma credencial no Firebase.'
+        message: 'Este e-mail já possui uma credencial no Firebase.'
       };
     }
 

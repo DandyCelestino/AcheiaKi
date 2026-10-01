@@ -152,7 +152,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [merchantPhone, setMerchantPhone] = useState('');
   const [merchantCnpjOrCpf, setMerchantCnpjOrCpf] = useState('');
   const [merchantIdDocument, setMerchantIdDocument] = useState('');
-  const [merchantCategory, setMerchantCategory] = useState('PRESTADORES DE SERVIÃ‡OS');
+  const [merchantCategory, setMerchantCategory] = useState('PRESTADORES DE SERVIÇOS');
   const [merchantSubcategory, setMerchantSubcategory] = useState('eletricistas residenciais & prediais');
   const [merchantStreet, setMerchantStreet] = useState('');
   const [merchantNumber, setMerchantNumber] = useState('');
@@ -289,7 +289,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setTab('plan-success');
         triggerToast('Pagamento do plano confirmado e acesso liberado com sucesso!');
       } else {
-        setErrorMessage(res.message || 'Erro ao processar ativaÃ§Ã£o do plano.');
+        setErrorMessage(res.message || 'Erro ao processar ativação do plano.');
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Falha ao confirmar pagamento.');
@@ -315,12 +315,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (newInitialPassword.length < 6) {
-      setErrorMessage('A nova senha deve ter no mÃ­nimo 6 caracteres.');
+      setErrorMessage('A nova senha deve ter no mínimo 6 caracteres.');
       return;
     }
 
     if (newInitialPassword !== confirmInitialPassword) {
-      setErrorMessage('A confirmaÃ§Ã£o da nova senha nÃ£o confere.');
+      setErrorMessage('A confirmação da nova senha não confere.');
       return;
     }
 
@@ -387,7 +387,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!twoFactorCodeInput.trim() || twoFactorCodeInput.trim().length < 6) {
-      setErrorMessage('Por favor, digite o cÃ³digo de 6 dÃ­gitos recebido.');
+      setErrorMessage('Por favor, digite o código de 6 dígitos recebido.');
       return;
     }
 
@@ -397,7 +397,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setIs2FAStep(false);
       onClose();
     } else {
-      setErrorMessage(result.message || 'CÃ³digo de 2 etapas invÃ¡lido ou expirado.');
+      setErrorMessage(result.message || 'Código de 2 etapas inválido ou expirado.');
     }
   };
 
@@ -417,42 +417,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!customerName.trim() || !customerEmail.trim() || !customerPassword.trim()) {
-      setErrorMessage('Por favor, preencha todos os campos cadastrais obrigatÃ³rios.');
+      setErrorMessage('Por favor, preencha todos os campos cadastrais obrigatórios.');
       return;
     }
 
     if (!customerCpf.trim()) {
-      setErrorMessage('O CPF Ã© obrigatÃ³rio para validaÃ§Ã£o de seguranÃ§a e emissÃ£o de notas.');
+      setErrorMessage('O CPF é obrigatório para validação de segurança e emissão de notas.');
       return;
     }
 
     if (!customerIdDocument.trim()) {
-      setErrorMessage('O Documento de Identidade (RG / CNH) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Documento de Identidade (RG / CNH) é obrigatório.');
       return;
     }
 
     if (!customerStreet.trim() || !customerNumber.trim() || !customerNeighborhood.trim()) {
-      setErrorMessage('O EndereÃ§o completo (Rua, NÃºmero e Bairro) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Endereço completo (Rua, Número e Bairro) é obrigatório.');
       return;
     }
 
     if (customerPassword.length < 6) {
-      setErrorMessage('A senha deve conter no mÃ­nimo 6 caracteres.');
+      setErrorMessage('A senha deve conter no mínimo 6 caracteres.');
       return;
     }
 
     if (customerPassword !== customerConfirmPassword) {
-      setErrorMessage('As senhas digitadas nÃ£o coincidem.');
+      setErrorMessage('As senhas digitadas não coincidem.');
       return;
     }
 
     if (!customerTermsAccepted) {
-      setErrorMessage('VocÃª deve aceitar os Termos de Uso e PolÃ­tica de Privacidade.');
+      setErrorMessage('Você deve aceitar os Termos de Uso e Política de Privacidade.');
       return;
     }
 
     if (!customerDisclaimerAccepted) {
-      setErrorMessage('VocÃª deve declarar ciÃªncia de que a Achei Aqui Ã© uma plataforma de intermediaÃ§Ã£o e que Ã© sua responsabilidade checar a existÃªncia da loja/prestador antes de fechar negÃ³cios.');
+      setErrorMessage('Você deve declarar ciência de que a Achei Aqui é uma plataforma de intermediação e que é sua responsabilidade checar a existência da loja/prestador antes de fechar negócios.');
       return;
     }
 
@@ -474,7 +474,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         membershipTier: customerTier
           });
     if (!customerResult.success) {
-      setErrorMessage(customerResult.message || 'NÃ£o foi possÃ­vel concluir o cadastro.');
+      setErrorMessage(customerResult.message || 'Não foi possível concluir o cadastro.');
       return;
     }
     onClose();
@@ -485,34 +485,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!merchantStoreName.trim() || !merchantOwnerName.trim() || !merchantEmail.trim() || !merchantPassword.trim()) {
-      setErrorMessage('Preencha os campos obrigatÃ³rios do responsÃ¡vel e do serviÃ§o/loja.');
+      setErrorMessage('Preencha os campos obrigatórios do responsável e do serviço/loja.');
       return;
     }
 
     if (!merchantCnpjOrCpf.trim()) {
-      setErrorMessage('O CPF ou CNPJ do prestador/lojista Ã© estritamente obrigatÃ³rio.');
+      setErrorMessage('O CPF ou CNPJ do prestador/lojista é estritamente obrigatório.');
       return;
     }
 
     if (!merchantIdDocument.trim()) {
-      setErrorMessage('O Documento Oficial de Identidade (RG / CNH) Ã© obrigatÃ³rio para credenciamento.');
+      setErrorMessage('O Documento Oficial de Identidade (RG / CNH) é obrigatório para credenciamento.');
       return;
     }
 
     if (!merchantStreet.trim() || !merchantNumber.trim() || !merchantNeighborhood.trim()) {
-      setErrorMessage('O EndereÃ§o completo (Rua, NÃºmero e Bairro em Cachoeiras) Ã© obrigatÃ³rio.');
+      setErrorMessage('O Endereço completo (Rua, Número e Bairro em Cachoeiras) é obrigatório.');
       return;
     }
 
-    // ReferÃªncias profissionais: OBRIGATÃ“RIAS APENAS PARA PRESTADORES DE SERVIÃ‡O
+    // Referências profissionais: OBRIGATÓRIAS APENAS PARA PRESTADORES DE SERVIÇO
     if (merchantType === 'SERVICE_PROVIDER') {
       if (!ref1Name.trim() || !ref1Phone.trim() || !ref1Role.trim()) {
-        setErrorMessage('A ReferÃªncia Profissional 1 Ã© obrigatÃ³ria para prestadores de serviÃ§os (Nome, Telefone e ServiÃ§o Prestado / RelaÃ§Ã£o).');
+        setErrorMessage('A Referência Profissional 1 é obrigatória para prestadores de serviços (Nome, Telefone e Serviço Prestado / Relação).');
         return;
       }
 
       if (!ref2Name.trim() || !ref2Phone.trim() || !ref2Role.trim()) {
-        setErrorMessage('A ReferÃªncia Profissional 2 Ã© obrigatÃ³ria para prestadores de serviÃ§os (Nome, Telefone e ServiÃ§o Prestado / RelaÃ§Ã£o).');
+        setErrorMessage('A Referência Profissional 2 é obrigatória para prestadores de serviços (Nome, Telefone e Serviço Prestado / Relação).');
         return;
       }
     }
@@ -523,17 +523,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
 
     if (merchantPassword !== merchantConfirmPassword) {
-      setErrorMessage('A confirmaÃ§Ã£o de senha nÃ£o confere.');
+      setErrorMessage('A confirmação de senha não confere.');
       return;
     }
 
     if (!merchantTermsAccepted) {
-      setErrorMessage('VocÃª deve concordar com os Termos de Parceria e VerificaÃ§Ã£o Achei Aqui.');
+      setErrorMessage('Você deve concordar com os Termos de Parceria e Verificação Achei Aqui.');
       return;
     }
 
     if (!merchantDisclaimerAccepted) {
-      setErrorMessage('VocÃª deve declarar ciÃªncia de que a plataforma atua na intermediaÃ§Ã£o e que a responsabilidade das negociaÃ§Ãµes Ã© exclusivamente das partes.');
+      setErrorMessage('Você deve declarar ciência de que a plataforma atua na intermediação e que a responsabilidade das negociações é exclusivamente das partes.');
       return;
     }
 
@@ -544,7 +544,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     ] : [];
 
     const isService = merchantType === 'SERVICE_PROVIDER' || 
-      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'ServiÃ§os Gerais', 'Prestadores de ServiÃ§os'].some(cat =>
+      ['servicos', 'instalacoes', 'reparos', 'consertos', 'marido-de-aluguel', 'Serviços Gerais', 'Prestadores de Serviços'].some(cat =>
         merchantCategory.toLowerCase().includes(cat.toLowerCase())
       );
 
@@ -568,7 +568,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           isServiceProvider: isService,
           offeredItemTypes: isService ? ['SERVICO', 'INSTALACAO', 'MANUTENCAO'] : ['PRODUTO_FISICO'],
           isVerifiedProvider: true,
-          description: merchantDesc || (isService ? 'Prestador verificado com documentaÃ§Ã£o e referÃªncias confirmadas.' : 'Estabelecimento local oficial em Cachoeiras de Macacu.'),
+          description: merchantDesc || (isService ? 'Prestador verificado com documentação e referências confirmadas.' : 'Estabelecimento local oficial em Cachoeiras de Macacu.'),
           openingHours: merchantHours,
           supportsPickup,
           supportsTrial,
@@ -596,7 +596,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setTab('plan-checkout');
     } catch (error: any) {
       console.error('[CADASTRO LOJISTA]', error);
-      setErrorMessage(error?.message || 'NÃ£o foi possÃ­vel concluir o cadastro. Verifique os dados e tente novamente.');
+      setErrorMessage(error?.message || 'Não foi possível concluir o cadastro. Verifique os dados e tente novamente.');
     }
   };
 
@@ -605,22 +605,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (!driverName.trim() || !driverCpf.trim() || !driverEmail.trim() || !driverPassword.trim() || !driverPhone.trim() || !driverCnhNumber.trim() || !driverVehicleModel.trim() || !driverVehiclePlate.trim()) {
-      setErrorMessage('Por favor, preencha todos os campos obrigatÃ³rios do credenciamento de entregador.');
+      setErrorMessage('Por favor, preencha todos os campos obrigatórios do credenciamento de entregador.');
       return;
     }
 
     if (driverPassword.length < 6) {
-      setErrorMessage('A senha deve ter no mÃ­nimo 6 dÃ­gitos.');
+      setErrorMessage('A senha deve ter no mínimo 6 dígitos.');
       return;
     }
 
     if (driverPassword !== driverConfirmPassword) {
-      setErrorMessage('A confirmaÃ§Ã£o da senha nÃ£o confere.');
+      setErrorMessage('A confirmação da senha não confere.');
       return;
     }
 
     if (!driverTermsAccepted) {
-      setErrorMessage('VocÃª deve aceitar os termos de prestaÃ§Ã£o de serviÃ§os de entrega parceira.');
+      setErrorMessage('Você deve aceitar os termos de prestação de serviços de entrega parceira.');
       return;
     }
 
@@ -644,7 +644,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     if (res.success) {
       setSuccessMessage('Cadastro de entregador enviado com sucesso!');
-      triggerToast('Cadastro enviado para aprovaÃ§Ã£o!');
+      triggerToast('Cadastro enviado para aprovação!');
       setTab('driver-pending-approval');
     } else {
       setErrorMessage(res.message);
@@ -673,13 +673,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMessage(null);
 
     if (newResetPassword !== confirmResetPassword) {
-      setErrorMessage('As novas senhas digitadas nÃ£o coincidem.');
+      setErrorMessage('As novas senhas digitadas não coincidem.');
       return;
     }
 
     const res = completePasswordReset(forgotEmail, resetCode, newResetPassword);
     if (res.success) {
-      setSuccessMessage('Senha atualizada com sucesso! VocÃª jÃ¡ pode entrar.');
+      setSuccessMessage('Senha atualizada com sucesso! Você já pode entrar.');
       setTimeout(() => {
         setTab('login');
         loginEmailRef.current = forgotEmail;
@@ -695,7 +695,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     e.preventDefault();
     setErrorMessage(null);
     if (!resendEmail.trim()) {
-      setErrorMessage('Digite seu e-mail para receber a verificaÃ§Ã£o.');
+      setErrorMessage('Digite seu e-mail para receber a verificação.');
       return;
     }
 
@@ -723,7 +723,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Seguro & LGPD
                 </span>
               </div>
-              <p className="text-slate-400 text-xs mt-0.5">Plataforma Comercial e de ServiÃ§os â€¢ Cachoeiras de Macacu, RJ</p>
+              <p className="text-slate-400 text-xs mt-0.5">Plataforma Comercial e de Serviços â€¢ Cachoeiras de Macacu, RJ</p>
             </div>
           </div>
           <button
@@ -735,7 +735,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </button>
         </div>
 
-        {/* Tab Navigation PrimÃ¡ria (shrink-0) */}
+        {/* Tab Navigation Primária (shrink-0) */}
         {!(tab === 'plan-checkout' || tab === 'plan-success' || tab === 'driver-pending-approval' || tab === 'change-temporary-password') ? (
           <div className="flex border-b border-slate-200 bg-slate-50 text-xs font-semibold overflow-x-auto shrink-0">
             <button
@@ -779,19 +779,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="flex items-center space-x-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span className="font-bold text-slate-200">
-                {tab === 'plan-checkout' && 'Etapa de Pagamento: AtivaÃ§Ã£o do Plano do Estabelecimento'}
-                {tab === 'plan-success' && 'AtivaÃ§Ã£o ConcluÃ­da: Comprovante e LiberaÃ§Ã£o'}
-                {tab === 'driver-pending-approval' && 'Credenciamento de Entregador: Protocolo em AnÃ¡lise'}
-                {tab === 'change-temporary-password' && 'SeguranÃ§a do Acesso: Troca ObrigatÃ³ria de Senha'}
+                {tab === 'plan-checkout' && 'Etapa de Pagamento: Ativação do Plano do Estabelecimento'}
+                {tab === 'plan-success' && 'Ativação Concluída: Comprovante e Liberação'}
+                {tab === 'driver-pending-approval' && 'Credenciamento de Entregador: Protocolo em Análise'}
+                {tab === 'change-temporary-password' && 'Segurança do Acesso: Troca Obrigatória de Senha'}
               </span>
             </div>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-bold">
-              Achei Aqui SeguranÃ§a
+              Achei Aqui Segurança
             </span>
           </div>
         )}
 
-        {/* ABAS PERMANENTES E VISÃVEIS DE MODALIDADE DE CADASTRO (shrink-0) */}
+        {/* ABAS PERMANENTES E VISÍVEIS DE MODALIDADE DE CADASTRO (shrink-0) */}
         {tab.startsWith('register-') && (
           <div className="bg-slate-100/95 border-b border-slate-200 p-2.5 sm:p-3 shrink-0">
             <div className="flex items-center justify-between mb-2">
@@ -823,17 +823,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <span className="text-xs font-black">Cliente</span>
                 </div>
                 <span className={`text-[10px] font-medium leading-tight ${tab === 'register-customer' ? 'text-blue-100' : 'text-slate-400'}`}>
-                  Compras & ServiÃ§os
+                  Compras & Serviços
                 </span>
               </button>
 
-              {/* 2. Prestador de ServiÃ§os */}
+              {/* 2. Prestador de Serviços */}
               <button
                 type="button"
                 onClick={() => {
                   setTab('register-merchant');
                   setMerchantType('SERVICE_PROVIDER');
-                  setMerchantCategory('PRESTADORES DE SERVIÃ‡OS');
+                  setMerchantCategory('PRESTADORES DE SERVIÇOS');
                   setErrorMessage(null);
                 }}
                 className={`p-2 rounded-xl text-center border transition-all flex flex-col items-center justify-center min-h-[46px] cursor-pointer ${
@@ -847,7 +847,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <span className="text-xs font-black">Prestador</span>
                 </div>
                 <span className={`text-[10px] font-medium leading-tight ${tab === 'register-merchant' && merchantType === 'SERVICE_PROVIDER' ? 'text-amber-100' : 'text-slate-400'}`}>
-                  Reparos & ServiÃ§os
+                  Reparos & Serviços
                 </span>
               </button>
 
@@ -857,7 +857,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 onClick={() => {
                   setTab('register-merchant');
                   setMerchantType('STORE');
-                  setMerchantCategory('COMÃ‰RCIO & LOJAS FÃSICAS');
+                  setMerchantCategory('COMÉRCIO & LOJAS FÍSICAS');
                   setErrorMessage(null);
                 }}
                 className={`p-2 rounded-xl text-center border transition-all flex flex-col items-center justify-center min-h-[46px] cursor-pointer ${
@@ -871,7 +871,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <span className="text-xs font-black">Lojista</span>
                 </div>
                 <span className={`text-[10px] font-medium leading-tight ${tab === 'register-merchant' && merchantType === 'STORE' ? 'text-emerald-100' : 'text-slate-400'}`}>
-                  Loja FÃ­sica & BalcÃ£o
+                  Loja Física & Balcão
                 </span>
               </button>
 
@@ -910,7 +910,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <div>
                   <strong className="block font-bold text-sm text-indigo-900">Acesso Exclusivo pelo Portal do Vendedor</strong>
                   <p className="text-indigo-800 leading-relaxed mt-1">
-                    Detectamos credencial de consultor comercial. O acesso de vendedores Ã© realizado <strong>Ãºnica e exclusivamente pelo Portal do Vendedor</strong>.
+                    Detectamos credencial de consultor comercial. O acesso de vendedores é realizado <strong>única e exclusivamente pelo Portal do Vendedor</strong>.
                   </p>
                 </div>
               </div>
@@ -951,26 +951,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <ShieldCheck className="w-7 h-7" />
                 </div>
                 <h4 className="text-lg font-extrabold text-slate-900 tracking-tight">
-                  ConfirmaÃ§Ã£o em Duas Etapas (2FA)
+                  Confirmação em Duas Etapas (2FA)
                 </h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Acesso de alta seguranÃ§a para <span className="font-bold text-slate-800">{pending2FAName}</span> ({pending2FARole}).
-                  Digite o cÃ³digo de verificaÃ§Ã£o de 6 dÃ­gitos gerado para o seu dispositivo.
+                  Acesso de alta segurança para <span className="font-bold text-slate-800">{pending2FAName}</span> ({pending2FARole}).
+                  Digite o código de verificação de 6 dígitos gerado para o seu dispositivo.
                 </p>
               </div>
 
-              {/* InformaÃ§Ã£o do CÃ³digo 2FA */}
+              {/* Informação do Código 2FA */}
               {simulated2FACode && (
                 <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start space-x-2.5">
                   <KeyRound className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-bold">CÃ³digo de SeguranÃ§a Token (SMS/WhatsApp):</p>
+                    <p className="font-bold">Código de Segurança Token (SMS/WhatsApp):</p>
                     <div className="flex items-center space-x-2">
                       <span className="font-mono text-sm font-extrabold tracking-widest bg-white px-2 py-0.5 rounded border border-amber-300 text-slate-900">
                         {simulated2FACode}
                       </span>
                       <span className="text-[10px] text-slate-500 font-medium">
-                        (Insira manualmente o cÃ³digo abaixo)
+                        (Insira manualmente o código abaixo)
                       </span>
                     </div>
                   </div>
@@ -980,7 +980,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <form onSubmit={handleVerify2FA} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5 text-center">
-                    Digite o cÃ³digo de 6 dÃ­gitos
+                    Digite o código de 6 dígitos
                   </label>
                   <div className="relative max-w-xs mx-auto">
                     <input
@@ -1024,7 +1024,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${isResending2FA ? 'animate-spin' : ''}`} />
-                      <span>Reenviar cÃ³digo</span>
+                      <span>Reenviar código</span>
                     </button>
                   </div>
                 </div>
@@ -1040,19 +1040,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Entrar na Plataforma
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Acesso seguro e restrito. Cada usuÃ¡rio tem acesso exclusivo ao seu respectivo painel de controle e pedidos.
+                  Acesso seguro e restrito. Cada usuário tem acesso exclusivo ao seu respectivo painel de controle e pedidos.
                 </p>
               </div>
 
-              {/* InformaÃ§Ã£o de SeguranÃ§a e Isolamento */}
+              {/* Informação de Segurança e Isolamento */}
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                 <div className="text-[11px] text-slate-600 leading-relaxed">
-                  <span className="font-bold text-slate-800">SeguranÃ§a de Acesso:</span> Digite seu e-mail e sua senha de acesso cadastrados. Contas de alto privilÃ©gio possuem confirmaÃ§Ã£o de seguranÃ§a em duas etapas (2FA).
+                  <span className="font-bold text-slate-800">Segurança de Acesso:</span> Digite seu e-mail e sua senha de acesso cadastrados. Contas de alto privilégio possuem confirmação de segurança em duas etapas (2FA).
                 </div>
               </div>
 
-              {/* FormulÃ¡rio de Login */}
+              {/* Formulário de Login */}
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -1109,7 +1109,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
                 </div>
 
-                {/* Lembrar Acesso & InformaÃ§Ãµes de SeguranÃ§a */}
+                {/* Lembrar Acesso & Informações de Segurança */}
                 <div className="flex items-center justify-between text-xs pt-1">
                   <label className="flex items-center space-x-2 text-slate-600 cursor-pointer select-none">
                     <input
@@ -1147,7 +1147,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div className="text-center pt-3 border-t border-slate-100">
                 <p className="text-xs text-slate-500">
-                  Ainda nÃ£o possui uma conta?{' '}
+                  Ainda não possui uma conta?{' '}
                   <button
                     onClick={() => setTab('register-customer')}
                     className="text-blue-600 font-bold hover:underline"
@@ -1167,7 +1167,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Criar Conta de Cliente
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Cadastre-se com dados verificados para comprar produtos, agendar serviÃ§os e solicitar provador VIP.
+                  Cadastre-se com dados verificados para comprar produtos, agendar serviços e solicitar provador VIP.
                 </p>
               </div>
 
@@ -1214,11 +1214,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* Documentos ObrigatÃ³rios do Cliente (CPF e ID/RG) */}
+              {/* Documentos Obrigatórios do Cliente (CPF e ID/RG) */}
               <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-blue-900">
                   <ShieldCheck className="w-4 h-4 text-blue-600" />
-                  <span>Documentos de ValidaÃ§Ã£o ObrigatÃ³rios (SeguranÃ§a Local)</span>
+                  <span>Documentos de Validação Obrigatórios (Segurança Local)</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
@@ -1254,7 +1254,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha (mÃ­nimo 6 dÃ­gitos) *
+                    Senha (mínimo 6 dígitos) *
                   </label>
                   <input
                     type="password"
@@ -1280,11 +1280,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* EndereÃ§o ObrigatÃ³rio */}
+              {/* Endereço Obrigatório */}
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800">
                   <MapPin className="w-3.5 h-3.5 text-blue-600" />
-                  <span>EndereÃ§o Completo em Cachoeiras de Macacu *</span>
+                  <span>Endereço Completo em Cachoeiras de Macacu *</span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">
@@ -1304,7 +1304,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={customerNumber}
                       onChange={(e) => setCustomerNumber(e.target.value)}
-                      placeholder="NÃºmero *"
+                      placeholder="Número *"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     />
                   </div>
@@ -1329,14 +1329,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* Cadastro Gratuito do Cliente - Sem seleÃ§Ã£o de planos nem cobranÃ§as */}
+              {/* Cadastro Gratuito do Cliente - Sem seleção de planos nem cobranças */}
               <div className="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-xl space-y-1.5">
                 <div className="flex items-center space-x-2 text-xs font-bold text-emerald-950">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Cadastro 100% Gratuito (R$ 0,00)</span>
                 </div>
                 <p className="text-[11px] text-emerald-800 leading-relaxed">
-                  O cadastro de cliente comprador Ã© totalmente livre de mensalidades e sem cobranÃ§a de taxas. Tenha acesso a todas as lojas, produtos, agendamentos e delivery de Cachoeiras de Macacu.
+                  O cadastro de cliente comprador é totalmente livre de mensalidades e sem cobrança de taxas. Tenha acesso a todas as lojas, produtos, agendamentos e delivery de Cachoeiras de Macacu.
                 </p>
               </div>
 
@@ -1354,7 +1354,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </span>
                 </label>
 
-                {/* Termo ObrigatÃ³rio de IntermediaÃ§Ã£o e Responsabilidade */}
+                {/* Termo Obrigatório de Intermediação e Responsabilidade */}
                 <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-xl">
                   <label className="flex items-start space-x-2.5 cursor-pointer text-xs">
                     <input
@@ -1366,7 +1366,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 w-4 h-4 border-amber-300 shrink-0"
                     />
                     <span className="text-slate-700 text-[11px] leading-relaxed">
-                      <strong className="text-amber-950 font-bold">CondiÃ§Ã£o ObrigatÃ³ria de Cadastro:</strong> Declaro ciÃªncia de que a plataforma Achei Aqui Ã© um canal de intermediaÃ§Ã£o tecnolÃ³gica e divulgaÃ§Ã£o. As informaÃ§Ãµes sÃ£o checadas periodicamente por nÃ³s, porÃ©m o cliente deve constatar e certificar a existÃªncia da loja e do prestador antes de fechar qualquer negÃ³cio. A responsabilidade por compras, serviÃ§os e negÃ³cios realizados Ã© estritamente do cliente e do prestador/lojista.
+                      <strong className="text-amber-950 font-bold">Condição Obrigatória de Cadastro:</strong> Declaro ciência de que a plataforma Achei Aqui é um canal de intermediação tecnológica e divulgação. As informações são checadas periodicamente por nós, porém o cliente deve constatar e certificar a existência da loja e do prestador antes de fechar qualquer negócio. A responsabilidade por compras, serviços e negócios realizados é estritamente do cliente e do prestador/lojista.
                     </span>
                   </label>
                 </div>
@@ -1383,7 +1383,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div className="text-center pt-2">
                 <p className="text-xs text-slate-500">
-                  JÃ¡ possui conta cadastrada?{' '}
+                  Já possui conta cadastrada?{' '}
                   <button
                     type="button"
                     onClick={() => setTab('login')}
@@ -1396,30 +1396,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           )}
 
-          {/* TAB 3: CADASTRO DE LOJISTA / PRESTADOR DE SERVIÃ‡OS */}
+          {/* TAB 3: CADASTRO DE LOJISTA / PRESTADOR DE SERVIÇOS */}
           {tab === 'register-merchant' && (
             <form onSubmit={handleRegisterMerchant} className="space-y-4">
               <div>
                 <span className={`inline-block px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-md mb-1.5 ${
                   merchantType === 'SERVICE_PROVIDER' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
                 }`}>
-                  {merchantType === 'SERVICE_PROVIDER' ? 'Credenciamento de Prestador de ServiÃ§os com ReferÃªncias' : 'Credenciamento de ComÃ©rcio Local & Lojista'}
+                  {merchantType === 'SERVICE_PROVIDER' ? 'Credenciamento de Prestador de Serviços com Referências' : 'Credenciamento de Comércio Local & Lojista'}
                 </span>
                 <h4 className="text-lg font-bold text-slate-900 tracking-tight">
-                  {merchantType === 'SERVICE_PROVIDER' ? 'Cadastrar como Prestador de ServiÃ§os' : 'Cadastrar Minha Loja Comercial'}
+                  {merchantType === 'SERVICE_PROVIDER' ? 'Cadastrar como Prestador de Serviços' : 'Cadastrar Minha Loja Comercial'}
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
                   {merchantType === 'SERVICE_PROVIDER' 
-                    ? 'Receba pedidos de instalaÃ§Ãµes, reparos rÃ¡pidos, consertos e serviÃ§os gerais com perfil verificado em Cachoeiras de Macacu.'
-                    : 'Venda online, ofereÃ§a retirada no balcÃ£o e delivery para os moradores de Cachoeiras de Macacu.'}
+                    ? 'Receba pedidos de instalações, reparos rápidos, consertos e serviços gerais com perfil verificado em Cachoeiras de Macacu.'
+                    : 'Venda online, ofereça retirada no balcão e delivery para os moradores de Cachoeiras de Macacu.'}
                 </p>
               </div>
 
-              {/* ResponsÃ¡vel e Nome da Empresa / ServiÃ§o */}
+              {/* Responsável e Nome da Empresa / Serviço */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Nome Completo do ResponsÃ¡vel / Profissional *
+                    Nome Completo do Responsável / Profissional *
                   </label>
                   <input
                     type="text"
@@ -1432,7 +1432,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    {merchantType === 'SERVICE_PROVIDER' ? 'Nome do ServiÃ§o / Nome Fantasia *' : 'Nome Fantasia da Loja *'}
+                    {merchantType === 'SERVICE_PROVIDER' ? 'Nome do Serviço / Nome Fantasia *' : 'Nome Fantasia da Loja *'}
                   </label>
                   <input
                     type="text"
@@ -1449,7 +1449,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    E-mail de Contato / NotificaÃ§Ãµes *
+                    E-mail de Contato / Notificações *
                   </label>
                   <input
                     type="email"
@@ -1475,11 +1475,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* DOCUMENTOS OBRIGATÃ“RIOS: CPF/CNPJ e ID/RG */}
+              {/* DOCUMENTOS OBRIGATÓRIOS: CPF/CNPJ e ID/RG */}
               <div className="p-3.5 bg-blue-50/60 border border-blue-200 rounded-xl space-y-2">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-blue-900">
                   <ShieldAlert className="w-4 h-4 text-blue-600" />
-                  <span>DocumentaÃ§Ã£o ObrigatÃ³ria para ValidaÃ§Ã£o e Selo Verificado</span>
+                  <span>Documentação Obrigatória para Validação e Selo Verificado</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
@@ -1515,7 +1515,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha de Acesso ao Painel (mÃ­nimo 6 dÃ­gitos) *
+                    Senha de Acesso ao Painel (mínimo 6 dígitos) *
                   </label>
                   <input
                     type="password"
@@ -1572,7 +1572,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Subcategoria de AtuaÃ§Ã£o (caixa baixa) *
+                      Subcategoria de Atuação (caixa baixa) *
                     </label>
                     <select
                       value={merchantSubcategory}
@@ -1590,7 +1590,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    HorÃ¡rio de Atendimento
+                    Horário de Atendimento
                   </label>
                   <input
                     type="text"
@@ -1602,11 +1602,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* ENDEREÃ‡O OBRIGATÃ“RIO DO PRESTADOR / LOJA */}
+              {/* ENDEREÇO OBRIGATÓRIO DO PRESTADOR / LOJA */}
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
                 <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800">
                   <MapPin className="w-3.5 h-3.5 text-blue-600" />
-                  <span>EndereÃ§o Completo em Cachoeiras de Macacu *</span>
+                  <span>Endereço Completo em Cachoeiras de Macacu *</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="col-span-2">
@@ -1625,7 +1625,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       required
                       value={merchantNumber}
                       onChange={(e) => setMerchantNumber(e.target.value)}
-                      placeholder="NÃºmero *"
+                      placeholder="Número *"
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     />
                   </div>
@@ -1636,7 +1636,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     required
                     value={merchantNeighborhood}
                     onChange={(e) => setMerchantNeighborhood(e.target.value)}
-                    placeholder="Bairro (ex: Centro, Papucaia, JapuÃ­ba) *"
+                    placeholder="Bairro (ex: Centro, Papucaia, Japuíba) *"
                     className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                   />
                   <input
@@ -1649,20 +1649,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* REFERÃŠNCIAS PROFISSIONAIS OBRIGATÃ“RIAS (SOMENTE PARA PRESTADORES DE SERVIÃ‡OS) */}
+              {/* REFERÊNCIAS PROFISSIONAIS OBRIGATÓRIAS (SOMENTE PARA PRESTADORES DE SERVIÇOS) */}
               {merchantType === 'SERVICE_PROVIDER' && (
                 <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3">
                   <div className="flex items-center space-x-1.5 text-xs font-bold text-amber-900">
                     <FileText className="w-4 h-4 text-amber-600" />
-                    <span>ReferÃªncias Profissionais ObrigatÃ³rias (MÃ­nimo 2 ReferÃªncias) *</span>
+                    <span>Referências Profissionais Obrigatórias (Mínimo 2 Referências) *</span>
                   </div>
                   <p className="text-[11px] text-amber-800">
-                    Para seguranÃ§a dos clientes e moradores da cidade, informe clientes anteriores, comÃ©rcios ou condomÃ­nios onde vocÃª jÃ¡ prestou serviÃ§os.
+                    Para segurança dos clientes e moradores da cidade, informe clientes anteriores, comércios ou condomínios onde você já prestou serviços.
                   </p>
 
-                  {/* ReferÃªncia 1 */}
+                  {/* Referência 1 */}
                   <div className="p-2.5 bg-white rounded-lg border border-amber-100 space-y-1.5">
-                    <span className="text-[11px] font-bold text-slate-800">ReferÃªncia 1 (ObrigatÃ³ria):</span>
+                    <span className="text-[11px] font-bold text-slate-800">Referência 1 (Obrigatória):</span>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <input
                         type="text"
@@ -1685,15 +1685,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         required
                         value={ref1Role}
                         onChange={(e) => setRef1Role(e.target.value)}
-                        placeholder="ServiÃ§o prestado / RelaÃ§Ã£o *"
+                        placeholder="Serviço prestado / Relação *"
                         className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs outline-none"
                       />
                     </div>
                   </div>
 
-                  {/* ReferÃªncia 2 */}
+                  {/* Referência 2 */}
                   <div className="p-2.5 bg-white rounded-lg border border-amber-100 space-y-1.5">
-                    <span className="text-[11px] font-bold text-slate-800">ReferÃªncia 2 (ObrigatÃ³ria):</span>
+                    <span className="text-[11px] font-bold text-slate-800">Referência 2 (Obrigatória):</span>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <input
                         type="text"
@@ -1716,7 +1716,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         required
                         value={ref2Role}
                         onChange={(e) => setRef2Role(e.target.value)}
-                        placeholder="ServiÃ§o prestado / RelaÃ§Ã£o *"
+                        placeholder="Serviço prestado / Relação *"
                         className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded text-xs outline-none"
                       />
                     </div>
@@ -1724,16 +1724,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               )}
 
-              {/* DescriÃ§Ã£o dos ServiÃ§os */}
+              {/* Descrição dos Serviços */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Breve ApresentaÃ§Ã£o dos ServiÃ§os / Especialidades
+                  Breve Apresentação dos Serviços / Especialidades
                 </label>
                 <textarea
                   rows={2}
                   value={merchantDesc}
                   onChange={(e) => setMerchantDesc(e.target.value)}
-                  placeholder="Ex: InstalaÃ§Ã£o de ar condicionado, reparos elÃ©tricos e hidrÃ¡ulicos com ferramentas de precisÃ£o e pontualidade."
+                  placeholder="Ex: Instalação de ar condicionado, reparos elétricos e hidráulicos com ferramentas de precisão e pontualidade."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-blue-500 outline-none"
                 />
               </div>
@@ -1751,7 +1751,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsAppointments(e.target.checked)}
                       className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Visita / Agendamento em DomicÃ­lio</span>
+                    <span className="font-semibold text-slate-700">Visita / Agendamento em Domicílio</span>
                   </label>
                   <label className="flex items-center space-x-1.5 cursor-pointer">
                     <input
@@ -1760,7 +1760,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsPickup(e.target.checked)}
                       className="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Na Oficina / BalcÃ£o</span>
+                    <span className="font-semibold text-slate-700">Na Oficina / Balcão</span>
                   </label>
                   <label className="flex items-center space-x-1.5 cursor-pointer">
                     <input
@@ -1769,42 +1769,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       onChange={(e) => setSupportsDelivery(e.target.checked)}
                       className="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4"
                     />
-                    <span className="font-semibold text-slate-700">Entrega de PeÃ§as / Produtos</span>
+                    <span className="font-semibold text-slate-700">Entrega de Peças / Produtos</span>
                   </label>
                 </div>
               </div>
 
-              {/* Modalidade / Plano: Lojista vs Prestador de ServiÃ§os */}
+              {/* Modalidade / Plano: Lojista vs Prestador de Serviços */}
               {merchantType === 'SERVICE_PROVIDER' ? (
                 <div className="p-4 bg-gradient-to-br from-blue-50/90 via-white to-slate-50 border border-blue-200 rounded-xl space-y-2.5 shadow-xs">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1.5 text-xs font-bold text-blue-950">
                       <ShieldCheck className="w-4 h-4 text-blue-600" />
-                      <span>Plano Ãšnico e EspecÃ­fico: Prestador de ServiÃ§os</span>
+                      <span>Plano Único e Específico: Prestador de Serviços</span>
                     </div>
                     <span className="text-[11px] font-black text-blue-800 bg-blue-100 px-2.5 py-0.5 rounded-full border border-blue-300">
-                      R$ 29,90/mÃªs
+                      R$ 29,90/mês
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Plano exclusivo desenhado para autÃ´nomos, eletricistas, encanadores, pintores e profissionais de serviÃ§os em Cachoeiras de Macacu.
+                    Plano exclusivo desenhado para autônomos, eletricistas, encanadores, pintores e profissionais de serviços em Cachoeiras de Macacu.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-700 bg-white p-3 rounded-lg border border-blue-100">
                     <div className="flex items-center space-x-1.5">
                       <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      <span><strong>1 serviÃ§o incluso</strong> no catÃ¡logo oficial</span>
+                      <span><strong>1 serviço incluso</strong> no catálogo oficial</span>
                     </div>
                     <div className="flex items-center space-x-1.5">
                       <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      <span>ServiÃ§os adicionais: <strong>R$ 9,90/mÃªs</strong> cada</span>
+                      <span>Serviços adicionais: <strong>R$ 9,90/mês</strong> cada</span>
                     </div>
                     <div className="flex items-center space-x-1.5">
                       <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      <span>Selo de <strong>Perfil Verificado</strong> com referÃªncias</span>
+                      <span>Selo de <strong>Perfil Verificado</strong> com referências</span>
                     </div>
                     <div className="flex items-center space-x-1.5">
                       <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      <span>Atendimento direto via WhatsApp e orÃ§amento</span>
+                      <span>Atendimento direto via WhatsApp e orçamento</span>
                     </div>
                   </div>
                 </div>
@@ -1843,16 +1843,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                               {isSelected && <Check className="w-3.5 h-3.5 text-white shrink-0" />}
                             </div>
                             <p className={`text-xs font-extrabold ${isSelected ? 'text-amber-100' : 'text-amber-700'}`}>
-                              {plan.monthlyPrice === 0 ? 'GrÃ¡tis' : `R$ ${plan.monthlyPrice}/mÃªs`}
+                              {plan.monthlyPrice === 0 ? 'Grátis' : `R$ ${plan.monthlyPrice}/mês`}
                             </p>
                             <p className={`text-[10px] font-semibold mt-0.5 ${isSelected ? 'text-amber-200' : 'text-slate-500'}`}>
-                              {plan.maxProducts === 9999 ? 'Produtos Ilimitados' : `AtÃ© ${plan.maxProducts} produtos`}
+                              {plan.maxProducts === 9999 ? 'Produtos Ilimitados' : `Até ${plan.maxProducts} produtos`}
                             </p>
                           </div>
                           <div className={`mt-2 pt-1.5 border-t text-[10px] ${
                             isSelected ? 'border-amber-400/50 text-amber-100' : 'border-slate-100 text-slate-500'
                           }`}>
-                            <span>ComissÃ£o: <strong>{plan.commissionRate}%</strong></span>
+                            <span>Comissão: <strong>{plan.commissionRate}%</strong></span>
                           </div>
                         </button>
                       );
@@ -1880,7 +1880,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </span>
                 </label>
 
-                {/* Termo ObrigatÃ³rio de IntermediaÃ§Ã£o e Responsabilidade */}
+                {/* Termo Obrigatório de Intermediação e Responsabilidade */}
                 <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-xl">
                   <label className="flex items-start space-x-2.5 cursor-pointer text-xs">
                     <input
@@ -1892,7 +1892,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 w-4 h-4 border-amber-300 shrink-0"
                     />
                     <span className="text-slate-700 text-[11px] leading-relaxed">
-                      <strong className="text-amber-950 font-bold">CondiÃ§Ã£o ObrigatÃ³ria de Cadastro:</strong> Declaro ciÃªncia de que a plataforma Achei Aqui atua exclusivamente na intermediaÃ§Ã£o e divulgaÃ§Ã£o local. As informaÃ§Ãµes sÃ£o checadas periodicamente por nÃ³s, porÃ©m o cliente deve constatar a existÃªncia da loja e do prestador antes de fechar o negÃ³cio. NÃ£o nos responsabilizamos por compras e negÃ³cios realizados por eles, sendo a responsabilidade restrita Ã s partes negociantes.
+                      <strong className="text-amber-950 font-bold">Condição Obrigatória de Cadastro:</strong> Declaro ciência de que a plataforma Achei Aqui atua exclusivamente na intermediação e divulgação local. As informações são checadas periodicamente por nós, porém o cliente deve constatar a existência da loja e do prestador antes de fechar o negócio. Não nos responsabilizamos por compras e negócios realizados por eles, sendo a responsabilidade restrita Ã s partes negociantes.
                     </span>
                   </label>
                 </div>
@@ -1924,11 +1924,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Cadastrar como Entregador Parceiro
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Receba chamadas de corridas e entregas de compras do comÃ©rcio de Cachoeiras de Macacu com repasse 100% via PIX.
+                  Receba chamadas de corridas e entregas de compras do comércio de Cachoeiras de Macacu com repasse 100% via PIX.
                 </p>
               </div>
 
-              {/* InformaÃ§Ãµes Pessoais */}
+              {/* Informações Pessoais */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -1945,7 +1945,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    CPF (ObrigatÃ³rio para repasses) *
+                    CPF (Obrigatório para repasses) *
                   </label>
                   <input
                     type="text"
@@ -1992,7 +1992,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Senha de Acesso (MÃ­nimo 6 dÃ­gitos) *
+                    Senha de Acesso (Mínimo 6 dígitos) *
                   </label>
                   <input
                     type="password"
@@ -2018,13 +2018,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* HabilitaÃ§Ã£o CNH */}
+              {/* Habilitação CNH */}
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                <span className="text-xs font-bold text-slate-800 block">Dados da CNH & HabilitaÃ§Ã£o:</span>
+                <span className="text-xs font-bold text-slate-800 block">Dados da CNH & Habilitação:</span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      NÃºmero de Registro da CNH *
+                      Número de Registro da CNH *
                     </label>
                     <input
                       type="text"
@@ -2045,16 +2045,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none"
                     >
                       <option value="A">Categoria A (Motocicletas)</option>
-                      <option value="B">Categoria B (AutomÃ³veis)</option>
+                      <option value="B">Categoria B (Automóveis)</option>
                       <option value="AB">Categoria AB (Moto e Carro)</option>
                     </select>
                   </div>
                 </div>
               </div>
 
-              {/* VeÃ­culo */}
+              {/* Veículo */}
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                <span className="text-xs font-bold text-slate-800 block">VeÃ­culo Utilizado para Entregas:</span>
+                <span className="text-xs font-bold text-slate-800 block">Veículo Utilizado para Entregas:</span>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {(['MOTO', 'CARRO', 'BICICLETA', 'VAN'] as DeliveryVehicleType[]).map((v) => (
                     <button
@@ -2070,7 +2070,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       {v === 'MOTO' && 'ðŸï¸ Moto'}
                       {v === 'CARRO' && 'ðŸš— Carro'}
                       {v === 'BICICLETA' && 'ðŸš² Bicicleta'}
-                      {v === 'VAN' && 'ðŸš UtilitÃ¡rio'}
+                      {v === 'VAN' && 'ðŸš Utilitário'}
                     </button>
                   ))}
                 </div>
@@ -2102,11 +2102,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               </div>
 
-              {/* EndereÃ§o & Chave PIX */}
+              {/* Endereço & Chave PIX */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Bairro / EndereÃ§o em Cachoeiras de Macacu
+                    Bairro / Endereço em Cachoeiras de Macacu
                   </label>
                   <input
                     type="text"
@@ -2125,7 +2125,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     required
                     value={driverPixKey}
                     onChange={(e) => setDriverPixKey(e.target.value)}
-                    placeholder="CPF, Telefone, E-mail ou AleatÃ³ria"
+                    placeholder="CPF, Telefone, E-mail ou Aleatória"
                     className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:border-indigo-500 outline-none"
                   />
                 </div>
@@ -2142,7 +2142,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 border-slate-300 shrink-0"
                   />
                   <span className="leading-relaxed">
-                    Declaro que os dados fornecidos e a CNH sÃ£o verÃ­dicos e vÃ¡lidos. Estou ciente de que as entregas serÃ£o despachadas via radar geolocalizado e que a prestaÃ§Ã£o de serviÃ§os segue as regras da plataforma Achei Aqui.
+                    Declaro que os dados fornecidos e a CNH são verídicos e válidos. Estou ciente de que as entregas serão despachadas via radar geolocalizado e que a prestação de serviços segue as regras da plataforma Achei Aqui.
                   </span>
                 </label>
               </div>
@@ -2164,15 +2164,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           )}
 
-          {/* TAB 4: ESQUECI MINHA SENHA (RECUPERAÃ‡ÃƒO SEGURA) */}
+          {/* TAB 4: ESQUECI MINHA SENHA (RECUPERAÇÃO SEGURA) */}
           {tab === 'forgot-password' && (
             <div className="space-y-4">
               <div>
                 <h4 className="text-lg font-bold text-slate-900 tracking-tight">
-                  RecuperaÃ§Ã£o de Senha
+                  Recuperação de Senha
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Informe o seu e-mail cadastrado para enviarmos as instruÃ§Ãµes de redefiniÃ§Ã£o com cÃ³digo de seguranÃ§a.
+                  Informe o seu e-mail cadastrado para enviarmos as instruções de redefinição com código de segurança.
                 </p>
               </div>
 
@@ -2199,7 +2199,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     type="submit"
                     className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>ENVIAR CÃ“DIGO DE RECUPERAÃ‡ÃƒO</span>
+                    <span>ENVIAR CÓDIGO DE RECUPERAÇÃO</span>
                     <Send className="w-4 h-4" />
                   </button>
                 </form>
@@ -2208,7 +2208,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   {simulatedReceivedCode && (
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1">
                       <span className="text-[11px] font-bold text-blue-900 block">
-                        ðŸ”‘ CÃ³digo de verificaÃ§Ã£o gerado para teste:
+                        ðŸ”‘ Código de verificação gerado para teste:
                       </span>
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-base font-black text-blue-950 tracking-widest">
@@ -2223,7 +2223,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      CÃ³digo de 6 dÃ­gitos recebido *
+                      Código de 6 dígitos recebido *
                     </label>
                     <input
                       type="text"
@@ -2299,7 +2299,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Confirmar E-mail
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  NÃ£o recebeu o link de ativaÃ§Ã£o da sua conta? Digite o e-mail cadastrado para reenviarmos imediatamente.
+                  Não recebeu o link de ativação da sua conta? Digite o e-mail cadastrado para reenviarmos imediatamente.
                 </p>
               </div>
 
@@ -2324,7 +2324,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="submit"
                 className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2"
               >
-                <span>REENVIAR LINK DE CONFIRMAÃ‡ÃƒO</span>
+                <span>REENVIAR LINK DE CONFIRMAÇÃO</span>
                 <RefreshCw className="w-4 h-4" />
               </button>
 
@@ -2345,7 +2345,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: CHECKOUT OBRIGATÃ“RIO DO PLANO (LOJISTAS E PRESTADORES DE SERVIÃ‡OS) */}
+          {/* TAB: CHECKOUT OBRIGATÓRIO DO PLANO (LOJISTAS E PRESTADORES DE SERVIÇOS) */}
           {/* ========================================================================= */}
           {tab === 'plan-checkout' && (
             <div className="space-y-4">
@@ -2354,7 +2354,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <CreditCard className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-black text-sm text-emerald-950">AtivaÃ§Ã£o ObrigatÃ³ria do Plano</h4>
+                  <h4 className="font-black text-sm text-emerald-950">Ativação Obrigatória do Plano</h4>
                   <p className="text-xs text-emerald-800 leading-snug">
                     Seu cadastro foi registrado com sucesso no sistema! Para liberar seu acesso ao painel de controle e ativar sua vitrine no Achei Aqui, efetue o pagamento do plano escolhido.
                   </p>
@@ -2369,14 +2369,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                       pendingCheckoutMerchant.isServiceProvider ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
                     }`}>
-                      {pendingCheckoutMerchant.isServiceProvider ? 'Prestador de ServiÃ§os' : 'Lojista Comercial'}
+                      {pendingCheckoutMerchant.isServiceProvider ? 'Prestador de Serviços' : 'Lojista Comercial'}
                     </span>
                   </div>
                   <p className="text-slate-500 font-mono text-[11px]">
                     CNPJ/CPF: {pendingCheckoutMerchant.cnpjOrCpf} â€¢ {pendingCheckoutMerchant.neighborhood || 'Cachoeiras de Macacu'}
                   </p>
                   <p className="text-slate-500 text-[11px]">
-                    ResponsÃ¡vel: {pendingCheckoutMerchant.ownerName} ({pendingCheckoutMerchant.ownerPhone})
+                    Responsável: {pendingCheckoutMerchant.ownerName} ({pendingCheckoutMerchant.ownerPhone})
                   </p>
                 </div>
               )}
@@ -2392,20 +2392,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Wrench className="w-4 h-4 text-amber-700" />
-                        <span className="font-black text-xs text-amber-950">Plano Prestador de ServiÃ§os Verificado</span>
+                        <span className="font-black text-xs text-amber-950">Plano Prestador de Serviços Verificado</span>
                       </div>
-                      <span className="font-black text-sm text-amber-900">R$ 29,90/mÃªs</span>
+                      <span className="font-black text-sm text-amber-900">R$ 29,90/mês</span>
                     </div>
                     <p className="text-[11px] text-amber-800">
-                      Selo oficial de verificaÃ§Ã£o com referÃªncias checadas, recebimento direto de orÃ§amentos pelo WhatsApp, busca municipal por bairro e 0% de retenÃ§Ã£o nos seus serviÃ§os prestados.
+                      Selo oficial de verificação com referências checadas, recebimento direto de orçamentos pelo WhatsApp, busca municipal por bairro e 0% de retenção nos seus serviços prestados.
                     </p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {[
-                      { tier: 'BRONZE' as MembershipTier, name: 'Bronze', price: 'R$ 19,90', desc: 'AtÃ© 15 itens, vitrine bÃ¡sica' },
-                      { tier: 'PRATA' as MembershipTier, name: 'Prata', price: 'R$ 59,90', desc: 'AtÃ© 50 itens, delivery integrado', popular: true },
-                      { tier: 'OURO' as MembershipTier, name: 'Ouro', price: 'R$ 49,90', desc: 'AtÃ© 150 itens, relatÃ³rios' },
+                      { tier: 'BRONZE' as MembershipTier, name: 'Bronze', price: 'R$ 19,90', desc: 'Até 15 itens, vitrine básica' },
+                      { tier: 'PRATA' as MembershipTier, name: 'Prata', price: 'R$ 59,90', desc: 'Até 50 itens, delivery integrado', popular: true },
+                      { tier: 'OURO' as MembershipTier, name: 'Ouro', price: 'R$ 49,90', desc: 'Até 150 itens, relatórios' },
                       { tier: 'PREMIUM' as MembershipTier, name: 'Premium', price: 'R$ 199,90', desc: 'Ilimitado, destaque topo' },
                     ].map((p) => (
                       <button
@@ -2432,14 +2432,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 )}
               </div>
 
-              {/* FrequÃªncia de CobranÃ§a */}
+              {/* Frequência de Cobrança */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                   Ciclo de Faturamento:
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: 'MENSAL' as const, label: 'Mensal', badge: 'PadrÃ£o' },
+                    { id: 'MENSAL' as const, label: 'Mensal', badge: 'Padrão' },
                     { id: 'TRIMESTRAL' as const, label: 'Trimestral', badge: '5% OFF' },
                     { id: 'ANUAL' as const, label: 'Anual', badge: '15% OFF' },
                   ].map((cycle) => (
@@ -2467,9 +2467,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { id: 'PIX' as const, label: 'PIX InstantÃ¢neo', icon: QrCode, badge: 'LiberaÃ§Ã£o Imediata' },
-                    { id: 'CARTAO' as const, label: 'CartÃ£o de CrÃ©dito', icon: CreditCard, badge: 'AprovaÃ§Ã£o Direta' },
-                    { id: 'BOLETO' as const, label: 'Boleto BancÃ¡rio', icon: FileText, badge: 'Asaas Gateway' },
+                    { id: 'PIX' as const, label: 'PIX Instantâneo', icon: QrCode, badge: 'Liberação Imediata' },
+                    { id: 'CARTAO' as const, label: 'Cartão de Crédito', icon: CreditCard, badge: 'Aprovação Direta' },
+                    { id: 'BOLETO' as const, label: 'Boleto Bancário', icon: FileText, badge: 'Asaas Gateway' },
                   ].map((method) => {
                     const Icon = method.icon;
                     return (
@@ -2498,7 +2498,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                       <QrCode className="w-4 h-4 text-emerald-400" />
-                      QR Code PIX Asaas (SimulaÃ§Ã£o em Tempo Real)
+                      QR Code PIX Asaas (Simulação em Tempo Real)
                     </span>
                     <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">
                       Copia e Cola Ativo
@@ -2510,13 +2510,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
               )}
 
-              {/* Resumo Financeiro & Registros ContÃ¡beis */}
+              {/* Resumo Financeiro & Registros Contábeis */}
               {(() => {
                 const { total, discount, months, platformNet, sellerCommission } = getCheckoutTotal();
                 return (
                   <div className="bg-slate-100 border border-slate-200 p-3.5 rounded-xl space-y-2 text-xs">
                     <div className="flex items-center justify-between text-slate-600">
-                      <span>Subtotal ({months} {months === 1 ? 'mÃªs' : 'meses'}):</span>
+                      <span>Subtotal ({months} {months === 1 ? 'mês' : 'meses'}):</span>
                       <span className="font-semibold">R$ {(total + discount).toFixed(2)}</span>
                     </div>
                     {discount > 0 && (
@@ -2530,17 +2530,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       <span className="text-emerald-700 text-base">R$ {total.toFixed(2)}</span>
                     </div>
 
-                    {/* DivisÃµes ObrigatÃ³rias Transparentes */}
+                    {/* Divisões Obrigatórias Transparentes */}
                     <div className="bg-white p-2.5 rounded-lg border border-slate-200 space-y-1 text-[11px]">
                       <span className="font-bold text-slate-700 block text-[10px] uppercase">
-                        DiscriminaÃ§Ã£o ContÃ¡bil ObrigatÃ³ria:
+                        Discriminação Contábil Obrigatória:
                       </span>
                       <div className="flex items-center justify-between text-slate-600">
                         <span>â€¢ Taxa Operacional Achei Aqui:</span>
                         <span className="font-bold font-mono">R$ {platformNet.toFixed(2)}</span>
                       </div>
                       <div className="flex items-center justify-between text-blue-700">
-                        <span>â€¢ ComissÃ£o do Vendedor Credenciado (15%):</span>
+                        <span>â€¢ Comissão do Vendedor Credenciado (15%):</span>
                         <span className="font-bold font-mono">R$ {sellerCommission.toFixed(2)}</span>
                       </div>
                     </div>
@@ -2548,7 +2548,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 );
               })()}
 
-              {/* BotÃµes de AÃ§Ã£o */}
+              {/* Botões de Ação */}
               <div className="space-y-2 pt-2">
                 <button
                   type="button"
@@ -2557,19 +2557,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   <ShieldCheck className="w-5 h-5" />
-                  <span>{isProcessingPayment ? 'PROCESSANDO ATIVAÃ‡ÃƒO...' : 'CONFIRMAR PAGAMENTO E LIBERAR PAINEL'}</span>
+                  <span>{isProcessingPayment ? 'PROCESSANDO ATIVAÇÃO...' : 'CONFIRMAR PAGAMENTO E LIBERAR PAINEL'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => {
-                    triggerToast('AtenÃ§Ã£o: Seu cadastro estÃ¡ pendente de pagamento. O acesso ao painel permanecerÃ¡ bloqueado atÃ© a quitaÃ§Ã£o.');
+                    triggerToast('Atenção: Seu cadastro está pendente de pagamento. O acesso ao painel permanecerá bloqueado até a quitação.');
                     onClose();
                   }}
                   className="w-full py-2.5 text-slate-500 hover:text-slate-800 text-xs font-semibold text-center cursor-pointer"
                 >
-                  Pagar Mais Tarde (Acesso ao painel continuarÃ¡ bloqueado)
+                  Pagar Mais Tarde (Acesso ao painel continuará bloqueado)
                 </button>
               </div>
             </div>
@@ -2589,26 +2589,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Pagamento Confirmado! Acesso Liberado
                 </h4>
                 <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto leading-relaxed">
-                  Seu estabelecimento estÃ¡ oficialmente ativado na plataforma Achei Aqui Cachoeiras de Macacu.
-                  Os lanÃ§amentos financeiros e divisÃµes contÃ¡beis foram registrados com sucesso.
+                  Seu estabelecimento está oficialmente ativado na plataforma Achei Aqui Cachoeiras de Macacu.
+                  Os lançamentos financeiros e divisões contábeis foram registrados com sucesso.
                 </p>
               </div>
 
               {/* Recibo Oficial */}
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left text-xs space-y-2 max-w-md mx-auto">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                  <span className="font-bold text-slate-700">Comprovante de AtivaÃ§Ã£o</span>
+                  <span className="font-bold text-slate-700">Comprovante de Ativação</span>
                   <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
                     STATUS: APROVADO & ATIVO
                   </span>
                 </div>
 
                 <div className="space-y-1 text-slate-600 text-[11px]">
-                  <p><strong>CÃ³digo da OperaÃ§Ã£o:</strong> <span className="font-mono">{confirmedPaymentReceipt?.code || 'BLT-REC-OK'}</span></p>
+                  <p><strong>Código da Operação:</strong> <span className="font-mono">{confirmedPaymentReceipt?.code || 'BLT-REC-OK'}</span></p>
                   <p><strong>Estabelecimento:</strong> {pendingCheckoutMerchant?.name}</p>
                   <p><strong>Plano Ativado:</strong> {confirmedPaymentReceipt?.planTitle || 'Plano Oficial Achei Aqui'}</p>
                   <p><strong>Valor Quitado:</strong> <span className="text-emerald-700 font-bold text-xs">R$ {(confirmedPaymentReceipt?.amount || 0).toFixed(2)}</span></p>
-                  <p><strong>Forma de QuitaÃ§Ã£o:</strong> {confirmedPaymentReceipt?.paymentMethod || 'PIX InstantÃ¢neo'}</p>
+                  <p><strong>Forma de Quitação:</strong> {confirmedPaymentReceipt?.paymentMethod || 'PIX Instantâneo'}</p>
                   <p><strong>Data/Hora:</strong> {new Date().toLocaleString('pt-BR')}</p>
                 </div>
               </div>
@@ -2625,7 +2625,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: ENTREGADOR CADASTRADO â€” AGUARDANDO APROVAÃ‡ÃƒO DO MASTER */}
+          {/* TAB: ENTREGADOR CADASTRADO â€” AGUARDANDO APROVAÇÃO DO MASTER */}
           {/* ========================================================================= */}
           {tab === 'driver-pending-approval' && (
             <div className="space-y-4 text-center py-2">
@@ -2638,24 +2638,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   Cadastro de Entregador Recebido!
                 </h4>
                 <p className="text-sm font-bold text-amber-800 mt-1">
-                  Aguarde AprovaÃ§Ã£o do Administrador Master
+                  Aguarde Aprovação do Administrador Master
                 </p>
               </div>
 
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-left text-xs text-amber-950 space-y-2 max-w-md mx-auto leading-relaxed">
                 <p className="font-semibold">
-                  Seus dados pessoais, CNH e documentaÃ§Ã£o do veÃ­culo foram encaminhados com sucesso para a moderaÃ§Ã£o da plataforma em Cachoeiras de Macacu.
+                  Seus dados pessoais, CNH e documentação do veículo foram encaminhados com sucesso para a moderação da plataforma em Cachoeiras de Macacu.
                 </p>
                 <div className="p-2.5 bg-white/80 rounded-lg border border-amber-300 space-y-1">
                   <span className="font-bold text-amber-900 block text-[11px] uppercase">
-                    ðŸ›¡ï¸ Regra Operacional de SeguranÃ§a:
+                    ðŸ›¡ï¸ Regra Operacional de Segurança:
                   </span>
                   <p className="text-[11px] text-slate-700">
-                    Por critÃ©rios de conformidade, antecedentes e seguranÃ§a no trÃ¢nsito, o entregador parceiro <strong>NÃƒO tem acesso imediato ao sistema</strong> apÃ³s o cadastro. O acesso sÃ³ Ã© liberado apÃ³s a anÃ¡lise documental e aprovaÃ§Ã£o do Master.
+                    Por critérios de conformidade, antecedentes e segurança no trânsito, o entregador parceiro <strong>NÃO tem acesso imediato ao sistema</strong> após o cadastro. O acesso só é liberado após a análise documental e aprovação do Master.
                   </p>
                 </div>
                 <p className="text-[11px] text-amber-900">
-                  Assim que sua conta for aprovada pelo Master, vocÃª receberÃ¡ a notificaÃ§Ã£o de confirmaÃ§Ã£o e poderÃ¡ fazer login diretamente no Portal dos Entregadores.
+                  Assim que sua conta for aprovada pelo Master, você receberá a notificação de confirmação e poderá fazer login diretamente no Portal dos Entregadores.
                 </p>
               </div>
 
@@ -2670,7 +2670,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: VENDEDOR â€” PRIMEIRO ACESSO COM TROCA OBRIGATÃ“RIA DE SENHA */}
+          {/* TAB: VENDEDOR â€” PRIMEIRO ACESSO COM TROCA OBRIGATÓRIA DE SENHA */}
           {/* ========================================================================= */}
           {tab === 'change-temporary-password' && (
             <form onSubmit={handleSaveInitialPassword} className="space-y-4">
@@ -2679,9 +2679,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <KeyRound className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-black text-sm text-indigo-950">Primeiro Acesso â€” Troca ObrigatÃ³ria de Senha</h4>
+                  <h4 className="font-black text-sm text-indigo-950">Primeiro Acesso â€” Troca Obrigatória de Senha</h4>
                   <p className="text-xs text-indigo-800 leading-snug">
-                    Sua conta foi criada exclusivamente pelo Administrador Master com uma senha temporÃ¡ria provisÃ³ria. Por conformidade e seguranÃ§a da equipe de vendas, defina sua nova senha definitiva.
+                    Sua conta foi criada exclusivamente pelo Administrador Master com uma senha temporária provisória. Por conformidade e segurança da equipe de vendas, defina sua nova senha definitiva.
                   </p>
                 </div>
               </div>
@@ -2700,7 +2700,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Nova Senha Definitiva (MÃ­nimo 6 caracteres)
+                  Nova Senha Definitiva (Mínimo 6 caracteres)
                 </label>
                 <div className="relative">
                   <input
@@ -2742,7 +2742,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
 
               <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-[11px] text-amber-900">
-                âš ï¸ <strong>AtenÃ§Ã£o:</strong> Sem a alteraÃ§Ã£o da senha temporÃ¡ria, o vendedor nÃ£o terÃ¡ autorizaÃ§Ã£o para operar o painel comercial.
+                âš ï¸ <strong>Atenção:</strong> Sem a alteração da senha temporária, o vendedor não terá autorização para operar o painel comercial.
               </div>
 
               <button

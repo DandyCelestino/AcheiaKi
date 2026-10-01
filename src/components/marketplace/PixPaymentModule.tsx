@@ -212,11 +212,11 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
         if (result.isPaid) {
           handlePaymentConfirmed(result);
         } else if (!silent) {
-          triggerToast('Aguardando liquidaÃ§Ã£o do Pix... Verifique se o pagamento foi concluÃ­do no seu banco.');
+          triggerToast('Aguardando liquidação do Pix... Verifique se o pagamento foi concluído no seu banco.');
         }
       } catch (err: any) {
         if (!silent) {
-          triggerToast(`Erro ao verificar: ${err?.message || 'Falha de comunicaÃ§Ã£o'}`);
+          triggerToast(`Erro ao verificar: ${err?.message || 'Falha de comunicação'}`);
         }
       } finally {
         if (!silent) setIsVerifying(false);
@@ -241,7 +241,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
     if (navigator.clipboard) {
       navigator.clipboard.writeText(pixDetails.copiaECola);
       setCopied(true);
-      triggerToast('CÃ³digo Pix (Copia e Cola) copiado para a Ã¡rea de transferÃªncia!');
+      triggerToast('Código Pix (Copia e Cola) copiado para a área de transferência!');
       setTimeout(() => setCopied(false), 3000);
     }
   };
@@ -255,7 +255,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {/* HEADER DE INTEGRAÃ‡ÃƒO & AMBIENTE */}
+      {/* HEADER DE INTEGRAÇÃO & AMBIENTE */}
       <div className="bg-slate-900 text-white p-3.5 rounded-2xl shadow-xs border border-slate-800 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -264,7 +264,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                MÃ³dulo de Pagamento InstantÃ¢neo
+                Módulo de Pagamento Instantâneo
               </span>
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
                 <span>Pix Banco Central do Brasil</span>
@@ -290,10 +290,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             </span>
             <span className="text-[10px] font-mono text-slate-300 font-bold">
               {gatewayConfig.environmentMode === 'PRODUCTION'
-                ? 'PRODUÃ‡ÃƒO'
+                ? 'PRODUÇÃO'
                 : gatewayConfig.environmentMode === 'HOMOLOGATION'
-                ? 'HOMOLOGAÃ‡ÃƒO'
-                : 'INTEGRAÃ‡ÃƒO ATIVA'}
+                ? 'HOMOLOGAÇÃO'
+                : 'INTEGRAÇÃO ATIVA'}
             </span>
           </div>
         </div>
@@ -312,7 +312,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
         </div>
       </div>
 
-      {/* SE O PAGAMENTO JÃ ESTIVER PAGO / LIQUIDADO */}
+      {/* SE O PAGAMENTO JÁ ESTIVER PAGO / LIQUIDADO */}
       {paymentStatus === 'PAID' ? (
         <div className="bg-emerald-50 border-2 border-emerald-500/60 rounded-2xl p-5 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
           <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner border border-emerald-200">
@@ -327,7 +327,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
               Pagamento Pix Confirmado!
             </h4>
             <p className="text-xs text-emerald-800 max-w-sm mx-auto mt-0.5">
-              O valor foi compensado instantaneamente. A loja <strong>{order.merchantName}</strong> jÃ¡ recebeu o aviso para iniciar o preparo imediatamente.
+              O valor foi compensado instantaneamente. A loja <strong>{order.merchantName}</strong> já recebeu o aviso para iniciar o preparo imediatamente.
             </p>
           </div>
 
@@ -336,7 +336,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             <div className="flex items-center justify-between pb-2 border-b border-emerald-100 font-bold text-slate-900">
               <span className="flex items-center gap-1.5 text-emerald-800">
                 <Receipt className="w-4 h-4" />
-                <span>Comprovante de LiquidaÃ§Ã£o Pix</span>
+                <span>Comprovante de Liquidação Pix</span>
               </span>
               <span className="text-emerald-700 font-black">
                 R$ {(pixDetails.amount ?? 0).toFixed(2).replace('.', ',')}
@@ -361,7 +361,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 <span className="font-medium text-slate-900">{gatewayConfig.receiverName}</span>
               </div>
               <div className="flex justify-between">
-                <span>PraÃ§a / Cidade:</span>
+                <span>Praça / Cidade:</span>
                 <span className="font-medium text-slate-900">{gatewayConfig.receiverCity}</span>
               </div>
               <div className="flex justify-between">
@@ -376,7 +376,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
       ) : (
         /* CORPO DO CHECKOUT PIX (QR CODE & COPIA E COLA) */
         <div className="space-y-4">
-          {/* CARD DE SPLIT AUTOMÃTICO ASAAS */}
+          {/* CARD DE SPLIT AUTOMÁTICO ASAAS */}
           <div className="bg-linear-to-br from-emerald-950 to-slate-900 text-white rounded-2xl p-4 border border-emerald-800/80 shadow-md space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -385,10 +385,10 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 </div>
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
-                    DivisÃ£o de Pagamentos Asaas
+                    Divisão de Pagamentos Asaas
                   </span>
                   <span className="text-xs font-bold text-white">
-                    Split AutomÃ¡tico da Venda Ativo
+                    Split Automático da Venda Ativo
                   </span>
                 </div>
               </div>
@@ -428,7 +428,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-emerald-900/60 text-[11px]">
               <span className="text-emerald-200/90 flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-emerald-400" />
-                <span>Separado diretamente pelo sistema do Asaas na liquidaÃ§Ã£o</span>
+                <span>Separado diretamente pelo sistema do Asaas na liquidação</span>
               </span>
               {asaasCharge?.urlCheckoutAsaas && (
                 <a
@@ -444,7 +444,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             </div>
           </div>
 
-          {/* CARTÃƒO CENTRAL COM QR CODE & VALOR */}
+          {/* CARTÃO CENTRAL COM QR CODE & VALOR */}
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center space-y-3 shadow-inner">
             {/* VALOR DESTACADO */}
             <div>
@@ -467,7 +467,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
               <Clock className="w-3.5 h-3.5 text-amber-600" />
               <span>
                 {timeLeft > 0 ? (
-                  <>VÃ¡lido por: <strong className="font-mono">{formatTimer(timeLeft)}</strong></>
+                  <>Válido por: <strong className="font-mono">{formatTimer(timeLeft)}</strong></>
                 ) : (
                   <span className="text-red-600 font-black">Tempo expirado</span>
                 )}
@@ -486,7 +486,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             </div>
 
             <p className="text-xs text-slate-600 max-w-xs leading-relaxed">
-              Abra o aplicativo do seu banco, escolha <strong>Pagar via Pix</strong> e aponte a cÃ¢mera para o QR Code acima.
+              Abra o aplicativo do seu banco, escolha <strong>Pagar via Pix</strong> e aponte a câmera para o QR Code acima.
             </p>
           </div>
 
@@ -521,17 +521,17 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
             {copied && (
               <p className="text-[11px] text-emerald-700 font-bold flex items-center gap-1 animate-in fade-in">
                 <Check className="w-3 h-3" />
-                <span>CÃ³digo Pix copiado! Abra seu app bancÃ¡rio e escolha "Pix Copia e Cola".</span>
+                <span>Código Pix copiado! Abra seu app bancário e escolha "Pix Copia e Cola".</span>
               </p>
             )}
           </div>
 
-          {/* STATUS DE VERIFICAÃ‡ÃƒO AUTOMÃTICA & AÃ‡Ã•ES */}
+          {/* STATUS DE VERIFICAÇÃO AUTOMÁTICA & AÇÕES */}
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-600 font-medium flex items-center gap-1.5">
                 <RefreshCw className={`w-3.5 h-3.5 text-emerald-600 ${isVerifying ? 'animate-spin' : ''}`} />
-                <span>VerificaÃ§Ã£o AutomÃ¡tica:</span>
+                <span>Verificação Automática:</span>
               </span>
               <span className="font-bold text-slate-900 flex items-center gap-1">
                 {isVerifying ? (
@@ -550,7 +550,7 @@ export const PixPaymentModule: React.FC<PixPaymentModuleProps> = ({
                 className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
               >
                 <RefreshCw className={`w-4 h-4 ${isVerifying ? 'animate-spin' : ''}`} />
-                <span>{isVerifying ? 'Consultando Asaas...' : 'JÃ¡ Paguei (Verificar Pagamento no Asaas)'}</span>
+                <span>{isVerifying ? 'Consultando Asaas...' : 'Já Paguei (Verificar Pagamento no Asaas)'}</span>
               </button>
             </div>
           </div>
