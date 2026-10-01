@@ -1,4 +1,4 @@
-﻿import {
+import {
   collection,
   doc,
   setDoc,
@@ -8,7 +8,7 @@
   serverTimestamp,
   writeBatch
 } from 'firebase/firestore';
-import { db, OperationType, handleFirestoreError } from '../firebase';
+import { db, auth, OperationType, handleFirestoreError } from '../firebase';
 import { Product, StoreMerchant, User, DeliveryRide, DeliveryDriver, Order, AuditLog } from '../types';
 
 /**
@@ -66,11 +66,12 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
 }
 
 /**
- * Salva ou atualiza um UsuÃƒÆ’Ã†â€™Ã¡rio (Cliente, Vendedor, Master, Prestador) no Firestore
+ * Salva ou atualiza um UsuÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ¡rio (Cliente, Vendedor, Master, Prestador) no Firestore
  */
 export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
-    const docRef = doc(db, 'users', user.id);
+    const firestoreUserId = auth.currentUser?.uid || user.id;
+    const docRef = doc(db, 'users', firestoreUserId);
 
     const removeUndefinedDeep = (value: any): any => {
       if (Array.isArray(value)) {
@@ -94,7 +95,46 @@ export async function persistUserToFirestore(user: User): Promise<boolean> {
       return value;
     };
 
-    const userData = removeUndefinedDeep(user);
+    const userData = removeUndefinedDeep({ ...user, id: firestoreUserId });
+
+    if (user.id === 'master-contingency-backend' || user.id === 'user-master-david') {
+      const token = sessionStorage.getItem(
+        'MASTER_CONTINGENCY_TOKEN'
+      );
+
+      if (!token) {
+        console.error(
+          '[MASTER CONTINGENCY] Token nÃ£o encontrado na sessÃ£o.'
+        );
+        return false;
+      }
+
+      const response = await fetch(
+        '/api/master-contingency/user/save',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            user: userData,
+          }),
+        }
+      );
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        console.error(
+          '[MASTER CONTINGENCY] Falha ao salvar:',
+          result?.message || response.statusText
+        );
+        return false;
+      }
+
+      return true;
+    }
 
     await setDoc(
       docRef,
@@ -134,7 +174,7 @@ export async function persistDeliveryRideToFirestore(ride: DeliveryRide): Promis
 /**
  * Salva ou atualiza um Entregador Parceiro no Firestore
  */
-export async function persistDeliveryDriverToFirestore(driver: DeliveryDriver): Promise<void> {
+export async function persistDeliveryDriverToFirestore(driver: DeliveryDriver): Promise<boolean> {
   try {
     const docRef = doc(db, 'deliveryDrivers', driver.id);
     await setDoc(
@@ -145,8 +185,10 @@ export async function persistDeliveryDriverToFirestore(driver: DeliveryDriver): 
       },
       { merge: true }
     );
+    return true;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `deliveryDrivers/${driver.id}`);
+    return false;
   }
 }
 
@@ -186,7 +228,7 @@ export async function persistAuditLogToFirestore(log: AuditLog): Promise<void> {
 }
 
 /**
- * Carrega coleÃƒÆ’Ã†â€™Ã§ÃƒÆ’Ã†â€™Ãµes do Firestore para hidratar a aplicaÃƒÆ’Ã†â€™Ã§ÃƒÆ’Ã†â€™Ã£o
+ * Carrega coleÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂµes do Firestore para hidratar a aplicaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ£o
  */
 export async function fetchAllCollectionsFromFirestore(): Promise<{
   merchants?: StoreMerchant[];
@@ -263,7 +305,7 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
 }
 
 /**
- * Carga inicial em lote para garantir que todo o catÃƒÆ’Ã†â€™Ã¡logo, lojas, prestadores
+ * Carga inicial em lote para garantir que todo o catÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ¡logo, lojas, prestadores
  * e entregadores sejam persistidos no Firestore caso o banco esteja novo/vazio.
  */
 export async function seedInitialDataToFirestoreIfEmpty(data: {
@@ -278,7 +320,7 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
     if (productsSnap.empty && data.products.length > 0) {
       console.log('Semeando banco de dados Firestore com produtos e lojas reais...');
       const batch = writeBatch(db);
-      
+
       // Semeia produtos
       for (const p of data.products.slice(0, 50)) {
         const ref = doc(db, 'products', p.id);
@@ -307,7 +349,10 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
       console.log('Banco de dados Firestore semeado com sucesso!');
     }
   } catch (err) {
-    console.warn('Aviso de seed Firestore (nÃƒÆ’Ã†â€™Ã£o-bloqueante):', err);
+    console.warn('Aviso de seed Firestore (nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÂ£o-bloqueante):', err);
   }
 }
+
+
+
 

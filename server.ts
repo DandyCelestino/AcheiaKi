@@ -1,9 +1,11 @@
-﻿import express, { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import axios from 'axios';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import { initializeApp as initializeAdminApp, getApps as getAdminApps } from 'firebase-admin/app';
+import { getFirestore as getAdminFirestore } from 'firebase-admin/firestore';
 import {
   getStoredOrders,
   getWebhookLogs,
@@ -102,6 +104,149 @@ function createMasterContingencyToken(email: string): string {
   return `${encoded}.${signature}`;
 }
 
+
+function validateMasterContingencyToken(
+  authorizationHeader: string | undefined
+): boolean {
+  try {
+    const prefix = 'Bearer ';
+
+    if (
+      !authorizationHeader ||
+      !authorizationHeader.startsWith(prefix)
+    ) {
+      return false;
+    }
+
+    const token = authorizationHeader.slice(prefix.length).trim();
+    const parts = token.split('.');
+
+    if (parts.length !== 2) {
+      return false;
+    }
+
+    const [encodedPayload, receivedSignature] = parts;
+
+    const expectedSignature = createHmac(
+      'sha256',
+      MASTER_CONTINGENCY_TOKEN_SECRET
+    )
+      .update(encodedPayload)
+      .digest('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/g, '');
+
+    const expectedBuffer = Buffer.from(
+      expectedSignature,
+      'utf8'
+    );
+
+    const receivedBuffer = Buffer.from(
+      receivedSignature,
+      'utf8'
+    );
+
+    if (
+      expectedBuffer.length !== receivedBuffer.length ||
+      !timingSafeEqual(expectedBuffer, receivedBuffer)
+    ) {
+      return false;
+    }
+
+    const payload = JSON.parse(
+      Buffer.from(encodedPayload, 'base64url').toString('utf8')
+    );
+
+    const now = Math.floor(Date.now() / 1000);
+
+    return (
+      payload?.sub === 'master-contingency-backend' &&
+      payload?.role === 'MASTER' &&
+      payload?.email === MASTER_CONTINGENCY_EMAIL &&
+      Number(payload?.exp) > now
+    );
+  } catch {
+    return false;
+  }
+}
+
+function getProductionAdminFirestore() {
+  if (!getAdminApps().length) {
+    initializeAdminApp({
+      projectId:
+        process.env.FIREBASE_PROJECT_ID ||
+        'acheiaki-producao-2026'
+    });
+  }
+
+  return getAdminFirestore();
+}
+
+app.post(
+  '/api/master-contingency/user/save',
+  async (req: Request, res: Response) => {
+    try {
+      if (
+        !MASTER_CONTINGENCY_TOKEN_SECRET ||
+        !validateMasterContingencyToken(
+          req.headers.authorization
+        )
+      ) {
+        return res.status(401).json({
+          success: false,
+          message: 'Token MASTER de contingência inválido ou expirado.'
+        });
+      }
+
+      const user = req.body?.user;
+
+      if (
+        !user ||
+        user.id !== 'master-contingency-backend' ||
+        String(user.email || '').trim().toLowerCase() !==
+          MASTER_CONTINGENCY_EMAIL
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: 'Usuário MASTER de contingência não autorizado.'
+        });
+      }
+
+      const cleanUser = Object.fromEntries(
+        Object.entries(user).filter(
+          ([, value]) => value !== undefined
+        )
+      );
+
+      await getProductionAdminFirestore()
+        .collection('users')
+        .doc('master-contingency-backend')
+        .set(
+          {
+            ...cleanUser,
+            updatedAt: new Date()
+          },
+          { merge: true }
+        );
+
+      return res.status(200).json({
+        success: true,
+        message: 'Dados do MASTER salvos com sucesso.'
+      });
+    } catch (error) {
+      console.error(
+        '[MASTER CONTINGENCY] Erro ao salvar usuário:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Não foi possível salvar os dados do MASTER.'
+      });
+    }
+  }
+);
 app.post('/api/master-contingency/login', (req: Request, res: Response) => {
   try {
     const email = String(req.body?.email || '')

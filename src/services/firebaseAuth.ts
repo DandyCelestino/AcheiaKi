@@ -148,12 +148,13 @@ export async function syncUserWithFirestore(
         lastLogin: serverTimestamp(),
       });
 
-      return newUser;
+        return newUser;
+        }
+      } catch (error) {
+        handleFirestoreError(error, OperationType.GET, `users/${uid}`);
+        throw error;
+      }
     }
-  } catch (error) {
-    handleFirestoreError(error, OperationType.GET, `users/${uid}`);
-  }
-}
 
 /**
  * Login com E-mail e Senha via Firebase Authentication
