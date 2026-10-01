@@ -257,40 +257,27 @@ export const CustomerProfileEditor: React.FC = () => {
   };
 
   const handleSavePersonalInfo = async (e: React.FormEvent) => {
-        e.preventDefault();
-        /* VALIDACAO_CADASTRO_PESSOAL_20260926 */
-    if (!name.trim()) {
-      alert('Cadastro incompleto: informe seu nome completo para salvar.');
-      return;
-    }
+    e.preventDefault();
+    /* VALIDACAO_CADASTRO_PESSOAL_20260926 */
 
-    if (!email.trim()) {
-      alert('Cadastro incompleto: informe seu e-mail.');
+    // Cenário 3 — Validação de campos obrigatórios
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      triggerToast('Preencha todos os campos obrigatórios.');
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      alert('E-mail inv?lido: corrija o endere?o de e-mail antes de salvar.');
+      triggerToast('E-mail inválido: corrija o endereço de e-mail antes de salvar.');
       return;
     }
 
-    if (!phone.trim()) {
-      alert('Cadastro incompleto: informe seu telefone principal.');
-      return;
-    }
-
-    if (phone.replace(/\\D/g, '').length < 10) {
-      alert('Telefone inv?lido: informe um telefone com DDD v?lido.');
+    if (phone.replace(/\D/g, '').length < 10) {
+      triggerToast('Telefone inválido: informe um telefone com DDD válido.');
       return;
     }
 
     if (cpf.trim() && !isValidCustomerCpf(cpf.trim())) {
-      alert('CPF inv?lido: confira o n?mero informado antes de salvar.');
-      return;
-    }
-
-        if (!name.trim()) {
-      alert('Por favor, informe seu nome completo.');
+      triggerToast('CPF inválido: confira o número informado antes de salvar.');
       return;
     }
 
@@ -306,27 +293,30 @@ export const CustomerProfileEditor: React.FC = () => {
     let saved;
     try {
       saved = await updateUserProfile({
-      name: name.trim(),
-      nickname: nickname.trim() || undefined,
-      email: email.trim(),
-      phone: phone.trim(),
-      secondaryPhone: secondaryPhone.trim() || undefined,
-      cpf: cpf.trim() || undefined,
-      birthDate: birthDate || undefined,
-      gender: gender as any,
-      avatar: avatar.trim(),
-      generalNotes: generalNotes.trim() || undefined,
-      emergencyContact
-    });
-
-
+        name: name.trim(),
+        nickname: nickname.trim() || undefined,
+        email: email.trim(),
+        phone: phone.trim(),
+        secondaryPhone: secondaryPhone.trim() || undefined,
+        cpf: cpf.trim() || undefined,
+        birthDate: birthDate || undefined,
+        gender: gender as any,
+        avatar: avatar.trim(),
+        generalNotes: generalNotes.trim() || undefined,
+        emergencyContact
+      });
     } catch (error) {
+      // Cenário 2 — Erro de gravação
       console.error('Erro ao salvar dados pessoais:', error);
-      alert('ERRO REAL AO SALVAR: ' + (error instanceof Error ? error.message : String(error)));
+      triggerToast('Erro ao salvar os dados. Tente novamente.');
       return;
     }
+
+    // Cenário 1 — Sucesso
     if (saved) {
-      alert('Cadastro salvo com sucesso.');
+      triggerToast('Dados salvos com sucesso!');
+    } else {
+      triggerToast('Erro ao salvar os dados. Tente novamente.');
     }
   };
 
@@ -359,86 +349,65 @@ export const CustomerProfileEditor: React.FC = () => {
   };
 
   const handleSaveAddress = async (e: React.FormEvent) => {
-        e.preventDefault();
-        /* VALIDACAO_ENDERECO_CLIENTE_20260926 */
-    if (!addressStreet.trim()) {
-      alert('Endere?o incompleto: informe a rua ou logradouro.');
+    e.preventDefault();
+    /* VALIDACAO_ENDERECO_CLIENTE_20260926 */
+
+    // Cenário 3 — Validação de campos obrigatórios
+    if (!addressStreet.trim() || !addressNumber.trim() || !addressNeighborhood.trim()) {
+      triggerToast('Preencha todos os campos obrigatórios.');
       return;
     }
 
-    if (!addressNumber.trim()) {
-      alert('Endere?o incompleto: informe o n?mero.');
+    if (addressZip.trim() && addressZip.replace(/\D/g, '').length !== 8) {
+      triggerToast('CEP inválido: informe um CEP com 8 números.');
       return;
     }
 
-    if (!addressNeighborhood.trim()) {
-      alert('Endere?o incompleto: informe o bairro.');
-      return;
-    }
-
-    if (addressZip.trim() && addressZip.replace(/\\D/g, '').length !== 8) {
-      alert('CEP inv?lido: informe um CEP com 8 n?meros.');
-      return;
-    }
-
-        if (!addressStreet.trim() || !addressNumber.trim() || !addressNeighborhood.trim()) {
-      alert('Por favor, preencha a rua, o número e o bairro.');
-      return;
-    }
+    const addressData = {
+      label: addressLabel.trim() || 'Endereço',
+      street: addressStreet.trim(),
+      number: addressNumber.trim(),
+      complement: addressComplement.trim() || undefined,
+      neighborhood: addressNeighborhood.trim(),
+      city: 'Cachoeiras de Macacu',
+      state: 'RJ',
+      zipCode: addressZip.trim() || '28680-000',
+      referencePoint: addressRef.trim() || undefined,
+      deliveryInstructions: addressInstructions.trim() || undefined,
+      isDefault: addressIsDefault
+    };
 
     if (editingAddressId) {
-      const saved = await updateCustomerAddress(editingAddressId, {
-        label: addressLabel.trim() || 'Endereço',
-        street: addressStreet.trim(),
-        number: addressNumber.trim(),
-        complement: addressComplement.trim() || undefined,
-        neighborhood: addressNeighborhood.trim(),
-        city: 'Cachoeiras de Macacu',
-        state: 'RJ',
-        zipCode: addressZip.trim() || '28680-000',
-        referencePoint: addressRef.trim() || undefined,
-        deliveryInstructions: addressInstructions.trim() || undefined,
-        isDefault: addressIsDefault
-      });
+      const saved = await updateCustomerAddress(editingAddressId, addressData);
+      // Cenário 2 — Erro / Cenário 1 — Sucesso
       if (!saved) {
-        alert('Dados não salvos. Não foi possível atualizar o endereço.');
+        triggerToast('Erro ao salvar os dados. Tente novamente.');
         return;
       }
-      alert('Dados salvos com sucesso.');
+      triggerToast('Dados salvos com sucesso!');
     } else {
-      await addCustomerAddress({
-        label: addressLabel.trim() || 'Endereço',
-        street: addressStreet.trim(),
-        number: addressNumber.trim(),
-        complement: addressComplement.trim() || undefined,
-        neighborhood: addressNeighborhood.trim(),
-        city: 'Cachoeiras de Macacu',
-        state: 'RJ',
-        zipCode: addressZip.trim() || '28680-000',
-        referencePoint: addressRef.trim() || undefined,
-        deliveryInstructions: addressInstructions.trim() || undefined,
-        isDefault: addressIsDefault
-      });
+      try {
+        await addCustomerAddress(addressData);
+        // Cenário 1 — Sucesso
+        triggerToast('Dados salvos com sucesso!');
+      } catch (error) {
+        // Cenário 2 — Erro
+        console.error('Erro ao adicionar endereço:', error);
+        triggerToast('Erro ao salvar os dados. Tente novamente.');
+        return;
+      }
     }
 
     setIsAddressModalOpen(false);
   };
 
   const handleSaveVip = async (e: React.FormEvent) => {
-        e.preventDefault();
-        /* VALIDACAO_MEDIDAS_VIP_20260926 */
-    if (!topSize.trim()) {
-      alert('Ficha VIP incompleta: informe sua numera??o de parte superior.');
-      return;
-    }
+    e.preventDefault();
+    /* VALIDACAO_MEDIDAS_VIP_20260926 */
 
-    if (!bottomSize.trim()) {
-      alert('Ficha VIP incompleta: informe sua numera??o de parte inferior.');
-      return;
-    }
-
-    if (!shoeSize.trim()) {
-      alert('Ficha VIP incompleta: informe seu n?mero de cal?ado.');
+    // Cenário 3 — Validação de campos obrigatórios
+    if (!topSize.trim() || !bottomSize.trim() || !shoeSize.trim()) {
+      triggerToast('Preencha todos os campos obrigatórios.');
       return;
     }
 
@@ -466,11 +435,12 @@ export const CustomerProfileEditor: React.FC = () => {
     };
 
     const saved = await updateVipMeasurements(measurements);
+    // Cenário 2 — Erro / Cenário 1 — Sucesso
     if (!saved) {
-      alert('Dados não salvos. Não foi possível salvar a ficha de medidas.');
+      triggerToast('Erro ao salvar os dados. Tente novamente.');
       return;
     }
-    alert('Dados salvos com sucesso.');
+    triggerToast('Dados salvos com sucesso!');
   };
 
   const toggleStyleSelection = (styleName: string) => {
@@ -480,14 +450,16 @@ export const CustomerProfileEditor: React.FC = () => {
   };
 
   const handleSavePreferences = async (e: React.FormEvent) => {
-        e.preventDefault();
-        /* VALIDACAO_PREFERENCIAS_CLIENTE_20260926 */
+    e.preventDefault();
+    /* VALIDACAO_PREFERENCIAS_CLIENTE_20260926 */
+
+    // Cenário 3 — Validação de campos obrigatórios
     if (!preferredModality) {
-      alert('Prefer?ncias incompletas: selecione sua modalidade de prefer?ncia antes de salvar.');
+      triggerToast('Preencha todos os campos obrigatórios.');
       return;
     }
 
-        const prefs: CustomerPreferences = {
+    const prefs: CustomerPreferences = {
       ...(currentUser?.preferences || {}),
       receiveWhatsApp,
       receiveEmail,
@@ -499,30 +471,39 @@ export const CustomerProfileEditor: React.FC = () => {
     };
 
     const saved = await updateCustomerPreferences(prefs);
+    // Cenário 2 — Erro / Cenário 1 — Sucesso
     if (!saved) {
-      alert('Dados não salvos. Não foi possível salvar as preferências.');
+      triggerToast('Erro ao salvar os dados. Tente novamente.');
       return;
     }
-    alert('Dados salvos com sucesso.');
+    triggerToast('Dados salvos com sucesso!');
   };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Cenário 3 — Validação de campos obrigatórios
+    if (!newPassword || !confirmPassword) {
+      triggerToast('Preencha todos os campos obrigatórios.');
+      return;
+    }
     if (newPassword.length < 6) {
-      alert('A nova senha deve ter no mínimo 6 caracteres.');
+      triggerToast('A nova senha deve ter no mínimo 6 caracteres.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      alert('As senhas digitadas não coincidem.');
+      triggerToast('As senhas digitadas não coincidem.');
       return;
     }
 
     const passwordResult = await updateUserPassword(newPassword);
 
+    // Cenário 2 — Erro / Cenário 1 — Sucesso
     if (!passwordResult.success) {
-      alert(passwordResult.message || 'Nao foi possivel alterar a senha.');
+      triggerToast(passwordResult.message || 'Erro ao salvar os dados. Tente novamente.');
       return;
     }
+    triggerToast('Dados salvos com sucesso!');
     setNewPassword('');
     setConfirmPassword('');
   };
