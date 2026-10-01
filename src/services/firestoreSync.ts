@@ -8,8 +8,76 @@ import {
   serverTimestamp,
   writeBatch
 } from 'firebase/firestore';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { db, auth, OperationType, handleFirestoreError } from '../firebase';
 import { Product, StoreMerchant, User, DeliveryRide, DeliveryDriver, Order, AuditLog } from '../types';
+
+/**
+ * Emite evento global informando que a sessão expirou para que a aplicação
+ * exiba o toast padrão e redirecione para o fluxo de autenticação.
+ */
+export function notifySessionExpired(message?: string): void {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('app:session-expired', {
+        detail: { message: message || 'Sua sessão expirou. Faça login novamente para continuar.' }
+      })
+    );
+  }
+}
+
+/**
+ * Aguarda explicitamente a inicialização do Firebase Auth (onAuthStateChanged)
+ * e valida o token de sessão do usuário antes de disparar leituras ou sincronizações.
+ */
+export async function ensureAuthenticatedUser(): Promise<FirebaseUser | null> {
+  let currentUser = auth.currentUser;
+
+  // Se o Firebase Auth ainda estiver carregando, aguarda a inicialização explícita
+  if (!currentUser) {
+    if (typeof auth.authStateReady === 'function') {
+      try {
+        await auth.authStateReady();
+        currentUser = auth.currentUser;
+      } catch (err) {
+        console.warn('[firestoreSync] Erro ao aguardar authStateReady:', err);
+      }
+    }
+
+    if (!currentUser) {
+      currentUser = await new Promise<FirebaseUser | null>((resolve) => {
+        const unsubscribe = onAuthStateChanged(
+          auth,
+          (user) => {
+            unsubscribe();
+            resolve(user);
+          },
+          (error) => {
+            console.warn('[firestoreSync] Erro no listener do onAuthStateChanged:', error);
+            unsubscribe();
+            resolve(null);
+          }
+        );
+      });
+    }
+  }
+
+  if (!currentUser) {
+    return null;
+  }
+
+  // Validação explícita do token de sessão ativo
+  try {
+    const token = await currentUser.getIdToken();
+    if (!token) {
+      return null;
+    }
+    return currentUser;
+  } catch (tokenErr) {
+    console.warn('[firestoreSync] Falha na validação do token JWT do usuário:', tokenErr);
+    return null;
+  }
+}
 
 /**
  * Salva ou atualiza um Produto no Firestore
@@ -70,7 +138,8 @@ export async function persistMerchantToFirestore(merchant: StoreMerchant): Promi
  */
 export async function persistUserToFirestore(user: User): Promise<boolean> {
   try {
-    const firestoreUserId = auth.currentUser?.uid || user.id;
+    const authUser = await ensureAuthenticatedUser();
+    const firestoreUserId = authUser?.uid || auth.currentUser?.uid || user.id;
     const docRef = doc(db, 'users', firestoreUserId);
 
     const removeUndefinedDeep = (value: any): any => {
@@ -98,14 +167,27 @@ export async function persistUserToFirestore(user: User): Promise<boolean> {
     const userData = removeUndefinedDeep({ ...user, id: firestoreUserId });
 
     if (user.id === 'master-contingency-backend' || user.id === 'user-master-david') {
-      const token = sessionStorage.getItem(
-        'MASTER_CONTINGENCY_TOKEN'
-      );
+      let token = typeof sessionStorage !== 'undefined'
+        ? sessionStorage.getItem('MASTER_CONTINGENCY_TOKEN')
+        : null;
 
+      // Se o token não for encontrado na sessão, tenta recuperar o token atualizado diretamente pelo firebase/auth
+      if (!token && (authUser || auth.currentUser)) {
+        try {
+          const activeAuthUser = authUser || auth.currentUser;
+          token = await activeAuthUser?.getIdToken(true) || null;
+          if (token && typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', token);
+          }
+        } catch (tokenErr) {
+          console.warn('[MASTER CONTINGENCY] Erro ao recuperar token atualizado pelo firebase/auth:', tokenErr);
+        }
+      }
+
+      // Se o token ainda não for encontrado, não roda a requisição "no vazio"
       if (!token) {
-        console.error(
-          '[MASTER CONTINGENCY] Token não encontrado na sessão.'
-        );
+        console.warn('[MASTER CONTINGENCY] Token não encontrado na sessão nem no Firebase Auth.');
+        notifySessionExpired('Sua sessão expirou. Faça login novamente para continuar.');
         return false;
       }
 
@@ -123,6 +205,42 @@ export async function persistUserToFirestore(user: User): Promise<boolean> {
         }
       );
 
+      // Tratamento de token expirado (401/403)
+      if (response.status === 401 || response.status === 403) {
+        console.warn('[MASTER CONTINGENCY] Token expirado ou não autorizado pelo backend. Tentando renovação...');
+        if (authUser || auth.currentUser) {
+          try {
+            const activeAuthUser = authUser || auth.currentUser;
+            const refreshedToken = await activeAuthUser?.getIdToken(true);
+            if (refreshedToken && refreshedToken !== token) {
+              if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', refreshedToken);
+              }
+              const retryResponse = await fetch('/api/master-contingency/user/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${refreshedToken}`,
+                },
+                body: JSON.stringify({ user: userData }),
+              });
+              const retryResult = await retryResponse.json().catch(() => null);
+              if (retryResponse.ok && retryResult?.success) {
+                return true;
+              }
+            }
+          } catch (retryErr) {
+            console.warn('[MASTER CONTINGENCY] Falha ao renovar token após erro 401:', retryErr);
+          }
+        }
+
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.removeItem('MASTER_CONTINGENCY_TOKEN');
+        }
+        notifySessionExpired('Sua sessão expirou. Faça login novamente.');
+        return false;
+      }
+
       const result = await response.json().catch(() => null);
 
       if (!response.ok || !result?.success) {
@@ -134,6 +252,13 @@ export async function persistUserToFirestore(user: User): Promise<boolean> {
       }
 
       return true;
+    }
+
+    // Para usuários padrão do Firebase, assegura que exista credencial autenticada ativa
+    if (!authUser && !auth.currentUser) {
+      console.warn('[firestoreSync] persistUserToFirestore cancelado: Nenhum usuário autenticado no Firebase.');
+      notifySessionExpired('Sua sessão expirou. Faça login novamente para salvar as alterações.');
+      return false;
     }
 
     await setDoc(
@@ -228,7 +353,9 @@ export async function persistAuditLogToFirestore(log: AuditLog): Promise<void> {
 }
 
 /**
- * Carrega coleções do Firestore para hidratar a aplicação
+ * Carrega coleções do Firestore para hidratar a aplicação.
+ * Só executa se houver um usuário autenticado no Firebase Auth —
+ * caso contrário retorna objeto vazio para evitar erros de permissão.
  */
 export async function fetchAllCollectionsFromFirestore(): Promise<{
   merchants?: StoreMerchant[];
@@ -238,6 +365,14 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
   deliveryRides?: DeliveryRide[];
   users?: User[];
 }> {
+  // Aguarda explicitamente a inicialização do Firebase Auth e validação do token
+  // Sem token válido, o Firestore rejeita requisições com "Missing or insufficient permissions".
+  const authUser = await ensureAuthenticatedUser();
+  if (!authUser) {
+    console.warn('[firestoreSync] fetchAllCollections ignorado: Nenhum usuário autenticado no Firebase Auth ou token inválido.');
+    return {};
+  }
+
   const result: {
     merchants?: StoreMerchant[];
     products?: Product[];
@@ -304,6 +439,7 @@ export async function fetchAllCollectionsFromFirestore(): Promise<{
   return result;
 }
 
+
 /**
  * Carga inicial em lote para garantir que todo o catálogo, lojas, prestadores
  * e entregadores sejam persistidos no Firestore caso o banco esteja novo/vazio.
@@ -316,6 +452,12 @@ export async function seedInitialDataToFirestoreIfEmpty(data: {
   users: User[];
 }): Promise<void> {
   try {
+    const authUser = await ensureAuthenticatedUser();
+    if (!authUser) {
+      console.warn('[firestoreSync] seedInitialData ignorado: Nenhum usuário autenticado no Firebase Auth.');
+      return;
+    }
+
     const productsSnap = await getDocs(collection(db, 'products'));
     if (productsSnap.empty && data.products.length > 0) {
       console.log('Semeando banco de dados Firestore com produtos e lojas reais...');

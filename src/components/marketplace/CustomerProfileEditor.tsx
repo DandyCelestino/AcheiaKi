@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   MapPin,
@@ -32,6 +32,7 @@ import {
 import { useApp } from '../../context/AppContext';
 import { CustomerAddress, VipMeasurements, CustomerPreferences, EmergencyContact } from '../../types';
 import { ImageUploadDropzone } from '../common/ImageUploadDropzone';
+import { auth } from '../../firebase';
 
 // Bairros reconhecidos de Cachoeiras de Macacu - RJ
 export const MACACU_NEIGHBORHOODS = [
@@ -88,7 +89,8 @@ export const CustomerProfileEditor: React.FC = () => {
     updateUserPassword,
     toggleTwoFactor,
     resendEmailConfirmation,
-    triggerToast
+    triggerToast,
+    openAuthModal
   } = useApp();
 
   const [activeSection, setActiveSection] = useState<'personal' | 'addresses' | 'vip' | 'preferences' | 'security'>('personal');
@@ -290,9 +292,33 @@ export const CustomerProfileEditor: React.FC = () => {
           }
         : undefined;
 
+    // Validação de autenticação e credenciais válidas antes do envio
+    const authenticatedUserId = auth.currentUser?.uid || currentUser?.id;
+    if (!authenticatedUserId) {
+      triggerToast('Sua sessão expirou. Faça login novamente para salvar as alterações.');
+      openAuthModal('login');
+      return;
+    }
+
+    // Se houver usuário Firebase Auth, valida e recupera o token atualizado diretamente pelo firebase/auth
+    if (auth.currentUser) {
+      try {
+        const token = await auth.currentUser.getIdToken();
+        if (token && typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', token);
+        }
+      } catch (tokenError) {
+        console.warn('Erro ao validar credenciais do usuário antes de salvar:', tokenError);
+        triggerToast('Sua sessão expirou. Faça login novamente.');
+        openAuthModal('login');
+        return;
+      }
+    }
+
     let saved;
     try {
       saved = await updateUserProfile({
+        id: authenticatedUserId,
         name: name.trim(),
         nickname: nickname.trim() || undefined,
         email: email.trim(),

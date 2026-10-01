@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   User,
   UserRole,
@@ -62,6 +62,7 @@ import {
   fetchAllCollectionsFromFirestore,
   seedInitialDataToFirestoreIfEmpty
 } from '../services/firestoreSync';
+import { auth } from '../firebase';
 import {
   validateDeliveryTransition,
   DeliveryActor
@@ -1067,6 +1068,27 @@ list = parsed;
     }, 3500);
   };
 
+  // Listener para eventos de sessão expirada emitidos pelos serviços de sincronização
+  useEffect(() => {
+    const handleSessionExpired = (e: Event) => {
+      const customEvent = e as CustomEvent<{ message?: string }>;
+      const msg = customEvent.detail?.message || 'Sua sessão expirou. Faça login novamente para continuar.';
+      triggerToast(msg);
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('MASTER_CONTINGENCY_TOKEN');
+      }
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      setCurrentUser(null);
+      setIsAuthModalOpen(true);
+      setAuthModalTab('login');
+    };
+
+    window.addEventListener('app:session-expired', handleSessionExpired);
+    return () => {
+      window.removeEventListener('app:session-expired', handleSessionExpired);
+    };
+  }, []);
+
   // Sync to local storage
   useEffect(() => {
     if (currentUser) {
@@ -1239,6 +1261,19 @@ list = parsed;
     };
 
     if (currentUser) {
+      const contingencyToken = typeof sessionStorage !== 'undefined'
+        ? sessionStorage.getItem('MASTER_CONTINGENCY_TOKEN')
+        : null;
+
+      if (!contingencyToken && auth.currentUser) {
+        auth.currentUser.getIdToken(true).then((tok) => {
+          if (tok && typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', tok);
+          }
+        }).catch((err) => {
+          console.warn('[AppContext] Falha ao recuperar token do firebase/auth:', err);
+        });
+      }
       initFirestoreSync();
     }
 
@@ -2530,8 +2565,27 @@ complianceStandard: 'LGPD Art. 7ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ
           }
           return prev.map((u) => (u.id === syncedUser.id || u.email.toLowerCase() === syncedUser.email.toLowerCase() ? syncedUser : u));
         });
+        if (fbUser) {
+          fbUser.getIdToken().then((token) => {
+            if (token && typeof sessionStorage !== 'undefined') {
+              sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', token);
+            }
+          }).catch((err) => {
+            console.warn('[AppContext] Falha ao sincronizar token na inicialização:', err);
+          });
+        }
         setCurrentUser(syncedUser);
       } else if (!fbUser) {
+        const contingencyToken = typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem('MASTER_CONTINGENCY_TOKEN')
+          : null;
+        if (!contingencyToken) {
+          const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
+          if (storedUser) {
+            console.warn('[AppContext] Sessão não autenticada no Firebase nem em contingência. Limpando credenciais locais.');
+            localStorage.removeItem(STORAGE_KEYS.USER);
+          }
+        }
         setCurrentUser(null);
       }
     });
@@ -3525,6 +3579,9 @@ complianceStandard: 'LGPD Art. 7ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ
       addAuditLog('USER_LOGOUT', `UsuÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ¡rio ${currentUser.name} encerrou a sessÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂ£o`);
     }
     firebaseLogout().catch(() => {});
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem('MASTER_CONTINGENCY_TOKEN');
+    }
     setCurrentUser(null);
     setCurrentEnvironment('MARKETPLACE');
     triggerToast('VocÃÆ’Ã†â€™Ãâ€ ââ‚¬â„¢ÃÆ’ÂÂ¢âââ‚¬Å¡ÂÂ¬âââ‚¬Å¾ÂÂ¢ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ’ââ‚¬Å¡Ãâ€šÂÂª saiu da sua conta.');
@@ -3534,10 +3591,28 @@ complianceStandard: 'LGPD Art. 7ÃÆ’Ã†â€™âââ€šÂ¬Ã…Â¡ÃÆ
   // CUSTOMER PROFILE & DATA SHEET MANAGEMENT
   // ==========================================
   const updateUserProfile = async (updates: Partial<User>): Promise<boolean> => {
-    if (!currentUser) return false;
+    const targetUserId = updates.id || auth.currentUser?.uid || currentUser?.id;
+    if (!targetUserId) {
+      triggerToast('Sua sessão expirou. Faça login novamente para salvar as alterações.');
+      setIsAuthModalOpen(true);
+      setAuthModalTab('login');
+      return false;
+    }
+
+    if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem('MASTER_CONTINGENCY_TOKEN') && auth.currentUser) {
+      try {
+        const refreshedToken = await auth.currentUser.getIdToken(true);
+        if (refreshedToken) {
+          sessionStorage.setItem('MASTER_CONTINGENCY_TOKEN', refreshedToken);
+        }
+      } catch (tokErr) {
+        console.warn('[AppContext] Falha ao renovar token no perfil:', tokErr);
+      }
+    }
 
     const updatedUser: User = {
-      ...currentUser,
+      ...(currentUser || {}),
+      id: targetUserId,
       ...updates,
       updatedAt: new Date().toISOString()
     };
